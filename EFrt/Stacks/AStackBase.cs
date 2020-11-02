@@ -40,7 +40,13 @@ namespace EFrt.Stacks
         }
 
 
-        public T Get(int index = 0)
+        public T Peek()
+        {
+            return Items[Top];
+        }
+
+
+        public T Get(int index)
         {
             return Items[Top - index];
         }

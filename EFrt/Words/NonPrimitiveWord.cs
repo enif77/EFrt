@@ -18,7 +18,7 @@ namespace EFrt.Words
             : base(interpreter)
         {
             Name = name;
-            IsImmediate = true;
+            IsImmediate = false;
             Action = Execute;
             SourcePos = sourcePos;
 

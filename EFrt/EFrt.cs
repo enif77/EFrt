@@ -41,14 +41,19 @@ namespace EFrt
     {
         public bool IsCompiling { get; private set; }
 
+        public bool IsExecutionTerminated { get; private set; }
 
-        public EfrtExecutor(int stackCapacity = 32, int returnStackCapacity = 32)
+
+        public EfrtExecutor(int controlFlowStackCapacity = 32, int stackCapacity = 32, int returnStackCapacity = 32)
         {
+            ControlFlowStack = new ControlFlowStack(controlFlowStackCapacity);
             Stack = new DataStack(stackCapacity);
             ReturnStack = new ReturnStack(returnStackCapacity);
 
             _wordsList = new WordsList();
             _baseLib = new BaseLib(this);
+            _integerLib = new IntegerLib(this);
+            _ioLib = new IoLib(this);
 
             Reset();
         }
@@ -56,15 +61,27 @@ namespace EFrt
 
         public void Reset()
         {
+            ControlFlowStack.Init(null);
             Stack.Init(new EfrtValue(0));
             ReturnStack.Init(0);
 
             _wordsList.Clear();
             _baseLib.DefineWords();
+            _integerLib.DefineWords();
+            _ioLib.DefineWords();
         }
 
 
+        public void TerminateExecution()
+        {
+            IsExecutionTerminated = true;
+        }
+
+
+        #region words
+
         public IWord CurrentWord { get; private set; }
+
 
         public bool IsWordDefined(string wordName)
         {
@@ -80,6 +97,10 @@ namespace EFrt
 
         public void AddWord(IWord word)
         {
+            // Old word definition removed.
+            RemoveWord(word.Name);
+
+            // New one added.
             _wordsList.RegisterWord(word);
         }
 
@@ -89,18 +110,167 @@ namespace EFrt
             _wordsList.RemoveWord(wordName);
         }
 
-       
-
-        #region stack
-
-        public DataStack Stack { get; private set; }
-
         #endregion
 
 
-        #region return stack
+        #region stacks
 
-        public ReturnStack ReturnStack { get; private set; }
+        private ControlFlowStack ControlFlowStack { get; set; }
+
+        private DataStack Stack { get; set; }
+
+        private ReturnStack ReturnStack { get; set; }
+
+
+        public IWord CGet(int index)
+        {
+            return ControlFlowStack.Get(index);
+        }
+
+
+        public IWord CPeek()
+        {
+            return ControlFlowStack.Peek();
+        }
+
+
+        public IWord CPop()
+        {
+            return ControlFlowStack.Pop();
+        }
+
+
+        public void CPush(IWord word)
+        {
+            ControlFlowStack.Push(word);
+        }
+
+
+
+        public EfrtValue Get(int index)
+        {
+            return Stack.Get(index);
+        }
+
+
+        public EfrtValue Peek()
+        {
+            return Stack.Peek();
+        }
+
+
+        public int Peeki()
+        {
+            return Peek().Int;
+        }
+
+
+        public float Peekf()
+        {
+            return Peek().Float;
+        }
+
+
+        public EfrtValue Pop()
+        {
+            return Stack.Pop();
+        }
+
+
+        public int Popi()
+        {
+            return Pop().Int;
+        }
+
+
+        public float Popf()
+        {
+            return Pop().Float;
+        }
+
+
+        public void Push(EfrtValue value)
+        {
+            Stack.Push(value);
+        }
+
+
+        public void Pushi(int i)
+        {
+            Stack.Push(i);
+        }
+
+
+        public void Pushf(float d)
+        {
+            Stack.Push(d);
+        }
+
+
+        public void Drop(int count = 1)
+        {
+            Stack.Drop();
+        }
+
+
+        public void Dup()
+        {
+            Stack.Dup();
+        }
+
+
+        public void Swap()
+        {
+            Stack.Swap();
+        }
+
+
+        public void Over()
+        {
+            Stack.Over();
+        }
+
+
+        public void Rot()
+        {
+            Stack.Rot();
+        }
+
+
+        public int RGet(int index)
+        {
+            return ReturnStack.Get(index);
+        }
+
+
+        public int RPeek()
+        {
+            return ReturnStack.Peek();
+        }
+
+
+        public int RPop()
+        {
+            return ReturnStack.Pop();
+        }
+
+
+        public void RPush(int value)
+        {
+            ReturnStack.Push(value);
+        }
+
+
+        public void RDrop(int count = 1)
+        {
+            ReturnStack.Drop();
+        }
+
+
+        public void RDup()
+        {
+            ReturnStack.Dup();
+        }
 
         #endregion
 
@@ -127,6 +297,78 @@ namespace EFrt
         }
 
 
+        public char CurrentChar => Tokenizer.CurrentChar;
+        public int SourcePos => Tokenizer.SourcePos;
+
+
+        public char NextChar()
+        {
+            return Tokenizer.NextChar();
+        }
+
+        public Token NextTok()
+        {
+            return Tokenizer.NextTok();
+        }
+
+
+
+        /// <summary>
+        /// Returns a word, that we are actually compileing.
+        /// </summary>
+        public NonPrimitiveWord WordBeingDefined { get; private set; }
+
+
+        /// <summary>
+        /// Begins a new word compilation.
+        /// </summary>
+        public void BeginNewWordCompilation()
+        {
+            // Cannot start a compilation, when already compiling.
+            if (IsCompiling)
+            {
+                throw new Exception("A word compilation is already running.");
+            }
+
+            // Get the name of the new word.
+            var tok = NextTok();
+            switch (tok.Code)
+            {
+                case TokenType.Eof:
+                case TokenType.Integer:
+                    throw new Exception($"A name of a new word expected.");
+
+                // Start the new word definition compilation.
+                case TokenType.Word:
+                    IsCompiling = true;
+                    WordBeingDefined = new NonPrimitiveWord(this, tok.SValue);
+                    break;
+
+                default:
+                    throw new Exception($"Unknown token type ({tok}) in a new word definition.");
+            }
+        }
+
+        /// <summary>
+        /// End a new word compilation and adds it into the known words list.
+        /// </summary>
+        public void EndNewWordCompilation()
+        {
+            // Cannot end a new word compilation, if not compiling.
+            if (IsCompiling == false)
+            {
+                throw new Exception("Not in a new word compilation.");
+            }
+
+            // Now add the new word to the dictionary
+            AddWord(WordBeingDefined);
+
+            // Finish this word compilation.
+            IsCompiling = false;
+            WordBeingDefined = null;
+        }
+
+
         public void Execute(string src)
         {
             Tokenizer = new Tokenizer(src);
@@ -145,21 +387,42 @@ namespace EFrt
                         if (_wordsList.IsWordDefined(tok.SValue))
                         {
                             CurrentWord = _wordsList.GetWord(tok.SValue);
-                            CurrentWord.Action();
+
+                            if (IsCompiling && CurrentWord.IsImmediate == false)
+                            {
+                                WordBeingDefined.AddWord(new RuntimeWord(this, tok.SValue));
+                            }
+                            else
+                            {
+                                CurrentWord.Action();
+                            }
                         }
                         else
                         {
-                            throw new Exception($"Unknown word '{tok}' cant be executed.");
+                            // End this word compiling.
+                            IsCompiling = false;
+
+                            throw new Exception($"Unknown word '{tok}' canot be executed.");
                         }
                         break;
 
                     case TokenType.Integer:
-                        Stack.Items[++Stack.Top].Int = tok.IValue;
+                        if (IsCompiling)
+                        {
+                            WordBeingDefined.AddWord(new ValueWord(this, new EfrtValue(tok.IValue)));
+                        }
+                        else
+                        {
+                            Pushi(tok.IValue);
+                        }
                         break;
 
                     default:
                         throw new Exception($"Unknown token in a word execution.");
                 }
+
+                // Finish program execution, when requested.
+                if (IsExecutionTerminated) break;
 
                 tok = Tokenizer.NextTok();
             }
@@ -172,21 +435,7 @@ namespace EFrt
         
         private WordsList _wordsList;
         private BaseLib _baseLib;
-
-
-
-        public char CurrentChar => Tokenizer.CurrentChar;
-        public int SourcePos => Tokenizer.SourcePos;
-
-
-        public char NextChar()
-        {
-            return Tokenizer.NextChar();
-        }
-
-        public Token NextTok()
-        {
-            return Tokenizer.NextTok();
-        }
+        private IntegerLib _integerLib;
+        private IoLib _ioLib;
     }
 }

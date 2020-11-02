@@ -6,233 +6,104 @@ namespace EFrt.Libs
 
     using EFrt.Words;
 
-    using static EFrt.Token;
+    //using static EFrt.Token;
     
 
     public class BaseLib
     {
-        private EfrtExecutor _efrt;
+        private IInterpreter _interpreter;
 
 
-        public BaseLib(EfrtExecutor efrt)
+        public BaseLib(IInterpreter efrt)
         {
-            _efrt = efrt;
+            _interpreter = efrt;
         }
+
 
         public void DefineWords()
         {
-            _efrt.AddWord(new PrimitiveWord(_efrt, ":", true, DefineAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, ";", true, ReturnAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "+", true, AddAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "-", true, SubAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "*", true, MulAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "/", true, DivAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "MOD", true, ModAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "(", true, CommentAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "\\", true, CommentLineAction));
 
-            _efrt.AddWord(new PrimitiveWord(_efrt, "=", true, IsEqAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "<>", true, IsNeqAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "<", true, IsLtAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, ">", true, IsGtAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "0=", true, IsZeroAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "0<", true, IsNegAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "0>", true, IsPosAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "AND", true, AndAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "OR", true, OrAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ":", false, BeginNewWordCompilationAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ";", true, EndNewWordCompilationAction));
 
-            _efrt.AddWord(new PrimitiveWord(_efrt, "DUP", true, DupAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "?DUP", true, DupPosAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "DROP", true, DropAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "SWAP", true, SwapAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "OVER", true, OverAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "ROT", true, RotAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DUP", false, DupAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "?DUP", false, DupPosAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DROP", false, DropAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "SWAP", false, SwapAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "OVER", false, OverAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ROT", false, RotAction));
 
-            _efrt.AddWord(new PrimitiveWord(_efrt, ".", true, WriteAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, ".(", true, WriteStringAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "CR", true, WriteLineAction));
 
-            _efrt.AddWord(new PrimitiveWord(_efrt, "(", true, CommentAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "\\", true, CommentLineAction));
+            // FORGET CONSTANT VARIABLE ! @ ARRAY WORDS WORDSD IF THEN ELSE 
+            // DO I J LEAVE LOOP +LOOP BEGIN END 2DROP 2DUP 2SWAP 2OVER 2ROT -ROT
+            // DEPTH >R R> R@ ' EXECUTE TRUE FALSE INT FLOAT STRING BYE
 
-            _efrt.AddWord(new PrimitiveWord(_efrt, "IF", true, IfAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "ELSE", true, ElseAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "THEN", true, ThenAction));
 
-            _efrt.AddWord(new PrimitiveWord(_efrt, "DO", true, DoAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "?DO", true, IfDoAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "LOOP", true, LoopAction));
-            _efrt.AddWord(new PrimitiveWord(_efrt, "I", true, IndexAction));
-        }
+            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "IF", false, IfAction));
+            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "ELSE", false, ElseAction));
+            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "THEN", false, ThenAction));
 
-        // (a b -- result)
-        private void AddAction()
-        {
-            _efrt.Function((a, b) => new EfrtValue(a.Int + b.Int));
-        }
-
-        // (a b -- result)
-        private void SubAction()
-        {
-            _efrt.Function((a, b) => new EfrtValue(a.Int - b.Int));
-        }
-
-        // (a b -- result)
-        private void MulAction()
-        {
-            _efrt.Function((a, b) => new EfrtValue(a.Int * b.Int));
-        }
-
-        // (a b -- result)
-        private void DivAction()
-        {
-            _efrt.Function((a, b) => new EfrtValue(a.Int / b.Int));
-        }
-
-        // (a b -- result)
-        private void ModAction()
-        {
-            _efrt.Function((a, b) => new EfrtValue(a.Int % b.Int));
-        }
-
-        // (a b -- result)
-        private void IsEqAction()
-        {
-            _efrt.Function((a, b) => new EfrtValue((a.Int == b.Int) ? -1 : 0));
-        }
-
-        // (a b -- result)
-        private void IsNeqAction()
-        {
-            _efrt.Function((a, b) => new EfrtValue((a.Int != b.Int) ? -1 : 0));
-        }
-
-        // (a b -- result)
-        private void IsLtAction()
-        {
-            _efrt.Function((a, b) => new EfrtValue((a.Int < b.Int) ? -1 : 0));
-        }
-
-        // (a b -- result)
-        private void IsGtAction()
-        {
-            _efrt.Function((a, b) => new EfrtValue((a.Int > b.Int) ? -1 : 0));
-        }
-
-        // (a -- result)
-        private void IsZeroAction()
-        {
-            _efrt.Function((a) => new EfrtValue((a.Int == 0) ? -1 : 0));
-        }
-
-        // (a -- result)
-        private void IsNegAction()
-        {
-            _efrt.Function((a) => new EfrtValue((a.Int < 0) ? -1 : 0));
-        }
-
-        // (a b -- result)
-        private void AndAction()
-        {
-            _efrt.Function((a, b) => new EfrtValue((a.Int != 0 && b.Int != 0) ? -1 : 0));
-        }
-
-        // (a b -- result)
-        private void OrAction()
-        {
-            _efrt.Function((a, b) => new EfrtValue((a.Int != 0 || b.Int != 0) ? -1 : 0));
-        }
-
-        // (a -- result)
-        private void IsPosAction()
-        {
-            _efrt.Function((a) => new EfrtValue((a.Int > 0) ? -1 : 0));
+            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "DO", false, DoAction));
+            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "?DO", false, IfDoAction));
+            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "LOOP", false, LoopAction));
+            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "I", false, IndexAction));
         }
 
         // (a -- a a)
         private void DupAction()
         {
-            _efrt.Stack.Dup();
+            _interpreter.Dup();
         }
 
         // (a -- a [result])
         private void DupPosAction()
         {
-            if (_efrt.Stack.Get().Int != 0)
+            if (_interpreter.Peek().Int != 0)
             {
-                _efrt.Stack.Dup();
+                _interpreter.Dup();
             }
         }
 
         // (a --)
         private void DropAction()
         {
-            _efrt.Stack.Drop();
+            _interpreter.Drop();
         }
 
         // (a b -- b a)
         private void SwapAction()
         {
-            _efrt.Stack.Swap();
+            _interpreter.Swap();
         }
 
         // (a b -- a b a)
         private void OverAction()
         {
-            _efrt.Stack.Over();
+            _interpreter.Over();
         }
 
         // (a b c -- b c a)
         private void RotAction()
         {
-            _efrt.Stack.Rot();
+            _interpreter.Rot();
         }
 
-        // (a --)
-        private void WriteAction()
-        {
-            Console.Write(_efrt.Stack.Pop().Int);
-        }
-
-        private void WriteStringAction()
-        {
-            var c = _efrt.NextChar();
-            while (_efrt.CurrentChar != 0)
-            {
-                if (_efrt.CurrentChar == ')')
-                {
-                    _efrt.NextChar();
-
-                    break;
-                }
-
-                Console.Write(_efrt.CurrentChar);
-
-                c = _efrt.NextChar();
-            }
-
-            if (c != ')')
-            {
-                throw new Exception("')' expected.");
-            }
-        }
-
-        private void WriteLineAction()
-        {
-            Console.WriteLine();
-        }
 
         private void CommentAction()
         {
-            var c = _efrt.NextChar();
-            while (_efrt.CurrentChar != 0)
+            var c = _interpreter.NextChar();
+            while (_interpreter.CurrentChar != 0)
             {
-                if (_efrt.CurrentChar == ')')
+                if (_interpreter.CurrentChar == ')')
                 {
-                    _efrt.NextChar();
+                    _interpreter.NextChar();
 
                     break;
                 }
 
-                c = _efrt.NextChar();
+                c = _interpreter.NextChar();
             }
 
             if (c != ')')
@@ -241,185 +112,156 @@ namespace EFrt.Libs
             }
         }
 
+
         private void CommentLineAction()
         {
-            _efrt.NextChar();
-            while (_efrt.CurrentChar != 0)
+            _interpreter.NextChar();
+            while (_interpreter.CurrentChar != 0)
             {
-                if (_efrt.CurrentChar == '\n')
+                if (_interpreter.CurrentChar == '\n')
                 {
-                    _efrt.NextChar();
+                    _interpreter.NextChar();
 
                     break;
                 }
 
-                _efrt.NextChar();
+                _interpreter.NextChar();
             }
         }
+
 
         // : word-name body ;
-        private void DefineAction()
+        private void BeginNewWordCompilationAction()
         {
-            var tok = _efrt.NextTok();
-            switch (tok.Code)
-            {
-                case TokenType.Eof: throw new Exception($"A new word-name expected.");
-                case TokenType.Word:
-                    // Old word definition removed.
-                    _efrt.RemoveWord(tok.SValue);
-
-                    // New word definition started.
-                    tok = Token.CreateWordToken(tok.SValue);
-                    break;
-                case TokenType.Integer: throw new Exception($"The new word-name '{tok.IValue}' is a number.");
-                default:
-                    throw new Exception($"Unknown token type ({tok}) in a word definition.");
-            }
-
-            var word = tok.SValue;
-            var wordStart = _efrt.SourcePos;
-
-            var level = 1;
-            var c = _efrt.CurrentChar;
-            while (_efrt.CurrentChar != 0)
-            {
-                if (_efrt.CurrentChar == ':')
-                {
-                    level++;
-                }
-
-                if (_efrt.CurrentChar == ';')
-                {
-                    _efrt.NextChar();
-
-                    level--;
-                    if (level == 0)
-                    {
-                        break;
-                    }
-                }
-
-                c = _efrt.NextChar();
-            }
-
-            if (c != ';' || level != 0)
-            {
-                throw new Exception("';' expected.");
-            }
-
-            _efrt.AddWord(new PrimitiveWord(_efrt, word, true, ExecuteWordAction, wordStart));
+            _interpreter.BeginNewWordCompilation();
         }
+
+
+        // : word-name body ;
+        private void EndNewWordCompilationAction()
+        {
+            _interpreter.EndNewWordCompilation();
+        }
+
 
         // IF ... ELSE .. THEN
         // ( flag -- )
         private void IfAction()
         {
-            // if top = 0 skip to then
-            // if top = 0 skip to else and exetute till then
+            throw new NotImplementedException();
 
-            // if top != 0 execute till then
-            // if top != 0 execute till else and skip till then
+            //// if top = 0 skip to then
+            //// if top = 0 skip to else and exetute till then
 
-            _efrt.BranchLevel++;
-            var thisBranchLevel = _efrt.BranchLevel;
-            if (_efrt.Stack.Pop().Int == 0)
-            {
-                //  Skip to THEN or ELSE.
-                var tok = _efrt.NextTok();
-                while (tok.Code >= 0)
-                {
-                    if (tok.Code == TokenType.Word)
-                    {
-                        if (tok.SValue == "IF")
-                        {
-                            // Entering a nested IF-THEN block.
-                            _efrt.BranchLevel++;
-                        }
-                        else if (tok.SValue == "ELSE")
-                        {
-                            // Nested ELSE blocks are skipped. 
-                            // Is this is "our" level ELSE?
-                            if (_efrt.BranchLevel == thisBranchLevel)
-                            {
-                                // IF part skipped, continue execution with this ELSE part.
-                                break;
-                            }
-                        }
-                        else if (tok.SValue == "THEN")
-                        {
-                            // Leaving a IF-THEN block.
-                            _efrt.BranchLevel--;
-                            if (_efrt.BranchLevel < thisBranchLevel)
-                            {
-                                // We left "our" IF-THEN block, continuing with execution.
-                                break;
-                            }
-                        }
-                    }
+            //// if top != 0 execute till then
+            //// if top != 0 execute till else and skip till then
 
-                    tok = _efrt.NextTok();
-                }
+            //_interpreter.BranchLevel++;
+            //var thisBranchLevel = _interpreter.BranchLevel;
+            //if (_interpreter.Pop().Int == 0)
+            //{
+            //    //  Skip to THEN or ELSE.
+            //    var tok = _interpreter.NextTok();
+            //    while (tok.Code >= 0)
+            //    {
+            //        if (tok.Code == TokenType.Word)
+            //        {
+            //            if (tok.SValue == "IF")
+            //            {
+            //                // Entering a nested IF-THEN block.
+            //                _interpreter.BranchLevel++;
+            //            }
+            //            else if (tok.SValue == "ELSE")
+            //            {
+            //                // Nested ELSE blocks are skipped. 
+            //                // Is this is "our" level ELSE?
+            //                if (_interpreter.BranchLevel == thisBranchLevel)
+            //                {
+            //                    // IF part skipped, continue execution with this ELSE part.
+            //                    break;
+            //                }
+            //            }
+            //            else if (tok.SValue == "THEN")
+            //            {
+            //                // Leaving a IF-THEN block.
+            //                _interpreter.BranchLevel--;
+            //                if (_interpreter.BranchLevel < thisBranchLevel)
+            //                {
+            //                    // We left "our" IF-THEN block, continuing with execution.
+            //                    break;
+            //                }
+            //            }
+            //        }
 
-                if (tok.Code != TokenType.Word && (tok.SValue != "THEN" && tok.SValue != "ELSE"))
-                {
-                    throw new Exception("ELSE or THEN expected.");
-                }
-            }
+            //        tok = _interpreter.NextTok();
+            //    }
 
-            // If stack[top] was true, we are executing the IF part.
+            //    if (tok.Code != TokenType.Word && (tok.SValue != "THEN" && tok.SValue != "ELSE"))
+            //    {
+            //        throw new Exception("ELSE or THEN expected.");
+            //    }
+            //}
+
+            //// If stack[top] was true, we are executing the IF part.
         }
 
         private void ElseAction()
         {
-            // Skip till THEN.
-            var thisBranchLevel = _efrt.BranchLevel;
-            var tok = _efrt.NextTok();
-            while (tok.Code >= 0)
-            {
-                if (tok.Code == TokenType.Word)
-                {
-                    if (tok.SValue == "IF")
-                    {
-                        // Entering a nested IF-THEN block.
-                        _efrt.BranchLevel++;
-                    }
-                    else if (tok.SValue == "THEN")
-                    {
-                        // Leaving a IF-THEN block.
-                        _efrt.BranchLevel--;
-                        if (_efrt.BranchLevel < thisBranchLevel)
-                        {
-                            // We left "our" IF-THEN block, continuing with execution.
-                            break;
-                        }
-                    }
-                }
+            throw new NotImplementedException();
 
-                tok = _efrt.NextTok();
-            }
+            //// Skip till THEN.
+            //var thisBranchLevel = _interpreter.BranchLevel;
+            //var tok = _interpreter.NextTok();
+            //while (tok.Code >= 0)
+            //{
+            //    if (tok.Code == TokenType.Word)
+            //    {
+            //        if (tok.SValue == "IF")
+            //        {
+            //            // Entering a nested IF-THEN block.
+            //            _interpreter.BranchLevel++;
+            //        }
+            //        else if (tok.SValue == "THEN")
+            //        {
+            //            // Leaving a IF-THEN block.
+            //            _interpreter.BranchLevel--;
+            //            if (_interpreter.BranchLevel < thisBranchLevel)
+            //            {
+            //                // We left "our" IF-THEN block, continuing with execution.
+            //                break;
+            //            }
+            //        }
+            //    }
 
-            if (tok.Code != TokenType.Word && tok.SValue != "THEN")
-            {
-                throw new Exception("THEN expected.");
-            }
+            //    tok = _interpreter.NextTok();
+            //}
+
+            //if (tok.Code != TokenType.Word && tok.SValue != "THEN")
+            //{
+            //    throw new Exception("THEN expected.");
+            //}
         }
 
         private void ThenAction()
         {
-            // Exit the current IF-THEN block.
-            _efrt.BranchLevel--;
-            if (_efrt.BranchLevel < 0)
-            {
-                throw new Exception("IF expected.");
-            }
+            throw new NotImplementedException();
+
+            //// Exit the current IF-THEN block.
+            //_interpreter.BranchLevel--;
+            //if (_interpreter.BranchLevel < 0)
+            //{
+            //    throw new Exception("IF expected.");
+            //}
         }
 
 
         // (counter-end counter-start -- counter-end, -- loop-start counter)
         private void DoAction()
         {
-            _efrt.ReturnStack.Push(_efrt.SourcePos);
-            _efrt.ReturnStack.Push(_efrt.Stack.Pop().Int);
+            throw new NotImplementedException();
+
+            //_interpreter.RPush(_interpreter.SourcePos);
+            //_interpreter.RPush(_interpreter.Pop().Int);
         }
 
         // (counter-end counter-start -- counter-end, -- loop-start counter)
@@ -430,45 +272,49 @@ namespace EFrt.Libs
 
         private void LoopAction()
         {
-            // Get the current counter value and increase it's value.
-            var counter = _efrt.ReturnStack.Pop() + 1;
+            throw new NotImplementedException();
 
-            // Do we reached the end of the loop?
-            if (counter > _efrt.Stack.Get().Int)
-            {
-                // Drop counter-end.
-                _efrt.Stack.Drop();
+            //// Get the current counter value and increase it's value.
+            //var counter = _interpreter.RPop() + 1;
 
-                // Drop loop-start.
-                _efrt.ReturnStack.Drop();
-            }
-            else
-            {
-                // Save actual counter to the return stack.
-                _efrt.ReturnStack.Push(counter);
+            //// Do we reached the end of the loop?
+            //if (counter > _interpreter.Peek().Int)
+            //{
+            //    // Drop counter-end.
+            //    _interpreter.Drop();
 
-                // Go to the first word behind the DO word.
-                _efrt.GoTo(_efrt.ReturnStack.Get(1));
-            }
+            //    // Drop loop-start.
+            //    _interpreter.RDrop();
+            //}
+            //else
+            //{
+            //    // Save actual counter to the return stack.
+            //    _interpreter.RPush(counter);
+
+            //    // Go to the first word behind the DO word.
+            //    _interpreter.GoTo(_interpreter.RGet(1));
+            //}
         }
 
         // (-- counter, --)
         private void IndexAction()
         {
-            _efrt.Stack.Push(_efrt.ReturnStack.Get());
+            throw new NotImplementedException();
+
+            //_interpreter.Pushi(_interpreter.RPeek());
         }
 
-        // (--, -- current-src-pos)
-        private void ExecuteWordAction()
-        {
-            _efrt.ReturnStack.Push(_efrt.SourcePos);
-            _efrt.GoTo(_efrt.CurrentWord.SourcePos);
-        }
+        //// (--, -- current-src-pos)
+        //private void ExecuteWordAction()
+        //{
+        //    _interpreter.RPush(_interpreter.SourcePos);
+        //    _interpreter.GoTo(_interpreter.CurrentWord.SourcePos);
+        //}
 
 
-        private void ReturnAction()
-        {
-            _efrt.GoTo(_efrt.ReturnStack.Pop());
-        }
+        //private void ReturnAction()
+        //{
+        //    _interpreter.GoTo(_interpreter.RPop());
+        //}
     }
 }
