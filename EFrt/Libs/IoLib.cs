@@ -32,7 +32,7 @@ namespace EFrt.Libs
         // (a --)
         private int WriteAction()
         {
-            Console.Write(_interpreter.Pop().Int);
+            Console.Write("{0} ", _interpreter.Pop().Int);
 
             return 1;
         }
@@ -40,7 +40,7 @@ namespace EFrt.Libs
         // (a --)
         private int WriteFloatAction()
         {
-            Console.Write(_interpreter.Pop().Float.ToString(CultureInfo.InvariantCulture));
+            Console.Write("{0} ", _interpreter.Pop().Float.ToString(CultureInfo.InvariantCulture));
 
             return 1;
         }
