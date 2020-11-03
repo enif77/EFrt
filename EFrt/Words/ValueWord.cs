@@ -11,21 +11,22 @@ namespace EFrt.Words
         /// Constructor.
         /// </summary>
         /// <param name="value">A value.</param>
-        public ValueWord(IInterpreter interpreter, EfrtValue value, int sourcePos = -1)
+        public ValueWord(IInterpreter interpreter, EfrtValue value)
             : base(interpreter)
         {
             Name = "value";
-            IsImmediate = false;
+            IsControlWord = true;
             Action = Execute;
-            SourcePos = sourcePos;
 
             _value = value;
         }
 
 
-        private void Execute()
+        private int Execute()
         {
             Interpreter.Push(_value);
+
+            return 1;
         }
 
 

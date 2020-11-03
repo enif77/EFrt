@@ -53,6 +53,7 @@ namespace EFrt
             _wordsList = new WordsList();
             _baseLib = new BaseLib(this);
             _integerLib = new IntegerLib(this);
+            _floatLib = new FloatLib(this);
             _ioLib = new IoLib(this);
 
             Reset();
@@ -68,6 +69,7 @@ namespace EFrt
             _wordsList.Clear();
             _baseLib.DefineWords();
             _integerLib.DefineWords();
+            _floatLib.DefineWords();
             _ioLib.DefineWords();
         }
 
@@ -436,6 +438,7 @@ namespace EFrt
         private WordsList _wordsList;
         private BaseLib _baseLib;
         private IntegerLib _integerLib;
+        private FloatLib _floatLib;
         private IoLib _ioLib;
     }
 }

@@ -49,175 +49,231 @@ namespace EFrt.Libs
         }
 
         // (a b -- result)
-        private void AddAction()
+        private int AddAction()
         {
             _interpreter.Function((a, b) => new EfrtValue(a.Int + b.Int));
+
+            return 1;
         }
 
         // (a b -- result)
-        private void SubAction()
+        private int SubAction()
         {
             _interpreter.Function((a, b) => new EfrtValue(a.Int - b.Int));
+
+            return 1;
         }
 
         // (a -- result)
-        private void AddOneAction()
+        private int AddOneAction()
         {
             _interpreter.Function((a) => new EfrtValue(++a.Int));
+
+            return 1;
         }
 
         // (a -- result)
-        private void SubOneAction()
+        private int SubOneAction()
         {
             _interpreter.Function((a) => new EfrtValue(--a.Int));
+
+            return 1;
         }
 
         // (a -- result)
-        private void AddTwoAction()
+        private int AddTwoAction()
         {
             _interpreter.Function((a) => new EfrtValue(a.Int + 2));
+
+            return 1;
         }
 
         // (a -- result)
-        private void SubTwoAction()
+        private int SubTwoAction()
         {
             _interpreter.Function((a) => new EfrtValue(a.Int - 2));
+
+            return 1;
         }
 
         // (a -- result)
-        private void MulTwoAction()
+        private int MulTwoAction()
         {
             _interpreter.Function((a) => new EfrtValue(a.Int * 2));
+
+            return 1;
         }
 
         // (a -- result)
-        private void DivTwoAction()
+        private int DivTwoAction()
         {
             _interpreter.Function((a) => new EfrtValue(a.Int / 2));
+
+            return 1;
         }
 
         // (a b -- result)
-        private void MulAction()
+        private int MulAction()
         {
             _interpreter.Function((a, b) => new EfrtValue(a.Int * b.Int));
+
+            return 1;
         }
 
         // (a b -- result)
-        private void DivAction()
+        private int DivAction()
         {
             _interpreter.Function((a, b) => new EfrtValue(a.Int / b.Int));
+
+            return 1;
         }
 
         // (a b -- result)
-        private void ModAction()
+        private int ModAction()
         {
             _interpreter.Function((a, b) => new EfrtValue(a.Int % b.Int));
+
+            return 1;
         }
 
         // (a b -- div mod)
-        private void DivModAction()
+        private int DivModAction()
         {
             var b = _interpreter.Popi();
             var a = _interpreter.Popi();
 
             _interpreter.Pushi(a / b);
             _interpreter.Pushi(a % b);
+
+            return 1;
         }
 
         // (a b -- result)
-        private void MaxAction()
+        private int MaxAction()
         {
             _interpreter.Function((a, b) => new EfrtValue((a.Int > b.Int) ? a.Int : b.Int));
+
+            return 1;
         }
 
         // (a b -- result)
-        private void MinAction()
+        private int MinAction()
         {
             _interpreter.Function((a, b) => new EfrtValue((a.Int < b.Int) ? a.Int : b.Int));
+
+            return 1;
         }
 
         // (a -- result)
-        private void AbsAction()
+        private int AbsAction()
         {
             _interpreter.Function((a) => new EfrtValue(a.Int < 0 ? -a.Int : a.Int));
+
+            return 1;
         }
 
         // (a -- result)
-        private void FloatAction()
+        private int FloatAction()
         {
             _interpreter.Function((a) => new EfrtValue((float)a.Int));
+
+            return 1;
         }
 
         // (a b -- result)
-        private void IsEqAction()
+        private int IsEqAction()
         {
             _interpreter.Function((a, b) => new EfrtValue((a.Int == b.Int) ? -1 : 0));
+
+            return 1;
         }
 
         // (a b -- result)
-        private void IsNeqAction()
+        private int IsNeqAction()
         {
             _interpreter.Function((a, b) => new EfrtValue((a.Int != b.Int) ? -1 : 0));
+
+            return 1;
         }
 
         // (a b -- result)
-        private void IsLtAction()
+        private int IsLtAction()
         {
             _interpreter.Function((a, b) => new EfrtValue((a.Int < b.Int) ? -1 : 0));
+
+            return 1;
         }
 
         // (a b -- result)
-        private void IsGtAction()
+        private int IsGtAction()
         {
             _interpreter.Function((a, b) => new EfrtValue((a.Int > b.Int) ? -1 : 0));
+
+            return 1;
         }
 
         // (a -- result)
-        private void IsZeroAction()
+        private int IsZeroAction()
         {
             _interpreter.Function((a) => new EfrtValue((a.Int == 0) ? -1 : 0));
+
+            return 1;
         }
 
         // (a -- result)
-        private void IsNonZeroAction()
+        private int IsNonZeroAction()
         {
             _interpreter.Function((a) => new EfrtValue((a.Int != 0) ? -1 : 0));
+
+            return 1;
         }
 
         // (a -- result)
-        private void IsNegAction()
+        private int IsNegAction()
         {
             _interpreter.Function((a) => new EfrtValue((a.Int < 0) ? -1 : 0));
+
+            return 1;
         }
 
         // (a -- result)
-        private void NotAction()
+        private int NotAction()
         {
             _interpreter.Function((a) => new EfrtValue(~a.Int));
+
+            return 1;
         }
 
         // (a b -- result)
-        private void AndAction()
+        private int AndAction()
         {
             _interpreter.Function((a, b) => new EfrtValue((a.Int != 0 && b.Int != 0) ? -1 : 0));
+
+            return 1;
         }
 
         // (a b -- result)
-        private void OrAction()
+        private int OrAction()
         {
             _interpreter.Function((a, b) => new EfrtValue((a.Int != 0 || b.Int != 0) ? -1 : 0));
+
+            return 1;
         }
 
         // (a b -- result)
-        private void XorAction()
+        private int XorAction()
         {
             _interpreter.Function((a, b) => new EfrtValue(a.Int ^ b.Int));
+
+            return 1;
         }
 
         // (a -- result)
-        private void IsPosAction()
+        private int IsPosAction()
         {
             _interpreter.Function((a) => new EfrtValue((a.Int > 0) ? -1 : 0));
+
+            return 1;
         }
     }
 }

@@ -28,13 +28,17 @@ namespace EFrt
         {
             var efrt = new EfrtExecutor();
 
-            efrt.Execute(_src);
-            efrt.Execute("CR .( ---)");
-            efrt.Execute("123 456 * CR .");
-            efrt.Execute("CR .( ---)");
-            efrt.Execute("10 1 DO I CR . LOOP");
-            efrt.Execute("CR .( ---)");
-            efrt.Execute("10 1 DO I CR . 5 1 DO .( -) I . LOOP .( *) LOOP");
+            //efrt.Execute(_src);
+            //efrt.Execute("CR .( ---)");
+            //efrt.Execute("123 456 * CR .");
+            //efrt.Execute("CR .( ---)");
+            //efrt.Execute("10 1 DO I CR . LOOP");
+            //efrt.Execute("CR .( ---)");
+            //efrt.Execute("10 1 DO I CR . 5 1 DO .( -) I . LOOP .( *) LOOP");
+
+            efrt.Execute(": what IF 123 CR . ELSE 456 CR . THEN ; 0 what 1 what");
+            efrt.Execute("1 FLOAT CR F.");
+            efrt.Execute("2 FLOAT 3 FLOAT F/ CR F.");
         }
 
 

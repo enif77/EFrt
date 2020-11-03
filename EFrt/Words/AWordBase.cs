@@ -19,6 +19,8 @@ namespace EFrt.Words
             if (interpreter == null) throw new ArgumentNullException(nameof(interpreter));
 
             Interpreter = interpreter;
+            IsImmediate = false;
+            IsControlWord = false;
         }
 
 
@@ -32,13 +34,13 @@ namespace EFrt.Words
         /// </summary>
         public bool IsImmediate { get; protected set; }
 
+        public bool IsControlWord { get; protected set; }
+
         /// <summary>
         /// The body of this word.
         /// </summary>
-        public Action Action { get; protected set; }
-
-        public int SourcePos { get; protected set; }
-
+        public Func<int> Action { get; protected set; }
+               
 
         protected IInterpreter Interpreter { get; }
     }

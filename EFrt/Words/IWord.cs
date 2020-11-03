@@ -21,13 +21,13 @@ namespace EFrt.Words
         bool IsImmediate { get; }
 
         /// <summary>
-        /// The action this word is doing.
+        /// Control words have actions, but are not in the words list.
         /// </summary>
-        public Action Action { get; }
+        bool IsControlWord { get; }
 
         /// <summary>
-        /// The position of this word in the source.
+        /// The action this word is doing.
         /// </summary>
-        public int SourcePos { get; }
+        public Func<int> Action { get; }
     }
 }

@@ -2,14 +2,13 @@
 
 namespace EFrt.Words
 {
-    using System.Collections.Generic;
-
-
     /// <summary>
     /// A compound word.
     /// </summary>
     public class NonPrimitiveWord : AWordBase
     {
+        private const int WordsListChunkSize = 4;
+
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -18,41 +17,66 @@ namespace EFrt.Words
             : base(interpreter)
         {
             Name = name;
-            IsImmediate = false;
             Action = Execute;
-            SourcePos = sourcePos;
 
-            _words = new List<IWord>();
+            _words = new IWord[WordsListChunkSize];
+            _lastWordIndex = -1;
         }
 
 
         /// <summary>
-        /// Adds a word to this words definition.
+        /// Returns the index of the next word inserted into this word.
+        /// </summary>
+        public int NextWordIndex => _lastWordIndex + 1;
+
+
+        /// <summary>
+        /// Adds a word to this word definition.
         /// </summary>
         /// <param name="word"></param>
         public void AddWord(IWord word)
         {
-            _words.Add(word);
+            _lastWordIndex++;
+            if (_lastWordIndex >= _words.Length)
+            {
+                var oldWords = _words;
+                _words = new IWord[oldWords.Length + WordsListChunkSize];
+
+                for (var i = 0; i < oldWords.Length; i++)
+                {
+                    _words[i] = oldWords[i];
+                }
+            }
+
+            _words[_lastWordIndex] = word;
         }
 
         /// <summary>
         /// Executes this words body.
         /// </summary>
-        private void Execute()
+        private int Execute()
         {
-            foreach (var word in _words)
+            var index = 0;
+            while (index <= _lastWordIndex)
             {
-                // Get the actual word implementation.
-                var wordImpl = Interpreter.GetWord(word.Name);
-
-                wordImpl.Action();
+                var word = _words[index];
+                index += word.IsControlWord 
+                    ? word.Action()                                      // Control and value words are defined by them selves.
+                    : Interpreter.GetWord(_words[index].Name).Action();  // Get the actual word implementation and execute it.
             }
+
+            return 1;
         }
 
 
         /// <summary>
         /// A list of words defining this word.
         /// </summary>
-        private List<IWord> _words;
+        private IWord[] _words;
+
+        /// <summary>
+        /// The index of the last word inserted to this word definition.
+        /// </summary>
+        private int _lastWordIndex;
     }
 }

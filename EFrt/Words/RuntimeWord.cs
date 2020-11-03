@@ -11,23 +11,21 @@ namespace EFrt.Words
         /// Constructor.
         /// </summary>
         /// <param name="name">A name of this word.</param>
-        public RuntimeWord(IInterpreter interpreter, string name, int sourcePos = -1)
+        public RuntimeWord(IInterpreter interpreter, string name)
             : base(interpreter)
         {
             Name = name;
-            IsImmediate = false;
             Action = Execute;
-            SourcePos = sourcePos;
         }
 
 
         /// <summary>
         /// Executes this words body.
         /// </summary>
-        private void Execute()
+        private int Execute()
         {
             // Get the actual word implementation and execute it.
-            Interpreter.GetWord(Name).Action();
+            return Interpreter.GetWord(Name).Action();
         }
     }
 }

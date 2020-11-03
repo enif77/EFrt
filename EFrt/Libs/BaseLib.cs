@@ -29,21 +29,34 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ";", true, EndNewWordCompilationAction));
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "DUP", false, DupAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2DUP", false, DupTwoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "?DUP", false, DupPosAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "DROP", false, DropAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2DROP", false, DropTwoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "SWAP", false, SwapAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2SWAP", false, SwapTwoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "OVER", false, OverAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2OVER", false, OverTwoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ROT", false, RotAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2ROT", false, RotTwoAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "-ROT", false, RotBackAction));
 
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FALSE", false, FalseAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "TRUE", false, TrueAction));
+
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "IF", true, IfAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ELSE", true, ElseAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "THEN", true, ThenAction));
+
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "BYE", false, ByeAction));
+
+
+            // >R R>
 
             // FORGET CONSTANT VARIABLE ! @ ARRAY WORDS WORDSD IF THEN ELSE 
-            // DO I J LEAVE LOOP +LOOP BEGIN END 2DROP 2DUP 2SWAP 2OVER 2ROT -ROT
-            // DEPTH >R R> R@ ' EXECUTE TRUE FALSE INT FLOAT STRING BYE
+            // DO I J LEAVE LOOP +LOOP BEGIN END 
+            // DEPTH R@ ' EXECUTE INT FLOAT STRING
 
-
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "IF", false, IfAction));
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "ELSE", false, ElseAction));
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "THEN", false, ThenAction));
 
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "DO", false, DoAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "?DO", false, IfDoAction));
@@ -52,46 +65,146 @@ namespace EFrt.Libs
         }
 
         // (a -- a a)
-        private void DupAction()
+        private int DupAction()
         {
             _interpreter.Dup();
+
+            return 1;
+        }
+
+        // (a b -- a b a b)
+        private int DupTwoAction()
+        {
+            var b = _interpreter.Pop();
+            var a = _interpreter.Peek();
+
+            _interpreter.Push(b);
+            _interpreter.Push(a);
+            _interpreter.Push(b);
+
+            return 1;
         }
 
         // (a -- a [result])
-        private void DupPosAction()
+        private int DupPosAction()
         {
             if (_interpreter.Peek().Int != 0)
             {
                 _interpreter.Dup();
             }
+
+            return 1;
         }
 
         // (a --)
-        private void DropAction()
+        private int DropAction()
         {
             _interpreter.Drop();
+
+            return 1;
+        }
+
+        // (a b --)
+        private int DropTwoAction()
+        {
+            _interpreter.Drop(2);
+
+            return 1;
         }
 
         // (a b -- b a)
-        private void SwapAction()
+        private int SwapAction()
         {
             _interpreter.Swap();
+
+            return 1;
+        }
+
+        // (a b c d -- c d a b)
+        private int SwapTwoAction()
+        {
+            var d = _interpreter.Pop();
+            var c = _interpreter.Pop();
+            var b = _interpreter.Pop();
+            var a = _interpreter.Pop();
+
+            _interpreter.Push(c);
+            _interpreter.Push(d);
+            _interpreter.Push(a);
+            _interpreter.Push(b);
+
+            return 1;
         }
 
         // (a b -- a b a)
-        private void OverAction()
+        private int OverAction()
         {
             _interpreter.Over();
+
+            return 1;
+        }
+
+        // (a b c d -- a b c d a b)
+        private int OverTwoAction()
+        {
+            var d = _interpreter.Pop();
+            var c = _interpreter.Pop();
+            var b = _interpreter.Pop();
+            var a = _interpreter.Peek();
+
+            _interpreter.Push(b);
+            _interpreter.Push(c);
+            _interpreter.Push(d);
+            _interpreter.Push(a);
+            _interpreter.Push(b);
+
+            return 1;
         }
 
         // (a b c -- b c a)
-        private void RotAction()
+        private int RotAction()
         {
             _interpreter.Rot();
+
+            return 1;
+        }
+
+        // (a b c d e f -- c d e f a b)
+        private int RotTwoAction()
+        {
+            var f = _interpreter.Pop();
+            var e = _interpreter.Pop();
+            var d = _interpreter.Pop();
+            var c = _interpreter.Pop();
+            var b = _interpreter.Pop();
+            var a = _interpreter.Pop();
+
+            _interpreter.Push(c);
+            _interpreter.Push(d);
+            _interpreter.Push(e);
+            _interpreter.Push(f);
+            _interpreter.Push(a);
+            _interpreter.Push(b);
+
+            return 1;
+        }
+
+        // (a b c -- c a b)
+        private int RotBackAction()
+        {
+            var v3 = _interpreter.Pop();
+            var v2 = _interpreter.Pop();
+            var v1 = _interpreter.Pop();
+
+            _interpreter.Push(v3);
+            _interpreter.Push(v1);
+            _interpreter.Push(v2);
+
+            return 1;
         }
 
 
-        private void CommentAction()
+        private int CommentAction()
         {
             var c = _interpreter.NextChar();
             while (_interpreter.CurrentChar != 0)
@@ -110,10 +223,12 @@ namespace EFrt.Libs
             {
                 throw new Exception("')' expected.");
             }
+
+            return 1;
         }
 
 
-        private void CommentLineAction()
+        private int CommentLineAction()
         {
             _interpreter.NextChar();
             while (_interpreter.CurrentChar != 0)
@@ -127,136 +242,138 @@ namespace EFrt.Libs
 
                 _interpreter.NextChar();
             }
+
+            return 1;
         }
 
 
         // : word-name body ;
-        private void BeginNewWordCompilationAction()
+        private int BeginNewWordCompilationAction()
         {
             _interpreter.BeginNewWordCompilation();
+
+            return 1;
         }
 
-
         // : word-name body ;
-        private void EndNewWordCompilationAction()
+        private int EndNewWordCompilationAction()
         {
             _interpreter.EndNewWordCompilation();
+
+            return 1;
+        }
+
+        // ( -- a)
+        private int FalseAction()
+        {
+            _interpreter.Pushi(0);
+
+            return 1;
+        }
+
+        // ( -- a)
+        private int TrueAction()
+        {
+            _interpreter.Pushi(-1);
+
+            return 1;
+        }
+
+        // ( -- )
+        private int ByeAction()
+        {
+            _interpreter.TerminateExecution();
+
+            return 1;
         }
 
 
         // IF ... ELSE .. THEN
         // ( flag -- )
-        private void IfAction()
+        private int IfAction()
         {
-            throw new NotImplementedException();
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("IF outside a new word definition.");
+            }
 
-            //// if top = 0 skip to then
-            //// if top = 0 skip to else and exetute till then
+            var ifcw = new IfControlWord(_interpreter, _interpreter.WordBeingDefined.NextWordIndex);
+            _interpreter.WordBeingDefined.AddWord(ifcw);
+            _interpreter.CPush(ifcw);
 
-            //// if top != 0 execute till then
-            //// if top != 0 execute till else and skip till then
-
-            //_interpreter.BranchLevel++;
-            //var thisBranchLevel = _interpreter.BranchLevel;
-            //if (_interpreter.Pop().Int == 0)
-            //{
-            //    //  Skip to THEN or ELSE.
-            //    var tok = _interpreter.NextTok();
-            //    while (tok.Code >= 0)
-            //    {
-            //        if (tok.Code == TokenType.Word)
-            //        {
-            //            if (tok.SValue == "IF")
-            //            {
-            //                // Entering a nested IF-THEN block.
-            //                _interpreter.BranchLevel++;
-            //            }
-            //            else if (tok.SValue == "ELSE")
-            //            {
-            //                // Nested ELSE blocks are skipped. 
-            //                // Is this is "our" level ELSE?
-            //                if (_interpreter.BranchLevel == thisBranchLevel)
-            //                {
-            //                    // IF part skipped, continue execution with this ELSE part.
-            //                    break;
-            //                }
-            //            }
-            //            else if (tok.SValue == "THEN")
-            //            {
-            //                // Leaving a IF-THEN block.
-            //                _interpreter.BranchLevel--;
-            //                if (_interpreter.BranchLevel < thisBranchLevel)
-            //                {
-            //                    // We left "our" IF-THEN block, continuing with execution.
-            //                    break;
-            //                }
-            //            }
-            //        }
-
-            //        tok = _interpreter.NextTok();
-            //    }
-
-            //    if (tok.Code != TokenType.Word && (tok.SValue != "THEN" && tok.SValue != "ELSE"))
-            //    {
-            //        throw new Exception("ELSE or THEN expected.");
-            //    }
-            //}
-
-            //// If stack[top] was true, we are executing the IF part.
+            return 1;
         }
 
-        private void ElseAction()
+
+        private int ElseAction()
         {
-            throw new NotImplementedException();
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("ELSE outside a new word definition.");
+            }
 
-            //// Skip till THEN.
-            //var thisBranchLevel = _interpreter.BranchLevel;
-            //var tok = _interpreter.NextTok();
-            //while (tok.Code >= 0)
-            //{
-            //    if (tok.Code == TokenType.Word)
-            //    {
-            //        if (tok.SValue == "IF")
-            //        {
-            //            // Entering a nested IF-THEN block.
-            //            _interpreter.BranchLevel++;
-            //        }
-            //        else if (tok.SValue == "THEN")
-            //        {
-            //            // Leaving a IF-THEN block.
-            //            _interpreter.BranchLevel--;
-            //            if (_interpreter.BranchLevel < thisBranchLevel)
-            //            {
-            //                // We left "our" IF-THEN block, continuing with execution.
-            //                break;
-            //            }
-            //        }
-            //    }
+            var ifControlWord = _interpreter.CPeek();
+            if (ifControlWord is IfControlWord) 
+			{
+                // Get the index past where ELSE will be.
+                var indexFolowingElse = _interpreter.WordBeingDefined.NextWordIndex + 1;
 
-            //    tok = _interpreter.NextTok();
-            //}
+                // Instantiate the ELSE runtime code passing the index following ELSE.
+                var ecw = new ElseControlWord(_interpreter, indexFolowingElse);
+                _interpreter.WordBeingDefined.AddWord(ecw);
 
-            //if (tok.Code != TokenType.Word && tok.SValue != "THEN")
-            //{
-            //    throw new Exception("THEN expected.");
-            //}
+                // Push execute address of ELSE word onto control flow stack.
+                _interpreter.CPush(ecw);
+
+                // Inform the if control word of this index as well
+                ((IfControlWord)ifControlWord).SetElseIndex(indexFolowingElse);
+            }
+            else
+            {
+                throw new Exception("ELSE requires a previous IF.");
+            }
+
+            return 1;
         }
 
-        private void ThenAction()
-        {
-            throw new NotImplementedException();
 
-            //// Exit the current IF-THEN block.
-            //_interpreter.BranchLevel--;
-            //if (_interpreter.BranchLevel < 0)
-            //{
-            //    throw new Exception("IF expected.");
-            //}
+        private int ThenAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("THEN outside a new word definition.");
+            }
+
+            // Get the index of the next free slot in the non-primitive word being defined.
+            var thenIndex = _interpreter.WordBeingDefined.NextWordIndex;
+
+            var controlWord = _interpreter.CPop();
+            if (controlWord is ElseControlWord) 
+			{
+                // We had a previous else 
+                ((ElseControlWord)controlWord).SetThenIndexIncrement(thenIndex);
+
+                // Pop control stack again to find IF.
+                controlWord = _interpreter.CPop();
+            }
+
+            if (controlWord is IfControlWord) 
+			{
+                // We had a previous if. Set the then index into
+                // the if control word.
+                ((IfControlWord)controlWord).SetThenIndex(thenIndex);
+            }
+            else
+            {
+                throw new Exception("THEN requires a previous IF or ELSE.");
+            }
+
+            return 1;
         }
 
 
         // (counter-end counter-start -- counter-end, -- loop-start counter)
-        private void DoAction()
+        private int DoAction()
         {
             throw new NotImplementedException();
 
@@ -265,12 +382,12 @@ namespace EFrt.Libs
         }
 
         // (counter-end counter-start -- counter-end, -- loop-start counter)
-        private void IfDoAction()
+        private int IfDoAction()
         {
             throw new NotImplementedException();
         }
 
-        private void LoopAction()
+        private int LoopAction()
         {
             throw new NotImplementedException();
 
@@ -297,7 +414,7 @@ namespace EFrt.Libs
         }
 
         // (-- counter, --)
-        private void IndexAction()
+        private int IndexAction()
         {
             throw new NotImplementedException();
 

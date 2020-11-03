@@ -16,13 +16,12 @@ namespace EFrt.Words
         /// <param name="name">A name.</param>
         /// <param name="isImmediate">If this word is immediate.</param>
         /// <param name="action">An action, this word is doing.</param>
-        public PrimitiveWord(IInterpreter interpreter, string name, bool isImmediate, Action action, int sourcePos = -1)
+        public PrimitiveWord(IInterpreter interpreter, string name, bool isImmediate, Func<int> action)
             : base(interpreter)
         {
             Name = name;
             IsImmediate = isImmediate;
             Action = action;
-            SourcePos = sourcePos;
         }
     }
 }

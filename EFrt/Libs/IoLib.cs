@@ -3,7 +3,7 @@
 namespace EFrt.Libs
 {
     using System;
-
+    using System.Globalization;
     using EFrt.Words;
    
 
@@ -24,17 +24,29 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ".(", true, WriteStringAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "CR", false, WriteLineAction));
 
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F.", false, WriteFloatAction));
+
             // .S F. S. SPACES
         }
 
         // (a --)
-        private void WriteAction()
+        private int WriteAction()
         {
             Console.Write(_interpreter.Pop().Int);
+
+            return 1;
+        }
+
+        // (a --)
+        private int WriteFloatAction()
+        {
+            Console.Write(_interpreter.Pop().Float.ToString(CultureInfo.InvariantCulture));
+
+            return 1;
         }
 
 
-        private void WriteStringAction()
+        private int WriteStringAction()
         {
             var c = _interpreter.NextChar();
             while (_interpreter.CurrentChar != 0)
@@ -55,12 +67,16 @@ namespace EFrt.Libs
             {
                 throw new Exception("')' expected.");
             }
+
+            return 1;
         }
 
 
-        private void WriteLineAction()
+        private int WriteLineAction()
         {
             Console.WriteLine();
+
+            return 1;
         }
     }
 }
