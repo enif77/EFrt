@@ -41,6 +41,9 @@ namespace EFrt
             efrt.Execute("2 FLOAT 3 FLOAT F/ CR F.");
 
             //efrt.Execute(": rep BEGIN 3 CR . 1 BEGIN 1+ DUP CR . REPEAT  REPEAT ; rep");
+
+            efrt.Execute(": rep2 DO 3 CR . LOOP ; 10 1 rep2");
+            efrt.Execute(": rep3 DO DUP CR . 1+ LOOP ; CR 1 11 1 rep3");
         }
 
 

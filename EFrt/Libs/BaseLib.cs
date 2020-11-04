@@ -59,14 +59,14 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "BYE", false, ByeAction));
 
 
-            // DO I J LEAVE LOOP +LOOP 
+            // I J LEAVE +LOOP 
 
             // FORGET CONSTANT VARIABLE ! @ ARRAY WORDS WORDSD IF THEN ELSE 
             // ' EXECUTE INT FLOAT STRING
 
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "DO", false, DoAction));
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "?DO", false, IfDoAction));
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "LOOP", false, LoopAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DO", true, DoAction));
+            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "?DO", true, IfDoAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "LOOP", true, LoopAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "I", false, IndexAction));
         }
 
@@ -417,7 +417,7 @@ namespace EFrt.Libs
                 throw new Exception("BEGIN outside a new word definition.");
             }
 
-            // BEGIN word doesn't have runtime behavior.
+            // BEGIN word doesn't have a runtime behavior.
 
             _interpreter.CPush(new BeginControlWord(_interpreter, _interpreter.WordBeingDefined.NextWordIndex));
 
@@ -432,7 +432,7 @@ namespace EFrt.Libs
                 throw new Exception("REPEAT outside a new word definition.");
             }
 
-            // REPEAT word doesn't have runtime behavior.
+            // REPEAT word doesn't have a runtime behavior.
 
             var controlWord = _interpreter.CPop();
             if (controlWord is BeginControlWord)
@@ -453,13 +453,20 @@ namespace EFrt.Libs
                
 
 
-        // (counter-end counter-start -- counter-end, -- loop-start counter)
+        // (limit index -- ) [ - limit index ]
         private int DoAction()
         {
-            throw new NotImplementedException();
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("DO outside a new word definition.");
+            }
 
-            //_interpreter.RPush(_interpreter.SourcePos);
-            //_interpreter.RPush(_interpreter.Pop().Int);
+            _interpreter.WordBeingDefined.AddWord(new DoControlWord(_interpreter));
+
+            // Push index of the word after the DO word onto the return stack
+            _interpreter.RPush(_interpreter.WordBeingDefined.NextWordIndex);
+
+            return 1;
         }
 
         // (counter-end counter-start -- counter-end, -- loop-start counter)
@@ -468,30 +475,20 @@ namespace EFrt.Libs
             throw new NotImplementedException();
         }
 
+
         private int LoopAction()
         {
-            throw new NotImplementedException();
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("LOOP outside a new word definition.");
+            }
 
-            //// Get the current counter value and increase it's value.
-            //var counter = _interpreter.RPop() + 1;
+            _interpreter.WordBeingDefined.AddWord(
+                new LoopControlWord(
+                    _interpreter,
+                    _interpreter.RPop() - _interpreter.WordBeingDefined.NextWordIndex));
 
-            //// Do we reached the end of the loop?
-            //if (counter > _interpreter.Peek().Int)
-            //{
-            //    // Drop counter-end.
-            //    _interpreter.Drop();
-
-            //    // Drop loop-start.
-            //    _interpreter.RDrop();
-            //}
-            //else
-            //{
-            //    // Save actual counter to the return stack.
-            //    _interpreter.RPush(counter);
-
-            //    // Go to the first word behind the DO word.
-            //    _interpreter.GoTo(_interpreter.RGet(1));
-            //}
+            return 1;
         }
 
         // (-- counter, --)
