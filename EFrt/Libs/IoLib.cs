@@ -4,6 +4,8 @@ namespace EFrt.Libs
 {
     using System;
     using System.Globalization;
+    using System.Text;
+
     using EFrt.Words;
    
 
@@ -20,31 +22,17 @@ namespace EFrt.Libs
 
         public void DefineWords()
         {
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, ".", false, WriteAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ".(", true, WriteStringAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "CR", false, WriteLineAction));
 
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ".", false, WriteAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F.", false, WriteFloatAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "CR", false, WriteLineAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "SPACES", false, WriteSpacesAction));
 
-            // .S F. S. SPACES
+            
+
+            // S.
         }
-
-        // (a --)
-        private int WriteAction()
-        {
-            Console.Write("{0} ", _interpreter.Pop().Int);
-
-            return 1;
-        }
-
-        // (a --)
-        private int WriteFloatAction()
-        {
-            Console.Write("{0} ", _interpreter.Pop().Float.ToString(CultureInfo.InvariantCulture));
-
-            return 1;
-        }
-
 
         private int WriteStringAction()
         {
@@ -71,10 +59,44 @@ namespace EFrt.Libs
             return 1;
         }
 
+        // (a --)
+        private int WriteAction()
+        {
+            Console.Write("{0} ", _interpreter.Pop().Int);
+
+            return 1;
+        }
+
+        // (a --)
+        private int WriteFloatAction()
+        {
+            Console.Write("{0} ", _interpreter.Pop().Float.ToString(CultureInfo.InvariantCulture));
+
+            return 1;
+        }
+
 
         private int WriteLineAction()
         {
             Console.WriteLine();
+
+            return 1;
+        }
+
+
+        private int WriteSpacesAction()
+        {
+            var count = _interpreter.Popi();
+            if (count > 0)
+            {
+                var sb = new StringBuilder(count);
+                for (var i = 0; i < count; i++)
+                {
+                    sb.Append(' ');
+                }
+
+                Console.Write(sb.ToString());
+            }
 
             return 1;
         }
