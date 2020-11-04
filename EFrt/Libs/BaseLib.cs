@@ -53,10 +53,13 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ELSE", true, ElseAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "THEN", true, ThenAction));
 
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "BEGIN", true, BeginAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "REPEAT", true, RepeatAction));
+
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "BYE", false, ByeAction));
 
 
-            // DO I J LEAVE LOOP +LOOP BEGIN END 
+            // DO I J LEAVE LOOP +LOOP 
 
             // FORGET CONSTANT VARIABLE ! @ ARRAY WORDS WORDSD IF THEN ELSE 
             // ' EXECUTE INT FLOAT STRING
@@ -405,6 +408,49 @@ namespace EFrt.Libs
 
             return 1;
         }
+
+
+        private int BeginAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("BEGIN outside a new word definition.");
+            }
+
+            // BEGIN word doesn't have runtime behavior.
+
+            _interpreter.CPush(new BeginControlWord(_interpreter, _interpreter.WordBeingDefined.NextWordIndex));
+
+            return 1;
+        }
+
+
+        private int RepeatAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("REPEAT outside a new word definition.");
+            }
+
+            // REPEAT word doesn't have runtime behavior.
+
+            var controlWord = _interpreter.CPop();
+            if (controlWord is BeginControlWord)
+            {
+                // We had a previous BEGIN. 
+                _interpreter.WordBeingDefined.AddWord(
+                    new RepeatControlWord(
+                        _interpreter, 
+                        ((BeginControlWord)controlWord).IndexFollowingBegin - _interpreter.WordBeingDefined.NextWordIndex));
+            }
+            else
+            {
+                throw new Exception("REPEAT requires a previous BEGIN.");
+            }
+
+            return 1;
+        }
+               
 
 
         // (counter-end counter-start -- counter-end, -- loop-start counter)

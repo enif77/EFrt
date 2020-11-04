@@ -39,6 +39,8 @@ namespace EFrt
             efrt.Execute(": what IF 123 CR . ELSE 456 CR . THEN ; 0 what 1 what");
             efrt.Execute("1 FLOAT CR F.");
             efrt.Execute("2 FLOAT 3 FLOAT F/ CR F.");
+
+            //efrt.Execute(": rep BEGIN 3 CR . 1 BEGIN 1+ DUP CR . REPEAT  REPEAT ; rep");
         }
 
 
