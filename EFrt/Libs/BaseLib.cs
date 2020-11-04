@@ -41,6 +41,10 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2ROT", false, RotTwoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "-ROT", false, RotBackAction));
 
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ">R", false, ToReturnStackAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "R>", false, FromReturnStackAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "R@", false, FetchReturnStackAction));
+
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "FALSE", false, FalseAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "TRUE", false, TrueAction));
 
@@ -51,12 +55,10 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "BYE", false, ByeAction));
 
 
-            // >R R>
+            // DEPTH DO I J LEAVE LOOP +LOOP BEGIN END 
 
             // FORGET CONSTANT VARIABLE ! @ ARRAY WORDS WORDSD IF THEN ELSE 
-            // DO I J LEAVE LOOP +LOOP BEGIN END 
-            // DEPTH R@ ' EXECUTE INT FLOAT STRING
-
+            // ' EXECUTE INT FLOAT STRING
 
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "DO", false, DoAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "?DO", false, IfDoAction));
@@ -199,6 +201,30 @@ namespace EFrt.Libs
             _interpreter.Push(v3);
             _interpreter.Push(v1);
             _interpreter.Push(v2);
+
+            return 1;
+        }
+
+        // (a -- ) [ - a ]
+        private int ToReturnStackAction()
+        {
+            _interpreter.RPush(_interpreter.Popi());
+
+            return 1;
+        }
+
+        // ( -- a) [a - ]
+        private int FromReturnStackAction()
+        {
+            _interpreter.Pushi(_interpreter.RPop());
+
+            return 1;
+        }
+
+        // ( -- a) [a - a]
+        private int FetchReturnStackAction()
+        {
+            _interpreter.Pushi(_interpreter.RPeek());
 
             return 1;
         }
