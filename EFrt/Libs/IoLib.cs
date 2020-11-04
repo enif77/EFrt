@@ -11,11 +11,13 @@ namespace EFrt.Libs
 
     public class IoLib
     {
+        private IOutputWriter _outputWriter;
         private IInterpreter _interpreter;
 
 
-        public IoLib(IInterpreter efrt)
+        public IoLib(IInterpreter efrt, IOutputWriter outputWriter)
         {
+            _outputWriter = outputWriter;
             _interpreter = efrt;
         }
 
@@ -46,7 +48,7 @@ namespace EFrt.Libs
                     break;
                 }
 
-                Console.Write(_interpreter.CurrentChar);
+                _outputWriter.Write("{0}", _interpreter.CurrentChar);
 
                 c = _interpreter.NextChar();
             }
@@ -62,7 +64,7 @@ namespace EFrt.Libs
         // (a --)
         private int WriteAction()
         {
-            Console.Write("{0} ", _interpreter.Pop().Int);
+            _outputWriter.Write("{0} ", _interpreter.Pop().Int);
 
             return 1;
         }
@@ -70,7 +72,7 @@ namespace EFrt.Libs
         // (a --)
         private int WriteFloatAction()
         {
-            Console.Write("{0} ", _interpreter.Pop().Float.ToString(CultureInfo.InvariantCulture));
+            _outputWriter.Write("{0} ", _interpreter.Pop().Float.ToString(CultureInfo.InvariantCulture));
 
             return 1;
         }
@@ -78,7 +80,7 @@ namespace EFrt.Libs
 
         private int WriteLineAction()
         {
-            Console.WriteLine();
+            _outputWriter.WriteLine();
 
             return 1;
         }
@@ -95,7 +97,7 @@ namespace EFrt.Libs
                     sb.Append(' ');
                 }
 
-                Console.Write(sb.ToString());
+                _outputWriter.Write(sb.ToString());
             }
 
             return 1;

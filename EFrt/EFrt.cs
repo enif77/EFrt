@@ -54,7 +54,7 @@ namespace EFrt
             _baseLib = new BaseLib(this);
             _integerLib = new IntegerLib(this);
             _floatLib = new FloatLib(this);
-            _ioLib = new IoLib(this);
+            _ioLib = new IoLib(this, new ConsoleWriter());
 
             Reset();
         }
