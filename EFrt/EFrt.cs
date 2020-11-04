@@ -39,6 +39,10 @@ namespace EFrt
 
     public class EfrtExecutor : IInterpreter
     {
+        public DataStack Stack { get; set; }
+
+        public ReturnStack ReturnStack { get; set; }
+
         public bool IsCompiling { get; private set; }
 
         public bool IsExecutionTerminated { get; private set; }
@@ -118,10 +122,6 @@ namespace EFrt
         #region stacks
 
         private ControlFlowStack ControlFlowStack { get; set; }
-
-        private DataStack Stack { get; set; }
-
-        private ReturnStack ReturnStack { get; set; }
 
 
         public IWord CGet(int index)

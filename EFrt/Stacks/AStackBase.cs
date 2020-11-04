@@ -2,12 +2,16 @@
 
 namespace EFrt.Stacks
 {
-    
-    public abstract class AStackBase<T>
+
+    public abstract class AStackBase<T> : IStack<T>
     {
         public T[] Items { get; }
 
         public int Top { get; set; }
+
+        public int Count => Top + 1;
+        
+        public bool IsEmpty => Count > 0;
 
 
         protected AStackBase(int capacity = 32)
@@ -25,18 +29,6 @@ namespace EFrt.Stacks
             {
                 Items[i] = default;
             }
-        }
-
-
-        public int Count()
-        {
-            return Top + 1;
-        }
-
-
-        public bool IsEmpty()
-        {
-            return Count() > 0;
         }
 
 

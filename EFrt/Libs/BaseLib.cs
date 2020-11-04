@@ -40,6 +40,7 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ROT", false, RotAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2ROT", false, RotTwoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "-ROT", false, RotBackAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DEPTH", false, DepthAction));
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ">R", false, ToReturnStackAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "R>", false, FromReturnStackAction));
@@ -55,7 +56,7 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "BYE", false, ByeAction));
 
 
-            // DEPTH DO I J LEAVE LOOP +LOOP BEGIN END 
+            // DO I J LEAVE LOOP +LOOP BEGIN END 
 
             // FORGET CONSTANT VARIABLE ! @ ARRAY WORDS WORDSD IF THEN ELSE 
             // ' EXECUTE INT FLOAT STRING
@@ -201,6 +202,14 @@ namespace EFrt.Libs
             _interpreter.Push(v3);
             _interpreter.Push(v1);
             _interpreter.Push(v2);
+
+            return 1;
+        }
+
+        // ( -- a)
+        private int DepthAction()
+        {
+            _interpreter.Pushi(_interpreter.Stack.Count);
 
             return 1;
         }

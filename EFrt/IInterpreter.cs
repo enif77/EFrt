@@ -4,11 +4,26 @@ namespace EFrt
 {
     using System;
 
+    using EFrt.Stacks;
     using EFrt.Words;
     
 
+    /// <summary>
+    /// Defines a FORTH interpreter.
+    /// </summary>
     public interface IInterpreter
     {
+        /// <summary>
+        /// Data stack.
+        /// </summary>
+        DataStack Stack { get; }
+
+        /// <summary>
+        /// Return stack.
+        /// </summary>
+        ReturnStack ReturnStack { get; }
+
+
         /// <summary>
         /// True, if this interpreter is actually compilling a new word.
         /// </summary>
