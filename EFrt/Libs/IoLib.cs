@@ -9,7 +9,7 @@ namespace EFrt.Libs
     using EFrt.Words;
    
 
-    public class IoLib
+    public class IoLib : IWordsLIbrary
     {
         private IOutputWriter _outputWriter;
         private IInterpreter _interpreter;

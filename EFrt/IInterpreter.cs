@@ -3,7 +3,9 @@
 namespace EFrt
 {
     using System;
+    using System.Collections.Generic;
 
+    using EFrt.Libs;
     using EFrt.Stacks;
     using EFrt.Words;
     
@@ -34,6 +36,32 @@ namespace EFrt
         /// </summary>
         bool IsExecutionTerminated { get; }
 
+
+        /// <summary>
+        /// Defines words from given words libraries.
+        /// </summary>
+        /// <param name="libraries">A list of libraries of words.</param>
+        /// <param name="removeExistingWords">If true, existing word definitions are removed before new ones are added.</param>
+        void DefineWords(IEnumerable<IWordsLIbrary> libraries, bool removeExistingWords = false);
+
+        /// <summary>
+        /// Defines words from given words library.
+        /// </summary>
+        /// <param name="libraries">A library of words.</param>
+        /// <param name="removeExistingWords">If true, existing word definitions are removed before new ones are added.</param>
+        void DefineWords(IWordsLIbrary library, bool removeExistingWords = false);
+
+        /// <summary>
+        /// Cleans up the interlan interpreters state.
+        /// </summary>
+        /// <param name="libraries">If set, all defined words are removed and new words are defined using this list of words libraries.</param>
+        void Reset(IEnumerable<IWordsLIbrary> libraries = null);
+
+        /// <summary>
+        /// Executes a string as a FORTH program.
+        /// </summary>
+        /// <param name="src">A FORTH program source.</param>
+        public void Execute(string src);
 
         /// <summary>
         /// Asks the interpreter to terminate the current script execution.

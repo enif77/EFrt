@@ -26,7 +26,7 @@ namespace EFrt
 
         static void TestEfrt()
         {
-            var efrt = new EfrtExecutor();
+            var efrt = new EFrtExecutor();
 
             //efrt.Execute(_src);
             //efrt.Execute("CR .( ---)");
@@ -44,6 +44,7 @@ namespace EFrt
 
             efrt.Execute(": rep2 DO 3 CR . LOOP ; 10 1 rep2");
             efrt.Execute(": rep3 DO DUP CR . 1+ LOOP ; CR 1 11 1 rep3");
+            efrt.Execute("CR 10 11 1 rep3");
         }
 
 

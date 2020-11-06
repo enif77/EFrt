@@ -6,10 +6,8 @@ namespace EFrt.Libs
 
     using EFrt.Words;
 
-    //using static EFrt.Token;
-    
 
-    public class BaseLib
+    public class BaseLib : IWordsLIbrary
     {
         private IInterpreter _interpreter;
 

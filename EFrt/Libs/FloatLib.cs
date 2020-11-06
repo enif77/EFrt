@@ -5,7 +5,7 @@ namespace EFrt.Libs
     using EFrt.Words;
 
 
-    public class FloatLib
+    public class FloatLib : IWordsLIbrary
     {
         private IInterpreter _interpreter;
 
