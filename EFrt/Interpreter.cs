@@ -150,10 +150,6 @@ namespace EFrt
 
         public void AddWord(IWord word)
         {
-            // Old word definition removed.
-            RemoveWord(word.Name);
-
-            // New one added.
             _wordsList.RegisterWord(word);
         }
 

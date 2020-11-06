@@ -1,5 +1,10 @@
 ﻿/* EFrt - (C) 2020 Premysl Fara  */
 
+using EFrt.Words;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
 namespace EFrt
 {
     static class Program
@@ -7,6 +12,7 @@ namespace EFrt
         static void Main(string[] args)
         {
             TestEfrt();
+            //WordsListTest();
 
 
             //Console.WriteLine(Marshal.SizeOf(typeof(EfrtValue)));
@@ -45,6 +51,63 @@ namespace EFrt
             efrt.Execute(": rep2 DO 3 CR . LOOP ; 10 1 rep2");
             efrt.Execute(": rep3 DO DUP CR . 1+ LOOP ; CR 1 11 1 rep3");
             efrt.Execute("CR 10 11 1 rep3");
+        }
+
+
+        static void WordsListTest()
+        {
+            var wl = new WordsList();
+
+            var i = new Interpreter();
+
+            wl.RegisterWord(new PrimitiveWord(i, "w1", false, () => 1));
+            wl.RegisterWord(new PrimitiveWord(i, "w1", false, () => 1));
+            wl.RegisterWord(new PrimitiveWord(i, "w2", false, () => 1));
+            wl.RegisterWord(new PrimitiveWord(i, "w3", false, () => 1));
+            wl.RegisterWord(new PrimitiveWord(i, "w1", false, () => 1));
+
+            Console.WriteLine(WordsListToString(wl.DefinedWords));
+            Console.WriteLine(WordsListToString(wl.WordsHistory));
+            Console.WriteLine("---");
+
+            wl.RemoveWord("w1");
+
+            Console.WriteLine(WordsListToString(wl.DefinedWords));
+            Console.WriteLine(WordsListToString(wl.WordsHistory));
+            Console.WriteLine("---");
+
+            wl.RemoveWord("w1");
+
+            Console.WriteLine(WordsListToString(wl.DefinedWords));
+            Console.WriteLine(WordsListToString(wl.WordsHistory));
+            Console.WriteLine("---");
+
+            wl.Forget("w2");
+
+            Console.WriteLine(WordsListToString(wl.DefinedWords));
+            Console.WriteLine(WordsListToString(wl.WordsHistory));
+        }
+
+
+        static string WordsListToString(IEnumerable<IWord> wordsList)
+        {
+            var nextWord = false;
+            var sb = new StringBuilder();
+            foreach (var w in wordsList)
+            {
+                if (nextWord)
+                {
+                    sb.Append(" ");
+                }
+                else
+                {
+                    nextWord = true;
+                }
+
+                sb.Append(w.Name);
+            }
+
+            return sb.ToString();
         }
 
 
