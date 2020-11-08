@@ -26,7 +26,7 @@ Here is a list of implemented words.
 ### BaseLib
 
 Words: ( \ : ; DUP 2DUP ?DUP DROP 2DROP SWAP 2SWAP OVER 2OVER ROT 2ROT -ROT DEPTH >R R> R@ FALSE
-  TRUE IF ELSE THEN BEGIN REPEAT BYE DO LOOP
+  TRUE IF ELSE THEN BEGIN REPEAT BYE DO LOOP FORGET
 
 ### IntegerLib
 
@@ -38,5 +38,5 @@ Words: F+ F- F* F/ FMAX FMIN FABS FIX F= F<> F< F>
 
 ### IOLib
 
-Words: .( . F. CR SPACES 
+Words: .( . F. CR SPACES WORDS
 
