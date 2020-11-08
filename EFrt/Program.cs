@@ -55,6 +55,12 @@ namespace EFrt
             efrt.Execute("CR .( ---) CR");
 
             efrt.Execute("WORDS CR CR FORGET rep2 WORDS CR");
+
+            efrt.Execute("CR .( ---) CR");
+
+            efrt.Execute(": rep4 ?DO DUP CR . 1+ LOOP ; CR 1 11 11 rep4");
+
+            efrt.Execute("CR .( ---) CR");
         }
 
 

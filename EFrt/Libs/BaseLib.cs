@@ -57,16 +57,16 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "BYE", false, ByeAction));
 
 
-            // I J LEAVE +LOOP 
+            // I J LEAVE
 
-            // FORGET CONSTANT VARIABLE ! @ ARRAY WORDS WORDSD IF THEN ELSE 
+            // CONSTANT VARIABLE ! @ ARRAY WORDSD IF THEN ELSE 
             // ' EXECUTE INT FLOAT STRING
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "DO", true, DoAction));
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "?DO", true, IfDoAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "?DO", true, IfDoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "LOOP", true, LoopAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "+LOOP", true, PlusLoopAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "I", false, IndexAction));
-
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "FORGET", false, ForgetAction));
         }
@@ -473,18 +473,26 @@ namespace EFrt.Libs
                 throw new Exception("DO outside a new word definition.");
             }
 
-            _interpreter.WordBeingDefined.AddWord(new DoControlWord(_interpreter));
-
-            // Push index of the word after the DO word onto the return stack
-            _interpreter.RPush(_interpreter.WordBeingDefined.NextWordIndex);
+            _interpreter.RPush(
+                _interpreter.WordBeingDefined.AddWord(
+                    new DoControlWord(_interpreter)));
 
             return 1;
         }
 
-        // (counter-end counter-start -- counter-end, -- loop-start counter)
+        // (limit end -- )
         private int IfDoAction()
         {
-            throw new NotImplementedException();
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("?DO outside a new word definition.");
+            }
+
+            _interpreter.RPush(
+                _interpreter.WordBeingDefined.AddWord(
+                    new IfDoControlWord(_interpreter, _interpreter.WordBeingDefined.NextWordIndex)));
+
+            return 1;
         }
 
 
@@ -495,10 +503,42 @@ namespace EFrt.Libs
                 throw new Exception("LOOP outside a new word definition.");
             }
 
-            _interpreter.WordBeingDefined.AddWord(
+            var cWordIndex = _interpreter.RPop();
+
+            var loopIndex = _interpreter.WordBeingDefined.AddWord(
                 new LoopControlWord(
                     _interpreter,
-                    _interpreter.RPop() - _interpreter.WordBeingDefined.NextWordIndex));
+                    (cWordIndex + 1) - _interpreter.WordBeingDefined.NextWordIndex));  // c + 1 -> index of the word folowing DO/?DO.
+
+            var cWord = _interpreter.WordBeingDefined.GetWord(cWordIndex);
+            if (cWord is IfDoControlWord)
+            {
+                ((IfDoControlWord)cWord).SetLoopIndex(loopIndex);
+            }
+            
+            return 1;
+        }
+
+
+        private int PlusLoopAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("+LOOP outside a new word definition.");
+            }
+
+            var cWordIndex = _interpreter.RPop();
+
+            var loopIndex = _interpreter.WordBeingDefined.AddWord(
+                new PlusLoopControlWord(
+                    _interpreter,
+                    (cWordIndex + 1) - _interpreter.WordBeingDefined.NextWordIndex));  // c + 1 -> index of the word folowing DO/?DO.
+
+            var cWord = _interpreter.WordBeingDefined.GetWord(cWordIndex);
+            if (cWord is IfDoControlWord)
+            {
+                ((IfDoControlWord)cWord).SetLoopIndex(loopIndex);
+            }
 
             return 1;
         }
