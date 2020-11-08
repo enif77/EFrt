@@ -139,32 +139,6 @@ namespace EFrt
         #region stacks
 
         /// <summary>
-        /// Returns a word from the control flow stack at certain index.
-        /// </summary>
-        /// <param name="index">A value index.</param>
-        /// <returns>A word from the control flow stack.</returns>
-        IWord CGet(int index);
-
-        /// <summary>
-        /// Returns a word from the top of the control flow stack.
-        /// </summary>
-        /// <returns>A word from the top of the control flow stack.</returns>
-        IWord CPeek();
-
-        /// <summary>
-        /// Removes a word from the top of the control flow stack and returns it.
-        /// </summary>
-        /// <returns>A word from the top of the control flow stack.</returns>
-        IWord CPop();
-
-        /// <summary>
-        /// Inserts a word to the control flow stack.
-        /// </summary>
-        /// <param name="word">A word.</param>
-        void CPush(IWord word);
-
-
-        /// <summary>
         /// Returns a value from the stack at certain index.
         /// </summary>
         /// <param name="index">A value index.</param>

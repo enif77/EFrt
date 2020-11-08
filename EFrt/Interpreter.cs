@@ -73,7 +73,6 @@ namespace EFrt
         /// <param name="returnStackCapacity"></param>
         public Interpreter(int stackCapacity = 32, int returnStackCapacity = 32)
         {
-            ControlFlowStack = new ControlFlowStack(32);  // TODO: To configuration.
             Stack = new DataStack(stackCapacity);
             ReturnStack = new ReturnStack(returnStackCapacity);
 
@@ -120,7 +119,6 @@ namespace EFrt
 
         public void Reset(IEnumerable<IWordsLIbrary> libraries = null)
         {
-            ControlFlowStack.Init(null);
             Stack.Init(new EfrtValue(0));
             ReturnStack.Init(0);
             
@@ -174,34 +172,6 @@ namespace EFrt
 
 
         #region stacks
-
-        private ControlFlowStack ControlFlowStack { get; set; }
-
-
-        public IWord CGet(int index)
-        {
-            return ControlFlowStack.Get(index);
-        }
-
-
-        public IWord CPeek()
-        {
-            return ControlFlowStack.Peek();
-        }
-
-
-        public IWord CPop()
-        {
-            return ControlFlowStack.Pop();
-        }
-
-
-        public void CPush(IWord word)
-        {
-            ControlFlowStack.Push(word);
-        }
-
-
 
         public EfrtValue Get(int index)
         {

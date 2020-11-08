@@ -326,7 +326,6 @@ namespace EFrt.Libs
             return 1;
         }
 
-
         // ( -- )
         private int ForgetAction()
         {
@@ -340,20 +339,16 @@ namespace EFrt.Libs
             var tok = _interpreter.NextTok();
             switch (tok.Code)
             {
-                case TokenType.Eof:
-                case TokenType.Integer:
-                default:
-                    throw new Exception($"A name of a word expected.");
-
-                // Start the new word definition compilation.
                 case TokenType.Word:
                     _interpreter.ForgetWord(tok.SValue);
                     break;
+
+                default:
+                    throw new Exception($"A name of a word expected.");
             }
 
             return 1;
         }
-
 
         // IF ... ELSE .. THEN
         // ( flag -- )
@@ -364,9 +359,9 @@ namespace EFrt.Libs
                 throw new Exception("IF outside a new word definition.");
             }
 
-            var ifcw = new IfControlWord(_interpreter, _interpreter.WordBeingDefined.NextWordIndex);
-            _interpreter.WordBeingDefined.AddWord(ifcw);
-            _interpreter.CPush(ifcw);
+            _interpreter.RPush(
+                _interpreter.WordBeingDefined.AddWord(
+                    new IfControlWord(_interpreter, _interpreter.WordBeingDefined.NextWordIndex)));
 
             return 1;
         }
@@ -379,18 +374,17 @@ namespace EFrt.Libs
                 throw new Exception("ELSE outside a new word definition.");
             }
 
-            var ifControlWord = _interpreter.CPeek();
-            if (ifControlWord is IfControlWord) 
-			{
+            var ifControlWord = _interpreter.WordBeingDefined.GetWord(_interpreter.RPeek());
+            if (ifControlWord is IfControlWord)
+            {
                 // Get the index past where ELSE will be.
                 var indexFolowingElse = _interpreter.WordBeingDefined.NextWordIndex + 1;
 
                 // Instantiate the ELSE runtime code passing the index following ELSE.
-                var ecw = new ElseControlWord(_interpreter, indexFolowingElse);
-                _interpreter.WordBeingDefined.AddWord(ecw);
-
                 // Push execute address of ELSE word onto control flow stack.
-                _interpreter.CPush(ecw);
+                _interpreter.RPush(
+                    _interpreter.WordBeingDefined.AddWord(
+                        new ElseControlWord(_interpreter, indexFolowingElse)));
 
                 // Inform the if control word of this index as well
                 ((IfControlWord)ifControlWord).SetElseIndex(indexFolowingElse);
@@ -414,14 +408,14 @@ namespace EFrt.Libs
             // Get the index of the next free slot in the non-primitive word being defined.
             var thenIndex = _interpreter.WordBeingDefined.NextWordIndex;
 
-            var controlWord = _interpreter.CPop();
-            if (controlWord is ElseControlWord) 
-			{
+            var controlWord = _interpreter.WordBeingDefined.GetWord(_interpreter.RPop());
+            if (controlWord is ElseControlWord)
+            {
                 // We had a previous else 
                 ((ElseControlWord)controlWord).SetThenIndexIncrement(thenIndex);
 
                 // Pop control stack again to find IF.
-                controlWord = _interpreter.CPop();
+                controlWord = _interpreter.WordBeingDefined.GetWord(_interpreter.RPop());
             }
 
             if (controlWord is IfControlWord) 
@@ -438,7 +432,7 @@ namespace EFrt.Libs
             return 1;
         }
 
-
+        // [ -- index-of-a-word-folowing-BEGIN ]
         private int BeginAction()
         {
             if (_interpreter.IsCompiling == false)
@@ -447,13 +441,13 @@ namespace EFrt.Libs
             }
 
             // BEGIN word doesn't have a runtime behavior.
-
-            _interpreter.CPush(new BeginControlWord(_interpreter, _interpreter.WordBeingDefined.NextWordIndex));
+           
+            _interpreter.RPush(_interpreter.WordBeingDefined.NextWordIndex);
 
             return 1;
         }
 
-
+        // [ index-of-a-word-folowing-BEGIN -- ]
         private int RepeatAction()
         {
             if (_interpreter.IsCompiling == false)
@@ -463,24 +457,13 @@ namespace EFrt.Libs
 
             // REPEAT word doesn't have a runtime behavior.
 
-            var controlWord = _interpreter.CPop();
-            if (controlWord is BeginControlWord)
-            {
-                // We had a previous BEGIN. 
-                _interpreter.WordBeingDefined.AddWord(
-                    new RepeatControlWord(
-                        _interpreter, 
-                        ((BeginControlWord)controlWord).IndexFollowingBegin - _interpreter.WordBeingDefined.NextWordIndex));
-            }
-            else
-            {
-                throw new Exception("REPEAT requires a previous BEGIN.");
-            }
+            _interpreter.WordBeingDefined.AddWord(
+                new RepeatControlWord(
+                    _interpreter,
+                    _interpreter.RPop() - _interpreter.WordBeingDefined.NextWordIndex));
 
             return 1;
         }
-               
-
 
         // (limit index -- ) [ - limit index ]
         private int DoAction()

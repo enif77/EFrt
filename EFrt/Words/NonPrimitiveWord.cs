@@ -29,12 +29,22 @@ namespace EFrt.Words
         /// </summary>
         public int NextWordIndex => _lastWordIndex + 1;
 
+        /// <summary>
+        /// Returns a word defined at index.
+        /// </summary>
+        /// <param name="index">An zero based index of a word defined as part of this word body.</param>
+        /// <returns>A word defined at index.</returns>
+        public IWord GetWord(int index)
+        {
+            return _words[index];
+        }
 
         /// <summary>
         /// Adds a word to this word definition.
         /// </summary>
         /// <param name="word"></param>
-        public void AddWord(IWord word)
+        /// <returns>Index of the added word.</returns>
+        public int AddWord(IWord word)
         {
             _lastWordIndex++;
             if (_lastWordIndex >= _words.Length)
@@ -49,6 +59,8 @@ namespace EFrt.Words
             }
 
             _words[_lastWordIndex] = word;
+
+            return _lastWordIndex;
         }
 
         /// <summary>
@@ -61,7 +73,7 @@ namespace EFrt.Words
             {
                 var word = _words[index];
                 index += word.IsControlWord 
-                    ? word.Action()                                      // Control and value words are defined by them selves.
+                    ? word.Action()                                      // Control and value words are defined by themselves.
                     : Interpreter.GetWord(_words[index].Name).Action();  // Get the actual word implementation and execute it.
             }
 
