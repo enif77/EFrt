@@ -25,6 +25,11 @@ namespace EFrt
         /// </summary>
         ReturnStack ReturnStack { get; }
 
+        /// <summary>
+        /// The list of known words.
+        /// </summary>
+        WordsList WordsList { get; }
+
 
         /// <summary>
         /// True, if this interpreter is actually compilling a new word.
@@ -50,6 +55,12 @@ namespace EFrt
         /// <param name="libraries">A library of words.</param>
         /// <param name="removeExistingWords">If true, existing word definitions are removed before new ones are added.</param>
         void DefineWords(IWordsLIbrary library, bool removeExistingWords = false);
+
+        /// <summary>
+        /// Forgets a word and all word defined after it.
+        /// </summary>
+        /// <param name="wordName">A word name.</param>
+        void ForgetWord(string wordName);
 
         /// <summary>
         /// Cleans up the interlan interpreters state.

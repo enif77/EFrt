@@ -51,6 +51,11 @@ namespace EFrt
         public ReturnStack ReturnStack { get; set; }
 
         /// <summary>
+        /// The list of known words.
+        /// </summary>
+        public WordsList WordsList => _wordsList;
+
+        /// <summary>
         /// Thrue, if this interpreter is currently compiling a new word.
         /// </summary>
         public bool IsCompiling { get; private set; }
@@ -104,6 +109,12 @@ namespace EFrt
             }
                 
             library.DefineWords();
+        }
+
+
+        public void ForgetWord(string wordName)
+        {
+            _wordsList.Forget(wordName);
         }
 
 

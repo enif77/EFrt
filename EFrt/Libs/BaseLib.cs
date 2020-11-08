@@ -5,7 +5,7 @@ namespace EFrt.Libs
     using System;
 
     using EFrt.Words;
-
+    using static EFrt.Token;
 
     public class BaseLib : IWordsLIbrary
     {
@@ -66,6 +66,9 @@ namespace EFrt.Libs
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "?DO", true, IfDoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "LOOP", true, LoopAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "I", false, IndexAction));
+
+
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FORGET", false, ForgetAction));
         }
 
         // (a -- a a)
@@ -319,6 +322,34 @@ namespace EFrt.Libs
         private int ByeAction()
         {
             _interpreter.TerminateExecution();
+
+            return 1;
+        }
+
+
+        // ( -- )
+        private int ForgetAction()
+        {
+            // Cannot forget a word, when a new word is currently compiled.
+            if (_interpreter.IsCompiling)
+            {
+                throw new Exception("A word compilation is running.");
+            }
+
+            // Get the name of the new word.
+            var tok = _interpreter.NextTok();
+            switch (tok.Code)
+            {
+                case TokenType.Eof:
+                case TokenType.Integer:
+                default:
+                    throw new Exception($"A name of a word expected.");
+
+                // Start the new word definition compilation.
+                case TokenType.Word:
+                    _interpreter.ForgetWord(tok.SValue);
+                    break;
+            }
 
             return 1;
         }

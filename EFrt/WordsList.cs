@@ -3,6 +3,7 @@
 namespace EFrt
 {
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Text;
 
@@ -135,14 +136,22 @@ namespace EFrt
 
         /// <summary>
         /// Returns the list of defined word names separated by SPACE.
+        /// The last defined word is returned first.
         /// </summary>
         /// <returns>The list of defined word names separated by SPACE.</returns>
         public override string ToString()
         {
             var nextWord = false;
             var sb = new StringBuilder();
-            foreach (var w in _wordsDic.Keys)
+            var wdic = new Dictionary<string, int>(_wordsDic.Count);
+            for (var i = _wordsHistory.Count - 1; i >= 0; i--)
             {
+                var w = _wordsHistory[i];
+                if (wdic.ContainsKey(w.Name))
+                {
+                    continue;
+                }
+
                 if (nextWord)
                 {
                     sb.Append(" ");
@@ -152,7 +161,8 @@ namespace EFrt
                     nextWord = true;
                 }
 
-                sb.Append(w);
+                sb.Append(w.Name);
+                wdic.Add(w.Name, i);
             }
 
             return sb.ToString();
