@@ -1,17 +1,53 @@
 ﻿/* EFrt - (C) 2020 Premysl Fara  */
 
-using EFrt.Words;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace EFrt
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
+    using EFrt.Libs;
+    using EFrt.Words;
+
+
     static class Program
     {
         static void Main(string[] args)
         {
-            TestEfrt();
+            var interpreter = new Interpreter(32, 32);
+            interpreter.DefineWords(new List<IWordsLIbrary>()
+            {
+                new BaseLib(interpreter),
+                new IoLib(interpreter, new ConsoleWriter()),
+                new IntegerLib(interpreter),
+                new FloatLib(interpreter),
+                new StringLib(interpreter)
+            });
+
+            while (true)
+            {
+                Console.Write("-> ");
+
+                try
+                {
+                    interpreter.Execute(Console.ReadLine());
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine(ex.Message);
+                }
+
+                if (interpreter.IsExecutionTerminated)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Bye!");
+
+                    break;
+                }
+            }
+
+
             //WordsListTest();
 
 
@@ -32,7 +68,16 @@ namespace EFrt
 
         static void TestEfrt()
         {
-            var efrt = new EFrtExecutor();
+            var interpreter = new Interpreter();
+
+            interpreter.DefineWords(new List<IWordsLIbrary>()
+            {
+                new BaseLib(interpreter),
+                new IoLib(interpreter, new ConsoleWriter()),
+                new IntegerLib(interpreter),
+                new FloatLib(interpreter),
+                new StringLib(interpreter)
+            });
 
             //efrt.Execute(_src);
             //efrt.Execute("CR .( ---)");
@@ -42,34 +87,34 @@ namespace EFrt
             //efrt.Execute("CR .( ---)");
             //efrt.Execute("10 1 DO I CR . 5 1 DO .( -) I . LOOP .( *) LOOP");
 
-            efrt.Execute(": what IF 123 CR . ELSE 456 CR . THEN ; 0 what 1 what");
-            efrt.Execute("1 FLOAT CR F.");
-            efrt.Execute("2 FLOAT 3 FLOAT F/ CR F.");
+            interpreter.Execute(": what IF 123 CR . ELSE 456 CR . THEN ; 0 what 1 what");
+            interpreter.Execute("1 FLOAT CR F.");
+            interpreter.Execute("2 FLOAT 3 FLOAT F/ CR F.");
 
             //efrt.Execute(": rep BEGIN 3 CR . 1 BEGIN 1+ DUP CR . REPEAT  REPEAT ; rep");
 
-            efrt.Execute(": rep2 DO 3 CR . LOOP ; 10 1 rep2");
-            efrt.Execute(": rep3 DO DUP CR . 1+ LOOP ; CR 1 11 1 rep3");
-            efrt.Execute("CR 10 11 1 rep3");
+            interpreter.Execute(": rep2 DO 3 CR . LOOP ; 10 1 rep2");
+            interpreter.Execute(": rep3 DO DUP CR . 1+ LOOP ; CR 1 11 1 rep3");
+            interpreter.Execute("CR 10 11 1 rep3");
 
-            efrt.Execute("CR .( ---) CR");
+            interpreter.Execute("CR .( ---) CR");
 
-            efrt.Execute("WORDS CR CR FORGET rep2 WORDS CR");
+            interpreter.Execute("WORDS CR CR FORGET rep2 WORDS CR");
 
-            efrt.Execute("CR .( ---) CR");
+            interpreter.Execute("CR .( ---) CR");
 
-            efrt.Execute(": rep4 ?DO DUP CR . 1+ LOOP ; CR 1 11 11 rep4");
+            interpreter.Execute(": rep4 ?DO DUP CR . 1+ LOOP ; CR 1 11 11 rep4");
 
-            efrt.Execute("CR .( ---) CR");
+            interpreter.Execute("CR .( ---) CR");
 
-            efrt.Execute("\"Hello, world!\" S. ");
-            efrt.Execute(": hello \"Hello, world!\" ; 1 SPACES hello S.");
+            interpreter.Execute("\"Hello, world!\" S. ");
+            interpreter.Execute(": hello \"Hello, world!\" ; 1 SPACES hello S.");
 
-            efrt.Execute("CR .( ---) CR");
+            interpreter.Execute("CR .( ---) CR");
 
-            efrt.Execute("\"abcd\" \"efgh\" S+ S.");
+            interpreter.Execute("\"abcd\" \"efgh\" S+ S.");
 
-            efrt.Execute("CR .( ---) CR");
+            interpreter.Execute("CR .( ---) CR");
         }
 
 
