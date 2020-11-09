@@ -3,7 +3,6 @@
 namespace EFrt
 {
     using System.Globalization;
-    using System.Text;
 
 
     /// <summary>
@@ -61,15 +60,24 @@ namespace EFrt
         {
             SkipWhite();
 
-            var sb = new StringBuilder();
+            //var sb = new StringBuilder();
+            //while (IsWhite() == false && CurrentChar != 0)
+            //{
+            //    sb.Append(CurrentChar);
+
+            //    NextChar();
+            //}
+
+            // var word = sb.ToString();
+
+
+            var firsWorCharIndex = SourcePos;
             while (IsWhite() == false && CurrentChar != 0)
             {
-                sb.Append(CurrentChar);
-
                 NextChar();
             }
 
-            var word = sb.ToString();
+            var word = _src.Substring(firsWorCharIndex, SourcePos - firsWorCharIndex);
             if (string.IsNullOrEmpty(word) && CurrentChar == 0)
             {
                 return Token.CreateEofToken();
