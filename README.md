@@ -6,6 +6,7 @@ EFrt is a embeddable FORTH language implementation.
 
   - integer: 32  bit signed integer number,
   - float: 32 bit float number,
+  - string: Single or double quote terminated strings. Stored on the object stack.
   - other types will be available later - uint, short, ushort, byte, string etc.
 
 Data stack holds 32 bit structures, that are implemented as a union type. Any .NET type,, 
@@ -16,8 +17,7 @@ double stack items in a special library.
 
   - Data stack: Main stack for user data. Holds all 32 bit data types.
   - Return stack: Stack for interpreter internal use. Holds 32 bit signed integers.
-  - Control flow stack: Used in compilation phase and is not accesible for users.
-  - Object stack: Can hold any object. Available for user data. Not used by the interpreter.
+  - Object stack: Can hold any object. Available for user data, strings etc. Not used by the interpreter.
   
 ## Words
 
@@ -35,6 +35,10 @@ Words: + - 1+ 1- 2+ 2- 2* 2/ * / MOD /MOD NOT AND OR XOR MAX MIN ABS FLOAT = <> 
 ### FloatLib
 
 Words: F+ F- F* F/ FMAX FMIN FABS FIX F= F<> F< F> 
+
+### StringLib
+
+Words: S+
 
 ### IOLib
 
