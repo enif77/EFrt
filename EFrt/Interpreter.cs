@@ -25,14 +25,8 @@ namespace EFrt
 
     TODO
 
-        - kompilace
         - řetězce jako v C/C#
         - double (separátní zásobník?)
-
-    ?DO (a b --, -- r b)
-
-    10 10 Do I . CR LOOP   \ Vypíše 10 - smyčka proběhne jednou.
-    10 10 ?DO I . CR LOOP  \ Nevypíše nic - smyčka vůbec neproběhne.
 
     */
 
