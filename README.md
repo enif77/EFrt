@@ -28,19 +28,70 @@ Here is a list of implemented words.
 Words: ( \ : ; DUP 2DUP ?DUP DROP 2DROP SWAP 2SWAP OVER 2OVER ROT 2ROT -ROT DEPTH >R R> R@ FALSE
   TRUE IF ELSE THEN BEGIN REPEAT BYE DO ?DO LOOP +LOOP FORGET
 
+#### : w
+
+Begins compilation of a word named w.
+
+#### ;
+
+Ends compilation of a word.
+
+
 ### IntegerLib
 
-Words: + - 1+ 1- 2+ 2- 2* 2/ * / MOD /MOD NOT AND OR XOR MAX MIN ABS FLOAT = <> < > 0= 0<> 0< 0> "
+Words: + - * / 1+ 1- 2+ 2- 2* 2/ MOD /MOD NOT AND OR XOR MAX MIN ABS FLOAT = <> < > 0= 0<> 0< 0> "
+
+#### + (n1 n2 - n3)
+
+Adds n1 and n2 and leaves the sum on the stack.
+
+#### - (n1 n2 - n3)
+
+Substracts n2 from n1 and leaves the difference on the stack.
+
+#### * (n1 n2 - n3)
+
+Multiplies n1 and n2 and leaves the product on the stack.
+
+#### / (n1 n2 - n3)
+
+Divides n1 by n2 and leaves the quotient on the stack.
+
 
 ### FloatLib
 
 Words: F+ F- F* F/ FMAX FMIN FABS FIX F= F<> F< F> 
 
+#### F+ (f1 f2 - f3)
+
+Adds two floating point numbers on the top of the stack and leaves the sum on the top of the stack.
+
+#### F- (f1 f2 - f3)
+
+Substracts the floating value f2 from the floating value f1 and leaves the difference on the top of the stack.
+
+#### F* (f1 f2 - f3)
+
+Multiplies two floating point numbers on the top of the stack and leaves the product on the stack.
+
+#### F/ (f1 f2 - f3)
+
+Divides the floating number f1 by the floating number f2 and leaves the quotient on the top of the stack stack.
+
+
 ### StringLib
 
 Words: S+
+
 
 ### IOLib
 
 Words: .( . F. S. CR SPACES WORDS
 
+#### . (n - )
+
+Prints the integer number on the top of the stack.
+
+#### .( str
+
+Immediatelly prints the string that follows in the input stream.
