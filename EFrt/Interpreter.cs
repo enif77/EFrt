@@ -53,7 +53,7 @@ namespace EFrt
         /// <summary>
         /// The list of known words.
         /// </summary>
-        public WordsList WordsList => _wordsList;
+        public WordsList WordsList { get; }
 
         /// <summary>
         /// Thrue, if this interpreter is currently compiling a new word.
@@ -76,7 +76,7 @@ namespace EFrt
             Stack = new DataStack(stackCapacity);
             ReturnStack = new ReturnStack(returnStackCapacity);
 
-            _wordsList = new WordsList();
+            WordsList = new WordsList();
 
             Reset();
         }
@@ -88,7 +88,7 @@ namespace EFrt
 
             if (removeExistingWords)
             {
-                _wordsList.Clear();
+                WordsList.Clear();
             }
 
             foreach (var library in libraries)
@@ -104,7 +104,7 @@ namespace EFrt
 
             if (removeExistingWords)
             {
-                _wordsList.Clear();
+                WordsList.Clear();
             }
                 
             library.DefineWords();
@@ -113,7 +113,7 @@ namespace EFrt
 
         public void ForgetWord(string wordName)
         {
-            _wordsList.Forget(wordName);
+            WordsList.Forget(wordName);
         }
 
 
@@ -124,7 +124,7 @@ namespace EFrt
             
             if (libraries != null)
             {
-                _wordsList.Clear();
+                WordsList.Clear();
 
                 foreach (var library in libraries)
                 {
@@ -147,25 +147,25 @@ namespace EFrt
 
         public bool IsWordDefined(string wordName)
         {
-            return _wordsList.IsWordDefined(wordName);
+            return WordsList.IsWordDefined(wordName);
         }
 
 
         public IWord GetWord(string wordName)
         {
-            return _wordsList.GetWord(wordName);
+            return WordsList.GetWord(wordName);
         }
 
 
         public void AddWord(IWord word)
         {
-            _wordsList.RegisterWord(word);
+            WordsList.RegisterWord(word);
         }
 
 
         public void RemoveWord(string wordName)
         {
-            _wordsList.RemoveWord(wordName);
+            WordsList.RemoveWord(wordName);
         }
 
         #endregion
@@ -398,9 +398,9 @@ namespace EFrt
                 switch (tok.Code)
                 {
                     case TokenType.Word:
-                        if (_wordsList.IsWordDefined(tok.SValue))
+                        if (WordsList.IsWordDefined(tok.SValue))
                         {
-                            CurrentWord = _wordsList.GetWord(tok.SValue);
+                            CurrentWord = WordsList.GetWord(tok.SValue);
 
                             if (IsCompiling && CurrentWord.IsImmediate == false)
                             {
@@ -444,7 +444,5 @@ namespace EFrt
 
 
         private Tokenizer Tokenizer { get; set; }
-       
-        private WordsList _wordsList;
     }
 }
