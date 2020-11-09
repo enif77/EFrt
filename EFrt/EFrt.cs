@@ -42,7 +42,8 @@ namespace EFrt
                 new BaseLib(_interpreter),
                 new IoLib(_interpreter, new ConsoleWriter()),
                 new IntegerLib(_interpreter),
-                new FloatLib(_interpreter)
+                new FloatLib(_interpreter),
+                new StringLib(_interpreter)
             });
         }
 

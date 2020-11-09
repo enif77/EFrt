@@ -326,8 +326,8 @@ namespace EFrt
 
         public void Function(Func<object, object, object> func)
         {
-            var top = Stack.Top;
-            ObjectStack.Items[--Stack.Top] = func(ObjectStack.Items[top - 1], ObjectStack.Items[top]);
+            var top = ObjectStack.Top;
+            ObjectStack.Items[--ObjectStack.Top] = func(ObjectStack.Items[top - 1], ObjectStack.Items[top]);
         }
 
 

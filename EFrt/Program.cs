@@ -66,6 +66,10 @@ namespace EFrt
             efrt.Execute(": hello \"Hello, world!\" ; 1 SPACES hello S.");
 
             efrt.Execute("CR .( ---) CR");
+
+            efrt.Execute("\"abcd\" \"efgh\" S+ S.");
+
+            efrt.Execute("CR .( ---) CR");
         }
 
 
