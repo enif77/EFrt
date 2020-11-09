@@ -24,19 +24,18 @@ namespace EFrt.Libs
 
         public void DefineWords()
         {
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, ".(", true, WriteStringAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ".(", true, WriteImmediateStringAction));
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ".", false, WriteAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F.", false, WriteFloatAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "S.", false, WriteStringAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "CR", false, WriteLineAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "SPACES", false, WriteSpacesAction));
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "WORDS", false, WordsAction));
-
-            // S.
         }
 
-        private int WriteStringAction()
+        private int WriteImmediateStringAction()
         {
             var c = _interpreter.NextChar();
             while (_interpreter.CurrentChar != 0)
@@ -73,6 +72,15 @@ namespace EFrt.Libs
         private int WriteFloatAction()
         {
             _outputWriter.Write("{0} ", _interpreter.Pop().Float.ToString(CultureInfo.InvariantCulture));
+
+            return 1;
+        }
+
+
+        // {a --}
+        private int WriteStringAction()
+        {
+            _outputWriter.Write(_interpreter.OPop().ToString());
 
             return 1;
         }

@@ -38,5 +38,5 @@ Words: F+ F- F* F/ FMAX FMIN FABS FIX F= F<> F< F>
 
 ### IOLib
 
-Words: .( . F. CR SPACES WORDS
+Words: .( . F. S. CR SPACES WORDS
 

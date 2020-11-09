@@ -2,7 +2,9 @@
 
 namespace EFrt
 {
+    using System;
     using System.Globalization;
+    using System.Text;
 
 
     /// <summary>
@@ -10,6 +12,8 @@ namespace EFrt
     /// </summary>
     public class Tokenizer
     {
+        public const char EoF = (char)0;
+
         private string _src;
 
         /// <summary>
@@ -45,7 +49,7 @@ namespace EFrt
             {
                 SourcePos = _src.Length;
 
-                return CurrentChar = (char)0;
+                return CurrentChar = EoF;
             }
 
             return CurrentChar = _src[SourcePos];
@@ -55,34 +59,77 @@ namespace EFrt
         /// Extracts the next token from the source.
         /// Expect the NextChar() to be called at least once at the beginning of the source processing.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A token.</returns>
         public Token NextTok()
         {
             SkipWhite();
 
-            //var sb = new StringBuilder();
-            //while (IsWhite() == false && CurrentChar != 0)
-            //{
-            //    sb.Append(CurrentChar);
-
-            //    NextChar();
-            //}
-
-            // var word = sb.ToString();
-
-
-            var firsWorCharIndex = SourcePos;
-            while (IsWhite() == false && CurrentChar != 0)
+            switch (CurrentChar)
             {
+                // EOF?
+                case EoF: return Token.CreateEofToken();
+
+                // A "string"?
+                case '"': return ParseString('"');
+                case '\'': return ParseString('\'');
+
+                // A word or an integert?
+                default: return ParseWord();
+            }
+        }
+
+
+        private Token ParseString(char stringTerminatorChar)
+        {
+            // Eat the stringTerminatorChar.
+            NextChar();
+
+            var sb = new StringBuilder();
+
+            while (CurrentChar != EoF)
+            {
+                // TODO: Parse escape characters.
+
+                if (CurrentChar == stringTerminatorChar)
+                {
+                    // Eat '"'.
+                    NextChar();
+
+                    // We expect an EOF or a whitespace after the string literal.
+                    if (IsWhite() == false && CurrentChar != EoF)
+                    {
+                        throw new Exception("A whitespace or EOF after the end of a string literal expected.");
+                    }
+
+                    return Token.CreateStringToken(sb.ToString());
+                }
+
+                sb.Append(CurrentChar);
+
                 NextChar();
             }
 
-            var word = _src.Substring(firsWorCharIndex, SourcePos - firsWorCharIndex);
-            if (string.IsNullOrEmpty(word) && CurrentChar == 0)
+            throw new Exception("The end of the string literal expected.");
+        }
+
+
+        private Token ParseWord()
+        {
+            var sb = new StringBuilder();
+
+            while (CurrentChar != EoF && IsWhite() == false)
             {
-                return Token.CreateEofToken();
+                sb.Append(CurrentChar);
+
+                NextChar();
             }
 
+            return ParseNumber(sb.ToString());
+        }
+
+
+        private Token ParseNumber(string word)
+        {
             if (int.TryParse(word, NumberStyles.Integer, CultureInfo.InvariantCulture, out var iVal))
             {
                 return Token.CreateIntegerToken(iVal);

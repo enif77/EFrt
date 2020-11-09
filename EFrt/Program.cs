@@ -61,6 +61,11 @@ namespace EFrt
             efrt.Execute(": rep4 ?DO DUP CR . 1+ LOOP ; CR 1 11 11 rep4");
 
             efrt.Execute("CR .( ---) CR");
+
+            efrt.Execute("\"Hello, world!\" S. ");
+            efrt.Execute(": hello \"Hello, world!\" ; 1 SPACES hello S.");
+
+            efrt.Execute("CR .( ---) CR");
         }
 
 

@@ -85,19 +85,6 @@ namespace EFrt
         void TerminateExecution();
 
 
-        /// <summary>
-        /// Does a stack operation with a single parameter. The operation result is stored at the top of the stack.
-        /// </summary>
-        /// <param name="func">A function.</param>
-        void Function(Func<EfrtValue, EfrtValue> func);
-
-        /// <summary>
-        /// Does a stack operation with two parameters. The operation result is stored at the top of the stack.
-        /// </summary>
-        /// <param name="func">A function.</param>
-        void Function(Func<EfrtValue, EfrtValue, EfrtValue> func);
-
-
         #region tokenizer
 
         char CurrentChar { get; }
@@ -234,6 +221,67 @@ namespace EFrt
         /// </summary>
         void Rot();
 
+        /// <summary>
+        /// Does a stack operation with a single parameter. The operation result is stored at the top of the stack.
+        /// </summary>
+        /// <param name="func">A function.</param>
+        void Function(Func<EfrtValue, EfrtValue> func);
+
+        /// <summary>
+        /// Does a stack operation with two parameters. The operation result is stored at the top of the stack.
+        /// </summary>
+        /// <param name="func">A function.</param>
+        void Function(Func<EfrtValue, EfrtValue, EfrtValue> func);
+
+
+        /// <summary>
+        /// Returns a value from the object stack at certain index.
+        /// </summary>
+        /// <param name="index">A value index.</param>
+        /// <returns>A value from the object stack.</returns>
+        object OGet(int index);
+
+        /// <summary>
+        /// Returns a value from the top of the object stack.
+        /// </summary>
+        /// <returns>A value from the top of the object stack.</returns>
+        object OPeek();
+
+        /// <summary>
+        /// Removes a value from the top of the object stack and returns it.
+        /// </summary>
+        /// <returns>A value from the top of the object stack.</returns>
+        object OPop();
+
+        /// <summary>
+        /// Inserts a value to the object stack.
+        /// </summary>
+        /// <param name="value">A value.</param>
+        void OPush(object value);
+
+        /// <summary>
+        /// Drops N values from the top of the object stack.
+        /// </summary>
+        /// <param name="count">The number of values to be dropped from the top of the object stack.</param>
+        void ODrop(int count = 1);
+
+        /// <summary>
+        /// Duplicates the top value on the object stack.
+        /// </summary>
+        void ODup();
+
+        /// <summary>
+        /// Takes the topmost value from the object stack and replaces it with the result of the func().
+        /// </summary>
+        /// <param name="func">A function to be applied on the topmost object stack value.</param>
+        void Function(Func<object, object> func);
+
+        /// <summary>
+        /// Takes two topmost values from the object stack and replaces them with the result of the func().
+        /// </summary>
+        /// <param name="func">A function to be applied on the two topmost object stack values.</param>
+        void Function(Func<object, object, object> func);
+
 
         /// <summary>
         /// Returns a value from the return stack at certain index.
@@ -261,9 +309,9 @@ namespace EFrt
         void RPush(int value);
 
         /// <summary>
-        /// Drops N values from the return stack.
+        /// Drops N values from the top of the return stack.
         /// </summary>
-        /// <param name="count">The number of values to be dropped from the return stack.</param>
+        /// <param name="count">The number of values to be dropped from the top of the return stack.</param>
         void RDrop(int count = 1);
 
         /// <summary>

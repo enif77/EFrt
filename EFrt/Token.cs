@@ -15,7 +15,8 @@ namespace EFrt
             Eof = -1,
             Unknown = 0,
             Word = 1,
-            Integer = 2
+            Integer = 2,
+            String = 3
         }
 
         /// <summary>
@@ -63,6 +64,14 @@ namespace EFrt
             return new Token() { Code = TokenType.Integer, IValue = i };
         }
 
-        
+        /// <summary>
+        /// Creates a token representing a string constant.
+        /// </summary>
+        /// <param name="s">A string constant.</param>
+        /// <returns>A token representing a string constant.</returns>
+        public static Token CreateStringToken(string s)
+        {
+            return new Token() { Code = TokenType.String, SValue = s };
+        }
     }
 }

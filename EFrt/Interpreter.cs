@@ -264,6 +264,21 @@ namespace EFrt
             Stack.Rot();
         }
 
+
+        public void Function(Func<EfrtValue, EfrtValue> func)
+        {
+            var top = Stack.Top;
+            Stack.Items[Stack.Top] = func(Stack.Items[top]);
+        }
+
+
+        public void Function(Func<EfrtValue, EfrtValue, EfrtValue> func)
+        {
+            var top = Stack.Top;
+            Stack.Items[--Stack.Top] = func(Stack.Items[top - 1], Stack.Items[top]);
+        }
+
+
         // Object stack.
 
         public object OGet(int index)
@@ -300,6 +315,21 @@ namespace EFrt
         {
             ObjectStack.Dup();
         }
+
+
+        public void Function(Func<object, object> func)
+        {
+            var top = ObjectStack.Top;
+            ObjectStack.Items[ObjectStack.Top] = func(ObjectStack.Items[top]);
+        }
+
+
+        public void Function(Func<object, object, object> func)
+        {
+            var top = Stack.Top;
+            ObjectStack.Items[--Stack.Top] = func(ObjectStack.Items[top - 1], ObjectStack.Items[top]);
+        }
+
 
         // Return stack.
 
@@ -341,19 +371,7 @@ namespace EFrt
         #endregion
 
 
-        public void Function(Func<EfrtValue, EfrtValue> func)
-        {
-            var top = Stack.Top;
-            Stack.Items[Stack.Top] = func(Stack.Items[top]);
-        }
-
-
-        public void Function(Func<EfrtValue, EfrtValue, EfrtValue> func)
-        {
-            var top = Stack.Top;
-            Stack.Items[--Stack.Top] = func(Stack.Items[top - 1], Stack.Items[top]);
-        }
-
+        #region tokenizer
 
         public char CurrentChar => Tokenizer.CurrentChar;
         public int SourcePos => Tokenizer.SourcePos;
@@ -369,6 +387,7 @@ namespace EFrt
             return Tokenizer.NextTok();
         }
 
+        #endregion
 
 
         /// <summary>
@@ -468,6 +487,17 @@ namespace EFrt
                         else
                         {
                             Pushi(tok.IValue);
+                        }
+                        break;
+
+                    case TokenType.String:
+                        if (IsCompiling)
+                        {
+                            WordBeingDefined.AddWord(new StringWord(this, tok.SValue));
+                        }
+                        else
+                        {
+                            OPush(tok.SValue);
                         }
                         break;
 
