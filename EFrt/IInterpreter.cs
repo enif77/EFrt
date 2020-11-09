@@ -21,6 +21,11 @@ namespace EFrt
         DataStack Stack { get; }
 
         /// <summary>
+        /// Optional stack for user data.
+        /// </summary>
+        ObjectStack ObjectStack { get; }
+
+        /// <summary>
         /// Return stack.
         /// </summary>
         ReturnStack ReturnStack { get; }

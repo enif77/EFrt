@@ -43,12 +43,17 @@ namespace EFrt
         /// <summary>
         /// The main stack for user data.
         /// </summary>
-        public DataStack Stack { get; set; }
+        public DataStack Stack { get; }
+
+        /// <summary>
+        /// Optional stack for user data.
+        /// </summary>
+        public ObjectStack ObjectStack { get; }
 
         /// <summary>
         /// The support stack for internal interpreters use.
         /// </summary>
-        public ReturnStack ReturnStack { get; set; }
+        public ReturnStack ReturnStack { get; }
 
         /// <summary>
         /// The list of known words.
@@ -74,6 +79,7 @@ namespace EFrt
         public Interpreter(int stackCapacity = 32, int returnStackCapacity = 32)
         {
             Stack = new DataStack(stackCapacity);
+            ObjectStack = new ObjectStack(stackCapacity);
             ReturnStack = new ReturnStack(returnStackCapacity);
 
             WordsList = new WordsList();
@@ -173,6 +179,8 @@ namespace EFrt
 
         #region stacks
 
+        // Data stack.
+
         public EfrtValue Get(int index)
         {
             return Stack.Get(index);
@@ -262,6 +270,44 @@ namespace EFrt
             Stack.Rot();
         }
 
+        // Object stack.
+
+        public object OGet(int index)
+        {
+            return ObjectStack.Get(index);
+        }
+
+
+        public object OPeek()
+        {
+            return ObjectStack.Peek();
+        }
+
+
+        public object OPop()
+        {
+            return ObjectStack.Pop();
+        }
+
+
+        public void OPush(object value)
+        {
+            ObjectStack.Push(value);
+        }
+
+
+        public void ODrop(int count = 1)
+        {
+            ObjectStack.Drop();
+        }
+
+
+        public void ODup()
+        {
+            ObjectStack.Dup();
+        }
+
+        // Return stack.
 
         public int RGet(int index)
         {
