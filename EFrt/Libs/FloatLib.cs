@@ -37,7 +37,9 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F=", false, IsEqAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F<>", false, IsNeqAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F<", false, IsLtAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F<=", false, IsLtEAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F>", false, IsGtAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F>=", false, IsGtEAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "0=", false, IsZeroAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "0<>", false, IsNonZeroAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "0<", false, IsNegAction));
@@ -201,9 +203,25 @@ namespace EFrt.Libs
         }
 
         // (a b -- result)
+        private int IsLtEAction()
+        {
+            _interpreter.Function((a, b) => new EfrtValue((a.Float <= b.Float) ? -1 : 0));
+
+            return 1;
+        }
+
+        // (a b -- result)
         private int IsGtAction()
         {
             _interpreter.Function((a, b) => new EfrtValue((a.Float > b.Float) ? -1 : 0));
+
+            return 1;
+        }
+
+        // (a b -- result)
+        private int IsGtEAction()
+        {
+            _interpreter.Function((a, b) => new EfrtValue((a.Float >= b.Float) ? -1 : 0));
 
             return 1;
         }
