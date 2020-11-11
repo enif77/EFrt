@@ -83,8 +83,16 @@ namespace EFrt
 
                 if (CurrentChar == stringTerminatorChar)
                 {
-                    // Eat '"'.
                     NextChar();
+
+                    if (CurrentChar == stringTerminatorChar)
+                    {
+                        sb.Append(CurrentChar);
+
+                        NextChar();
+
+                        continue;
+                    }
 
                     // We expect an EOF or a whitespace after the string literal.
                     if (IsWhite() == false && CurrentChar != EoF)
@@ -245,7 +253,7 @@ namespace EFrt
         /// </summary>
         /// <param name="c">A character.</param>
         /// <returns>True, if a character is a digit.</returns>
-        public static bool IsDigit(char c)
+        private static bool IsDigit(char c)
         {
             return c >= '0' && c <= '9';
         }
