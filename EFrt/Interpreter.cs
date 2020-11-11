@@ -448,7 +448,7 @@ namespace EFrt
 
         public void Execute(string src)
         {
-            Tokenizer = new Tokenizer(src);
+            Tokenizer = new Tokenizer(new StringSourceReader(src));
             Tokenizer.NextChar();
 
             var tok = Tokenizer.NextTok();
@@ -456,6 +456,7 @@ namespace EFrt
             {
                 switch (tok.Code)
                 {
+                    // A word can be known or a number.
                     case TokenType.Word:
                         if (WordsList.IsWordDefined(tok.SValue))
                         {
@@ -472,24 +473,43 @@ namespace EFrt
                         }
                         else
                         {
-                            // End this word compiling.
-                            IsCompiling = false;
+                            // An unknown word can be a number.
+                            var t = Tokenizer.ParseNumber(tok.SValue);
+                            switch (t.Code)
+                            {
+                                case TokenType.Integer:
+                                    if (IsCompiling)
+                                    {
+                                        WordBeingDefined.AddWord(new ValueWord(this, new EfrtValue(t.IValue)));
+                                    }
+                                    else
+                                    {
+                                        Pushi(t.IValue);
+                                    }
+                                    break;
 
-                            throw new Exception($"Unknown word '{tok}' canot be executed.");
+                                case TokenType.Float:
+                                    if (IsCompiling)
+                                    {
+                                        WordBeingDefined.AddWord(new ValueWord(this, new EfrtValue(t.FValue)));
+                                    }
+                                    else
+                                    {
+                                        Pushf(t.FValue);
+                                    }
+                                    break;
+
+                                // No, it is some unknown word.
+                                default:
+                                    // End this word compiling.
+                                    IsCompiling = false;
+
+                                    throw new Exception($"Unknown word '{tok.Code}' canot be executed.");
+                            }
                         }
                         break;
 
-                    case TokenType.Integer:
-                        if (IsCompiling)
-                        {
-                            WordBeingDefined.AddWord(new ValueWord(this, new EfrtValue(tok.IValue)));
-                        }
-                        else
-                        {
-                            Pushi(tok.IValue);
-                        }
-                        break;
-
+                    // Strings are a special case - "words" delimited with a single or double quotes and can contain white characters and escape sequences.
                     case TokenType.String:
                         if (IsCompiling)
                         {

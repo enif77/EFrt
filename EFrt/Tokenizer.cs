@@ -3,7 +3,6 @@
 namespace EFrt
 {
     using System;
-    using System.Globalization;
     using System.Text;
 
 
@@ -14,27 +13,24 @@ namespace EFrt
     {
         public const char EoF = (char)0;
 
-        private string _src;
-
         /// <summary>
         /// The last read (current) character.
         /// </summary>
-        public char CurrentChar { get; private set; }
+        public char CurrentChar => _sourceReader.CurrentChar;
 
         /// <summary>
         /// The current char position in the source.
         /// </summary>
-        public int SourcePos { get; set; }
+        public int SourcePos => _sourceReader.CurrentChar;
 
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="source">A program source.</param>
-        public Tokenizer(string source)
+        public Tokenizer(ISourceReader sourceReader)
         {
-            _src = source;
-            SourcePos = -1;
+            _sourceReader = sourceReader;
         }
 
 
@@ -44,15 +40,7 @@ namespace EFrt
         /// <returns>The next character from the input or 0 at the end of the source.</returns>
         public char NextChar()
         {
-            SourcePos++;
-            if (SourcePos >= _src.Length)
-            {
-                SourcePos = _src.Length;
-
-                return CurrentChar = EoF;
-            }
-
-            return CurrentChar = _src[SourcePos];
+            return _sourceReader.NextChar();
         }
 
         /// <summary>
@@ -77,6 +65,9 @@ namespace EFrt
                 default: return ParseWord();
             }
         }
+
+
+        private ISourceReader _sourceReader;
 
 
         private Token ParseString(char stringTerminatorChar)
@@ -124,24 +115,139 @@ namespace EFrt
                 NextChar();
             }
 
-            return ParseNumber(sb.ToString());
+            return Token.CreateWordToken(sb.ToString());
         }
 
-
-        private Token ParseNumber(string word)
+        /// <summary>
+        /// Parses an integer or a real number.
+        /// It is called by the interpreter directly, because a word must be checked, if it is defined/known, 
+        /// before it is parsed as a number.
+        /// unsigned-integer :: digit-sequence .
+        /// unsigned-number :: unsigned-integer | unsigned-real .
+        /// unsigned-real :: ( digit-sequence '.' fractional-part [ 'e' scale-factor ] ) | ( digit-sequence 'e' scale-factor ) .
+        /// scale-factor :: [ sign ] digit-sequence .
+        /// fractional-part :: digit-sequence .
+        /// sign :: '+' | '-' .
+        /// </summary>
+        public Token ParseNumber(string word)
         {
-            if (int.TryParse(word, NumberStyles.Integer, CultureInfo.InvariantCulture, out var iVal))
+            var sourceReader = new StringSourceReader(word);
+
+            // Read the first char of the word.
+            sourceReader.NextChar();
+
+            var isReal = false;
+            var iValue = 0;
+            var rValue = 0.0;
+
+            var sign = 1;
+            if (sourceReader.CurrentChar == '-')
             {
-                return Token.CreateIntegerToken(iVal);
+                sign = -1;
+                sourceReader.NextChar();
+            }
+            else if (sourceReader.CurrentChar == '+')
+            {
+                sourceReader.NextChar();
             }
 
-            return Token.CreateWordToken(word);
+            while (IsDigit(sourceReader.CurrentChar))
+            {
+                iValue = (iValue * 10) + (sourceReader.CurrentChar - '0');
+
+                if (iValue < 0)
+                {
+                    //throw new Exception("Numeric constant overflow.");
+                    return Token.CreateWordToken(word);
+                }
+
+                sourceReader.NextChar();
+            }
+
+            // digit-sequence '.' fractional-part
+            if (sourceReader.CurrentChar == '.')
+            {
+                rValue = iValue;
+
+                // Eat '.'.
+                sourceReader.NextChar();
+
+                if (IsDigit(sourceReader.CurrentChar) == false)
+                {
+                    //throw new Exception("A fractional part of a real number expected.");
+                    return Token.CreateWordToken(word);
+                }
+
+                var scale = 1.0;
+                var frac = 0.0;
+                while (IsDigit(sourceReader.CurrentChar))
+                {
+                    frac = (frac * 10.0) + (sourceReader.CurrentChar - '0');
+                    scale *= 10.0;
+
+                    sourceReader.NextChar();
+                }
+
+                rValue += frac / scale;
+
+                isReal = true;
+            }
+
+            // digit-sequence [ '.' fractional-part ] 'e' scale-factor
+            if (sourceReader.CurrentChar == 'e' || sourceReader.CurrentChar == 'E')
+            {
+                rValue = isReal ? rValue : iValue;
+
+                // Eat 'e'.
+                sourceReader.NextChar();
+
+                if (IsDigit(sourceReader.CurrentChar) == false)
+                {
+                    //throw new Exception("A scale factor of a real number expected.");
+                    return Token.CreateWordToken(word);
+                }
+
+                var fact = 0.0;
+                while (IsDigit(sourceReader.CurrentChar))
+                {
+                    fact = (fact * 10.0) + (sourceReader.CurrentChar - '0');
+
+                    sourceReader.NextChar();
+                }
+
+                rValue *= Math.Pow(10, fact);
+
+                isReal = true;
+            }
+
+            // We expect to eat all chars from a word while parsing a number.
+            if (sourceReader.CurrentChar != EoF)
+            {
+                return Token.CreateWordToken(word);
+            }
+
+            // We eat all chars, its a number.
+            return isReal
+                ? Token.CreateFloatToken((float)(rValue * sign))
+                : Token.CreateIntegerToken(iValue * sign);
         }
 
 
         private bool IsWhite()
         {
             return (CurrentChar == ' ' || CurrentChar == '\t' || CurrentChar == '\r' || CurrentChar == '\n');
+        }
+
+
+        /// <summary>
+        /// Checks, if an character is a digit.
+        /// digit :: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' .
+        /// </summary>
+        /// <param name="c">A character.</param>
+        /// <returns>True, if a character is a digit.</returns>
+        public static bool IsDigit(char c)
+        {
+            return c >= '0' && c <= '9';
         }
 
 

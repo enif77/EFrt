@@ -16,7 +16,8 @@ namespace EFrt
             Unknown = 0,
             Word = 1,
             Integer = 2,
-            String = 3
+            Float = 3,
+            String = 4
         }
 
         /// <summary>
@@ -28,6 +29,11 @@ namespace EFrt
         /// An integer value of the integer token.
         /// </summary>
         public int IValue { get; private set; }
+
+        /// <summary>
+        /// An float/real value of the float token.
+        /// </summary>
+        public float FValue { get; private set; }
 
         /// <summary>
         /// A name of a word or a string value of the string token.
@@ -62,6 +68,16 @@ namespace EFrt
         public static Token CreateIntegerToken(int i)
         {
             return new Token() { Code = TokenType.Integer, IValue = i };
+        }
+
+        /// <summary>
+        /// Creates a token representing a float/real constant.
+        /// </summary>
+        /// <param name="f">A float constant.</param>
+        /// <returns>A token representing a float constant.</returns>
+        public static Token CreateFloatToken(float f)
+        {
+            return new Token() { Code = TokenType.Float, FValue = f };
         }
 
         /// <summary>
