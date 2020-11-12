@@ -28,6 +28,6 @@ namespace EFrt.Words
         /// <summary>
         /// The action this word is doing.
         /// </summary>
-        public Func<int> Action { get; }
+        Func<int> Action { get; }
     }
 }

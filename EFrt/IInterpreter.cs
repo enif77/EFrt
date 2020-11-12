@@ -50,7 +50,7 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// <summary>
         /// True, if this interpreter is actually compilling a new word.
         /// </summary>
-        public bool IsCompiling { get; }
+        bool IsCompiling { get; }
 
         /// <summary>
         /// Returns true, if the interpreter should terminate the current script execution.
@@ -88,7 +88,7 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// Executes a string as a FORTH program.
         /// </summary>
         /// <param name="src">A FORTH program source.</param>
-        public void Execute(string src);
+        void Execute(string src);
 
         /// <summary>
         /// Asks the interpreter to terminate the current script execution.
