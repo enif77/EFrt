@@ -50,7 +50,7 @@ namespace EFrt.Stacks
         /// <summary>
         /// Gets an item on the stack.
         /// </summary>
-        /// <param name="index">A position of the item in the stack. 0 = the bottom of the stack.</param>
+        /// <param name="index">A position of the item in the stack. 0 = the top of the stack.</param>
         /// <returns></returns>
         T Get(int index);
 
