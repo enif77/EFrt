@@ -1,11 +1,12 @@
 ﻿/* EFrt - (C) 2020 Premysl Fara  */
 
-namespace EFrt
+namespace EFrtApp
 {
     using System;
     using System.Collections.Generic;
     using System.Text;
 
+    using EFrt;
     using EFrt.Libs;
     using EFrt.Words;
 
