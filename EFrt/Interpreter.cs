@@ -504,7 +504,7 @@ namespace EFrt
                                     // End this word compiling.
                                     IsCompiling = false;
 
-                                    throw new Exception($"Unknown word '{tok.Code}' canot be executed.");
+                                    throw new Exception($"Unknown word '{tok.SValue}' canot be executed.");
                             }
                         }
                         break;
