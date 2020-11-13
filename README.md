@@ -178,7 +178,7 @@ Words: S+
 
 ### IOLib
 
-Words: .( . F. S. CR EMIT SPACES WORDS
+Words: .( ." . F. S. CR EMIT SPACES WORDS
 
 #### . (n - )
 
@@ -187,6 +187,10 @@ Prints the integer number on the top of the stack.
 #### .( str
 
 Immediatelly prints the string that follows in the input stream.
+
+#### ." str
+
+Prints the string that follows in the input stream. Available in compilation only.
 
 #### EMIT
 

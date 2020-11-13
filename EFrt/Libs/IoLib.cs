@@ -25,6 +25,7 @@ namespace EFrt.Libs
         public void DefineWords()
         {
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ".(", true, WriteImmediateStringAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ".\"", true, PrintStringAction));
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ".", false, WriteAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F.", false, WriteFloatAction));
@@ -57,6 +58,40 @@ namespace EFrt.Libs
             {
                 throw new Exception("')' expected.");
             }
+
+            return 1;
+        }
+
+        private int PrintStringAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception(".\" outside a new word definition.");
+            }
+
+            var sb = new StringBuilder();
+
+            var c = _interpreter.NextChar();
+            while (_interpreter.CurrentChar != 0)
+            {
+                if (_interpreter.CurrentChar == '"')
+                {
+                    _interpreter.NextChar();
+
+                    break;
+                }
+
+                sb.Append(_interpreter.CurrentChar);
+
+                c = _interpreter.NextChar();
+            }
+
+            if (c != '"')
+            {
+                throw new Exception("'\"' expected.");
+            }
+
+            _interpreter.WordBeingDefined.AddWord(new PrintStringWord(_interpreter, _outputWriter, sb.ToString()));
 
             return 1;
         }
