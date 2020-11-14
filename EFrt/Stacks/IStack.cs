@@ -53,14 +53,43 @@ namespace EFrt.Stacks
         /// <param name="index">A position of the item in the stack. 0 = the top of the stack.</param>
         /// <returns></returns>
         T Get(int index);
-
-        
-        
-        void Over();
+               
+        /// <summary>
+        /// Returns a value from the top of the stack.
+        /// </summary>
+        /// <returns>A value from the top of the stack.</returns>
         T Peek();
+
+        /// <summary>
+        /// Removes a value from the top of the stack and returns it.
+        /// </summary>
+        /// <returns>A value from the top of the stack.</returns>
         T Pop();
+
+        /// <summary>
+        /// Pushes a value on the top of the stack.
+        /// </summary>
+        /// <param name="a">A value.</param>
         void Push(T a);
+
+        /// <summary>
+        /// (a b -- a b a)
+        /// </summary>
+        void Over();
+
+        /// <summary>
+        /// (a b c -- b c a)
+        /// </summary>
         void Rot();
+
+        /// <summary>
+        /// Swaps the two top most values on the stack.
+        /// </summary>
         void Swap();
+        
+        /// <summary>
+        /// Removes all values from the stack.
+        /// </summary>
+        void Clear();
     }
 }

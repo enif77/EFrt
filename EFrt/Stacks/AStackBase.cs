@@ -27,8 +27,14 @@ namespace EFrt.Stacks
             Top = -1;
             for (var i = 0; i < Items.Length; i++)
             {
-                Items[i] = default;
+                Items[i] = defaultValue;
             }
+        }
+
+
+        public void Clear()
+        {
+            Init(default(T));
         }
 
 

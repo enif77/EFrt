@@ -39,6 +39,7 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2ROT", false, RotTwoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "-ROT", false, RotBackAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "DEPTH", false, DepthAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "CLEAR", false, ClearAction));
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ">R", false, ToReturnStackAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "R>", false, FromReturnStackAction));
@@ -214,6 +215,14 @@ namespace EFrt.Libs
         private int DepthAction()
         {
             _interpreter.Pushi(_interpreter.Stack.Count);
+
+            return 1;
+        }
+
+        // ( -- )
+        private int ClearAction()
+        {
+            _interpreter.Stack.Clear();
 
             return 1;
         }
