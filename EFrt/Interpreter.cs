@@ -412,11 +412,17 @@ namespace EFrt
             switch (tok.Code)
             {
                 case TokenType.Eof:
-                case TokenType.Integer:
+                case TokenType.String:
                     throw new Exception($"A name of a new word expected.");
 
                 // Start the new word definition compilation.
                 case TokenType.Word:
+                    if (Tokenizer.ParseNumber(tok.SValue).Code != TokenType.Word)
+                    {
+                        // This word can be parser to a number...
+                        throw new Exception($"A name of a new word expected.");
+                    }
+
                     IsCompiling = true;
                     WordBeingDefined = new NonPrimitiveWord(this, tok.SValue);
                     break;
@@ -448,7 +454,13 @@ namespace EFrt
 
         public void Execute(string src)
         {
-            Tokenizer = new Tokenizer(new StringSourceReader(src));
+            Execute(new StringSourceReader(src));
+        }
+
+
+        public void Execute(ISourceReader sourceReader)
+        {
+            Tokenizer = new Tokenizer(sourceReader);
             Tokenizer.NextChar();
 
             var tok = Tokenizer.NextTok();

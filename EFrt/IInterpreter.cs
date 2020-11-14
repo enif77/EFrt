@@ -91,6 +91,12 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         void Execute(string src);
 
         /// <summary>
+        /// Executes a FORTH program using a source reader.
+        /// </summary>
+        /// <param name="sourceReader">A FORTH program source reader.</param>
+        void Execute(ISourceReader sourceReader);
+
+        /// <summary>
         /// Asks the interpreter to terminate the current script execution.
         /// </summary>
         void TerminateExecution();
