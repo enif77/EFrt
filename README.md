@@ -35,6 +35,12 @@ double stack items in a special library.
 ( begin-until loop, that prins even numbers from 10 to 0 )
 : doit 10 BEGIN DUP . CR 2 - DUP 0< UNTIL ;
 
+( infinite loop )
+: doit BEGIN ." hello" CR AGAIN ;
+
+( loop writes "hello" 10 times )
+: doit 10 BEGIN DUP 0> WHILE ." hello " 1 - DUP . CR REPEAT ;
+
 ```
 
 ## Words
@@ -44,7 +50,7 @@ Here is a list of implemented words.
 ### BaseLib
 
 Words: ( \ : ; CLEAR DUP 2DUP ?DUP DROP 2DROP SWAP 2SWAP OVER 2OVER ROT 2ROT -ROT DEPTH >R R> R@ FALSE
-  TRUE IF ELSE THEN BEGIN REPEAT LEAVE I J BYE DO ?DO LOOP +LOOP FORGET UNTIL
+  TRUE IF ELSE THEN BEGIN WHILE REPEAT AGAIN LEAVE I J BYE DO ?DO LOOP +LOOP FORGET UNTIL
 
 #### : w
 

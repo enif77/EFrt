@@ -57,7 +57,9 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "LOOP", true, LoopAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "+LOOP", true, PlusLoopAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "BEGIN", true, BeginAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "WHILE", true, WhileAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "REPEAT", true, RepeatAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "AGAIN", true, AgainAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "UNTIL", true, UntilAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "I", true, IAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "J", true, JAction));
@@ -454,6 +456,22 @@ namespace EFrt.Libs
             return 1;
         }
 
+        // BEGIN ... WHILE .. REPEAT
+        // ( flag -- )
+        private int WhileAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("WHILE outside a new word definition.");
+            }
+
+            _interpreter.RPush(
+                _interpreter.WordBeingDefined.AddWord(
+                    new WhileControlWord(_interpreter, _interpreter.WordBeingDefined.NextWordIndex)));
+
+            return 1;
+        }
+
         // [ index-of-a-word-folowing-BEGIN -- ]
         private int RepeatAction()
         {
@@ -464,8 +482,41 @@ namespace EFrt.Libs
 
             // REPEAT word doesn't have a runtime behavior.
 
+            // Get the index of the next free slot in the non-primitive word being defined.
+            var repeatIndex = _interpreter.WordBeingDefined.NextWordIndex;
+
+            var controlWord = _interpreter.WordBeingDefined.GetWord(_interpreter.RPop());
+            if (controlWord is WhileControlWord)
+            {
+                // We had a previous WHILE. Set the REPEAT index into
+                // the WHILE control word.
+                ((WhileControlWord)controlWord).SetRepeatIndex(repeatIndex);
+            }
+            else
+            {
+                throw new Exception("REPEAT requires a previous WHILE.");
+            }
+
             _interpreter.WordBeingDefined.AddWord(
                 new RepeatControlWord(
+                    _interpreter,
+                    _interpreter.RPop() - _interpreter.WordBeingDefined.NextWordIndex));
+
+            return 1;
+        }
+
+        // [ index-of-a-word-folowing-BEGIN -- ]
+        private int AgainAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("AGAIN outside a new word definition.");
+            }
+
+            // AGAIN word doesn't have a runtime behavior.
+
+            _interpreter.WordBeingDefined.AddWord(
+                new AgainControlWord(
                     _interpreter,
                     _interpreter.RPop() - _interpreter.WordBeingDefined.NextWordIndex));
 
