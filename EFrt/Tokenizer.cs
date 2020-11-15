@@ -58,8 +58,9 @@ namespace EFrt
                 case EoF: return Token.CreateEofToken();
 
                 // A "string"?
-                case '"': return ParseString('"');
-                case '\'': return ParseString('\'');
+                case '"':
+                case '\'': 
+                    return ParseString(CurrentChar);
 
                 // A word or an integert?
                 default: return ParseWord();
