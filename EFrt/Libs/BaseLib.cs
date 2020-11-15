@@ -52,24 +52,21 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ELSE", true, ElseAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "THEN", true, ThenAction));
 
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "BEGIN", true, BeginAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "REPEAT", true, RepeatAction));
-
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "BYE", false, ByeAction));
-
-
-            // I J LEAVE
-
-            // CONSTANT VARIABLE ! @ ARRAY WORDSD IF THEN ELSE 
-            // ' EXECUTE INT FLOAT STRING
-
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "DO", true, DoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "?DO", true, IfDoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "LOOP", true, LoopAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "+LOOP", true, PlusLoopAction));
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "I", false, IndexAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "BEGIN", true, BeginAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "REPEAT", true, RepeatAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "I", true, IAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "J", true, JAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "LEAVE", true, LeaveAction));
 
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "BYE", false, ByeAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "FORGET", false, ForgetAction));
+
+            // CONSTANT VARIABLE ! @ ARRAY WORDSD
+            // ' EXECUTE INT FLOAT STRING
         }
 
         // (a -- a a)
@@ -470,6 +467,52 @@ namespace EFrt.Libs
                 new RepeatControlWord(
                     _interpreter,
                     _interpreter.RPop() - _interpreter.WordBeingDefined.NextWordIndex));
+
+            return 1;
+        }
+
+        // ( -- n)
+        private int IAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("I outside a new word definition.");
+            }
+
+            // I word doesn't have a runtime behavior.
+
+            _interpreter.WordBeingDefined.AddWord(new IndexControlWord(_interpreter));
+
+            return 1;
+        }
+
+
+        // ( -- n)
+        private int JAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("J outside a new word definition.");
+            }
+
+            // J word doesn't have a runtime behavior.
+
+            _interpreter.WordBeingDefined.AddWord(new SecondIndexControlWord(_interpreter));
+
+            return 1;
+        }
+
+
+        private int LeaveAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("LEAVE outside a new word definition.");
+            }
+
+            // LEAVE word doesn't have a runtime behavior.
+
+            _interpreter.WordBeingDefined.AddWord(new LeaveControlWord(_interpreter));
 
             return 1;
         }

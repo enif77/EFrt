@@ -18,7 +18,22 @@ double stack items in a special library.
   - Data stack: Main stack for user data. Holds all 32 bit data types.
   - Return stack: Stack for interpreter internal use. Holds 32 bit signed integers.
   - Object stack: Can hold any object. Available for user data, strings etc. Not used by the interpreter.
+
+## Examples
+
+```
+
+( do-loop, that runs 5 times )
+: doit 5 0 DO ." hello" CR LOOP ;
+
+( do-loop, that runs 5 times and shows the current I value ) 
+: doit 5 0 DO ." hello" 1 SPACES I . CR LOOP 
+
+( do-loop, that breaks after I > 4 ) 
+: doit 10 0 DO ." hello" 1 SPACES I DUP . CR 4 > IF LEAVE THEN LOOP ;
   
+```
+
 ## Words
 
 Here is a list of implemented words.
@@ -26,7 +41,7 @@ Here is a list of implemented words.
 ### BaseLib
 
 Words: ( \ : ; CLEAR DUP 2DUP ?DUP DROP 2DROP SWAP 2SWAP OVER 2OVER ROT 2ROT -ROT DEPTH >R R> R@ FALSE
-  TRUE IF ELSE THEN BEGIN REPEAT BYE DO ?DO LOOP +LOOP FORGET
+  TRUE IF ELSE THEN BEGIN REPEAT LEAVE I J BYE DO ?DO LOOP +LOOP FORGET
 
 #### : w
 
@@ -173,6 +188,12 @@ Returns -1 if f1 is equal to f2, 0 otherwise.
 ### StringLib
 
 Words: S+
+
+---
+
+### ObjectLib
+
+Words: ODUP ODROP OSWAP OOVER OROT O-ROT ODEPTH OCLEAR
 
 ---
 

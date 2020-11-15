@@ -82,39 +82,7 @@ namespace EFrt
         }
 
 
-        public void DefineWords(IEnumerable<IWordsLIbrary> libraries, bool removeExistingWords = false)
-        {
-            if (libraries == null) throw new ArgumentNullException(nameof(libraries));
-
-            if (removeExistingWords)
-            {
-                WordsList.Clear();
-            }
-
-            foreach (var library in libraries)
-            {
-                library.DefineWords();
-            }
-        }
-
-
-        public void DefineWords(IWordsLIbrary library, bool removeExistingWords = false)
-        {
-            if (library == null) throw new ArgumentNullException(nameof(library));
-
-            if (removeExistingWords)
-            {
-                WordsList.Clear();
-            }
-                
-            library.DefineWords();
-        }
-
-
-        public void ForgetWord(string wordName)
-        {
-            WordsList.Forget(wordName);
-        }
+        
 
 
         public void Reset(IEnumerable<IWordsLIbrary> libraries = null)
@@ -166,6 +134,41 @@ namespace EFrt
         public void RemoveWord(string wordName)
         {
             WordsList.RemoveWord(wordName);
+        }
+
+
+        public void ForgetWord(string wordName)
+        {
+            WordsList.Forget(wordName);
+        }
+
+
+        public void DefineWords(IEnumerable<IWordsLIbrary> libraries, bool removeExistingWords = false)
+        {
+            if (libraries == null) throw new ArgumentNullException(nameof(libraries));
+
+            if (removeExistingWords)
+            {
+                WordsList.Clear();
+            }
+
+            foreach (var library in libraries)
+            {
+                library.DefineWords();
+            }
+        }
+
+
+        public void DefineWords(IWordsLIbrary library, bool removeExistingWords = false)
+        {
+            if (library == null) throw new ArgumentNullException(nameof(library));
+
+            if (removeExistingWords)
+            {
+                WordsList.Clear();
+            }
+
+            library.DefineWords();
         }
 
         #endregion
@@ -314,6 +317,24 @@ namespace EFrt
         public void ODup()
         {
             ObjectStack.Dup();
+        }
+
+
+        public void OSwap()
+        {
+            ObjectStack.Swap();
+        }
+
+
+        public void OOver()
+        {
+            ObjectStack.Over();
+        }
+
+
+        public void ORot()
+        {
+            ObjectStack.Rot();
         }
 
 

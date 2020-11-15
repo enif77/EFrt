@@ -288,6 +288,24 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         void ODup();
 
         /// <summary>
+        /// Swaps two values on the top of the object stack.
+        /// ( a b -- b a )
+        /// </summary>
+        void OSwap();
+
+        /// <summary>
+        /// Gets a value below the top of the stack and pushes it to the object stack.
+        /// (a b -- a b a)
+        /// </summary>
+        void OOver();
+
+        /// <summary>
+        /// Rotates the top three object stack values.
+        /// (a b c -- b c a)
+        /// </summary>
+        void ORot();
+
+        /// <summary>
         /// Takes the topmost value from the object stack and replaces it with the result of the func().
         /// </summary>
         /// <param name="func">A function to be applied on the topmost object stack value.</param>

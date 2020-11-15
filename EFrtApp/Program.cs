@@ -22,7 +22,8 @@ namespace EFrtApp
                 new IoLib(interpreter, new ConsoleWriter()),
                 new IntegerLib(interpreter),
                 new FloatLib(interpreter),
-                new StringLib(interpreter)
+                new StringLib(interpreter),
+                new ObjectLib(interpreter),
             });
 
             while (true)
