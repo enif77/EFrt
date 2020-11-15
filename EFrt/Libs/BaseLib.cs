@@ -58,6 +58,7 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "+LOOP", true, PlusLoopAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "BEGIN", true, BeginAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "REPEAT", true, RepeatAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "UNTIL", true, UntilAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "I", true, IAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "J", true, JAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "LEAVE", true, LeaveAction));
@@ -465,6 +466,24 @@ namespace EFrt.Libs
 
             _interpreter.WordBeingDefined.AddWord(
                 new RepeatControlWord(
+                    _interpreter,
+                    _interpreter.RPop() - _interpreter.WordBeingDefined.NextWordIndex));
+
+            return 1;
+        }
+
+        // [ index-of-a-word-folowing-BEGIN -- ]
+        private int UntilAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("UNTIL outside a new word definition.");
+            }
+
+            // UNTIL word doesn't have a runtime behavior.
+
+            _interpreter.WordBeingDefined.AddWord(
+                new UntilControlWord(
                     _interpreter,
                     _interpreter.RPop() - _interpreter.WordBeingDefined.NextWordIndex));
 

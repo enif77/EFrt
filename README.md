@@ -32,6 +32,9 @@ double stack items in a special library.
 ( do-loop, that breaks after I > 4 ) 
 : doit 10 0 DO ." hello" 1 SPACES I DUP . CR 4 > IF LEAVE THEN LOOP ;
   
+( begin-until loop, that prins even numbers from 10 to 0 )
+: doit 10 BEGIN DUP . CR 2 - DUP 0< UNTIL ;
+
 ```
 
 ## Words
@@ -41,7 +44,7 @@ Here is a list of implemented words.
 ### BaseLib
 
 Words: ( \ : ; CLEAR DUP 2DUP ?DUP DROP 2DROP SWAP 2SWAP OVER 2OVER ROT 2ROT -ROT DEPTH >R R> R@ FALSE
-  TRUE IF ELSE THEN BEGIN REPEAT LEAVE I J BYE DO ?DO LOOP +LOOP FORGET
+  TRUE IF ELSE THEN BEGIN REPEAT LEAVE I J BYE DO ?DO LOOP +LOOP FORGET UNTIL
 
 #### : w
 
