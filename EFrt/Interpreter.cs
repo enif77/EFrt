@@ -433,7 +433,6 @@ namespace EFrt
             switch (tok.Code)
             {
                 case TokenType.Eof:
-                case TokenType.String:
                     throw new Exception($"A name of a new word expected.");
 
                 // Start the new word definition compilation.
@@ -542,17 +541,17 @@ namespace EFrt
                         }
                         break;
 
-                    // Strings are a special case - "words" delimited with a single or double quotes and can contain white characters and escape sequences.
-                    case TokenType.String:
-                        if (IsCompiling)
-                        {
-                            WordBeingDefined.AddWord(new StringWord(this, tok.SValue));
-                        }
-                        else
-                        {
-                            OPush(tok.SValue);
-                        }
-                        break;
+                    //// Strings are a special case - "words" delimited with a single or double quotes and can contain white characters and escape sequences.
+                    //case TokenType.String:
+                    //    if (IsCompiling)
+                    //    {
+                    //        WordBeingDefined.AddWord(new StringWord(this, tok.SValue));
+                    //    }
+                    //    else
+                    //    {
+                    //        OPush(tok.SValue);
+                    //    }
+                    //    break;
 
                     default:
                         throw new Exception($"Unknown token in a word execution.");

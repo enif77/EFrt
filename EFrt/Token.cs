@@ -16,8 +16,7 @@ namespace EFrt
             Unknown = 0,
             Word = 1,
             Integer = 2,
-            Float = 3,
-            String = 4
+            Float = 3
         }
 
         /// <summary>
@@ -78,16 +77,6 @@ namespace EFrt
         public static Token CreateFloatToken(float f)
         {
             return new Token() { Code = TokenType.Float, FValue = f };
-        }
-
-        /// <summary>
-        /// Creates a token representing a string constant.
-        /// </summary>
-        /// <param name="s">A string constant.</param>
-        /// <returns>A token representing a string constant.</returns>
-        public static Token CreateStringToken(string s)
-        {
-            return new Token() { Code = TokenType.String, SValue = s };
         }
     }
 }

@@ -57,60 +57,13 @@ namespace EFrt
                 // EOF?
                 case EoF: return Token.CreateEofToken();
 
-                // A "string"?
-                case '"':
-                case '\'': 
-                    return ParseString(CurrentChar);
-
-                // A word or an integert?
+                // A word or a number?
                 default: return ParseWord();
             }
         }
 
 
         private ISourceReader _sourceReader;
-
-
-        private Token ParseString(char stringTerminatorChar)
-        {
-            // Eat the stringTerminatorChar.
-            NextChar();
-
-            var sb = new StringBuilder();
-
-            while (CurrentChar != EoF)
-            {
-                // TODO: Parse escape characters.
-
-                if (CurrentChar == stringTerminatorChar)
-                {
-                    NextChar();
-
-                    if (CurrentChar == stringTerminatorChar)
-                    {
-                        sb.Append(CurrentChar);
-
-                        NextChar();
-
-                        continue;
-                    }
-
-                    // We expect an EOF or a whitespace after the string literal.
-                    if (IsWhite() == false && CurrentChar != EoF)
-                    {
-                        throw new Exception("A whitespace or EOF after the end of a string literal expected.");
-                    }
-
-                    return Token.CreateStringToken(sb.ToString());
-                }
-
-                sb.Append(CurrentChar);
-
-                NextChar();
-            }
-
-            throw new Exception("The end of the string literal expected.");
-        }
 
 
         private Token ParseWord()

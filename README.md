@@ -6,7 +6,7 @@ EFrt is a embeddable FORTH language implementation.
 
   - integer: 32  bit signed integer number,
   - float: 32 bit float number,
-  - string: Single or double quote terminated strings. Stored on the object stack.
+  - string: A double quote terminated strings. Stored on the object stack.
   - other types will be available later - uint, short, ushort, byte etc.
 
 Data stack holds 32 bit structures, that are implemented as a union type. Any .NET type,, 
@@ -22,6 +22,9 @@ double stack items in a special library.
 ## Examples
 
 ```
+
+( Hello world! )
+: hello S" Hello, world!" S. CR ;
 
 ( do-loop, that runs 5 times )
 : doit 5 0 DO ." hello" CR LOOP ;
@@ -196,7 +199,7 @@ Returns -1 if f1 is equal to f2, 0 otherwise.
 
 ### StringLib
 
-Words: S+
+Words: S+ S"
 
 ---
 
