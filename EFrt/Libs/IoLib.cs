@@ -32,6 +32,7 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "S.", false, WriteStringAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "CR", false, WriteLineAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "SPACES", false, WriteSpacesAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "SPACE", false, WriteSpaceAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "EMIT", false, EmitAction));
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "WORDS", false, WordsAction));
@@ -144,6 +145,14 @@ namespace EFrt.Libs
                 _outputWriter.Write(sb.ToString());
             }
 
+            return 1;
+        }
+
+
+        private int WriteSpaceAction()
+        {
+            _outputWriter.Write(" ");
+     
             return 1;
         }
 

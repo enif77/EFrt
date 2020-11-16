@@ -80,10 +80,7 @@ namespace EFrt
 
             Reset();
         }
-
-
         
-
 
         public void Reset(IEnumerable<IWordsLIbrary> libraries = null)
         {
@@ -540,18 +537,6 @@ namespace EFrt
                             }
                         }
                         break;
-
-                    //// Strings are a special case - "words" delimited with a single or double quotes and can contain white characters and escape sequences.
-                    //case TokenType.String:
-                    //    if (IsCompiling)
-                    //    {
-                    //        WordBeingDefined.AddWord(new StringWord(this, tok.SValue));
-                    //    }
-                    //    else
-                    //    {
-                    //        OPush(tok.SValue);
-                    //    }
-                    //    break;
 
                     default:
                         throw new Exception($"Unknown token in a word execution.");

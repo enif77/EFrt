@@ -211,7 +211,7 @@ Words: ODUP ODROP OSWAP OOVER OROT O-ROT ODEPTH OCLEAR
 
 ### IOLib
 
-Words: .( ." . F. S. CR EMIT SPACES WORDS
+Words: .( ." . F. S. CR EMIT SPACES SPACE WORDS
 
 #### . (n - )
 
