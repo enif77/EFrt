@@ -26,6 +26,17 @@ double stack items in a special library.
 ( Hello world! )
 : hello S" Hello, world!" S. CR ;
 
+( A simplified hello-world! )
+: GREET   ." Hello, I speak Forth " ;
+
+( Large letter F )
+: STAR 42 EMIT ;
+: STARS 0 DO  STAR  LOOP ;
+: MARGIN CR 30 SPACES ;
+: BLIP MARGIN STAR ;
+: BAR MARGIN 5 STARS ;
+: F BAR BLIP BAR BLIP BLIP CR ;
+
 ( do-loop, that runs 5 times )
 : doit 5 0 DO ." hello" CR LOOP ;
 
@@ -228,3 +239,12 @@ Prints the string that follows in the input stream. Available in compilation onl
 #### EMIT
 
 Prints out a character represented by a number on the top of the stack.
+
+
+## TODO
+
+- String words: STRCPY, STRINT, STRLEN, STRREAL, SUBSTR, STRFORM, STRCAT, STRCHAR, STRCMP, STRCMPI, COMPARE, (STRLIT), TYPE
+- Words: SYSTEM, STATE, PICK, ROLL, MARKER name, CHAR, [, ], INCLUDE, .S, ABORT, ABORT" str, ARRAY x, EXIT, IMMEDIATE, LITERAL, QUIT, TRACE,
+    VARIABLE name, (XDO), (X?DO), (XLOOP), (+XLOOP), CONSTANT, !, @, WORDSD, ', EXECUTE, INT, FLOAT, STRING
+- Math words: ACOS, ASIN, ATAN, ATAN2, COS, EXP, FABS, (FLIT) n, NEGATE, FNEGATE, (LIT), LOG, POW, SHIFT, SIN, SQRT, TAN, 
+ 

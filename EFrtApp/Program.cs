@@ -15,10 +15,10 @@ namespace EFrtApp
     {
         static void Main(string[] args)
         {
-            var interpreter = new Interpreter(32, 32);
+            var interpreter = new Interpreter(new WordsList());
             interpreter.DefineWords(new List<IWordsLIbrary>()
             {
-                new BaseLib(interpreter),
+                new CoreLib(interpreter),
                 new IoLib(interpreter, new ConsoleWriter()),
                 new IntegerLib(interpreter),
                 new FloatLib(interpreter),
@@ -70,11 +70,11 @@ namespace EFrtApp
 
         static void TestEfrt()
         {
-            var interpreter = new Interpreter();
+            var interpreter = new Interpreter(new WordsList());
 
             interpreter.DefineWords(new List<IWordsLIbrary>()
             {
-                new BaseLib(interpreter),
+                new CoreLib(interpreter),
                 new IoLib(interpreter, new ConsoleWriter()),
                 new IntegerLib(interpreter),
                 new FloatLib(interpreter),
@@ -124,13 +124,13 @@ namespace EFrtApp
         {
             var wl = new WordsList();
 
-            var i = new Interpreter();
+            var i = new Interpreter(wl);
 
-            wl.RegisterWord(new PrimitiveWord(i, "w1", false, () => 1));
-            wl.RegisterWord(new PrimitiveWord(i, "w1", false, () => 1));
-            wl.RegisterWord(new PrimitiveWord(i, "w2", false, () => 1));
-            wl.RegisterWord(new PrimitiveWord(i, "w3", false, () => 1));
-            wl.RegisterWord(new PrimitiveWord(i, "w1", false, () => 1));
+            wl.RegisterWord(new PrimitiveWord(i, "w1", () => 1));
+            wl.RegisterWord(new PrimitiveWord(i, "w1", () => 1));
+            wl.RegisterWord(new PrimitiveWord(i, "w2", () => 1));
+            wl.RegisterWord(new PrimitiveWord(i, "w3", () => 1));
+            wl.RegisterWord(new PrimitiveWord(i, "w1", () => 1));
 
             Console.WriteLine(WordsListToString(wl.DefinedWords));
             Console.WriteLine(WordsListToString(wl.WordsHistory));

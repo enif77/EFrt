@@ -21,8 +21,8 @@ namespace EFrt.Libs
 
         public void DefineWords()
         {
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "S+", false, AddAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "S\"", true, ParseStringAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "S+", AddAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "S\"", ParseStringAction));
         }
 
         // {a b -- result}

@@ -24,18 +24,18 @@ namespace EFrt.Libs
 
         public void DefineWords()
         {
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, ".(", true, WriteImmediateStringAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, ".\"", true, PrintStringAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, ".(", WriteImmediateStringAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, ".\"", PrintStringAction));
 
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, ".", false, WriteAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F.", false, WriteFloatAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "S.", false, WriteStringAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "CR", false, WriteLineAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "SPACES", false, WriteSpacesAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "SPACE", false, WriteSpaceAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "EMIT", false, EmitAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ".", WriteAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F.", WriteFloatAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "S.", WriteStringAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "CR", WriteLineAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "SPACES", WriteSpacesAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "SPACE", WriteSpaceAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "EMIT", EmitAction));
 
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "WORDS", false, WordsAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "WORDS", WordsAction));
         }
 
         private int WriteImmediateStringAction()

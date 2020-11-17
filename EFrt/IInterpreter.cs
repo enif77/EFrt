@@ -44,7 +44,7 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// <summary>
         /// The list of known words.
         /// </summary>
-        WordsList WordsList { get; }
+        IWordsList WordsList { get; }
 
 
         /// <summary>

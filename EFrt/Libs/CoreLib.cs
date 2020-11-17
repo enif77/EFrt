@@ -7,12 +7,12 @@ namespace EFrt.Libs
     using EFrt.Words;
     using static EFrt.Token;
 
-    public class BaseLib : IWordsLIbrary
+    public class CoreLib : IWordsLIbrary
     {
         private IInterpreter _interpreter;
 
 
-        public BaseLib(IInterpreter efrt)
+        public CoreLib(IInterpreter efrt)
         {
             _interpreter = efrt;
         }
@@ -20,56 +20,53 @@ namespace EFrt.Libs
 
         public void DefineWords()
         {
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "(", true, CommentAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "\\", true, CommentLineAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "(", CommentAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "\\", CommentLineAction));
 
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, ":", false, BeginNewWordCompilationAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, ";", true, EndNewWordCompilationAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ":", BeginNewWordCompilationAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, ";", EndNewWordCompilationAction));
 
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DUP", false, DupAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2DUP", false, DupTwoAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "?DUP", false, DupPosAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DROP", false, DropAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2DROP", false, DropTwoAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "SWAP", false, SwapAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2SWAP", false, SwapTwoAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "OVER", false, OverAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2OVER", false, OverTwoAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ROT", false, RotAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2ROT", false, RotTwoAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "-ROT", false, RotBackAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DEPTH", false, DepthAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "CLEAR", false, ClearAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DUP", DupAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2DUP", DupTwoAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "?DUP", DupPosAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DROP", DropAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2DROP", DropTwoAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "SWAP", SwapAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2SWAP", SwapTwoAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "OVER", OverAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2OVER", OverTwoAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ROT", RotAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2ROT", RotTwoAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "-ROT", RotBackAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DEPTH", DepthAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "CLEAR", ClearAction));
 
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, ">R", false, ToReturnStackAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "R>", false, FromReturnStackAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "R@", false, FetchReturnStackAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ">R", ToReturnStackAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "R>", FromReturnStackAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "R@", FetchReturnStackAction));
 
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FALSE", false, FalseAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "TRUE", false, TrueAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FALSE", FalseAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "TRUE", TrueAction));
 
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "IF", true, IfAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ELSE", true, ElseAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "THEN", true, ThenAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "IF", IfAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "ELSE", ElseAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "THEN", ThenAction));
 
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DO", true, DoAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "?DO", true, IfDoAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "LOOP", true, LoopAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "+LOOP", true, PlusLoopAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "BEGIN", true, BeginAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "WHILE", true, WhileAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "REPEAT", true, RepeatAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "AGAIN", true, AgainAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "UNTIL", true, UntilAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "I", true, IAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "J", true, JAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "LEAVE", true, LeaveAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "DO", DoAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "?DO", IfDoAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "LOOP", LoopAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "+LOOP", PlusLoopAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "BEGIN", BeginAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "WHILE", WhileAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "REPEAT", RepeatAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "AGAIN", AgainAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "UNTIL", UntilAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "I", IAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "J", JAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "LEAVE", LeaveAction));
 
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "BYE", false, ByeAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FORGET", false, ForgetAction));
-
-            // CONSTANT VARIABLE ! @ ARRAY WORDSD
-            // ' EXECUTE INT FLOAT STRING
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "BYE", ByeAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FORGET", ForgetAction));
         }
 
         // (a -- a a)

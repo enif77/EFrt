@@ -8,18 +8,18 @@ namespace EFrt.Words
     /// <summary>
     /// A word that is definig itself.
     /// </summary>
-    public class PrimitiveWord : AWordBase
+    public class ImmediateWord : AWordBase
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name">A name.</param>
         /// <param name="action">An action, this word is doing.</param>
-        public PrimitiveWord(IInterpreter interpreter, string name, Func<int> action)
+        public ImmediateWord(IInterpreter interpreter, string name, Func<int> action)
             : base(interpreter)
         {
             Name = name;
-            IsImmediate = false;
+            IsImmediate = true;
             Action = action;
         }
     }

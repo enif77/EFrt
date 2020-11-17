@@ -3,7 +3,6 @@
 namespace EFrt
 {
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Linq;
     using System.Text;
 
@@ -13,7 +12,7 @@ namespace EFrt
     /// <summary>
     /// Kepps the list of known words.
     /// </summary>
-    public class WordsList
+    public class WordsList : IWordsList
     {
         /// <summary>
         /// Returns all currently defined words.
@@ -55,13 +54,33 @@ namespace EFrt
 
 
         /// <summary>
-        /// Checks, if a word is defined.
+        /// Removes all word definitions from this list.
+        /// </summary>
+        public void Clear()
+        {
+            _wordsDic.Clear();
+            _wordsHistory.Clear();
+        }
+
+        /// <summary>
+        /// Deletes the most recent definition of a word,
+        /// along with all words declared more recently 
+        /// than the named word.
         /// </summary>
         /// <param name="wordName">A name of a word.</param>
-        /// <returns></returns>
-        public bool IsWordDefined(string wordName)
+        public void Forget(string wordName)
         {
-            return _wordsDic.ContainsKey(wordName);
+            var wIndex = _wordsHistory.LastIndexOf(GetWord(wordName));
+            var wList = new List<IWord>();
+            for (var i = wIndex; i < _wordsHistory.Count; i++)
+            {
+                wList.Add(_wordsHistory[i]);
+            }
+
+            foreach (var w in wList)
+            {
+                RemoveWord(w.Name);
+            }
         }
 
         /// <summary>
@@ -73,6 +92,18 @@ namespace EFrt
         {
             return _wordsDic[wordName].Last();
         }
+
+        /// <summary>
+        /// Checks, if a word is defined.
+        /// </summary>
+        /// <param name="wordName">A name of a word.</param>
+        /// <returns>True, if a word with a name wordName is defined.</returns>
+        public bool IsWordDefined(string wordName)
+        {
+            return _wordsDic.ContainsKey(wordName);
+        }
+
+        
 
         /// <summary>
         /// Registers a new word definition.
@@ -103,37 +134,7 @@ namespace EFrt
                 _wordsDic.Remove(wordName);
             }
         }
-
-        /// <summary>
-        /// Deletes the most recent definition of a word,
-        /// along with all words declared more recently 
-        /// than the named word.
-        /// </summary>
-        /// <param name="wordName">A name of a word.</param>
-        public void Forget(string wordName)
-        {
-            var wIndex = _wordsHistory.LastIndexOf(GetWord(wordName));
-            var wList = new List<IWord>();
-            for (var i = wIndex; i < _wordsHistory.Count; i++)
-            {
-                wList.Add(_wordsHistory[i]);
-            }
-
-            foreach (var w in wList)
-            {
-                RemoveWord(w.Name);
-            }
-        }
-
-        /// <summary>
-        /// Removes all word definitions from this list.
-        /// </summary>
-        public void Clear()
-        {
-            _wordsDic.Clear();
-            _wordsHistory.Clear();
-        }
-
+        
         /// <summary>
         /// Returns the list of defined word names separated by SPACE.
         /// The last defined word is returned first.

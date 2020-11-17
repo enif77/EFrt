@@ -22,12 +22,6 @@ namespace EFrt
 
     https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-union-type-similar-to-c-unions-
 
-
-    TODO
-
-        - řetězce jako v C/C#
-        - double (separátní zásobník?)
-
     */
 
 
@@ -52,7 +46,7 @@ namespace EFrt
         /// <summary>
         /// The list of known words.
         /// </summary>
-        public WordsList WordsList { get; }
+        public IWordsList WordsList { get; }
 
         /// <summary>
         /// Thrue, if this interpreter is currently compiling a new word.
@@ -68,15 +62,16 @@ namespace EFrt
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="stackCapacity"></param>
-        /// <param name="returnStackCapacity"></param>
-        public Interpreter(int stackCapacity = 32, int returnStackCapacity = 32)
+        /// <param name="wordsList">A IWordsList instance.</param>
+        /// <param name="stackCapacity">A mains stack capacity. 32 by default.</param>
+        /// <param name="returnStackCapacity">A returns stack capacity. 32 by default.</param>
+        public Interpreter(IWordsList wordsList, int stackCapacity = 32, int returnStackCapacity = 32)
         {
             Stack = new DataStack(stackCapacity);
             ObjectStack = new ObjectStack(stackCapacity);
             ReturnStack = new ReturnStack(returnStackCapacity);
 
-            WordsList = new WordsList();
+            WordsList = wordsList;
 
             Reset();
         }

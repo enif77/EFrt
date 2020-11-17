@@ -21,14 +21,14 @@ namespace EFrt.Libs
 
         public void DefineWords()
         {
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ODUP", false, DupAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ODROP", false, DropAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "OSWAP", false, SwapAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "OOVER", false, OverAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "OROT", false, RotAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "O-ROT", false, RotBackAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ODEPTH", false, DepthAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "OCLEAR", false, ClearAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ODUP", DupAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ODROP", DropAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "OSWAP", SwapAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "OOVER", OverAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "OROT", RotAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "O-ROT", RotBackAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ODEPTH", DepthAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "OCLEAR", ClearAction));
         }
 
 

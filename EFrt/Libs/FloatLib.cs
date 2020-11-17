@@ -18,28 +18,28 @@ namespace EFrt.Libs
 
         public void DefineWords()
         {
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F+", false, AddAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F-", false, SubAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F+", AddAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F-", SubAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "F1+", false, AddOneAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "F1-", false, SubOneAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "F2+", false, AddTwoAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "F2-", false, SubTwoAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "F2*", false, MulTwoAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "F2/", false, DivTwoAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F*", false, MulAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F/", false, DivAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F*", MulAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F/", DivAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "MOD", false, ModAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "/MOD", false, DivModAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FMAX", false, MaxAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FMIN", false, MinAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FABS", false, AbsAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FIX", false, FixAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F=", false, IsEqAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F<>", false, IsNeqAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F<", false, IsLtAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F<=", false, IsLtEAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F>", false, IsGtAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F>=", false, IsGtEAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FMAX", MaxAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FMIN", MinAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FABS", AbsAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FIX", FixAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F=", IsEqAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F<>", IsNeqAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F<", IsLtAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F<=", IsLtEAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F>", IsGtAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F>=", IsGtEAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "0=", false, IsZeroAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "0<>", false, IsNonZeroAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "0<", false, IsNegAction));
