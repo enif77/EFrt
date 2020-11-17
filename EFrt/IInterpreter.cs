@@ -152,13 +152,13 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// </summary>
         /// <param name="index">A value index.</param>
         /// <returns>A value from the stack.</returns>
-        EfrtValue Get(int index);
+        StackValue Get(int index);
 
         /// <summary>
         /// Returns a value from the top of the stack.
         /// </summary>
         /// <returns>A value from the top of the stack.</returns>
-        EfrtValue Peek();
+        StackValue Peek();
 
         /// <summary>
         /// Returns an integer value from the top of the stack.
@@ -176,7 +176,7 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// Removes a value from the top of the stack and returns it.
         /// </summary>
         /// <returns>A value from the top of the stack.</returns>
-        EfrtValue Pop();
+        StackValue Pop();
 
         /// <summary>
         /// Removes an integer value from the top of the stack and returns it.
@@ -194,7 +194,7 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// Inserts a value to the stack.
         /// </summary>
         /// <param name="value">A value.</param>
-        void Push(EfrtValue value);
+        void Push(StackValue value);
 
         /// <summary>
         /// Inserts an integer value to the stack.
@@ -242,13 +242,13 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// Does a stack operation with a single parameter. The operation result is stored at the top of the stack.
         /// </summary>
         /// <param name="func">A function.</param>
-        void Function(Func<EfrtValue, EfrtValue> func);
+        void Function(Func<StackValue, StackValue> func);
 
         /// <summary>
         /// Does a stack operation with two parameters. The operation result is stored at the top of the stack.
         /// </summary>
         /// <param name="func">A function.</param>
-        void Function(Func<EfrtValue, EfrtValue, EfrtValue> func);
+        void Function(Func<StackValue, StackValue, StackValue> func);
 
 
         /// <summary>

@@ -2,8 +2,7 @@
 
 namespace EFrt.Stacks
 {
-    
-    public class DataStack : AStackBase<EfrtValue>
+    public class DataStack : AStackBase<StackValue>
     {
         public DataStack(int capacity = 32)
             : base(capacity)
@@ -33,7 +32,7 @@ namespace EFrt.Stacks
 
         public void Push(short a, short b)
         {
-            Items[++Top] = new EfrtValue(a, b);
+            Items[++Top] = new StackValue(a, b);
         }
 
         public void Push(ushort a)
@@ -43,7 +42,7 @@ namespace EFrt.Stacks
 
         public void Push(ushort a, ushort b)
         {
-            Items[++Top] = new EfrtValue(a, b);
+            Items[++Top] = new StackValue(a, b);
         }
 
         public void Push(byte a)
@@ -53,17 +52,17 @@ namespace EFrt.Stacks
 
         public void Push(byte a, byte b)
         {
-            Items[++Top] = new EfrtValue(a, b);
+            Items[++Top] = new StackValue(a, b);
         }
 
         public void Push(byte a, byte b, byte c)
         {
-            Items[++Top] = new EfrtValue(a, b, c);
+            Items[++Top] = new StackValue(a, b, c);
         }
 
         public void Push(byte a, byte b, byte c, byte d)
         {
-            Items[++Top] = new EfrtValue(a, b, c, d);
+            Items[++Top] = new StackValue(a, b, c, d);
         }
     }
 }

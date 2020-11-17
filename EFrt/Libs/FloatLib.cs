@@ -2,6 +2,7 @@
 
 namespace EFrt.Libs
 {
+    using EFrt.Stacks;
     using EFrt.Words;
 
 
@@ -49,7 +50,7 @@ namespace EFrt.Libs
         // (a b -- result)
         private int AddAction()
         {
-            _interpreter.Function((a, b) => new EfrtValue(a.Float + b.Float));
+            _interpreter.Function((a, b) => new StackValue(a.Float + b.Float));
 
             return 1;
         }
@@ -57,7 +58,7 @@ namespace EFrt.Libs
         // (a b -- result)
         private int SubAction()
         {
-            _interpreter.Function((a, b) => new EfrtValue(a.Float - b.Float));
+            _interpreter.Function((a, b) => new StackValue(a.Float - b.Float));
 
             return 1;
         }
@@ -113,7 +114,7 @@ namespace EFrt.Libs
         // (a b -- result)
         private int MulAction()
         {
-            _interpreter.Function((a, b) => new EfrtValue(a.Float * b.Float));
+            _interpreter.Function((a, b) => new StackValue(a.Float * b.Float));
 
             return 1;
         }
@@ -121,7 +122,7 @@ namespace EFrt.Libs
         // (a b -- result)
         private int DivAction()
         {
-            _interpreter.Function((a, b) => new EfrtValue(a.Float / b.Float));
+            _interpreter.Function((a, b) => new StackValue(a.Float / b.Float));
 
             return 1;
         }
@@ -149,7 +150,7 @@ namespace EFrt.Libs
         // (a b -- result)
         private int MaxAction()
         {
-            _interpreter.Function((a, b) => new EfrtValue((a.Float > b.Float) ? a.Float : b.Float));
+            _interpreter.Function((a, b) => new StackValue((a.Float > b.Float) ? a.Float : b.Float));
 
             return 1;
         }
@@ -157,7 +158,7 @@ namespace EFrt.Libs
         // (a b -- result)
         private int MinAction()
         {
-            _interpreter.Function((a, b) => new EfrtValue((a.Float < b.Float) ? a.Float : b.Float));
+            _interpreter.Function((a, b) => new StackValue((a.Float < b.Float) ? a.Float : b.Float));
 
             return 1;
         }
@@ -165,7 +166,7 @@ namespace EFrt.Libs
         // (a -- result)
         private int AbsAction()
         {
-            _interpreter.Function((a) => new EfrtValue(a.Float < 0 ? -a.Float : a.Float));
+            _interpreter.Function((a) => new StackValue(a.Float < 0 ? -a.Float : a.Float));
 
             return 1;
         }
@@ -173,7 +174,7 @@ namespace EFrt.Libs
         // (a -- result)
         private int FixAction()
         {
-            _interpreter.Function((a) => new EfrtValue((int)a.Float));
+            _interpreter.Function((a) => new StackValue((int)a.Float));
 
             return 1;
         }
@@ -181,7 +182,7 @@ namespace EFrt.Libs
         // (a b -- result)
         private int IsEqAction()
         {
-            _interpreter.Function((a, b) => new EfrtValue((a.Float == b.Float) ? -1 : 0));
+            _interpreter.Function((a, b) => new StackValue((a.Float == b.Float) ? -1 : 0));
 
             return 1;
         }
@@ -189,7 +190,7 @@ namespace EFrt.Libs
         // (a b -- result)
         private int IsNeqAction()
         {
-            _interpreter.Function((a, b) => new EfrtValue((a.Float != b.Float) ? -1 : 0));
+            _interpreter.Function((a, b) => new StackValue((a.Float != b.Float) ? -1 : 0));
 
             return 1;
         }
@@ -197,7 +198,7 @@ namespace EFrt.Libs
         // (a b -- result)
         private int IsLtAction()
         {
-            _interpreter.Function((a, b) => new EfrtValue((a.Float < b.Float) ? -1 : 0));
+            _interpreter.Function((a, b) => new StackValue((a.Float < b.Float) ? -1 : 0));
 
             return 1;
         }
@@ -205,7 +206,7 @@ namespace EFrt.Libs
         // (a b -- result)
         private int IsLtEAction()
         {
-            _interpreter.Function((a, b) => new EfrtValue((a.Float <= b.Float) ? -1 : 0));
+            _interpreter.Function((a, b) => new StackValue((a.Float <= b.Float) ? -1 : 0));
 
             return 1;
         }
@@ -213,7 +214,7 @@ namespace EFrt.Libs
         // (a b -- result)
         private int IsGtAction()
         {
-            _interpreter.Function((a, b) => new EfrtValue((a.Float > b.Float) ? -1 : 0));
+            _interpreter.Function((a, b) => new StackValue((a.Float > b.Float) ? -1 : 0));
 
             return 1;
         }
@@ -221,7 +222,7 @@ namespace EFrt.Libs
         // (a b -- result)
         private int IsGtEAction()
         {
-            _interpreter.Function((a, b) => new EfrtValue((a.Float >= b.Float) ? -1 : 0));
+            _interpreter.Function((a, b) => new StackValue((a.Float >= b.Float) ? -1 : 0));
 
             return 1;
         }

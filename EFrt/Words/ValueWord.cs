@@ -2,6 +2,9 @@
 
 namespace EFrt.Words
 {
+    using EFrt.Stacks;
+
+
     /// <summary>
     /// A word keeping a value.
     /// </summary>
@@ -11,7 +14,7 @@ namespace EFrt.Words
         /// Constructor.
         /// </summary>
         /// <param name="value">A value.</param>
-        public ValueWord(IInterpreter interpreter, EfrtValue value)
+        public ValueWord(IInterpreter interpreter, StackValue value)
             : base(interpreter)
         {
             Name = "value";
@@ -30,6 +33,6 @@ namespace EFrt.Words
         }
 
 
-        private EfrtValue _value;
+        private StackValue _value;
     }
 }

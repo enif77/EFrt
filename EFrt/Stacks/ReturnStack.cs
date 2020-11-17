@@ -2,7 +2,6 @@
 
 namespace EFrt.Stacks
 {
-    
     public class ReturnStack : AStackBase<int>
     {
         public ReturnStack(int capacity = 32)

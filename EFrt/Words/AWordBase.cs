@@ -34,6 +34,10 @@ namespace EFrt.Words
         /// </summary>
         public bool IsImmediate { get; protected set; }
 
+        /// <summary>
+        /// A control word is defined by itself. No need for finding it in the words list.
+        /// Used by the nonPrimitiveWord.Execute() method.
+        /// </summary>
         public bool IsControlWord { get; protected set; }
 
         /// <summary>
@@ -42,6 +46,9 @@ namespace EFrt.Words
         public Func<int> Action { get; protected set; }
                
 
+        /// <summary>
+        /// An interpreter executing this word.
+        /// </summary>
         protected IInterpreter Interpreter { get; }
     }
 }

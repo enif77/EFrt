@@ -79,7 +79,7 @@ namespace EFrt
 
         public void Reset(IEnumerable<IWordsLIbrary> libraries = null)
         {
-            Stack.Init(new EfrtValue(0));
+            Stack.Init(new StackValue(0));
             ReturnStack.Init(0);
             
             if (libraries != null)
@@ -170,13 +170,13 @@ namespace EFrt
 
         // Data stack.
 
-        public EfrtValue Get(int index)
+        public StackValue Get(int index)
         {
             return Stack.Get(index);
         }
 
 
-        public EfrtValue Peek()
+        public StackValue Peek()
         {
             return Stack.Peek();
         }
@@ -194,7 +194,7 @@ namespace EFrt
         }
 
 
-        public EfrtValue Pop()
+        public StackValue Pop()
         {
             return Stack.Pop();
         }
@@ -212,7 +212,7 @@ namespace EFrt
         }
 
 
-        public void Push(EfrtValue value)
+        public void Push(StackValue value)
         {
             Stack.Push(value);
         }
@@ -260,14 +260,14 @@ namespace EFrt
         }
 
 
-        public void Function(Func<EfrtValue, EfrtValue> func)
+        public void Function(Func<StackValue, StackValue> func)
         {
             var top = Stack.Top;
             Stack.Items[Stack.Top] = func(Stack.Items[top]);
         }
 
 
-        public void Function(Func<EfrtValue, EfrtValue, EfrtValue> func)
+        public void Function(Func<StackValue, StackValue, StackValue> func)
         {
             var top = Stack.Top;
             Stack.Items[--Stack.Top] = func(Stack.Items[top - 1], Stack.Items[top]);
@@ -504,7 +504,7 @@ namespace EFrt
                                 case TokenType.Integer:
                                     if (IsCompiling)
                                     {
-                                        WordBeingDefined.AddWord(new ValueWord(this, new EfrtValue(t.IValue)));
+                                        WordBeingDefined.AddWord(new ValueWord(this, new StackValue(t.IValue)));
                                     }
                                     else
                                     {
@@ -515,7 +515,7 @@ namespace EFrt
                                 case TokenType.Float:
                                     if (IsCompiling)
                                     {
-                                        WordBeingDefined.AddWord(new ValueWord(this, new EfrtValue(t.FValue)));
+                                        WordBeingDefined.AddWord(new ValueWord(this, new StackValue(t.FValue)));
                                     }
                                     else
                                     {

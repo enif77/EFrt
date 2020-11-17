@@ -2,7 +2,6 @@
 
 namespace EFrt.Stacks
 {
-
     public abstract class AStackBase<T> : IStack<T>
     {
         public T[] Items { get; }

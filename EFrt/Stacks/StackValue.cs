@@ -1,12 +1,12 @@
 /* EFrt - (C) 2020 Premysl Fara  */
 
-namespace EFrt
+namespace EFrt.Stacks
 {
     using System.Runtime.InteropServices;
 
 
     [StructLayout(LayoutKind.Explicit)]
-    public struct EfrtValue
+    public struct StackValue
     {
         [FieldOffset(0)] public float Float;
        
@@ -25,66 +25,66 @@ namespace EFrt
         [FieldOffset(3)] public byte Byte4;
 
 
-        public EfrtValue(float a) : this()
+        public StackValue(float a) : this()
         {
             Float = a;
         }
 
         
-        public EfrtValue(int a) : this()
+        public StackValue(int a) : this()
         {
             Int = a;
         }
 
-        public EfrtValue(uint a) : this()
+        public StackValue(uint a) : this()
         {
             UInt = a;
         }
 
 
-        public EfrtValue(short a) : this()
+        public StackValue(short a) : this()
         {
             Short = a;
         }
 
-        public EfrtValue(short a, short b) : this()
+        public StackValue(short a, short b) : this()
         {
             Short = a;
             Short2 = b;
         }
 
 
-        public EfrtValue(ushort a) : this()
+        public StackValue(ushort a) : this()
         {
             UShort = a;
         }
 
-        public EfrtValue(ushort a, ushort b) : this()
+        public StackValue(ushort a, ushort b) : this()
         {
             UShort = a;
             UShort2 = b;
         }
 
 
-        public EfrtValue(byte a) : this()
+        public StackValue(byte a) : this()
         {
             Byte = a;
         }
 
-        public EfrtValue(byte a, byte b) : this()
+        public StackValue(byte a, byte b) : this()
         {
             Byte = a;
             Byte2 = b;
         }
 
-        public EfrtValue(byte a, byte b, byte c) : this()
+        public StackValue(byte a, byte b, byte c) : this()
         {
             Byte = a;
             Byte2 = b;
             Byte3 = c;
         }
 
-        public EfrtValue(byte a, byte b, byte c, byte d) : this()
+        public StackValue(byte a, byte b, byte c, byte d) : this()
         {
             Byte = a;
             Byte2 = b;
