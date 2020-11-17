@@ -7,6 +7,7 @@ namespace EFrt.Libs
     using EFrt.Words;
     using static EFrt.Token;
 
+
     public class CoreLib : IWordsLIbrary
     {
         private IInterpreter _interpreter;
@@ -61,8 +62,8 @@ namespace EFrt.Libs
             _interpreter.AddWord(new ImmediateWord(_interpreter, "REPEAT", RepeatAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "AGAIN", AgainAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "UNTIL", UntilAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "I", IAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "J", JAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "I", GetInnerIndexAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "J", GetOuterIndexAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "LEAVE", LeaveAction));
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "BYE", ByeAction));
@@ -539,7 +540,7 @@ namespace EFrt.Libs
         }
 
         // ( -- n)
-        private int IAction()
+        private int GetInnerIndexAction()
         {
             if (_interpreter.IsCompiling == false)
             {
@@ -555,7 +556,7 @@ namespace EFrt.Libs
 
 
         // ( -- n)
-        private int JAction()
+        private int GetOuterIndexAction()
         {
             if (_interpreter.IsCompiling == false)
             {
@@ -661,26 +662,5 @@ namespace EFrt.Libs
 
             return 1;
         }
-
-        // (-- counter, --)
-        private int IndexAction()
-        {
-            throw new NotImplementedException();
-
-            //_interpreter.Pushi(_interpreter.RPeek());
-        }
-
-        //// (--, -- current-src-pos)
-        //private void ExecuteWordAction()
-        //{
-        //    _interpreter.RPush(_interpreter.SourcePos);
-        //    _interpreter.GoTo(_interpreter.CurrentWord.SourcePos);
-        //}
-
-
-        //private void ReturnAction()
-        //{
-        //    _interpreter.GoTo(_interpreter.RPop());
-        //}
     }
 }

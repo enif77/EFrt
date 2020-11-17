@@ -56,27 +56,7 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// Returns true, if the interpreter should terminate the current script execution.
         /// </summary>
         bool IsExecutionTerminated { get; }
-
-
-        /// <summary>
-        /// Defines words from given words libraries.
-        /// </summary>
-        /// <param name="libraries">A list of libraries of words.</param>
-        /// <param name="removeExistingWords">If true, existing word definitions are removed before new ones are added.</param>
-        void DefineWords(IEnumerable<IWordsLIbrary> libraries, bool removeExistingWords = false);
-
-        /// <summary>
-        /// Defines words from given words library.
-        /// </summary>
-        /// <param name="libraries">A library of words.</param>
-        /// <param name="removeExistingWords">If true, existing word definitions are removed before new ones are added.</param>
-        void DefineWords(IWordsLIbrary library, bool removeExistingWords = false);
-
-        /// <summary>
-        /// Forgets a word and all word defined after it.
-        /// </summary>
-        /// <param name="wordName">A word name.</param>
-        void ForgetWord(string wordName);
+        
 
         /// <summary>
         /// Cleans up the interlan interpreters state.
@@ -386,6 +366,26 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// </summary>
         /// <param name="wordName">A word name.</param>
         void RemoveWord(string wordName);
+
+        /// <summary>
+        /// Defines words from given words libraries.
+        /// </summary>
+        /// <param name="libraries">A list of libraries of words.</param>
+        /// <param name="removeExistingWords">If true, existing word definitions are removed before new ones are added.</param>
+        void DefineWords(IEnumerable<IWordsLIbrary> libraries, bool removeExistingWords = false);
+
+        /// <summary>
+        /// Defines words from given words library.
+        /// </summary>
+        /// <param name="libraries">A library of words.</param>
+        /// <param name="removeExistingWords">If true, existing word definitions are removed before new ones are added.</param>
+        void DefineWords(IWordsLIbrary library, bool removeExistingWords = false);
+
+        /// <summary>
+        /// Forgets a word and all word defined after it.
+        /// </summary>
+        /// <param name="wordName">A word name.</param>
+        void ForgetWord(string wordName);
 
         #endregion
     }

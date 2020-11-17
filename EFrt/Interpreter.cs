@@ -25,7 +25,6 @@ namespace EFrt
     */
 
 
-
     public class Interpreter : IInterpreter
     {
         /// <summary>
