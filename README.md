@@ -73,8 +73,8 @@ Words definition table columns:
 
 ### CORE (CoreLib)
 
-Words: ( \ : ; 2DROP 2DUP 2OVER 2ROT 2SWAP AGAIN BEGIN BYE CLEAR DEPTH DO ?DO DROP DUP ?DUP ELSE
-  FALSE FORGET IF OVER ROT -ROT >R R> R@ TRUE THEN REPEAT LEAVE I J LOOP +LOOP SWAP UNTIL WHILE
+Words: `( \ : ; 2DROP 2DUP 2OVER 2ROT 2SWAP AGAIN BEGIN BYE CLEAR DEPTH DO ?DO DROP DUP ?DUP ELSE
+  FALSE FORGET IF OVER ROT -ROT >R R> R@ TRUE THEN REPEAT LEAVE I J LOOP +LOOP SWAP UNTIL WHILE`
 
 | Name  | Imm. | Mode | Stack op. | Description |
 | ---   | ---  | ---  | ---       | --- |
@@ -93,7 +93,7 @@ Words: ( \ : ; 2DROP 2DUP 2OVER 2ROT 2SWAP AGAIN BEGIN BYE CLEAR DEPTH DO ?DO DR
 
 ### INT (IntegerLib)
 
-Words: + - * / 1+ 1- 2+ 2- 2* 2/ MOD /MOD NOT AND OR XOR MAX MIN ABS FLOAT = <> < <= > >= 0= 0<> 0< 0> "
+Words: `+ - * / 1+ 1- 2+ 2- 2* 2/ MOD /MOD NOT AND OR XOR MAX MIN ABS FLOAT = <> < <= > >= 0= 0<> 0< 0> "`
 
 #### + (n1 n2 - n3)
 
@@ -179,7 +179,7 @@ Divides the top of the stack by two.
 
 ### FLOAT (FloatLib)
 
-Words: F+ F- F* F/ FMAX FMIN FABS FIX F= F<> F< F<= F> F>= 
+Words: `F+ F- F* F/ FMAX FMIN FABS FIX F= F<> F< F<= F> F>=`
 
 #### F+ (f1 f2 - f3)
 
@@ -225,7 +225,7 @@ Returns -1 if f1 is equal to f2, 0 otherwise.
 
 ### STR (StringLib)
 
-Words: S+ S"
+Words: `S+ S"`
 
 | Name  | Imm. | Mode | Stack op. | Description |
 | ---   | ---  | ---  | ---       | --- |
@@ -236,29 +236,28 @@ Words: S+ S"
 
 ### OBJ (ObjectLib)
 
-Words: ODUP ODROP OSWAP OOVER OROT O-ROT ODEPTH OCLEAR
+Words: `ODUP ODROP OSWAP OOVER OROT O-ROT ODEPTH OCLEAR`
 
 ---
 
 ### IO (IoLib)
 
-Words: .( ." . F. S. CR EMIT SPACES SPACE WORDS
+Words: `.( ." . F. S. CR EMIT SPACES SPACE WORDS`
 
-#### . (n - )
+| Name  | Imm. | Mode | Stack op. | Description |
+| ---   | ---  | ---  | ---       | --- |
+| .     | no   | IC   | (n -- )   | **Print top of stack**<br>Prints the integer number on the top of the stack. |
+| .(    | yes  | IC   |           | **Print constant string**<br>Immediatelly prints the string that follows in the input stream. |
+| ."    | yes  | C    |           | **Print immediate string**<br>Prints the string that follows in the input stream. |
+| CR    | no   | IC   |           | **Carriage return**<br>The folowing output will start at the new line. |
+| EMIT  | no   | IC   | (n -- )   | **Print char**<br>Prints out a character represented by a number on the top of the stack. |
+| F.    | no   | IC   | (f -- )   | **Print floating point**<br>A floating point value on the top of the stack is printed. |
+| S.    | no   | IC   | {s -- }   | **Print string**<br>A string on the top of the object stack is printed. |
+| SPACE | no   | IC   |           | **Print SPACE**<br>Prints out the SPACE character. |
+| SPACES | no  | IC   | (n -- )   | **Print spaces**<br>Prints out N characters of SPACE, where N is a number on the top of the stack. |
+| WORDS | no   | IC   |           | **List words defined**<br>Defined words are listed, from the most recently defined to the first defined. |
 
-Prints the integer number on the top of the stack.
-
-#### .( str
-
-Immediatelly prints the string that follows in the input stream.
-
-#### ." str
-
-Prints the string that follows in the input stream. Available in compilation only.
-
-#### EMIT
-
-Prints out a character represented by a number on the top of the stack.
+Note: The `."` word works like `S" str" S.` words together.
 
 
 ## TODO
