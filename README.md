@@ -61,22 +61,37 @@ double stack items in a special library.
 
 Here is a list of implemented words.
 
-### BaseLib
+Words definition table columns:
 
-Words: ( \ : ; CLEAR DUP 2DUP ?DUP DROP 2DROP SWAP 2SWAP OVER 2OVER ROT 2ROT -ROT DEPTH >R R> R@ FALSE
-  TRUE IF ELSE THEN BEGIN WHILE REPEAT AGAIN LEAVE I J BYE DO ?DO LOOP +LOOP FORGET UNTIL
+- Name: A name of a word with optional parameters.
+- Imm.: Immediate - if a word is executed even if we are in the compilation mode.
+- Mode: I = interpretation mode only (not available during compilation), C = compilation mode only
+  (not available) during implementation, IC = vailable in both modes.
+- Stack op.: What happens on the stack - () = data stack, [] = return stack, {} = object stack.
+- Description: A description of the word.
 
-#### : w
 
-Begins compilation of a word named w.
+### CORE (CoreLib)
 
-#### ;
+Words: ( \ : ; 2DROP 2DUP 2OVER 2ROT 2SWAP AGAIN BEGIN BYE CLEAR DEPTH DO ?DO DROP DUP ?DUP ELSE
+  FALSE FORGET IF OVER ROT -ROT >R R> R@ TRUE THEN REPEAT LEAVE I J LOOP +LOOP SWAP UNTIL WHILE
 
-Ends compilation of a word.
+| Name  | Imm. | Mode | Stack op. | Description |
+| ---   | ---  | ---  | ---       | --- |
+| (     | yes  | IC   |           | **Comment**<br>Skips all source characters till the closing ) character. |
+| \     | yes  | IC   |           | **Line comment**<br>Skips all source characters till the closing EOLN character. |
+| : w   | no   | I    |           | **Begin definition**<br>Begins compilation of a word named "w". |
+| ;     | yes  | C    |           | **End definition**<br>Ends compilation of a word. |
+| 2DROP | no   | IC   | (n1 n2 --) | **Double drop**<br>Discards two topmost items on the stack. |
+| 2DUP  | no   | IC   | (n1 n2 -- n1 n2 n1 n2) | **Duplicate two**<br>Duplicates two topmost items on the stack. |
+| 2OVER | no   | IC   | (n1 n2 n3 n4 -- n1 n2 n3 n4 n1 n2) | **Double over**<br>Copies the second pair of items on the stack to the top of the stack. |
+| 2ROT  | no   | IC   | (n1 n2 n3 n4 n5 n6 -- n3 n4 n5 n6 n1 n2) | **Double rotate**<br>Rotate the third pair on the stack to the top of the stack, moving down the first and the second pair. |
+| 2SWAP | no   | IC   | (n1 n2 n3 n4 -- n3 n4 n1 n2) | **Double swap**<br>Swaps the first and the second pair on the stack. |
+| AGAIN | yes  | C    |           | **Indefinite loop**<br>Marks the end of an idefinite loop opened ba the matchin BEGIN. |
 
 ---
 
-### IntegerLib
+### INT (IntegerLib)
 
 Words: + - * / 1+ 1- 2+ 2- 2* 2/ MOD /MOD NOT AND OR XOR MAX MIN ABS FLOAT = <> < <= > >= 0= 0<> 0< 0> "
 
@@ -162,7 +177,7 @@ Divides the top of the stack by two.
 
 ---
 
-### FloatLib
+### FLOAT (FloatLib)
 
 Words: F+ F- F* F/ FMAX FMIN FABS FIX F= F<> F< F<= F> F>= 
 
@@ -208,19 +223,24 @@ Returns -1 if f1 is equal to f2, 0 otherwise.
 
 ---
 
-### StringLib
+### STR (StringLib)
 
 Words: S+ S"
 
+| Name  | Imm. | Mode | Stack op. | Description |
+| ---   | ---  | ---  | ---       | --- |
+| S+    | no   | IC   | {s1 s2 -- s3} | **String concatenate**<br>The string s1 is concatenated with the string s2 and the resulting s1 + s2 string is stored at the top of the object stack. |
+| S"    | no   | C    | { -- s}   | **String literal**<br>Consume all source characters till the closing " character, creating a string from them and storing the result on the top of the object stack. |
+
 ---
 
-### ObjectLib
+### OBJ (ObjectLib)
 
 Words: ODUP ODROP OSWAP OOVER OROT O-ROT ODEPTH OCLEAR
 
 ---
 
-### IOLib
+### IO (IoLib)
 
 Words: .( ." . F. S. CR EMIT SPACES SPACE WORDS
 
