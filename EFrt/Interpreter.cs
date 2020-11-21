@@ -78,7 +78,7 @@ namespace EFrt
 
         public void Reset(IEnumerable<IWordsLIbrary> libraries = null)
         {
-            Stack.Init(new StackValue(0));
+            Stack.Init(0);
             ReturnStack.Init(0);
             
             if (libraries != null)
@@ -169,63 +169,27 @@ namespace EFrt
 
         // Data stack.
 
-        public StackValue Get(int index)
+        public int Get(int index)
         {
             return Stack.Get(index);
         }
 
 
-        public StackValue Peek()
+        public int Peek()
         {
             return Stack.Peek();
         }
 
 
-        public int Peeki()
-        {
-            return Peek().Int;
-        }
-
-
-        public float Peekf()
-        {
-            return Peek().Float;
-        }
-
-
-        public StackValue Pop()
+        public int Pop()
         {
             return Stack.Pop();
         }
 
 
-        public int Popi()
-        {
-            return Pop().Int;
-        }
-
-
-        public float Popf()
-        {
-            return Pop().Float;
-        }
-
-
-        public void Push(StackValue value)
+        public void Push(int value)
         {
             Stack.Push(value);
-        }
-
-
-        public void Pushi(int i)
-        {
-            Stack.Push(i);
-        }
-
-
-        public void Pushf(float d)
-        {
-            Stack.Push(d);
         }
 
 
@@ -259,14 +223,14 @@ namespace EFrt
         }
 
 
-        public void Function(Func<StackValue, StackValue> func)
+        public void Function(Func<int, int> func)
         {
             var top = Stack.Top;
             Stack.Items[Stack.Top] = func(Stack.Items[top]);
         }
 
 
-        public void Function(Func<StackValue, StackValue, StackValue> func)
+        public void Function(Func<int, int, int> func)
         {
             var top = Stack.Top;
             Stack.Items[--Stack.Top] = func(Stack.Items[top - 1], Stack.Items[top]);
@@ -503,24 +467,24 @@ namespace EFrt
                                 case TokenType.Integer:
                                     if (IsCompiling)
                                     {
-                                        WordBeingDefined.AddWord(new ValueWord(this, new StackValue(t.IValue)));
+                                        WordBeingDefined.AddWord(new ValueWord(this, t.IValue));
                                     }
                                     else
                                     {
-                                        Pushi(t.IValue);
+                                        Push(t.IValue);
                                     }
                                     break;
 
-                                case TokenType.Float:
-                                    if (IsCompiling)
-                                    {
-                                        WordBeingDefined.AddWord(new ValueWord(this, new StackValue(t.FValue)));
-                                    }
-                                    else
-                                    {
-                                        Pushf(t.FValue);
-                                    }
-                                    break;
+                                //case TokenType.Float:
+                                //    if (IsCompiling)
+                                //    {
+                                //        WordBeingDefined.AddWord(new ValueWord(this, new StackValue(t.FValue)));
+                                //    }
+                                //    else
+                                //    {
+                                //        Pushf(t.FValue);
+                                //    }
+                                //    break;
 
                                 // No, it is some unknown word.
                                 default:

@@ -22,8 +22,8 @@ namespace EFrt.Words
 
         private int Execute()
         {
-            var index = Interpreter.Popi();
-            var limit = Interpreter.Popi();
+            var index = Interpreter.Pop();
+            var limit = Interpreter.Pop();
 
             Interpreter.RPush(limit);
             Interpreter.RPush(index);

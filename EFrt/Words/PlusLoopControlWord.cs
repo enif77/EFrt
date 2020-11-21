@@ -33,7 +33,7 @@ namespace EFrt.Words
         {
             var index = Interpreter.RPop();
             var limit = Interpreter.RPeek();
-            var increment = Interpreter.Popi();
+            var increment = Interpreter.Pop();
 
             index += increment;
 

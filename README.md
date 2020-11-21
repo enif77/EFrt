@@ -93,7 +93,7 @@ Words: `( \ : ; 2DROP 2DUP 2OVER 2ROT 2SWAP AGAIN BEGIN BYE CLEAR DEPTH DO ?DO D
 
 ### INT (IntegerLib)
 
-Words: `+ - * / 1+ 1- 2+ 2- 2* 2/ MOD /MOD NOT AND OR XOR MAX MIN ABS FLOAT = <> < <= > >= 0= 0<> 0< 0> "`
+Words: `+ - * / 1+ 1- 2+ 2- 2* 2/ MOD /MOD NOT AND OR XOR MAX MIN ABS = <> < <= > >= 0= 0<> 0< 0> "`
 
 #### + (n1 n2 - n3)
 
@@ -179,47 +179,27 @@ Divides the top of the stack by two.
 
 ### FLOAT (FloatLib)
 
-Words: `F+ F- F* F/ FMAX FMIN FABS FIX F= F<> F< F<= F> F>=`
+Words: `F. F+ F- F* F/ F= F<> F< F<= F> F>= FABS FIX FLOAT FMAX FMIN`
+  F1+ F1- F2+ F2- F2* F2/ F0= F0<> F0< F0>
 
-#### F+ (f1 f2 - f3)
-
-Adds two floating point numbers on the top of the stack and leaves the sum on the top of the stack.
-
-#### F- (f1 f2 - f3)
-
-Substracts the floating value f2 from the floating value f1 and leaves the difference on the top of the stack.
-
-#### F* (f1 f2 - f3)
-
-Multiplies two floating point numbers on the top of the stack and leaves the product on the stack.
-
-#### F/ (f1 f2 - f3)
-
-Divides the floating number f1 by the floating number f2 and leaves the quotient on the top of the stack stack.
-
-#### F< (f1 f2 - flag)
-
-Returns -1 if f1 < f2, 0 otherwise.
-
-#### F<= (f1 f2 - flag)
-
-Returns -1 if f1 <= f2, 0 otherwise.
-
-#### F> (f1 f2 - flag)
-
-Returns -1 if f1 > f2, 0 otherwise.
-
-#### F>= (f1 f2 - flag)
-
-Returns -1 if f1 >= f2, 0 otherwise.
-
-#### F<> (f1 f2 - flag)
-
-Returns -1 if f1 is not equal to f2, 0 otherwise.
-
-#### F= (f1 f2 - flag)
-
-Returns -1 if f1 is equal to f2, 0 otherwise.
+| Name  | Imm. | Mode | Stack op. | Description |
+| ---   | ---  | ---  | ---       | --- |
+| F.    | no   | IC   | F:(f -- )   | **Print floating point**<br>A floating point value on the top of the stack is printed. |
+| F+    | no   | IC   | F:(f1 f2 -- f3) | **f3 = f1 + f2**<br>Adds two floating point numbers on the top of the stack and leaves the sum on the top of the stack. |
+| F-    | no   | IC   | F:(f1 f2 -- f3) | **f3 = f1 - f2**<br>Substracts the floating value f2 from the floating value f1 and leaves the difference on the top of the stack. |
+| F*    | no   | IC   | F:(f1 f2 -- f3) | **f3 = f1 * f2**<br>Multiplies two floating point numbers on the top of the stack and leaves the product on the stack. |
+| F/    | no   | IC   | F:(f1 f2 -- f3) | **f3 = f1 / f2**<br>Divides the floating number f1 by the floating number f2 and leaves the quotient on the top of the stack stack. |
+| F=    | no   | IC   | F:(f1 f2 -- ) ( -- flag) | **Floating equal**<br>Returns -1 if f1 is equal to f2, 0 otherwise. |
+| F<>   | no   | IC   | F:(f1 f2 -- ) ( -- flag) | **Floating not equal**<br>Returns -1 if f1 is not equal to f2, 0 otherwise. |
+| F<    | no   | IC   | F:(f1 f2 -- ) ( -- flag) | **Floating less than**<br>Returns -1 if f1 < f2, 0 otherwise. |
+| F<=   | no   | IC   | F:(f1 f2 -- ) ( -- flag) | **Floating less than or equal**<br>Returns -1 if f1 <= f2, 0 otherwise. |
+| F>    | no   | IC   | F:(f1 f2 -- ) ( -- flag) | **Floating greater than**<br>Returns -1 if f1 > f2, 0 otherwise. |
+| F>=   | no   | IC   | F:(f1 f2 -- ) ( -- flag) | **Floating greater than or equal**<br>Returns -1 if f1 >= f2, 0 otherwise. |
+| FABS  | no   | IC   | F:(f1 -- f2) | **f2 = Abs(f1)**<br>. |
+| FIX   | no   | IC   | F:(f -- ) ( -- n) | **Floating to integer**<br>Converts a float number on the top of the floating poit stack to integer and stores it on the top of the data stack. |
+| FLOAT | no   | IC   | F:( -- f) (n -- ) | **Integer to floating**<br>Converts an integer on the top of the data stack to a floationg point number and stores it on the top of the floating point stack. |
+| FMAX  | no   | IC   | (f1 f2 -- f3) | **Floating point maximum**<br>The greater of the two floating point values on the top of the stack is placed on the top of the stack. |
+| FMIN  | no   | IC   | (f1 f2 -- f3) | **Floating point minimum**<br>The lesser of the two floating point values on the top of the stack is placed on the top of the stack. |
 
 ---
 
@@ -242,7 +222,7 @@ Words: `ODUP ODROP OSWAP OOVER OROT O-ROT ODEPTH OCLEAR`
 
 ### IO (IoLib)
 
-Words: `.( ." . F. S. CR EMIT SPACES SPACE WORDS`
+Words: `.( ." . S. CR EMIT SPACES SPACE WORDS`
 
 | Name  | Imm. | Mode | Stack op. | Description |
 | ---   | ---  | ---  | ---       | --- |
@@ -251,7 +231,6 @@ Words: `.( ." . F. S. CR EMIT SPACES SPACE WORDS`
 | ."    | yes  | C    |           | **Print immediate string**<br>Prints the string that follows in the input stream. |
 | CR    | no   | IC   |           | **Carriage return**<br>The folowing output will start at the new line. |
 | EMIT  | no   | IC   | (n -- )   | **Print char**<br>Prints out a character represented by a number on the top of the stack. |
-| F.    | no   | IC   | (f -- )   | **Print floating point**<br>A floating point value on the top of the stack is printed. |
 | S.    | no   | IC   | {s -- }   | **Print string**<br>A string on the top of the object stack is printed. |
 | SPACE | no   | IC   |           | **Print SPACE**<br>Prints out the SPACE character. |
 | SPACES | no  | IC   | (n -- )   | **Print spaces**<br>Prints out N characters of SPACE, where N is a number on the top of the stack. |
@@ -264,6 +243,6 @@ Note: The `."` word works like `S" str" S.` words together.
 
 - String words: STRCPY, STRINT, STRLEN, STRREAL, SUBSTR, STRFORM, STRCAT, STRCHAR, STRCMP, STRCMPI, COMPARE, (STRLIT), TYPE
 - Words: SYSTEM, STATE, PICK, ROLL, MARKER name, CHAR, [, ], INCLUDE, .S, ABORT, ABORT" str, ARRAY x, EXIT, IMMEDIATE, LITERAL, QUIT, TRACE,
-    VARIABLE name, (XDO), (X?DO), (XLOOP), (+XLOOP), CONSTANT, !, @, WORDSD, ', EXECUTE, INT, FLOAT, STRING
-- Math words: ACOS, ASIN, ATAN, ATAN2, COS, EXP, FABS, (FLIT) n, NEGATE, FNEGATE, (LIT), LOG, POW, SHIFT, SIN, SQRT, TAN, 
- 
+    VARIABLE name, (XDO), (X?DO), (XLOOP), (+XLOOP), CONSTANT, !, @, WORDSD, ', EXECUTE, INT, STRING, EVALUATE, UNLOOP, EXIT
+- Math words: ACOS, ASIN, ATAN, ATAN2, COS, EXP, (FLIT) n, NEGATE, FNEGATE, (LIT), LOG, POW, SHIFT, SIN, SQRT, TAN, 
+    \>FLOAT FLOOR 

@@ -28,7 +28,7 @@ namespace EFrt.Words
         private int Execute()
         {
             // (flag -- )
-            if (Interpreter.Popi() == 0)
+            if (Interpreter.Pop() == 0)
             {
                 // The flag is FALSE - repeat the loop.
                 return _increment;

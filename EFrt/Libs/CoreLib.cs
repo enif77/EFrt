@@ -94,7 +94,7 @@ namespace EFrt.Libs
         // (a -- a [result])
         private int DupPosAction()
         {
-            if (_interpreter.Peek().Int != 0)
+            if (_interpreter.Peek() != 0)
             {
                 _interpreter.Dup();
             }
@@ -212,7 +212,7 @@ namespace EFrt.Libs
         // ( -- a)
         private int DepthAction()
         {
-            _interpreter.Pushi(_interpreter.Stack.Count);
+            _interpreter.Push(_interpreter.Stack.Count);
 
             return 1;
         }
@@ -228,7 +228,7 @@ namespace EFrt.Libs
         // (a -- ) [ - a ]
         private int ToReturnStackAction()
         {
-            _interpreter.RPush(_interpreter.Popi());
+            _interpreter.RPush(_interpreter.Pop());
 
             return 1;
         }
@@ -236,7 +236,7 @@ namespace EFrt.Libs
         // ( -- a) [a - ]
         private int FromReturnStackAction()
         {
-            _interpreter.Pushi(_interpreter.RPop());
+            _interpreter.Push(_interpreter.RPop());
 
             return 1;
         }
@@ -244,7 +244,7 @@ namespace EFrt.Libs
         // ( -- a) [a - a]
         private int FetchReturnStackAction()
         {
-            _interpreter.Pushi(_interpreter.RPeek());
+            _interpreter.Push(_interpreter.RPeek());
 
             return 1;
         }
@@ -312,7 +312,7 @@ namespace EFrt.Libs
         // ( -- a)
         private int FalseAction()
         {
-            _interpreter.Pushi(0);
+            _interpreter.Push(0);
 
             return 1;
         }
@@ -320,7 +320,7 @@ namespace EFrt.Libs
         // ( -- a)
         private int TrueAction()
         {
-            _interpreter.Pushi(-1);
+            _interpreter.Push(-1);
 
             return 1;
         }

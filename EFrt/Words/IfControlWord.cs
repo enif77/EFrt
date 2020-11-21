@@ -47,7 +47,7 @@ namespace EFrt.Words
 
         private int Execute()
         {
-            if (Interpreter.Popi() != 0)
+            if (Interpreter.Pop() != 0)
             {
                 // The flag is true, advance instruction index by one to true portion of IF.
                 return 1;

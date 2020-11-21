@@ -16,12 +16,13 @@ namespace EFrtApp
         static void Main(string[] args)
         {
             var interpreter = new Interpreter(new WordsList());
+            var outputWriter = new ConsoleWriter();
             interpreter.DefineWords(new List<IWordsLIbrary>()
             {
                 new CoreLib(interpreter),
-                new IoLib(interpreter, new ConsoleWriter()),
+                new IoLib(interpreter, outputWriter),
                 new IntegerLib(interpreter),
-                new FloatLib(interpreter),
+                new FloatLib(interpreter, outputWriter),
                 new StringLib(interpreter),
                 new ObjectLib(interpreter),
             });
@@ -71,13 +72,14 @@ namespace EFrtApp
         static void TestEfrt()
         {
             var interpreter = new Interpreter(new WordsList());
+            var outputWriter = new ConsoleWriter();
 
             interpreter.DefineWords(new List<IWordsLIbrary>()
             {
                 new CoreLib(interpreter),
-                new IoLib(interpreter, new ConsoleWriter()),
+                new IoLib(interpreter, outputWriter),
                 new IntegerLib(interpreter),
-                new FloatLib(interpreter),
+                new FloatLib(interpreter, outputWriter),
                 new StringLib(interpreter)
             });
 

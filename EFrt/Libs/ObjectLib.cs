@@ -89,7 +89,7 @@ namespace EFrt.Libs
         // ( -- a)
         private int DepthAction()
         {
-            _interpreter.Pushi(_interpreter.ObjectStack.Count);
+            _interpreter.Push(_interpreter.ObjectStack.Count);
 
             return 1;
         }

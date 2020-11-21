@@ -3,7 +3,6 @@
 namespace EFrt.Libs
 {
     using System;
-    using System.Globalization;
     using System.Text;
 
     using EFrt.Words;
@@ -11,9 +10,9 @@ namespace EFrt.Libs
 
     public class IoLib : IWordsLIbrary
     {
-        private IOutputWriter _outputWriter;
         private IInterpreter _interpreter;
-
+        private IOutputWriter _outputWriter;
+        
 
         public IoLib(IInterpreter efrt, IOutputWriter outputWriter)
         {
@@ -28,7 +27,6 @@ namespace EFrt.Libs
             _interpreter.AddWord(new ImmediateWord(_interpreter, ".\"", PrintStringAction));
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ".", WriteAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F.", WriteFloatAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "S.", WriteStringAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "CR", WriteLineAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "SPACES", WriteSpacesAction));
@@ -100,19 +98,10 @@ namespace EFrt.Libs
         // (a --)
         private int WriteAction()
         {
-            _outputWriter.Write("{0} ", _interpreter.Pop().Int);
+            _outputWriter.Write("{0} ", _interpreter.Pop());
 
             return 1;
         }
-
-        // (a --)
-        private int WriteFloatAction()
-        {
-            _outputWriter.Write("{0} ", _interpreter.Pop().Float.ToString(CultureInfo.InvariantCulture));
-
-            return 1;
-        }
-
 
         // {a --}
         private int WriteStringAction()
@@ -133,7 +122,7 @@ namespace EFrt.Libs
 
         private int WriteSpacesAction()
         {
-            var count = _interpreter.Popi();
+            var count = _interpreter.Pop();
             if (count > 0)
             {
                 var sb = new StringBuilder(count);
@@ -159,7 +148,7 @@ namespace EFrt.Libs
         // (n --)
         private int EmitAction()
         {
-            _outputWriter.Write("{0} ", (char)_interpreter.Pop().Int);
+            _outputWriter.Write("{0} ", (char)_interpreter.Pop());
 
             return 1;
         }

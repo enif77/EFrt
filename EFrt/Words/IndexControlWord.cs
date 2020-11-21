@@ -23,7 +23,7 @@ namespace EFrt.Words
         private int Execute()
         {
             // ( -- inner-index)  [ ... inner-limit inner-index -- ... inner-limit inner-index ]
-            Interpreter.Pushi(Interpreter.RPeek());
+            Interpreter.Push(Interpreter.RPeek());
 
             return 1;
         }

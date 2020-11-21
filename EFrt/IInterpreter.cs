@@ -132,61 +132,25 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// </summary>
         /// <param name="index">A value index.</param>
         /// <returns>A value from the stack.</returns>
-        StackValue Get(int index);
+        int Get(int index);
 
         /// <summary>
         /// Returns a value from the top of the stack.
         /// </summary>
         /// <returns>A value from the top of the stack.</returns>
-        StackValue Peek();
-
-        /// <summary>
-        /// Returns an integer value from the top of the stack.
-        /// </summary>
-        /// <returns>An integer value from the top of the stack.</returns>
-        int Peeki();
-
-        /// <summary>
-        /// Returns a float value from the top of the stack.
-        /// </summary>
-        /// <returns>An float value from the top of the stack.</returns>
-        float Peekf();
+        int Peek();
 
         /// <summary>
         /// Removes a value from the top of the stack and returns it.
         /// </summary>
         /// <returns>A value from the top of the stack.</returns>
-        StackValue Pop();
-
-        /// <summary>
-        /// Removes an integer value from the top of the stack and returns it.
-        /// </summary>
-        /// <returns>An integer value from the top of the stack.</returns>
-        int Popi();
-
-        /// <summary>
-        /// Removes a float value from the top of the stack and returns it.
-        /// </summary>
-        /// <returns>A vfloat alue from the top of the stack.</returns>
-        float Popf();
+        int Pop();
 
         /// <summary>
         /// Inserts a value to the stack.
         /// </summary>
         /// <param name="value">A value.</param>
-        void Push(StackValue value);
-
-        /// <summary>
-        /// Inserts an integer value to the stack.
-        /// </summary>
-        /// <param name="value">An integer value.</param>
-        void Pushi(int i);
-
-        /// <summary>
-        /// Inserts a float value to the stack.
-        /// </summary>
-        /// <param name="value">A float value.</param>
-        void Pushf(float d);
+        void Push(int value);
 
         /// <summary>
         /// Drops N values from the stack.
@@ -222,13 +186,13 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// Does a stack operation with a single parameter. The operation result is stored at the top of the stack.
         /// </summary>
         /// <param name="func">A function.</param>
-        void Function(Func<StackValue, StackValue> func);
+        void Function(Func<int, int> func);
 
         /// <summary>
         /// Does a stack operation with two parameters. The operation result is stored at the top of the stack.
         /// </summary>
         /// <param name="func">A function.</param>
-        void Function(Func<StackValue, StackValue, StackValue> func);
+        void Function(Func<int, int, int> func);
 
 
         /// <summary>

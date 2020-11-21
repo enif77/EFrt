@@ -2,9 +2,9 @@
 
 namespace EFrt.Stacks
 {
-    public class DataStack : AStackBase<int>
+    public class FloatingStack : AStackBase<double>
     {
-        public DataStack(int capacity = 32)
+        public FloatingStack(int capacity = 32)
             : base(capacity)
         {
         }
