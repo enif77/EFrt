@@ -183,7 +183,7 @@ Divides the top of the stack by two.
 
 #### TODO
 
-Words: SHIFT 
+Words: SHIFT INVERT AND OR
 
 
 ---
