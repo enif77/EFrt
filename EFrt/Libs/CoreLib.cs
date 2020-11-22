@@ -70,6 +70,7 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "FORGET", ForgetAction));
         }
 
+
         // (a -- a a)
         private int DupAction()
         {

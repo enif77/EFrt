@@ -32,6 +32,11 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         DataStack Stack { get; }
 
         /// <summary>
+        /// A floating point numbers stack.
+        /// </summary>
+        FloatingPointStack FloatingPointStack { get; }
+
+        /// <summary>
         /// Optional stack for user data.
         /// </summary>
         ObjectStack ObjectStack { get; }
@@ -95,6 +100,17 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// <returns>A character.</returns>
         char NextChar();
 
+
+        bool IsWhite();
+
+        bool IsDigit();
+
+
+        /// <summary>
+        /// Skips all white characters in the source from the current position.
+        /// </summary>
+        void SkipWhite();
+
         /// <summary>
         /// Extracts and returns the next token from the source.
         /// </summary>
@@ -126,6 +142,8 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
 
 
         #region stacks
+
+        // Data stack
 
         /// <summary>
         /// Returns a value from the stack at certain index.
@@ -182,18 +200,66 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// </summary>
         void Rot();
 
-        /// <summary>
-        /// Does a stack operation with a single parameter. The operation result is stored at the top of the stack.
-        /// </summary>
-        /// <param name="func">A function.</param>
-        void Function(Func<int, int> func);
+
+        // Floating point stack
 
         /// <summary>
-        /// Does a stack operation with two parameters. The operation result is stored at the top of the stack.
+        /// Returns a value from the floating point numbers stack at certain index.
         /// </summary>
-        /// <param name="func">A function.</param>
-        void Function(Func<int, int, int> func);
+        /// <param name="index">A value index.</param>
+        /// <returns>A value from the floating point numbers stack.</returns>
+        double FGet(int index);
 
+        /// <summary>
+        /// Returns a value from the top of the floating point numbers stack.
+        /// </summary>
+        /// <returns>A value from the top of the floating point numbers stack.</returns>
+        double FPeek();
+
+        /// <summary>
+        /// Removes a value from the top of the floating point numbers stack and returns it.
+        /// </summary>
+        /// <returns>A value from the top of the floating point numbers stack.</returns>
+        double FPop();
+
+        /// <summary>
+        /// Inserts a value to the floating point numbers stack.
+        /// </summary>
+        /// <param name="value">A value.</param>
+        void FPush(double value);
+
+        /// <summary>
+        /// Drops N values from the floating point numbers stack.
+        /// </summary>
+        /// <param name="count">The number of values to be dropped from the floating point numbers stack.</param>
+        void FDrop(int count = 1);
+
+        /// <summary>
+        /// Duplicates the top value on the floating point numbers stack.
+        /// F:( a -- a a ) 
+        /// </summary>
+        void FDup();
+
+        /// <summary>
+        /// Swaps two values on the top of the floating point numbers stack.
+        /// F:( a b -- b a )
+        /// </summary>
+        void FSwap();
+
+        /// <summary>
+        /// Gets a value below the top of the floating point numbers stack and pushes it to the stack.
+        /// F:(a b -- a b a)
+        /// </summary>
+        void FOver();
+
+        /// <summary>
+        /// Rotates the top three floating point numbers stack values.
+        /// F:(a b c -- b c a)
+        /// </summary>
+        void FRot();
+
+
+        // Object stack
 
         /// <summary>
         /// Returns a value from the object stack at certain index.
@@ -249,18 +315,8 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// </summary>
         void ORot();
 
-        /// <summary>
-        /// Takes the topmost value from the object stack and replaces it with the result of the func().
-        /// </summary>
-        /// <param name="func">A function to be applied on the topmost object stack value.</param>
-        void Function(Func<object, object> func);
 
-        /// <summary>
-        /// Takes two topmost values from the object stack and replaces them with the result of the func().
-        /// </summary>
-        /// <param name="func">A function to be applied on the two topmost object stack values.</param>
-        void Function(Func<object, object, object> func);
-
+        // Return stack
 
         /// <summary>
         /// Returns a value from the return stack at certain index.

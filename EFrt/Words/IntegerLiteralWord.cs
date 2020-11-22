@@ -3,18 +3,18 @@
 namespace EFrt.Words
 {
     /// <summary>
-    /// A word keeping a string value.
+    /// A word keeping an integer value.
     /// </summary>
-    public class StringWord : AWordBase
+    public class IntegerLiteralWord : AWordBase
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="value">A value.</param>
-        public StringWord(IInterpreter interpreter, string value)
+        public IntegerLiteralWord(IInterpreter interpreter, int value)
             : base(interpreter)
         {
-            Name = "string";
+            Name = "LITERAL";
             IsControlWord = true;
             Action = Execute;
 
@@ -24,12 +24,12 @@ namespace EFrt.Words
 
         private int Execute()
         {
-            Interpreter.OPush(_value);
+            Interpreter.Push(_value);
 
             return 1;
         }
 
 
-        private string _value;
+        private int _value;
     }
 }

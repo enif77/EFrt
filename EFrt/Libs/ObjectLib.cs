@@ -2,6 +2,8 @@
 
 namespace EFrt.Libs
 {
+    using System;
+
     using EFrt.Words;
     
 
@@ -29,6 +31,22 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "O-ROT", RotBackAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ODEPTH", DepthAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "OCLEAR", ClearAction));
+        }
+
+
+        private void Function(Func<object, object> func)
+        {
+            var stack = _interpreter.ObjectStack;
+            var top = stack.Top;
+            stack.Items[stack.Top] = func(stack.Items[top]);
+        }
+
+
+        private void Function(Func<object, object, object> func)
+        {
+            var stack = _interpreter.ObjectStack;
+            var top = stack.Top;
+            stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
         }
 
 

@@ -2,19 +2,22 @@
 
 namespace EFrt.Words
 {
+    using EFrt.Stacks;
+
+
     /// <summary>
-    /// A word keeping a value.
+    /// A word keeping an floating point value.
     /// </summary>
-    public class ValueWord : AWordBase
+    public class FloatingPointLiteralWord : AWordBase
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="value">A value.</param>
-        public ValueWord(IInterpreter interpreter, int value)
+        public FloatingPointLiteralWord(IInterpreter interpreter, double value)
             : base(interpreter)
         {
-            Name = "value";
+            Name = "FLITERAL";
             IsControlWord = true;
             Action = Execute;
 
@@ -24,12 +27,12 @@ namespace EFrt.Words
 
         private int Execute()
         {
-            Interpreter.Push(_value);
+            Interpreter.FPush(_value);
 
             return 1;
         }
 
 
-        private int _value;
+        private double _value;
     }
 }

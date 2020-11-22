@@ -4,20 +4,19 @@ EFrt is a embeddable FORTH language implementation.
 
 ## Data types
 
-  - integer: 32  bit signed integer number,
-  - float: 32 bit float number,
-  - string: A double quote terminated strings. Stored on the object stack.
+  - integer: 32 bit signed integer number (int),
+  - floating point: 64 bit float number (double),
+  - string: A double quote terminated strings.
   - other types will be available later - uint, short, ushort, byte etc.
 
-Data stack holds 32 bit structures, that are implemented as a union type. Any .NET type,, 
-that fits into 32 bits will be supported. 64bit types (long, double) will be implemented as
-double stack items in a special library.
 
 ## Stacks
 
-  - Data stack: Main stack for user data. Holds all 32 bit data types.
+  - Data stack: Main stack for user data. Holds all 32 bit integers.
+  - Floating point stack: Stack of floating point numbers. Used for all floating point calulations.
   - Return stack: Stack for interpreter internal use. Holds 32 bit signed integers.
-  - Object stack: Can hold any object. Available for user data, strings etc. Not used by the interpreter.
+  - Object stack: Can hold any object and strings.
+
 
 ## Examples
 
@@ -57,6 +56,7 @@ double stack items in a special library.
 
 ```
 
+
 ## Words
 
 Here is a list of implemented words.
@@ -88,6 +88,12 @@ Words: `( \ : ; 2DROP 2DUP 2OVER 2ROT 2SWAP AGAIN BEGIN BYE CLEAR DEPTH DO ?DO D
 | 2ROT  | no   | IC   | (n1 n2 n3 n4 n5 n6 -- n3 n4 n5 n6 n1 n2) | **Double rotate**<br>Rotate the third pair on the stack to the top of the stack, moving down the first and the second pair. |
 | 2SWAP | no   | IC   | (n1 n2 n3 n4 -- n3 n4 n1 n2) | **Double swap**<br>Swaps the first and the second pair on the stack. |
 | AGAIN | yes  | C    |           | **Indefinite loop**<br>Marks the end of an idefinite loop opened ba the matchin BEGIN. |
+
+
+#### TODO
+
+Words: SYSTEM STATE PICK ROLL MARKER name CHAR [ ] INCLUDE .S ABORT ABORT" str ARRAY x EXIT IMMEDIATE LITERAL QUIT TRACE
+  VARIABLE name (XDO) (X?DO) (XLOOP) (+XLOOP) CONSTANT ! @ WORDSD ' EXECUTE INT STRING EVALUATE UNLOOP EXIT
 
 ---
 
@@ -175,16 +181,21 @@ Multiplies the top of the stack by two.
 
 Divides the top of the stack by two.
 
+#### TODO
+
+Words: SHIFT 
+
+
 ---
 
 ### FLOAT (FloatLib)
 
-Words: `F. F+ F- F* F/ F= F<> F< F<= F> F>= FABS FIX FLOAT FMAX FMIN`
+Words: `F. F+ F- F* F/ F= F<> F< F<= F> F>= FABS FIX FLOAT FMAX FMIN
   F1+ F1- F2+ F2- F2* F2/ F0= F0<> F0< F0>
+  FDUP F2DUP F?DUP FDROP F2DROP FSWAP F2SWAP FOVER F2OVER FROT F2ROT F-ROT FDEPTH FCLEAR`
 
 | Name  | Imm. | Mode | Stack op. | Description |
 | ---   | ---  | ---  | ---       | --- |
-| F.    | no   | IC   | F:(f -- )   | **Print floating point**<br>A floating point value on the top of the stack is printed. |
 | F+    | no   | IC   | F:(f1 f2 -- f3) | **f3 = f1 + f2**<br>Adds two floating point numbers on the top of the stack and leaves the sum on the top of the stack. |
 | F-    | no   | IC   | F:(f1 f2 -- f3) | **f3 = f1 - f2**<br>Substracts the floating value f2 from the floating value f1 and leaves the difference on the top of the stack. |
 | F*    | no   | IC   | F:(f1 f2 -- f3) | **f3 = f1 * f2**<br>Multiplies two floating point numbers on the top of the stack and leaves the product on the stack. |
@@ -201,6 +212,10 @@ Words: `F. F+ F- F* F/ F= F<> F< F<= F> F>= FABS FIX FLOAT FMAX FMIN`
 | FMAX  | no   | IC   | (f1 f2 -- f3) | **Floating point maximum**<br>The greater of the two floating point values on the top of the stack is placed on the top of the stack. |
 | FMIN  | no   | IC   | (f1 f2 -- f3) | **Floating point minimum**<br>The lesser of the two floating point values on the top of the stack is placed on the top of the stack. |
 
+#### TODO
+
+Words: ACOS ASIN ATAN ATAN2 COS EXP  n NEGATE FNEGATE (LIT) LOG POW SIN SQRT TAN \>FLOAT FLOOR FLITERAL (FLIT)
+
 ---
 
 ### STR (StringLib)
@@ -211,6 +226,10 @@ Words: `S+ S"`
 | ---   | ---  | ---  | ---       | --- |
 | S+    | no   | IC   | {s1 s2 -- s3} | **String concatenate**<br>The string s1 is concatenated with the string s2 and the resulting s1 + s2 string is stored at the top of the object stack. |
 | S"    | no   | C    | { -- s}   | **String literal**<br>Consume all source characters till the closing " character, creating a string from them and storing the result on the top of the object stack. |
+
+#### Todo
+
+Words: STRCPY, STRINT, STRLEN, STRREAL, SUBSTR, STRFORM, STRCAT, STRCHAR, STRCMP, STRCMPI, COMPARE, (STRLIT), TYPE
 
 ---
 
@@ -231,18 +250,10 @@ Words: `.( ." . S. CR EMIT SPACES SPACE WORDS`
 | ."    | yes  | C    |           | **Print immediate string**<br>Prints the string that follows in the input stream. |
 | CR    | no   | IC   |           | **Carriage return**<br>The folowing output will start at the new line. |
 | EMIT  | no   | IC   | (n -- )   | **Print char**<br>Prints out a character represented by a number on the top of the stack. |
+| F.    | no   | IC   | F:(f -- )   | **Print floating point**<br>A floating point value on the top of the stack is printed. |
 | S.    | no   | IC   | {s -- }   | **Print string**<br>A string on the top of the object stack is printed. |
 | SPACE | no   | IC   |           | **Print SPACE**<br>Prints out the SPACE character. |
 | SPACES | no  | IC   | (n -- )   | **Print spaces**<br>Prints out N characters of SPACE, where N is a number on the top of the stack. |
 | WORDS | no   | IC   |           | **List words defined**<br>Defined words are listed, from the most recently defined to the first defined. |
 
 Note: The `."` word works like `S" str" S.` words together.
-
-
-## TODO
-
-- String words: STRCPY, STRINT, STRLEN, STRREAL, SUBSTR, STRFORM, STRCAT, STRCHAR, STRCMP, STRCMPI, COMPARE, (STRLIT), TYPE
-- Words: SYSTEM, STATE, PICK, ROLL, MARKER name, CHAR, [, ], INCLUDE, .S, ABORT, ABORT" str, ARRAY x, EXIT, IMMEDIATE, LITERAL, QUIT, TRACE,
-    VARIABLE name, (XDO), (X?DO), (XLOOP), (+XLOOP), CONSTANT, !, @, WORDSD, ', EXECUTE, INT, STRING, EVALUATE, UNLOOP, EXIT
-- Math words: ACOS, ASIN, ATAN, ATAN2, COS, EXP, (FLIT) n, NEGATE, FNEGATE, (LIT), LOG, POW, SHIFT, SIN, SQRT, TAN, 
-    \>FLOAT FLOOR 

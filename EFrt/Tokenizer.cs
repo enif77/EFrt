@@ -70,7 +70,7 @@ namespace EFrt
         {
             var sb = new StringBuilder();
 
-            while (CurrentChar != EoF && IsWhite() == false)
+            while (CurrentChar != EoF && IsWhite(CurrentChar) == false)
             {
                 sb.Append(CurrentChar);
 
@@ -194,10 +194,15 @@ namespace EFrt
                 : Token.CreateIntegerToken(iValue * sign);
         }
 
-
-        private bool IsWhite()
+        /// <summary>
+        /// Checks, if a character is a white character.
+        /// white-char :: SPACE | TAB | CR | LF .
+        /// </summary>
+        /// <param name="c">A character.</param>
+        /// <returns>True, if a character is a white character.</returns>
+        public static bool IsWhite(char c)
         {
-            return (CurrentChar == ' ' || CurrentChar == '\t' || CurrentChar == '\r' || CurrentChar == '\n');
+            return (c == ' ' || c == '\t' || c == '\r' || c == '\n');
         }
 
 
@@ -207,15 +212,15 @@ namespace EFrt
         /// </summary>
         /// <param name="c">A character.</param>
         /// <returns>True, if a character is a digit.</returns>
-        private static bool IsDigit(char c)
+        public static bool IsDigit(char c)
         {
             return c >= '0' && c <= '9';
         }
 
 
-        private void SkipWhite()
+        public void SkipWhite()
         {
-            while (IsWhite())
+            while (IsWhite(CurrentChar))
             {
                 NextChar();
             }

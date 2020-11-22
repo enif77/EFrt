@@ -2,6 +2,8 @@
 
 namespace EFrt.Libs
 {
+    using System;
+
     using EFrt.Words;
 
 
@@ -49,10 +51,27 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "0>", IsPosAction));
         }
 
+
+        private void Function(Func<int, int> func)
+        {
+            var stack = _interpreter.Stack;
+            var top = stack.Top;
+            stack.Items[stack.Top] = func(stack.Items[top]);
+        }
+
+
+        private void Function(Func<int, int, int> func)
+        {
+            var stack = _interpreter.Stack;
+            var top = stack.Top;
+            stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
+        }
+
+
         // (n1 n2 -- n3)
         private int AddAction()
         {
-            _interpreter.Function((a, b) => a + b);
+            Function((a, b) => a + b);
 
             return 1;
         }
@@ -60,7 +79,7 @@ namespace EFrt.Libs
         // (n1 n2 -- n3)
         private int SubAction()
         {
-            _interpreter.Function((a, b) => a - b);
+            Function((a, b) => a - b);
 
             return 1;
         }
@@ -68,7 +87,7 @@ namespace EFrt.Libs
         // (n1 -- n2)
         private int AddOneAction()
         {
-            _interpreter.Function((a) => ++a);
+            Function((a) => ++a);
 
             return 1;
         }
@@ -76,7 +95,7 @@ namespace EFrt.Libs
         // (n1 -- n2)
         private int SubOneAction()
         {
-            _interpreter.Function((a) => --a);
+            Function((a) => --a);
 
             return 1;
         }
@@ -84,7 +103,7 @@ namespace EFrt.Libs
         // (n1 -- n2)
         private int AddTwoAction()
         {
-            _interpreter.Function((a) => a + 2);
+            Function((a) => a + 2);
 
             return 1;
         }
@@ -92,7 +111,7 @@ namespace EFrt.Libs
         // (n1 -- n2)
         private int SubTwoAction()
         {
-            _interpreter.Function((a) => a - 2);
+            Function((a) => a - 2);
 
             return 1;
         }
@@ -100,7 +119,7 @@ namespace EFrt.Libs
         // (n1 -- n2)
         private int MulTwoAction()
         {
-            _interpreter.Function((a) => a * 2);
+            Function((a) => a * 2);
 
             return 1;
         }
@@ -108,7 +127,7 @@ namespace EFrt.Libs
         // (n1 -- n2)
         private int DivTwoAction()
         {
-            _interpreter.Function((a) => a / 2);
+            Function((a) => a / 2);
 
             return 1;
         }
@@ -116,7 +135,7 @@ namespace EFrt.Libs
         // (n1 n2 -- n3)
         private int MulAction()
         {
-            _interpreter.Function((a, b) => a * b);
+            Function((a, b) => a * b);
 
             return 1;
         }
@@ -124,7 +143,7 @@ namespace EFrt.Libs
         // (n1 n2 -- n3)
         private int DivAction()
         {
-            _interpreter.Function((a, b) => a / b);
+            Function((a, b) => a / b);
 
             return 1;
         }
@@ -132,7 +151,7 @@ namespace EFrt.Libs
         // (n1 n2 -- n3)
         private int ModAction()
         {
-            _interpreter.Function((a, b) => a % b);
+            Function((a, b) => a % b);
 
             return 1;
         }
@@ -152,7 +171,7 @@ namespace EFrt.Libs
         // (n1 n2 -- n3)
         private int MaxAction()
         {
-            _interpreter.Function((a, b) => (a > b) ? a : b);
+            Function((a, b) => (a > b) ? a : b);
 
             return 1;
         }
@@ -160,7 +179,7 @@ namespace EFrt.Libs
         // (n1 n2 -- n3)
         private int MinAction()
         {
-            _interpreter.Function((a, b) => (a < b) ? a : b);
+            Function((a, b) => (a < b) ? a : b);
 
             return 1;
         }
@@ -168,7 +187,7 @@ namespace EFrt.Libs
         // (n1 -- n2)
         private int AbsAction()
         {
-            _interpreter.Function((a) => a < 0 ? -a : a);
+            Function((a) => a < 0 ? -a : a);
 
             return 1;
         }
@@ -176,7 +195,7 @@ namespace EFrt.Libs
         // (n1 n2 -- flag)
         private int IsEqAction()
         {
-            _interpreter.Function((a, b) => (a == b) ? -1 : 0);
+            Function((a, b) => (a == b) ? -1 : 0);
 
             return 1;
         }
@@ -184,7 +203,7 @@ namespace EFrt.Libs
         // (n1 n2 -- flag)
         private int IsNeqAction()
         {
-            _interpreter.Function((a, b) => (a != b) ? -1 : 0);
+            Function((a, b) => (a != b) ? -1 : 0);
 
             return 1;
         }
@@ -192,7 +211,7 @@ namespace EFrt.Libs
         // (n1 n2 -- flag)
         private int IsLtAction()
         {
-            _interpreter.Function((a, b) => (a < b) ? -1 : 0);
+            Function((a, b) => (a < b) ? -1 : 0);
 
             return 1;
         }
@@ -200,7 +219,7 @@ namespace EFrt.Libs
         // (n1 n2 -- flag)
         private int IsLtEAction()
         {
-            _interpreter.Function((a, b) => (a <= b) ? -1 : 0);
+            Function((a, b) => (a <= b) ? -1 : 0);
 
             return 1;
         }
@@ -208,7 +227,7 @@ namespace EFrt.Libs
         // (n1 n2 -- flag)
         private int IsGtAction()
         {
-            _interpreter.Function((a, b) => (a > b) ? -1 : 0);
+            Function((a, b) => (a > b) ? -1 : 0);
 
             return 1;
         }
@@ -216,7 +235,7 @@ namespace EFrt.Libs
         // (n1 n2 -- flag)
         private int IsGtEAction()
         {
-            _interpreter.Function((a, b) => (a >= b) ? -1 : 0);
+            Function((a, b) => (a >= b) ? -1 : 0);
 
             return 1;
         }
@@ -224,7 +243,7 @@ namespace EFrt.Libs
         // (n -- flag)
         private int IsZeroAction()
         {
-            _interpreter.Function((a) => (a == 0) ? -1 : 0);
+            Function((a) => (a == 0) ? -1 : 0);
 
             return 1;
         }
@@ -232,7 +251,7 @@ namespace EFrt.Libs
         // (n -- flag)
         private int IsNonZeroAction()
         {
-            _interpreter.Function((a) => (a != 0) ? -1 : 0);
+            Function((a) => (a != 0) ? -1 : 0);
 
             return 1;
         }
@@ -240,7 +259,7 @@ namespace EFrt.Libs
         // (n -- flag)
         private int IsNegAction()
         {
-            _interpreter.Function((a) => (a < 0) ? -1 : 0);
+            Function((a) => (a < 0) ? -1 : 0);
 
             return 1;
         }
@@ -248,7 +267,7 @@ namespace EFrt.Libs
         // (n1 -- n2)
         private int NotAction()
         {
-            _interpreter.Function((a) => ~a);
+            Function((a) => ~a);
 
             return 1;
         }
@@ -256,7 +275,7 @@ namespace EFrt.Libs
         // (n1 n2 -- flag)
         private int AndAction()
         {
-            _interpreter.Function((a, b) => (a != 0 && b != 0) ? -1 : 0);
+            Function((a, b) => (a != 0 && b != 0) ? -1 : 0);
 
             return 1;
         }
@@ -264,7 +283,7 @@ namespace EFrt.Libs
         // (n1 n2 -- flag)
         private int OrAction()
         {
-            _interpreter.Function((a, b) => (a != 0 || b != 0) ? -1 : 0);
+            Function((a, b) => (a != 0 || b != 0) ? -1 : 0);
 
             return 1;
         }
@@ -272,7 +291,7 @@ namespace EFrt.Libs
         // (n1 n2 -- n3)
         private int XorAction()
         {
-            _interpreter.Function((a, b) => a ^ b);
+            Function((a, b) => a ^ b);
 
             return 1;
         }
@@ -280,7 +299,7 @@ namespace EFrt.Libs
         // (n -- flag)
         private int IsPosAction()
         {
-            _interpreter.Function((a) => (a > 0) ? -1 : 0);
+            Function((a) => (a > 0) ? -1 : 0);
 
             return 1;
         }

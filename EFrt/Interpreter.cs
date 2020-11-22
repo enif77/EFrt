@@ -33,6 +33,11 @@ namespace EFrt
         public DataStack Stack { get; }
 
         /// <summary>
+        /// The floating point numbers stack for user data.
+        /// </summary>
+        public FloatingPointStack FloatingPointStack { get; }
+
+        /// <summary>
         /// Optional stack for user data.
         /// </summary>
         public ObjectStack ObjectStack { get; }
@@ -67,6 +72,7 @@ namespace EFrt
         public Interpreter(IWordsList wordsList, int stackCapacity = 32, int returnStackCapacity = 32)
         {
             Stack = new DataStack(stackCapacity);
+            FloatingPointStack = new FloatingPointStack(stackCapacity);
             ObjectStack = new ObjectStack(stackCapacity);
             ReturnStack = new ReturnStack(returnStackCapacity);
 
@@ -78,8 +84,9 @@ namespace EFrt
 
         public void Reset(IEnumerable<IWordsLIbrary> libraries = null)
         {
-            Stack.Init(0);
-            ReturnStack.Init(0);
+            Stack.Clear();
+            FloatingPointStack.Clear();
+            ReturnStack.Clear();
             
             if (libraries != null)
             {
@@ -195,7 +202,7 @@ namespace EFrt
 
         public void Drop(int count = 1)
         {
-            Stack.Drop();
+            Stack.Drop(count);
         }
 
 
@@ -223,17 +230,59 @@ namespace EFrt
         }
 
 
-        public void Function(Func<int, int> func)
+        // Floating point stack.
+
+        public double FGet(int index)
         {
-            var top = Stack.Top;
-            Stack.Items[Stack.Top] = func(Stack.Items[top]);
+            return FloatingPointStack.Get(index);
         }
 
 
-        public void Function(Func<int, int, int> func)
+        public double FPeek()
         {
-            var top = Stack.Top;
-            Stack.Items[--Stack.Top] = func(Stack.Items[top - 1], Stack.Items[top]);
+            return FloatingPointStack.Peek();
+        }
+
+
+        public double FPop()
+        {
+            return FloatingPointStack.Pop();
+        }
+
+
+        public void FPush(double value)
+        {
+            FloatingPointStack.Push(value);
+        }
+
+
+        public void FDrop(int count = 1)
+        {
+            FloatingPointStack.Drop(count);
+        }
+
+
+        public void FDup()
+        {
+            FloatingPointStack.Dup();
+        }
+
+
+        public void FSwap()
+        {
+            FloatingPointStack.Swap();
+        }
+
+
+        public void FOver()
+        {
+            FloatingPointStack.Over();
+        }
+
+
+        public void FRot()
+        {
+            FloatingPointStack.Rot();
         }
 
 
@@ -293,20 +342,6 @@ namespace EFrt
         }
 
 
-        public void Function(Func<object, object> func)
-        {
-            var top = ObjectStack.Top;
-            ObjectStack.Items[ObjectStack.Top] = func(ObjectStack.Items[top]);
-        }
-
-
-        public void Function(Func<object, object, object> func)
-        {
-            var top = ObjectStack.Top;
-            ObjectStack.Items[--ObjectStack.Top] = func(ObjectStack.Items[top - 1], ObjectStack.Items[top]);
-        }
-
-
         // Return stack.
 
         public int RGet(int index)
@@ -357,6 +392,25 @@ namespace EFrt
         {
             return Tokenizer.NextChar();
         }
+
+
+        public bool IsWhite()
+        {
+            return Tokenizer.IsWhite(Tokenizer.CurrentChar);
+        }
+
+
+        public bool IsDigit()
+        {
+            return Tokenizer.IsDigit(Tokenizer.CurrentChar);
+        }
+
+
+        public void SkipWhite()
+        {
+            Tokenizer.SkipWhite();
+        }
+
 
         public Token NextTok()
         {
@@ -467,7 +521,7 @@ namespace EFrt
                                 case TokenType.Integer:
                                     if (IsCompiling)
                                     {
-                                        WordBeingDefined.AddWord(new ValueWord(this, t.IValue));
+                                        WordBeingDefined.AddWord(new IntegerLiteralWord(this, t.IValue));
                                     }
                                     else
                                     {
@@ -475,16 +529,16 @@ namespace EFrt
                                     }
                                     break;
 
-                                //case TokenType.Float:
-                                //    if (IsCompiling)
-                                //    {
-                                //        WordBeingDefined.AddWord(new ValueWord(this, new StackValue(t.FValue)));
-                                //    }
-                                //    else
-                                //    {
-                                //        Pushf(t.FValue);
-                                //    }
-                                //    break;
+                                case TokenType.Float:
+                                    if (IsCompiling)
+                                    {
+                                        WordBeingDefined.AddWord(new FloatingPointLiteralWord(this, t.FValue));
+                                    }
+                                    else
+                                    {
+                                        FPush(t.FValue);
+                                    }
+                                    break;
 
                                 // No, it is some unknown word.
                                 default:

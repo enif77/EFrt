@@ -3,6 +3,7 @@
 namespace EFrt.Libs
 {
     using System;
+    using System.Globalization;
     using System.Text;
 
     using EFrt.Words;
@@ -27,6 +28,7 @@ namespace EFrt.Libs
             _interpreter.AddWord(new ImmediateWord(_interpreter, ".\"", PrintStringAction));
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ".", WriteAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F.", WriteFloatAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "S.", WriteStringAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "CR", WriteLineAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "SPACES", WriteSpacesAction));
@@ -35,6 +37,7 @@ namespace EFrt.Libs
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "WORDS", WordsAction));
         }
+
 
         private int WriteImmediateStringAction()
         {
@@ -99,6 +102,14 @@ namespace EFrt.Libs
         private int WriteAction()
         {
             _outputWriter.Write("{0} ", _interpreter.Pop());
+
+            return 1;
+        }
+
+        // F:(f --)
+        private int WriteFloatAction()
+        {
+            _outputWriter.Write("{0} ", _interpreter.FPop().ToString(CultureInfo.InvariantCulture));
 
             return 1;
         }
