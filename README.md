@@ -73,8 +73,6 @@ Words definition table columns:
 
 ### CORE (CoreLib)
 
-Words: `TRUE THEN REPEAT SWAP UNTIL WHILE`
-
 | Name     | Imm. | Mode | Stack op. | Description |
 | ---      | ---  | ---  | ---       | --- |
 | (        | yes  | IC   |           | **Comment**<br>Skips all source characters till the closing ) character. |
@@ -113,8 +111,14 @@ Words: `TRUE THEN REPEAT SWAP UNTIL WHILE`
 | >R       | no   | IC   | (n -- ) [ - n] | **To return stack**<br>Removes the top item from the stack and pushes it onto the return stack. |
 | R>       | no   | IC   | ( -- n) [n - ] | **From return stack**<br>The top value is removed from the return stack and pushed onto the stack. |
 | @R       | no   | IC   | ( -- n) [n - n] | **Fetch return stack**<br>The top value on the return stack is pushed onto the stack. The value is not removed from the return stack. |
+| REPEAT   | yes  | C    | ( -- n)   | **Close BEGIN—WHILE—REPEAT loop**<br>Another iteration of the current BEGIN—WHILE—REPEAT loop having been completed, execution continues after the matching BEGIN. |
 | ROT      | no   | IC   | (n1 n2 n3 -- n2 n3 n1) | **Rotate 3 items**<br>The third item on the stack is placed on the top of the stack and the second and first items are moved down. |
 | -ROT     | no   | IC   | (n1 n2 n3 -- n2 n3 n1) | **Reverse rotate**<br>Moves the top of stack to the third item, moving the third and second items up. |
+| SWAP     | no   | IC   | (n1 n2 -- n2 n1) | **Swap top two items**<br>The top two stack items are interchanged. |
+| THEN     | yes  | C    | ( -- flag) | **End if**<br>Used in an IF—ELSE—THEN sequence, marks the end of the conditional statement. |
+| TRUE     | no   | IC   | ( -- flag) | **True**<br>Constant that leaves the -1 (true) on the top of the stack. |
+| UNTIL    | yes  | C    | (flag -- ) | **End BEGIN—UNTIL loop**<br>If flag is zero, the loop continues execution at the word following the matching BEGIN. If flag is nonzero, the loop is exited and the word following the UNTIL is executed. |
+| WHILE    | yes  | C    | (flag -- ) | **Decide BEGIN—WHILE—REPEAT loop**<br>If flag is nonzero, execution continues after the WHILE. If flag is zero, the loop is exited and execution resumed after the REPEAT that marks the end of the loop. |
 
 
 #### TODO
