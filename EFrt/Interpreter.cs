@@ -8,6 +8,7 @@ namespace EFrt
 
     using EFrt.Libs;
     using EFrt.Stacks;
+    using EFrt.Values;
     using EFrt.Words;
 
     using static EFrt.Token;
@@ -32,11 +33,6 @@ namespace EFrt
         /// The main stack for user data.
         /// </summary>
         public DataStack Stack { get; }
-
-        ///// <summary>
-        ///// The floating point numbers stack for user data.
-        ///// </summary>
-        //public FloatingPointStack FloatingPointStack { get; }
 
         /// <summary>
         /// Optional stack for user data.
@@ -73,7 +69,6 @@ namespace EFrt
         public Interpreter(IWordsList wordsList, int stackCapacity = 32, int returnStackCapacity = 32)
         {
             Stack = new DataStack(stackCapacity);
-            //FloatingPointStack = new FloatingPointStack(stackCapacity);
             ObjectStack = new ObjectStack(stackCapacity);
             ReturnStack = new ReturnStack(returnStackCapacity);
 
@@ -86,7 +81,6 @@ namespace EFrt
         public void Reset(IEnumerable<IWordsLIbrary> libraries = null)
         {
             Stack.Clear();
-            //FloatingPointStack.Clear();
             ReturnStack.Clear();
             
             if (libraries != null)
@@ -114,13 +108,13 @@ namespace EFrt
 
         public bool IsWordDefined(string wordName)
         {
-            return WordsList.IsWordDefined(wordName);
+            return WordsList.IsWordDefined(wordName.ToUpperInvariant());
         }
 
 
         public IWord GetWord(string wordName)
         {
-            return WordsList.GetWord(wordName);
+            return WordsList.GetWord(wordName.ToUpperInvariant());
         }
 
 
@@ -132,13 +126,13 @@ namespace EFrt
 
         public void RemoveWord(string wordName)
         {
-            WordsList.RemoveWord(wordName);
+            WordsList.RemoveWord(wordName.ToUpperInvariant());
         }
 
 
         public void ForgetWord(string wordName)
         {
-            WordsList.Forget(wordName);
+            WordsList.Forget(wordName.ToUpperInvariant());
         }
 
 
@@ -231,93 +225,55 @@ namespace EFrt
         }
 
 
-        // Floating point stack.
+        //// Floating point stack.
 
-        [StructLayout(LayoutKind.Explicit)]
-        internal struct DoubleVal
-        {
-            [FieldOffset(0)] public double D;
-            [FieldOffset(0)] public int A;
-            [FieldOffset(4)] public int B;
-        }
-
-        public double FGet(int index)
-        {
-            return new DoubleVal()
-            {
-                A = Get(index * 2),
-                B = Get(index * 2 + 2),
-            }.D;
-
-            //return FloatingPointStack.Get(index);
-        }
-
-
-        public double FPeek()
-        {
-            return new DoubleVal()
-            {
-                B = Get(1),
-                A = Peek(),
-            }.D;
-
-            //return FloatingPointStack.Peek();
-        }
-
-
-        public double FPop()
-        {
-            return new DoubleVal()
-            {
-                B = Pop(),
-                A = Pop(),
-            }.D;
-
-            //return FloatingPointStack.Pop();
-        }
-
-
-        public void FPush(double value)
-        {
-            var v = new DoubleVal()
-            {
-                D = value
-            };
-
-            Push(v.A);
-            Push(v.B);
-
-            //FloatingPointStack.Push(value);
-        }
-
-
-        //public void FDrop(int count = 1)
+        //[StructLayout(LayoutKind.Explicit)]
+        //internal struct DoubleVal
         //{
-        //    FloatingPointStack.Drop(count);
+        //    [FieldOffset(0)] public double D;
+        //    [FieldOffset(0)] public int A;
+        //    [FieldOffset(4)] public int B;
+        //}
+
+        //public double FGet(int index)
+        //{
+        //    return new DoubleVal()
+        //    {
+        //        A = Get(index * 2),
+        //        B = Get(index * 2 + 2),
+        //    }.D;
         //}
 
 
-        //public void FDup()
+        //public double FPeek()
         //{
-        //    FloatingPointStack.Dup();
+        //    return new DoubleVal()
+        //    {
+        //        B = Get(1),
+        //        A = Peek(),
+        //    }.D;
         //}
 
 
-        //public void FSwap()
+        //public double FPop()
         //{
-        //    FloatingPointStack.Swap();
+        //    return new DoubleVal()
+        //    {
+        //        B = Pop(),
+        //        A = Pop(),
+        //    }.D;
         //}
 
 
-        //public void FOver()
+        //public void FPush(double value)
         //{
-        //    FloatingPointStack.Over();
-        //}
+        //    var v = new DoubleVal()
+        //    {
+        //        D = value
+        //    };
 
-
-        //public void FRot()
-        //{
-        //    FloatingPointStack.Rot();
+        //    Push(v.A);
+        //    Push(v.B);
         //}
 
 
@@ -488,7 +444,7 @@ namespace EFrt
                     }
 
                     IsCompiling = true;
-                    WordBeingDefined = new NonPrimitiveWord(this, tok.SValue);
+                    WordBeingDefined = new NonPrimitiveWord(this, tok.SValue.ToUpperInvariant());
                     break;
 
                 default:
@@ -534,13 +490,14 @@ namespace EFrt
                 {
                     // A word can be known or a number.
                     case TokenType.Word:
-                        if (WordsList.IsWordDefined(tok.SValue))
+                        var wordName = tok.SValue.ToUpperInvariant();
+                        if (WordsList.IsWordDefined(wordName))
                         {
-                            CurrentWord = WordsList.GetWord(tok.SValue);
+                            CurrentWord = WordsList.GetWord(wordName);
 
                             if (IsCompiling && CurrentWord.IsImmediate == false)
                             {
-                                WordBeingDefined.AddWord(new RuntimeWord(this, tok.SValue));
+                                WordBeingDefined.AddWord(new RuntimeWord(this, wordName));
                             }
                             else
                             {
@@ -571,7 +528,10 @@ namespace EFrt
                                     }
                                     else
                                     {
-                                        FPush(t.FValue);
+                                        var v = new DoubleVal() { D = t.FValue };
+
+                                        Push(v.A);
+                                        Push(v.B);
                                     }
                                     break;
 

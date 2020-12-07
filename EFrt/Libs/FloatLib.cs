@@ -3,24 +3,31 @@
 namespace EFrt.Libs
 {
     using System;
+    using System.Globalization;
+    using System.Runtime.InteropServices;
 
+    using EFrt.Values;
     using EFrt.Words;
 
 
     public class FloatLib : IWordsLIbrary
     {
         private IInterpreter _interpreter;
+        private IOutputWriter _outputWriter;
 
 
-        public FloatLib(IInterpreter efrt)
+        public FloatLib(IInterpreter efrt, IOutputWriter outputWriter)
         {
             _interpreter = efrt;
+            _outputWriter = outputWriter;
         }
 
 
         public void DefineWords()
         {
             //_interpreter.AddWord(new ImmediateWord(_interpreter, "(FLIT)", LiteralAction));
+
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F.", WriteFloatAction));
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F+", AddAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F-", SubAction));
@@ -65,13 +72,57 @@ namespace EFrt.Libs
         }
 
 
+        // Floating point stack.
+
+        public double FGet(int index)
+        {
+            return new DoubleVal()
+            {
+                A = _interpreter.Get(index * 2),
+                B = _interpreter.Get(index * 2 + 2),
+            }.D;
+        }
+
+
+        public double FPeek()
+        {
+            return new DoubleVal()
+            {
+                B = _interpreter.Get(1),
+                A = _interpreter.Peek(),
+            }.D;
+        }
+
+
+        public double FPop()
+        {
+            return new DoubleVal()
+            {
+                B = _interpreter.Pop(),
+                A = _interpreter.Pop(),
+            }.D;
+        }
+
+
+        public void FPush(double value)
+        {
+            var v = new DoubleVal()
+            {
+                D = value
+            };
+
+            _interpreter.Push(v.A);
+            _interpreter.Push(v.B);
+        }
+
+
         private void Function(Func<double, double> func)
         {
             //var stack = _interpreter.FloatingPointStack;
             //var top = stack.Top;
             //stack.Items[stack.Top] = func(stack.Items[top]);
 
-            _interpreter.FPush(func(_interpreter.FPop()));
+            FPush(func(FPop()));
         }
 
 
@@ -81,8 +132,17 @@ namespace EFrt.Libs
             //var top = stack.Top;
             //stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
 
-            var b = _interpreter.FPop();
-            _interpreter.FPush(func(_interpreter.FPop(), b));
+            var b = FPop();
+            FPush(func(FPop(), b));
+        }
+
+
+        // F:(f --)
+        private int WriteFloatAction()
+        {
+            _outputWriter.Write("{0} ", FPop().ToString(CultureInfo.InvariantCulture));
+
+            return 1;
         }
 
 
@@ -274,7 +334,7 @@ namespace EFrt.Libs
         // F:(f -- ) ( -- n)
         private int FixAction()
         {
-            _interpreter.Push((int)_interpreter.FPop());
+            _interpreter.Push((int)FPop());
 
             return 1;
         }
@@ -282,7 +342,7 @@ namespace EFrt.Libs
         // F:( -- f) (n -- )
         private int FloatAction()
         {
-            _interpreter.FPush((double)_interpreter.Pop());
+            FPush((double)_interpreter.Pop());
 
             return 1;
         }
@@ -290,7 +350,7 @@ namespace EFrt.Libs
         // F:(f1 f2 -- ) ( -- flag)
         private int IsEqAction()
         {
-            _interpreter.Push((_interpreter.FPop() == _interpreter.FPop()) ? -1 : 0);
+            _interpreter.Push((FPop() == FPop()) ? -1 : 0);
 
             return 1;
         }
@@ -298,7 +358,7 @@ namespace EFrt.Libs
         // F:(f1 f2 -- ) ( -- flag)
         private int IsNeqAction()
         {
-            _interpreter.Push((_interpreter.FPop() != _interpreter.FPop()) ? -1 : 0);
+            _interpreter.Push((FPop() != FPop()) ? -1 : 0);
 
             return 1;
         }
@@ -306,8 +366,8 @@ namespace EFrt.Libs
         // F:(f1 f2 -- ) ( -- flag)
         private int IsLtAction()
         {
-            var b = _interpreter.FPop();
-            _interpreter.Push((_interpreter.FPop() < b) ? -1 : 0);
+            var b = FPop();
+            _interpreter.Push((FPop() < b) ? -1 : 0);
 
             return 1;
         }
@@ -315,8 +375,8 @@ namespace EFrt.Libs
         // F:(f1 f2 -- ) ( -- flag)
         private int IsLtEAction()
         {
-            var b = _interpreter.FPop();
-            _interpreter.Push((_interpreter.FPop() <= b) ? -1 : 0);
+            var b = FPop();
+            _interpreter.Push((FPop() <= b) ? -1 : 0);
 
             return 1;
         }
@@ -324,8 +384,8 @@ namespace EFrt.Libs
         // F:(f1 f2 -- ) ( -- flag)
         private int IsGtAction()
         {
-            var b = _interpreter.FPop();
-            _interpreter.Push((_interpreter.FPop() > b) ? -1 : 0);
+            var b = FPop();
+            _interpreter.Push((FPop() > b) ? -1 : 0);
 
             return 1;
         }
@@ -333,8 +393,8 @@ namespace EFrt.Libs
         // F:(f1 f2 -- ) ( -- flag)
         private int IsGtEAction()
         {
-            var b = _interpreter.FPop();
-            _interpreter.Push((_interpreter.FPop() >= b) ? -1 : 0);
+            var b = FPop();
+            _interpreter.Push((FPop() >= b) ? -1 : 0);
 
             return 1;
         }
@@ -342,7 +402,7 @@ namespace EFrt.Libs
         // F:(f -- ) ( -- flag)
         private int IsZeroAction()
         {
-            _interpreter.Push((_interpreter.FPop() == 0.0) ? -1 : 0);
+            _interpreter.Push((FPop() == 0.0) ? -1 : 0);
 
             return 1;
         }
@@ -350,7 +410,7 @@ namespace EFrt.Libs
         // F:(f -- ) ( -- flag)
         private int IsNonZeroAction()
         {
-            _interpreter.Push((_interpreter.FPop() != 0.0) ? -1 : 0);
+            _interpreter.Push((FPop() != 0.0) ? -1 : 0);
 
             return 1;
         }
@@ -358,7 +418,7 @@ namespace EFrt.Libs
         // F:(f -- ) ( -- flag)
         private int IsNegAction()
         {
-            _interpreter.Push((_interpreter.FPop() < 0.0) ? -1 : 0);
+            _interpreter.Push((FPop() < 0.0) ? -1 : 0);
 
             return 1;
         }
@@ -366,7 +426,7 @@ namespace EFrt.Libs
         // F:(f -- ) ( -- flag)
         private int IsPosAction()
         {
-            _interpreter.Push((_interpreter.FPop() > 0.0) ? -1 : 0);
+            _interpreter.Push((FPop() > 0.0) ? -1 : 0);
 
             return 1;
         }

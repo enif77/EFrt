@@ -4,16 +4,15 @@ EFrt is a embeddable FORTH language implementation.
 
 ## Data types
 
-  - integer: 32 bit signed integer number (int),
-  - floating point: 64 bit float number (double),
-  - string: A double quote terminated strings.
+  - integer: 32 bit signed integer number (int).
+  - floating point: 64 bit float number (double), that is 2 times more bits, than the integer type (or 2 data stack items).
+  - string: A double quote terminated strings, stored on the objects stack.
   - other types will be available later - uint, short, ushort, byte etc.
 
 
 ## Stacks
 
-  - Data stack: Main stack for user data. Holds all 32 bit integers.
-  - Floating point stack: Stack of floating point numbers. Used for all floating point calulations.
+  - Data stack: Main stack for user data. Holds all 32 bit integers and 64 bit floats (as 2 32 bit items).
   - Return stack: Stack for interpreter internal use. Holds 32 bit signed integers.
   - Object stack: Can hold any object and strings.
 
@@ -96,8 +95,6 @@ Words definition table columns:
 | ?DUP     | no   | IC   | (n -- 0 / n n) | **Conditional duplicate**<br>If top of stack is nonzero, duplicate it. Otherwise leave zero on top of stack. |
 | ELSE     | yes  | C    | (n -- n n) | **Else**<br>Used in an IF—ELSE—THEN sequence, delimits the code to be executed if the if-condition was false. |
 | FALSE    | no   | IC   | ( -- flag) | **False**<br>Constant that leaves the 0 (false) on the top of the stack. |
-| FCLEAR   | no   | IC   |           | **Clear floating point stack**<br>All items on the floating point stack are discarded. |
-| FDEPTH   | no   | IC   | ( -- n)   | **Floating point stack depth**<br>Returns the number of items on the floating point stack. |
 | FORGET w | no   | IC   |           | **Forget word**<br>The most recent definition of word w is deleted, along with all words declared more recently than the named word. |
 | I        | yes  | C    | ( -- n) [n -- n] | **Inner loop index**<br>The index of the innermost DO—LOOP is placed on the stack. |
 | IF       | yes  | C    | (flag --) | **Conditional statement**<br>If flag is nonzero, the following statements are executed. Otherwise, execution resumes after the matching ELSE clause, if any, or after the matching THEN. |
@@ -222,8 +219,7 @@ Words: SHIFT INVERT AND OR
 ### FLOAT (FloatLib)
 
 Words: `F. F+ F- F* F/ F= F<> F< F<= F> F>= FABS FIX FLOAT FMAX FMIN
-  F1+ F1- F2+ F2- F2* F2/ F0= F0<> F0< F0>
-  FDUP F2DUP F?DUP FDROP F2DROP FSWAP F2SWAP FOVER F2OVER FROT F2ROT F-ROT FDEPTH FCLEAR`
+  F1+ F1- F2+ F2- F2* F2/ F0= F0<> F0< F0>`
 
 | Name  | Imm. | Mode | Stack op. | Description |
 | ---   | ---  | ---  | ---       | --- |

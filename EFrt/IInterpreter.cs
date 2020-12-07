@@ -201,32 +201,32 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         void Rot();
 
 
-        // Floating point stack
+        //// Floating point stack
 
-        /// <summary>
-        /// Returns a value from the floating point numbers stack at certain index.
-        /// </summary>
-        /// <param name="index">A value index.</param>
-        /// <returns>A value from the floating point numbers stack.</returns>
-        double FGet(int index);
+        ///// <summary>
+        ///// Returns a value from the floating point numbers stack at certain index.
+        ///// </summary>
+        ///// <param name="index">A value index.</param>
+        ///// <returns>A value from the floating point numbers stack.</returns>
+        //double FGet(int index);
 
-        /// <summary>
-        /// Returns a value from the top of the floating point numbers stack.
-        /// </summary>
-        /// <returns>A value from the top of the floating point numbers stack.</returns>
-        double FPeek();
+        ///// <summary>
+        ///// Returns a value from the top of the floating point numbers stack.
+        ///// </summary>
+        ///// <returns>A value from the top of the floating point numbers stack.</returns>
+        //double FPeek();
 
-        /// <summary>
-        /// Removes a value from the top of the floating point numbers stack and returns it.
-        /// </summary>
-        /// <returns>A value from the top of the floating point numbers stack.</returns>
-        double FPop();
+        ///// <summary>
+        ///// Removes a value from the top of the floating point numbers stack and returns it.
+        ///// </summary>
+        ///// <returns>A value from the top of the floating point numbers stack.</returns>
+        //double FPop();
 
-        /// <summary>
-        /// Inserts a value to the floating point numbers stack.
-        /// </summary>
-        /// <param name="value">A value.</param>
-        void FPush(double value);
+        ///// <summary>
+        ///// Inserts a value to the floating point numbers stack.
+        ///// </summary>
+        ///// <param name="value">A value.</param>
+        //void FPush(double value);
 
         ///// <summary>
         ///// Drops N values from the floating point numbers stack.

@@ -2,7 +2,7 @@
 
 namespace EFrt.Words
 {
-    using EFrt.Stacks;
+    using EFrt.Values;
 
 
     /// <summary>
@@ -21,18 +21,22 @@ namespace EFrt.Words
             IsControlWord = true;
             Action = Execute;
 
-            _value = value;
+            _value = new DoubleVal()
+            {
+                D = value
+            };
         }
 
 
         private int Execute()
         {
-            Interpreter.FPush(_value);
+            Interpreter.Push(_value.A);
+            Interpreter.Push(_value.B);
 
             return 1;
         }
 
 
-        private double _value;
+        private DoubleVal _value;
     }
 }

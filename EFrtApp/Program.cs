@@ -22,7 +22,7 @@ namespace EFrtApp
                 new CoreLib(interpreter),
                 new IoLib(interpreter, outputWriter),
                 new IntegerLib(interpreter),
-                new FloatLib(interpreter),
+                new FloatLib(interpreter, outputWriter),
                 new StringLib(interpreter),
                 new ObjectLib(interpreter),
             });
@@ -79,7 +79,7 @@ namespace EFrtApp
                 new CoreLib(interpreter),
                 new IoLib(interpreter, outputWriter),
                 new IntegerLib(interpreter),
-                new FloatLib(interpreter),
+                new FloatLib(interpreter, outputWriter),
                 new StringLib(interpreter)
             });
 
