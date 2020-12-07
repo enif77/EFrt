@@ -92,7 +92,7 @@ namespace EFrt.Libs
             return 1;
         }
 
-        // (a -- a [result])
+        // (a -- a a) or (a -- 0)
         private int DupPosAction()
         {
             if (_interpreter.Peek() != 0)
@@ -343,7 +343,7 @@ namespace EFrt.Libs
                 throw new Exception("A word compilation is running.");
             }
 
-            // Get the name of the new word.
+            // Get the name of a word.
             var tok = _interpreter.NextTok();
             switch (tok.Code)
             {

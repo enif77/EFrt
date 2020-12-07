@@ -1,4 +1,4 @@
-# EFrt
+﻿# EFrt
 
 EFrt is a embeddable FORTH language implementation.
 
@@ -66,28 +66,55 @@ Words definition table columns:
 - Name: A name of a word with optional parameters.
 - Imm.: Immediate - if a word is executed even if we are in the compilation mode.
 - Mode: I = interpretation mode only (not available during compilation), C = compilation mode only
-  (not available) during implementation, IC = vailable in both modes.
+  (not available during implementation), IC = vailable in both modes.
 - Stack op.: What happens on the stack - () = data stack, [] = return stack, {} = object stack.
 - Description: A description of the word.
 
 
 ### CORE (CoreLib)
 
-Words: `( \ : ; 2DROP 2DUP 2OVER 2ROT 2SWAP AGAIN BEGIN BYE CLEAR DEPTH DO ?DO DROP DUP ?DUP ELSE
-  FALSE FORGET IF OVER ROT -ROT >R R> R@ TRUE THEN REPEAT LEAVE I J LOOP +LOOP SWAP UNTIL WHILE`
+Words: `TRUE THEN REPEAT SWAP UNTIL WHILE`
 
-| Name  | Imm. | Mode | Stack op. | Description |
-| ---   | ---  | ---  | ---       | --- |
-| (     | yes  | IC   |           | **Comment**<br>Skips all source characters till the closing ) character. |
-| \     | yes  | IC   |           | **Line comment**<br>Skips all source characters till the closing EOLN character. |
-| : w   | no   | I    |           | **Begin definition**<br>Begins compilation of a word named "w". |
-| ;     | yes  | C    |           | **End definition**<br>Ends compilation of a word. |
-| 2DROP | no   | IC   | (n1 n2 --) | **Double drop**<br>Discards two topmost items on the stack. |
-| 2DUP  | no   | IC   | (n1 n2 -- n1 n2 n1 n2) | **Duplicate two**<br>Duplicates two topmost items on the stack. |
-| 2OVER | no   | IC   | (n1 n2 n3 n4 -- n1 n2 n3 n4 n1 n2) | **Double over**<br>Copies the second pair of items on the stack to the top of the stack. |
-| 2ROT  | no   | IC   | (n1 n2 n3 n4 n5 n6 -- n3 n4 n5 n6 n1 n2) | **Double rotate**<br>Rotate the third pair on the stack to the top of the stack, moving down the first and the second pair. |
-| 2SWAP | no   | IC   | (n1 n2 n3 n4 -- n3 n4 n1 n2) | **Double swap**<br>Swaps the first and the second pair on the stack. |
-| AGAIN | yes  | C    |           | **Indefinite loop**<br>Marks the end of an idefinite loop opened ba the matchin BEGIN. |
+| Name     | Imm. | Mode | Stack op. | Description |
+| ---      | ---  | ---  | ---       | --- |
+| (        | yes  | IC   |           | **Comment**<br>Skips all source characters till the closing ) character. |
+| \        | yes  | IC   |           | **Line comment**<br>Skips all source characters till the closing EOLN character. |
+| : w      | no   | I    |           | **Begin definition**<br>Begins compilation of a word named "w". |
+| ;        | yes  | C    |           | **End definition**<br>Ends compilation of a word. |
+| 2DROP    | no   | IC   | (n1 n2 --) | **Double drop**<br>Discards two topmost items on the stack. |
+| 2DUP     | no   | IC   | (n1 n2 -- n1 n2 n1 n2) | **Duplicate two**<br>Duplicates two topmost items on the stack. |
+| 2OVER    | no   | IC   | (n1 n2 n3 n4 -- n1 n2 n3 n4 n1 n2) | **Double over**<br>Copies the second pair of items on the stack to the top of the stack. |
+| 2ROT     | no   | IC   | (n1 n2 n3 n4 n5 n6 -- n3 n4 n5 n6 n1 n2) | **Double rotate**<br>Rotate the third pair on the stack to the top of the stack, moving down the first and the second pair. |
+| 2SWAP    | no   | IC   | (n1 n2 n3 n4 -- n3 n4 n1 n2) | **Double swap**<br>Swaps the first and the second pair on the stack. |
+| AGAIN    | yes  | C    |           | **Indefinite loop**<br>Marks the end of an idefinite loop opened by the matching BEGIN. |
+| BEGIN    | yes  | C    |           | **Begin loop**<br>Begins a loop. The end of the loop is marked by the matching AGAIN, REPEAT, or UNTIL. |
+| BYE      | no   | IC   |           | **Terminate execuition**<br>Asks the interpreter to terminate execution. It ends the EFrt program. |
+| CLEAR    | no   | IC   |           | **Clear stack**<br>All items on the data stack are discarded. |
+| DEPTH    | no   | IC   | ( -- n)   | **Stack depth**<br>Returns the number of items on the stack before DEPTH was executed. |
+| DO       | yes  | C    | (limit index -- ) [ - limit index ] | **Definite loop**<br>Executes the loop from the following word to the matching LOOP or +LOOP until n increments past the boundary between limit−1 and limit. Note that the loop is always executed at least once (see ?DO for an alternative to this). |
+| ?DO      | yes  | C    | (limit index -- ) [ - limit index ] | **Conditional loop**<br>If n equals limit, skip immediately to the matching LOOP or +LOOP. Otherwise, enter the loop, which is thenceforth treated as a normal DO loop. |
+| DROP     | no   | IC   | (n --)    | **Discard top of stack**<br>Discards the value at the top of the stack. |
+| DUP      | no   | IC   | (n -- n n) | **Duplicate**<br>Duplicates the value at the top of the stack. |
+| ?DUP     | no   | IC   | (n -- 0 / n n) | **Conditional duplicate**<br>If top of stack is nonzero, duplicate it. Otherwise leave zero on top of stack. |
+| ELSE     | yes  | C    | (n -- n n) | **Else**<br>Used in an IF—ELSE—THEN sequence, delimits the code to be executed if the if-condition was false. |
+| FALSE    | no   | IC   | ( -- flag) | **False**<br>Constant that leaves the 0 (false) on the top of the stack. |
+| FCLEAR   | no   | IC   |           | **Clear floating point stack**<br>All items on the floating point stack are discarded. |
+| FDEPTH   | no   | IC   | ( -- n)   | **Floating point stack depth**<br>Returns the number of items on the floating point stack. |
+| FORGET w | no   | IC   |           | **Forget word**<br>The most recent definition of word w is deleted, along with all words declared more recently than the named word. |
+| I        | yes  | C    | ( -- n) [n -- n] | **Inner loop index**<br>The index of the innermost DO—LOOP is placed on the stack. |
+| IF       | yes  | C    | (flag --) | **Conditional statement**<br>If flag is nonzero, the following statements are executed. Otherwise, execution resumes after the matching ELSE clause, if any, or after the matching THEN. |
+| J        | yes  | C    | ( -- n) [J lim I -- J lim I] | **Outer loop index**<br>The loop index of the next to innermost DO—LOOP is placed on the stack. |
+| LEAVE    | yes  | C    |           | **Exit DO—LOOP**<br>The innermost DO—LOOP is immediately exited. Execution resumes after the LOOP statement marking the end of the loop. |
+| LOOP     | yes  | C    |           | **Increment loop index**<br>Adds one to the index of the active loop. If the limit is reached, the loop is exited. Otherwise, another iteration is begun. |
+| +LOOP    | yes  | C    | (n -- )   | **Add to loop index**<br>Adds n to the index of the active loop. If the limit is reached, the loop is exited. Otherwise, another iteration is begun. |
+| OCLEAR   | no   | IC   |           | **Clear object point stack**<br>All items on the object stack are discarded. |
+| ODEPTH   | no   | IC   | ( -- n)   | **Object stack depth**<br>Returns the number of items on the object stack. |
+| OVER     | no   | IC   | (n1 n2 -- n1 n2 n1) | **Duplicate second item**<br>The second item on the stack is copied to the top. |
+| >R       | no   | IC   | (n -- ) [ - n] | **To return stack**<br>Removes the top item from the stack and pushes it onto the return stack. |
+| R>       | no   | IC   | ( -- n) [n - ] | **From return stack**<br>The top value is removed from the return stack and pushed onto the stack. |
+| @R       | no   | IC   | ( -- n) [n - n] | **Fetch return stack**<br>The top value on the return stack is pushed onto the stack. The value is not removed from the return stack. |
+| ROT      | no   | IC   | (n1 n2 n3 -- n2 n3 n1) | **Rotate 3 items**<br>The third item on the stack is placed on the top of the stack and the second and first items are moved down. |
+| -ROT     | no   | IC   | (n1 n2 n3 -- n2 n3 n1) | **Reverse rotate**<br>Moves the top of stack to the third item, moving the third and second items up. |
 
 
 #### TODO
