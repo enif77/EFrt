@@ -4,6 +4,7 @@ namespace EFrt
 {
     using System;
     using System.Collections.Generic;
+    using System.Runtime.InteropServices;
 
     using EFrt.Libs;
     using EFrt.Stacks;
@@ -32,10 +33,10 @@ namespace EFrt
         /// </summary>
         public DataStack Stack { get; }
 
-        /// <summary>
-        /// The floating point numbers stack for user data.
-        /// </summary>
-        public FloatingPointStack FloatingPointStack { get; }
+        ///// <summary>
+        ///// The floating point numbers stack for user data.
+        ///// </summary>
+        //public FloatingPointStack FloatingPointStack { get; }
 
         /// <summary>
         /// Optional stack for user data.
@@ -72,7 +73,7 @@ namespace EFrt
         public Interpreter(IWordsList wordsList, int stackCapacity = 32, int returnStackCapacity = 32)
         {
             Stack = new DataStack(stackCapacity);
-            FloatingPointStack = new FloatingPointStack(stackCapacity);
+            //FloatingPointStack = new FloatingPointStack(stackCapacity);
             ObjectStack = new ObjectStack(stackCapacity);
             ReturnStack = new ReturnStack(returnStackCapacity);
 
@@ -85,7 +86,7 @@ namespace EFrt
         public void Reset(IEnumerable<IWordsLIbrary> libraries = null)
         {
             Stack.Clear();
-            FloatingPointStack.Clear();
+            //FloatingPointStack.Clear();
             ReturnStack.Clear();
             
             if (libraries != null)
@@ -232,58 +233,92 @@ namespace EFrt
 
         // Floating point stack.
 
+        [StructLayout(LayoutKind.Explicit)]
+        internal struct DoubleVal
+        {
+            [FieldOffset(0)] public double D;
+            [FieldOffset(0)] public int A;
+            [FieldOffset(4)] public int B;
+        }
+
         public double FGet(int index)
         {
-            return FloatingPointStack.Get(index);
+            return new DoubleVal()
+            {
+                A = Get(index * 2),
+                B = Get(index * 2 + 2),
+            }.D;
+
+            //return FloatingPointStack.Get(index);
         }
 
 
         public double FPeek()
         {
-            return FloatingPointStack.Peek();
+            return new DoubleVal()
+            {
+                B = Get(1),
+                A = Peek(),
+            }.D;
+
+            //return FloatingPointStack.Peek();
         }
 
 
         public double FPop()
         {
-            return FloatingPointStack.Pop();
+            return new DoubleVal()
+            {
+                B = Pop(),
+                A = Pop(),
+            }.D;
+
+            //return FloatingPointStack.Pop();
         }
 
 
         public void FPush(double value)
         {
-            FloatingPointStack.Push(value);
+            var v = new DoubleVal()
+            {
+                D = value
+            };
+
+            Push(v.A);
+            Push(v.B);
+
+            //FloatingPointStack.Push(value);
         }
 
 
-        public void FDrop(int count = 1)
-        {
-            FloatingPointStack.Drop(count);
-        }
+        //public void FDrop(int count = 1)
+        //{
+        //    FloatingPointStack.Drop(count);
+        //}
 
 
-        public void FDup()
-        {
-            FloatingPointStack.Dup();
-        }
+        //public void FDup()
+        //{
+        //    FloatingPointStack.Dup();
+        //}
 
 
-        public void FSwap()
-        {
-            FloatingPointStack.Swap();
-        }
+        //public void FSwap()
+        //{
+        //    FloatingPointStack.Swap();
+        //}
 
 
-        public void FOver()
-        {
-            FloatingPointStack.Over();
-        }
+        //public void FOver()
+        //{
+        //    FloatingPointStack.Over();
+        //}
 
 
-        public void FRot()
-        {
-            FloatingPointStack.Rot();
-        }
+        //public void FRot()
+        //{
+        //    FloatingPointStack.Rot();
+        //}
 
 
         // Object stack.

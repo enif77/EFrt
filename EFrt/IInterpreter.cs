@@ -34,7 +34,7 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// <summary>
         /// A floating point numbers stack.
         /// </summary>
-        FloatingPointStack FloatingPointStack { get; }
+        //FloatingPointStack FloatingPointStack { get; }
 
         /// <summary>
         /// Optional stack for user data.
@@ -228,35 +228,35 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// <param name="value">A value.</param>
         void FPush(double value);
 
-        /// <summary>
-        /// Drops N values from the floating point numbers stack.
-        /// </summary>
-        /// <param name="count">The number of values to be dropped from the floating point numbers stack.</param>
-        void FDrop(int count = 1);
+        ///// <summary>
+        ///// Drops N values from the floating point numbers stack.
+        ///// </summary>
+        ///// <param name="count">The number of values to be dropped from the floating point numbers stack.</param>
+        //void FDrop(int count = 1);
 
-        /// <summary>
-        /// Duplicates the top value on the floating point numbers stack.
-        /// F:( a -- a a ) 
-        /// </summary>
-        void FDup();
+        ///// <summary>
+        ///// Duplicates the top value on the floating point numbers stack.
+        ///// F:( a -- a a ) 
+        ///// </summary>
+        //void FDup();
 
-        /// <summary>
-        /// Swaps two values on the top of the floating point numbers stack.
-        /// F:( a b -- b a )
-        /// </summary>
-        void FSwap();
+        ///// <summary>
+        ///// Swaps two values on the top of the floating point numbers stack.
+        ///// F:( a b -- b a )
+        ///// </summary>
+        //void FSwap();
 
-        /// <summary>
-        /// Gets a value below the top of the floating point numbers stack and pushes it to the stack.
-        /// F:(a b -- a b a)
-        /// </summary>
-        void FOver();
+        ///// <summary>
+        ///// Gets a value below the top of the floating point numbers stack and pushes it to the stack.
+        ///// F:(a b -- a b a)
+        ///// </summary>
+        //void FOver();
 
-        /// <summary>
-        /// Rotates the top three floating point numbers stack values.
-        /// F:(a b c -- b c a)
-        /// </summary>
-        void FRot();
+        ///// <summary>
+        ///// Rotates the top three floating point numbers stack values.
+        ///// F:(a b c -- b c a)
+        ///// </summary>
+        //void FRot();
 
 
         // Object stack
