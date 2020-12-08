@@ -4,7 +4,6 @@ namespace EFrt
 {
     using System;
     using System.Collections.Generic;
-    using System.Runtime.InteropServices;
 
     using EFrt.Libs;
     using EFrt.Stacks;
@@ -223,59 +222,6 @@ namespace EFrt
         {
             Stack.Rot();
         }
-
-
-        //// Floating point stack.
-
-        //[StructLayout(LayoutKind.Explicit)]
-        //internal struct DoubleVal
-        //{
-        //    [FieldOffset(0)] public double D;
-        //    [FieldOffset(0)] public int A;
-        //    [FieldOffset(4)] public int B;
-        //}
-
-        //public double FGet(int index)
-        //{
-        //    return new DoubleVal()
-        //    {
-        //        A = Get(index * 2),
-        //        B = Get(index * 2 + 2),
-        //    }.D;
-        //}
-
-
-        //public double FPeek()
-        //{
-        //    return new DoubleVal()
-        //    {
-        //        B = Get(1),
-        //        A = Peek(),
-        //    }.D;
-        //}
-
-
-        //public double FPop()
-        //{
-        //    return new DoubleVal()
-        //    {
-        //        B = Pop(),
-        //        A = Pop(),
-        //    }.D;
-        //}
-
-
-        //public void FPush(double value)
-        //{
-        //    var v = new DoubleVal()
-        //    {
-        //        D = value
-        //    };
-
-        //    Push(v.A);
-        //    Push(v.B);
-        //}
-
 
         // Object stack.
 

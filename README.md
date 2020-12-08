@@ -218,11 +218,11 @@ Words: SHIFT INVERT AND OR
 
 ### FLOAT (FloatLib)
 
-Words: `F. F+ F- F* F/ F= F<> F< F<= F> F>= FABS FIX FLOAT FMAX FMIN
-  F1+ F1- F2+ F2- F2* F2/ F0= F0<> F0< F0>`
+Words: `F1+ F1- F2+ F2- F2* F2/ F0= F0<> F0< F0>`
 
 | Name  | Imm. | Mode | Stack op. | Description |
 | ---   | ---  | ---  | ---       | --- |
+| F.    | no   | IC   | F:(f -- )   | **Print floating point**<br>A floating point value on the top of the stack is printed. |
 | F+    | no   | IC   | F:(f1 f2 -- f3) | **f3 = f1 + f2**<br>Adds two floating point numbers on the top of the stack and leaves the sum on the top of the stack. |
 | F-    | no   | IC   | F:(f1 f2 -- f3) | **f3 = f1 - f2**<br>Substracts the floating value f2 from the floating value f1 and leaves the difference on the top of the stack. |
 | F*    | no   | IC   | F:(f1 f2 -- f3) | **f3 = f1 * f2**<br>Multiplies two floating point numbers on the top of the stack and leaves the product on the stack. |
@@ -262,7 +262,7 @@ Words: STRCPY, STRINT, STRLEN, STRREAL, SUBSTR, STRFORM, STRCAT, STRCHAR, STRCMP
 
 ### OBJ (ObjectLib)
 
-Words: `ODUP ODROP OSWAP OOVER OROT O-ROT ODEPTH OCLEAR`
+Words: `ODUP ODROP OSWAP OOVER OROT -OROT ODEPTH OCLEAR`
 
 ---
 
@@ -277,7 +277,6 @@ Words: `.( ." . S. CR EMIT SPACES SPACE WORDS`
 | ."    | yes  | C    |           | **Print immediate string**<br>Prints the string that follows in the input stream. |
 | CR    | no   | IC   |           | **Carriage return**<br>The folowing output will start at the new line. |
 | EMIT  | no   | IC   | (n -- )   | **Print char**<br>Prints out a character represented by a number on the top of the stack. |
-| F.    | no   | IC   | F:(f -- )   | **Print floating point**<br>A floating point value on the top of the stack is printed. |
 | S.    | no   | IC   | {s -- }   | **Print string**<br>A string on the top of the object stack is printed. |
 | SPACE | no   | IC   |           | **Print SPACE**<br>Prints out the SPACE character. |
 | SPACES | no  | IC   | (n -- )   | **Print spaces**<br>Prints out N characters of SPACE, where N is a number on the top of the stack. |

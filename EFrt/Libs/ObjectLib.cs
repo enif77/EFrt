@@ -28,7 +28,7 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "OSWAP", SwapAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "OOVER", OverAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "OROT", RotAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "O-ROT", RotBackAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "-OROT", RotBackAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ODEPTH", DepthAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "OCLEAR", ClearAction));
         }

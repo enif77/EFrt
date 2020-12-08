@@ -32,11 +32,6 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         DataStack Stack { get; }
 
         /// <summary>
-        /// A floating point numbers stack.
-        /// </summary>
-        //FloatingPointStack FloatingPointStack { get; }
-
-        /// <summary>
         /// Optional stack for user data.
         /// </summary>
         ObjectStack ObjectStack { get; }
@@ -200,65 +195,6 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// </summary>
         void Rot();
 
-
-        //// Floating point stack
-
-        ///// <summary>
-        ///// Returns a value from the floating point numbers stack at certain index.
-        ///// </summary>
-        ///// <param name="index">A value index.</param>
-        ///// <returns>A value from the floating point numbers stack.</returns>
-        //double FGet(int index);
-
-        ///// <summary>
-        ///// Returns a value from the top of the floating point numbers stack.
-        ///// </summary>
-        ///// <returns>A value from the top of the floating point numbers stack.</returns>
-        //double FPeek();
-
-        ///// <summary>
-        ///// Removes a value from the top of the floating point numbers stack and returns it.
-        ///// </summary>
-        ///// <returns>A value from the top of the floating point numbers stack.</returns>
-        //double FPop();
-
-        ///// <summary>
-        ///// Inserts a value to the floating point numbers stack.
-        ///// </summary>
-        ///// <param name="value">A value.</param>
-        //void FPush(double value);
-
-        ///// <summary>
-        ///// Drops N values from the floating point numbers stack.
-        ///// </summary>
-        ///// <param name="count">The number of values to be dropped from the floating point numbers stack.</param>
-        //void FDrop(int count = 1);
-
-        ///// <summary>
-        ///// Duplicates the top value on the floating point numbers stack.
-        ///// F:( a -- a a ) 
-        ///// </summary>
-        //void FDup();
-
-        ///// <summary>
-        ///// Swaps two values on the top of the floating point numbers stack.
-        ///// F:( a b -- b a )
-        ///// </summary>
-        //void FSwap();
-
-        ///// <summary>
-        ///// Gets a value below the top of the floating point numbers stack and pushes it to the stack.
-        ///// F:(a b -- a b a)
-        ///// </summary>
-        //void FOver();
-
-        ///// <summary>
-        ///// Rotates the top three floating point numbers stack values.
-        ///// F:(a b c -- b c a)
-        ///// </summary>
-        //void FRot();
-
-
         // Object stack
 
         /// <summary>
@@ -314,7 +250,6 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// (a b c -- b c a)
         /// </summary>
         void ORot();
-
 
         // Return stack
 

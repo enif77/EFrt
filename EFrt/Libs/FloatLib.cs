@@ -54,27 +54,12 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F0<>", IsNonZeroAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F0<", IsNegAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F0>", IsPosAction));
-
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "FDUP", DupAction));
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "F2DUP", DupTwoAction));
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "F?DUP", DupPosAction));
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "FDROP", DropAction));
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "F2DROP", DropTwoAction));
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "FSWAP", SwapAction));
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "F2SWAP", SwapTwoAction));
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "FOVER", OverAction));
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "F2OVER", OverTwoAction));
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "FROT", RotAction));
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "F2ROT", RotTwoAction));
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "F-ROT", RotBackAction));
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "FDEPTH", DepthAction));
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "FCLEAR", ClearAction));
         }
 
 
         // Floating point stack.
 
-        public double FGet(int index)
+        private double FGet(int index)
         {
             return new DoubleVal()
             {
@@ -84,7 +69,7 @@ namespace EFrt.Libs
         }
 
 
-        public double FPeek()
+        private double FPeek()
         {
             return new DoubleVal()
             {
@@ -94,7 +79,7 @@ namespace EFrt.Libs
         }
 
 
-        public double FPop()
+        private double FPop()
         {
             return new DoubleVal()
             {
@@ -104,7 +89,7 @@ namespace EFrt.Libs
         }
 
 
-        public void FPush(double value)
+        private void FPush(double value)
         {
             var v = new DoubleVal()
             {
@@ -430,160 +415,5 @@ namespace EFrt.Libs
 
             return 1;
         }
-
-        //// F:(f -- f f)
-        //private int DupAction()
-        //{
-        //    _interpreter.FDup();
-
-        //    return 1;
-        //}
-
-        //// F:(f1 f2 -- f1 f2 f1 f2)
-        //private int DupTwoAction()
-        //{
-        //    var b = _interpreter.FGet(1);
-        //    var a = _interpreter.FGet(0);
-
-        //    _interpreter.FPush(a);
-        //    _interpreter.FPush(b);
-
-        //    return 1;
-        //}
-
-        //// F:(f -- f f) or F:(f -- f)
-        //private int DupPosAction()
-        //{
-        //    if (_interpreter.FPeek() != 0.0)
-        //    {
-        //        _interpreter.FDup();
-        //    }
-
-        //    return 1;
-        //}
-
-        //// F:(f --)
-        //private int DropAction()
-        //{
-        //    _interpreter.FDrop();
-
-        //    return 1;
-        //}
-
-        //// F:(f1 f2 --)
-        //private int DropTwoAction()
-        //{
-        //    _interpreter.FDrop(2);
-
-        //    return 1;
-        //}
-
-        //// F:(f1 f2 -- f2 f1)
-        //private int SwapAction()
-        //{
-        //    _interpreter.FSwap();
-
-        //    return 1;
-        //}
-
-        //// F:(f1 f2 f3 f4 -- f3 f4 f1 f2)
-        //private int SwapTwoAction()
-        //{
-        //    var d = _interpreter.FPop();
-        //    var c = _interpreter.FPop();
-        //    var b = _interpreter.FPop();
-        //    var a = _interpreter.FPop();
-
-        //    _interpreter.FPush(c);
-        //    _interpreter.FPush(d);
-        //    _interpreter.FPush(a);
-        //    _interpreter.FPush(b);
-
-        //    return 1;
-        //}
-
-        //// F:(f1 f2 -- f1 f2 f1)
-        //private int OverAction()
-        //{
-        //    _interpreter.FOver();
-
-        //    return 1;
-        //}
-
-        //// F:(f1 f2 f3 f4 -- f1 f2 f3 f4 f1 f2)
-        //private int OverTwoAction()
-        //{
-        //    var d = _interpreter.FPop();
-        //    var c = _interpreter.FPop();
-        //    var b = _interpreter.FPop();
-        //    var a = _interpreter.FPeek();
-
-        //    _interpreter.FPush(b);
-        //    _interpreter.FPush(c);
-        //    _interpreter.FPush(d);
-        //    _interpreter.FPush(a);
-        //    _interpreter.FPush(b);
-
-        //    return 1;
-        //}
-
-        //// F:(f1 f2 f3 -- f2 f3 f1)
-        //private int RotAction()
-        //{
-        //    _interpreter.FRot();
-
-        //    return 1;
-        //}
-
-        //// F:(f1 f2 f3 f4 f5 f6 -- f3 f4 f5 f6 f1 f2)
-        //private int RotTwoAction()
-        //{
-        //    var f = _interpreter.FPop();
-        //    var e = _interpreter.FPop();
-        //    var d = _interpreter.FPop();
-        //    var c = _interpreter.FPop();
-        //    var b = _interpreter.FPop();
-        //    var a = _interpreter.FPop();
-
-        //    _interpreter.FPush(c);
-        //    _interpreter.FPush(d);
-        //    _interpreter.FPush(e);
-        //    _interpreter.FPush(f);
-        //    _interpreter.FPush(a);
-        //    _interpreter.FPush(b);
-
-        //    return 1;
-        //}
-
-        //// F:(f1 f2 f3 -- f3 f1 f2)
-        //private int RotBackAction()
-        //{
-        //    var v3 = _interpreter.FPop();
-        //    var v2 = _interpreter.FPop();
-        //    var v1 = _interpreter.FPop();
-
-        //    _interpreter.FPush(v3);
-        //    _interpreter.FPush(v1);
-        //    _interpreter.FPush(v2);
-
-        //    return 1;
-        //}
-
-        //// ( -- n)
-        //private int DepthAction()
-        //{
-        //    _interpreter.Push(_interpreter.FloatingPointStack.Count);
-
-        //    return 1;
-        //}
-
-        //// F:( -- )
-        //private int ClearAction()
-        //{
-        //    _interpreter.FloatingPointStack.Clear();
-
-        //    return 1;
-        //}
-
     }
 }
