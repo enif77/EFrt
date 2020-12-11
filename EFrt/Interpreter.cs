@@ -383,11 +383,11 @@ namespace EFrt
 
                 // Start the new word definition compilation.
                 case TokenType.Word:
-                    if (Tokenizer.ParseNumber(tok.SValue).Code != TokenType.Word)
-                    {
-                        // This word can be parsed to a number...
-                        throw new Exception($"A name of a new word expected.");
-                    }
+                    // if (Tokenizer.ParseNumber(tok.SValue).Code != TokenType.Word)
+                    // {
+                    //     // This word can be parsed to a number...
+                    //     throw new Exception($"A name of a new word expected.");
+                    // }
 
                     IsCompiling = true;
                     WordBeingDefined = new NonPrimitiveWord(this, tok.SValue.ToUpperInvariant());
