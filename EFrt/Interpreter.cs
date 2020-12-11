@@ -385,7 +385,7 @@ namespace EFrt
                 case TokenType.Word:
                     if (Tokenizer.ParseNumber(tok.SValue).Code != TokenType.Word)
                     {
-                        // This word can be parser to a number...
+                        // This word can be parsed to a number...
                         throw new Exception($"A name of a new word expected.");
                     }
 
