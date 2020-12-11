@@ -106,8 +106,6 @@ Words definition table columns:
 | LEAVE    | yes  | C    |           | **Exit DO—LOOP**<br>The innermost DO—LOOP is immediately exited. Execution resumes after the LOOP statement marking the end of the loop. |
 | LOOP     | yes  | C    |           | **Increment loop index**<br>Adds one to the index of the active loop. If the limit is reached, the loop is exited. Otherwise, another iteration is begun. |
 | +LOOP    | yes  | C    | (n -- )   | **Add to loop index**<br>Adds n to the index of the active loop. If the limit is reached, the loop is exited. Otherwise, another iteration is begun. |
-| OCLEAR   | no   | IC   |           | **Clear object point stack**<br>All items on the object stack are discarded. |
-| ODEPTH   | no   | IC   | ( -- n)   | **Object stack depth**<br>Returns the number of items on the object stack. |
 | OVER     | no   | IC   | (n1 n2 -- n1 n2 n1) | **Duplicate second item**<br>The second item on the stack is copied to the top. |
 | >R       | no   | IC   | (n -- ) [ - n] | **To return stack**<br>Removes the top item from the stack and pushes it onto the return stack. |
 | R>       | no   | IC   | ( -- n) [n - ] | **From return stack**<br>The top value is removed from the return stack and pushed onto the stack. |
@@ -168,7 +166,6 @@ Words: SYSTEM STATE PICK ROLL MARKER name CHAR [ ] INCLUDE .S ABORT ABORT" str A
 
 Words: SHIFT INVERT 
 
-
 ---
 
 ### FLOAT (FloatLib)
@@ -202,8 +199,6 @@ Words: ACOS ASIN ATAN ATAN2 COS EXP  n NEGATE FNEGATE (LIT) LOG POW SIN SQRT TAN
 
 ### STR (StringLib)
 
-Words: `S+ S"`
-
 | Name  | Imm. | Mode | Stack op. | Description |
 | ---   | ---  | ---  | ---       | --- |
 | S+    | no   | IC   | {s1 s2 -- s3} | **String concatenate**<br>The string s1 is concatenated with the string s2 and the resulting s1 + s2 string is stored at the top of the object stack. |
@@ -217,13 +212,20 @@ Words: STRCPY, STRINT, STRLEN, STRREAL, SUBSTR, STRFORM, STRCAT, STRCHAR, STRCMP
 
 ### OBJ (ObjectLib)
 
-Words: `ODUP ODROP OSWAP OOVER OROT -OROT ODEPTH OCLEAR`
+| Name  | Imm. | Mode | Stack op. | Description |
+| ---   | ---  | ---  | ---       | --- |
+| OCLEAR | no   | IC   |           | **Clear object point stack**<br>All items on the object stack are discarded. |
+| ODEPTH | no   | IC   | ( -- n)   | **Object stack depth**<br>Returns the number of items on the object stack. |
+| ODROP  | no   | IC   | {o -- }   | **Discard top of the object stack**<br>Discards the value at the top of the object stack. |
+| ODUP   | no   | IC   | {o -- o o} | **Duplicate object**<br>Duplicates the value at the top of the object stack. |
+| OVER   | no   | IC   | {o1 o2 -- o1 o2 o1} | **Duplicate the second object stack item**<br>The second item on the object stack is copied to the top. |
+| OROT   | no   | IC   | {o1 o2 o3 -- o2 o3 o1} | **Rotate 3 object stack items**<br>The third item on the object stack is placed on the top of the object stack and the second and first items are moved down. |
+| -OROT  | no   | IC   | {o1 o2 o3 -- o2 o3 o1} | **Reverse object stack rotate**<br>Moves the top of the object stack to the third item, moving the third and second items up. |
+| OSWAP  | no   | IC   | {o1 o2 -- o2 o1} | **Swap top two object stack items**<br>The top two object stack items are interchanged. |
 
 ---
 
 ### IO (IoLib)
-
-Words: `.( ." . S. CR EMIT SPACES SPACE WORDS`
 
 | Name  | Imm. | Mode | Stack op. | Description |
 | ---   | ---  | ---  | ---       | --- |
