@@ -63,8 +63,8 @@ namespace EFrt.Libs
         {
             return new DoubleVal()
             {
-                A = _interpreter.Get(index * 2),
-                B = _interpreter.Get(index * 2 + 2),
+                A = _interpreter.Pick(index * 2),
+                B = _interpreter.Pick(index * 2 + 2),
             }.D;
         }
 
@@ -73,7 +73,7 @@ namespace EFrt.Libs
         {
             return new DoubleVal()
             {
-                B = _interpreter.Get(1),
+                B = _interpreter.Pick(1),
                 A = _interpreter.Peek(),
             }.D;
         }

@@ -24,7 +24,7 @@ namespace EFrt.Words
         {
             // ( -- outer-index)  [ outer-limit outer-index inner-limit inner-index -- outer-limit outer-index inner-limit inner-index ]
 
-            Interpreter.Push(Interpreter.RGet(2));
+            Interpreter.Push(Interpreter.RPick(2));
 
             //var innerIndex = Interpreter.RPop();
             //var innerLimit = Interpreter.RPop();

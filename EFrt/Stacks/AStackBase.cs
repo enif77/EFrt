@@ -43,7 +43,7 @@ namespace EFrt.Stacks
         }
 
 
-        public T Get(int index)
+        public T Pick(int index)
         {
             return Items[Top - index];
         }

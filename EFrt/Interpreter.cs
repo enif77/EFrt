@@ -170,9 +170,9 @@ namespace EFrt
 
         // Data stack.
 
-        public int Get(int index)
+        public int Pick(int index)
         {
-            return Stack.Get(index);
+            return Stack.Pick(index);
         }
 
 
@@ -225,9 +225,9 @@ namespace EFrt
 
         // Object stack.
 
-        public object OGet(int index)
+        public object OPick(int index)
         {
-            return ObjectStack.Get(index);
+            return ObjectStack.Pick(index);
         }
 
 
@@ -281,9 +281,9 @@ namespace EFrt
 
         // Return stack.
 
-        public int RGet(int index)
+        public int RPick(int index)
         {
-            return ReturnStack.Get(index);
+            return ReturnStack.Pick(index);
         }
 
 

@@ -36,7 +36,7 @@ namespace EFrt_Tests
 
             s.Push(123);
 
-            Assert.Equal(123, s.Get(s.Top));
+            Assert.Equal(123, s.Pick(s.Top));
         }
 
         [Fact]

@@ -146,7 +146,7 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// </summary>
         /// <param name="index">A value index.</param>
         /// <returns>A value from the stack.</returns>
-        int Get(int index);
+        int Pick(int index);
 
         /// <summary>
         /// Returns a value from the top of the stack.
@@ -203,7 +203,7 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// </summary>
         /// <param name="index">A value index.</param>
         /// <returns>A value from the object stack.</returns>
-        object OGet(int index);
+        object OPick(int index);
 
         /// <summary>
         /// Returns a value from the top of the object stack.
@@ -259,7 +259,7 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// </summary>
         /// <param name="index">A value index.</param>
         /// <returns>A value from the return stack.</returns>
-        int RGet(int index);
+        int RPick(int index);
 
         /// <summary>
         /// Returns a value from the top of the return stack.

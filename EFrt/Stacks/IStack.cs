@@ -52,7 +52,7 @@ namespace EFrt.Stacks
         /// </summary>
         /// <param name="index">A position of the item in the stack. 0 = the top of the stack.</param>
         /// <returns></returns>
-        T Get(int index);
+        T Pick(int index);
                
         /// <summary>
         /// Returns a value from the top of the stack.
