@@ -181,20 +181,10 @@ namespace EFrt.Libs
             return 1;
         }
 
-        // (index -- n)
+        // (index -- )
         private int RollAction()
         {
-            var index = _interpreter.Pop();
-            var item = _interpreter.Pick(index);
-
-            var top = _interpreter.Stack.Top;
-            var stackItems = _interpreter.Stack.Items;
-            for (var i = (top - index) + 1; i <= top; i++)
-            {
-                stackItems[i - 1] = stackItems[i];
-            }
-
-            stackItems[top] = item;
+            _interpreter.Roll(_interpreter.Pop());
 
             return 1;
         }

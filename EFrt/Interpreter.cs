@@ -223,6 +223,12 @@ namespace EFrt
             Stack.Rot();
         }
 
+
+        public void Roll(int index)
+        {
+            Stack.Roll(index);
+        }
+
         // Object stack.
 
         public object OPick(int index)
@@ -278,6 +284,10 @@ namespace EFrt
             ObjectStack.Rot();
         }
 
+        public void ORoll(int index)
+        {
+            ObjectStack.Roll(index);
+        }
 
         // Return stack.
 

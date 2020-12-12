@@ -196,6 +196,12 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// </summary>
         void Rot();
 
+        /// <summary>
+        /// Rotates indexth item to the top.
+        /// </summary>
+        /// <param name="index">A stack item index, where 0 = stack top, 1 = first below top, etc.</param>
+        void Roll(int index);
+
         // Object stack
 
         /// <summary>
@@ -251,6 +257,12 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// (a b c -- b c a)
         /// </summary>
         void ORot();
+
+        /// <summary>
+        /// Rotates indexth item on the object stack to the top of the object stack.
+        /// </summary>
+        /// <param name="index">A stack item index, where 0 = stack top, 1 = first below top, etc.</param>
+        void ORoll(int index);
 
         // Return stack
 

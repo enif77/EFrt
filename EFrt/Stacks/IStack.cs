@@ -83,6 +83,12 @@ namespace EFrt.Stacks
         void Rot();
 
         /// <summary>
+        /// Rotates indexth item to the top.
+        /// </summary>
+        /// <param name="index">A stack item index, where 0 = stack top, 1 = first below top, etc.</param>
+        void Roll(int index);
+
+        /// <summary>
         /// Swaps the two top most values on the stack.
         /// </summary>
         void Swap();

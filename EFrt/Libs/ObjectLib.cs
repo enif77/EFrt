@@ -27,7 +27,8 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ODROP", DropAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "OSWAP", SwapAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "OOVER", OverAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "OROT", RotAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "OROLL", RollAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "OOROT", RotAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "-OROT", RotBackAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ODEPTH", DepthAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "OCLEAR", ClearAction));
@@ -78,6 +79,14 @@ namespace EFrt.Libs
         private int OverAction()
         {
             _interpreter.OOver();
+
+            return 1;
+        }
+
+        // (index -- )
+        private int RollAction()
+        {
+            _interpreter.ORoll(_interpreter.Pop());
 
             return 1;
         }

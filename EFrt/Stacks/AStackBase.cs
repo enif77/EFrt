@@ -107,5 +107,17 @@ namespace EFrt.Stacks
             // b c a
             Items[Top] = t;
         }
+
+        // ( -- )
+        public void Roll(int index)
+        {
+            var item = Items[Top - index];
+            for (var i = (Top - index) + 1; i <= Top; i++)
+            {
+                Items[i - 1] = Items[i];
+            }
+
+            Items[Top] = item;
+        }
     }
 }
