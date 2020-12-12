@@ -39,6 +39,7 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2SWAP", SwapTwoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "OVER", OverAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2OVER", OverTwoAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "PICK", PickAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ROT", RotAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2ROT", RotTwoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "-ROT", RotBackAction));
@@ -167,6 +168,14 @@ namespace EFrt.Libs
             _interpreter.Push(d);
             _interpreter.Push(a);
             _interpreter.Push(b);
+
+            return 1;
+        }
+
+        // (index -- n)
+        private int PickAction()
+        {
+            _interpreter.Push(_interpreter.Pick(_interpreter.Pop()));
 
             return 1;
         }
