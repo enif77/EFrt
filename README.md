@@ -237,6 +237,8 @@ Words: STRCPY, STRINT, STRLEN, STRREAL, SUBSTR, STRFORM, STRCAT, STRCHAR, STRCMP
 | .     | no   | IC   | (n -- )   | **Print top of stack**<br>Prints the integer number on the top of the stack. |
 | .(    | yes  | IC   |           | **Print constant string**<br>Immediatelly prints the string that follows in the input stream. |
 | ."    | yes  | C    |           | **Print immediate string**<br>Prints the string that follows in the input stream. |
+| .O    | no   | IC   |           | **Print object stack**<br>Prints entire contents of the object stack. TOS is the top-most item. |
+| .S    | no   | IC   |           | **Print stack**<br>Prints entire contents of stack. TOS is the right-most item. |
 | CR    | no   | IC   |           | **Carriage return**<br>The folowing output will start at the new line. |
 | EMIT  | no   | IC   | (n -- )   | **Print char**<br>Prints out a character represented by a number on the top of the stack. |
 | S.    | no   | IC   | {s -- }   | **Print string**<br>A string on the top of the object stack is printed. |

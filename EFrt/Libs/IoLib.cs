@@ -29,6 +29,8 @@ namespace EFrt.Libs
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ".", WriteAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "S.", WriteStringAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ".O", PrintObjectStackAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ".S", PrintStackAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "CR", WriteLineAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "SPACES", WriteSpacesAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "SPACE", WriteSpaceAction));
@@ -109,6 +111,32 @@ namespace EFrt.Libs
         private int WriteStringAction()
         {
             _outputWriter.Write(_interpreter.OPop().ToString());
+
+            return 1;
+        }
+
+
+        private int PrintStackAction()
+        {
+            _outputWriter.Write("Stack: ");
+            var stackItems = _interpreter.Stack.Items;
+            for (var i = 0; i <= _interpreter.Stack.Top; i++)
+            {
+                _outputWriter.Write(stackItems[i].ToString(CultureInfo.InvariantCulture));
+                _outputWriter.Write(" ");
+            }
+            
+            return 1;
+        }
+
+        private int PrintObjectStackAction()
+        {
+            _outputWriter.WriteLine("Object stack: ");
+            var stackItems = _interpreter.ObjectStack.Items;
+            for (var i = _interpreter.ObjectStack.Top; i >= 0; i--)
+            {
+                _outputWriter.WriteLine($"  { stackItems[i] }");
+            }
 
             return 1;
         }
