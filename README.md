@@ -82,7 +82,8 @@ Words definition table columns:
 | \        | yes  | IC   |           | **Line comment**<br>Skips all source characters till the closing EOLN character. |
 | : w      | no   | I    |           | **Begin definition**<br>Begins compilation of a word named "w". |
 | ;        | yes  | C    |           | **End definition**<br>Ends compilation of a word. |
-| 2DROP    | no   | IC   | (n1 n2 --) | **Double drop**<br>Discards two topmost items on the stack. |
+| 2CONSTANT x | no   | I    | (n1 n2 -- )    | **Double word constant**<br>Declares a double word constant x. When x is executed, n1 and n2 are placed on the stack. |
+| 2DROP    | no   | IC   | (n1 n2 -- ) | **Double drop**<br>Discards two topmost items on the stack. |
 | 2DUP     | no   | IC   | (n1 n2 -- n1 n2 n1 n2) | **Duplicate two**<br>Duplicates two topmost items on the stack. |
 | 2OVER    | no   | IC   | (n1 n2 n3 n4 -- n1 n2 n3 n4 n1 n2) | **Double over**<br>Copies the second pair of items on the stack to the top of the stack. |
 | 2ROT     | no   | IC   | (n1 n2 n3 n4 n5 n6 -- n3 n4 n5 n6 n1 n2) | **Double rotate**<br>Rotate the third pair on the stack to the top of the stack, moving down the first and the second pair. |
@@ -91,6 +92,7 @@ Words definition table columns:
 | BEGIN    | yes  | C    |           | **Begin loop**<br>Begins a loop. The end of the loop is marked by the matching AGAIN, REPEAT, or UNTIL. |
 | BYE      | no   | IC   |           | **Terminate execuition**<br>Asks the interpreter to terminate execution. It ends the EFrt program. |
 | CLEAR    | no   | IC   |           | **Clear stack**<br>All items on the data stack are discarded. |
+| CONSTANT x | no   | I    | (n --)    | **Declare constant**<br>Declares a constant named x. When x is executed, the value n will be left on the stack. |
 | DEPTH    | no   | IC   | ( -- n)   | **Stack depth**<br>Returns the number of items on the stack before DEPTH was executed. |
 | DO       | yes  | C    | (limit index -- ) [ - limit index ] | **Definite loop**<br>Executes the loop from the following word to the matching LOOP or +LOOP until n increments past the boundary between limit−1 and limit. Note that the loop is always executed at least once (see ?DO for an alternative to this). |
 | ?DO      | yes  | C    | (limit index -- ) [ - limit index ] | **Conditional loop**<br>If n equals limit, skip immediately to the matching LOOP or +LOOP. Otherwise, enter the loop, which is thenceforth treated as a normal DO loop. |

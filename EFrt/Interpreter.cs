@@ -360,13 +360,13 @@ namespace EFrt
         /// <summary>
         /// Returns a word, that we are actually compileing.
         /// </summary>
-        public NonPrimitiveWord WordBeingDefined { get; private set; }
+        public NonPrimitiveWord WordBeingDefined { get; set; }
 
 
         /// <summary>
         /// Begins a new word compilation.
         /// </summary>
-        public void BeginNewWordCompilation()
+        public string BeginNewWordCompilation()
         {
             // Cannot start a compilation, when already compiling.
             if (IsCompiling)
@@ -390,8 +390,7 @@ namespace EFrt
                     // }
 
                     IsCompiling = true;
-                    WordBeingDefined = new NonPrimitiveWord(this, tok.SValue.ToUpperInvariant());
-                    break;
+                    return tok.SValue.ToUpperInvariant();
 
                 default:
                     throw new Exception($"Unknown token type ({tok}) in a new word definition.");
@@ -409,12 +408,16 @@ namespace EFrt
                 throw new Exception("Not in a new word compilation.");
             }
 
-            // Now add the new word to the dictionary
-            AddWord(WordBeingDefined);
-
+            // If a new word has a non-primitive body.
+            if (WordBeingDefined != null)
+            {
+                // Now add the new word to the dictionary
+                AddWord(WordBeingDefined);
+                WordBeingDefined = null;
+            }
+            
             // Finish this word compilation.
             IsCompiling = false;
-            WordBeingDefined = null;
         }
 
 

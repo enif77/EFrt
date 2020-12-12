@@ -27,6 +27,9 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ":", BeginNewWordCompilationAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, ";", EndNewWordCompilationAction));
 
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "CONSTANT", ConstantCompilationAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2CONSTANT", DoubleConstantCompilationAction));
+
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "DUP", DupAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2DUP", DupTwoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "?DUP", DupPosAction));
@@ -297,7 +300,7 @@ namespace EFrt.Libs
         // : word-name body ;
         private int BeginNewWordCompilationAction()
         {
-            _interpreter.BeginNewWordCompilation();
+            _interpreter.WordBeingDefined = new NonPrimitiveWord(_interpreter, _interpreter.BeginNewWordCompilation());
 
             return 1;
         }
@@ -305,6 +308,27 @@ namespace EFrt.Libs
         // : word-name body ;
         private int EndNewWordCompilationAction()
         {
+            _interpreter.EndNewWordCompilation();
+
+            return 1;
+        }
+
+        // CONSTANT word-name
+        // (n1 -- )
+        private int ConstantCompilationAction()
+        {
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.Pop()));
+            _interpreter.EndNewWordCompilation();
+
+            return 1;
+        }
+
+        // 2CONSTANT word-name
+        // (n1 n2 -- )
+        private int DoubleConstantCompilationAction()
+        {
+            var n2 = _interpreter.Pop();
+            _interpreter.AddWord(new DoubleConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.Pop(), n2));
             _interpreter.EndNewWordCompilation();
 
             return 1;

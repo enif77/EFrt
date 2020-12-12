@@ -120,13 +120,14 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// <summary>
         /// Returns a word, that we are actually compileing.
         /// </summary>
-        NonPrimitiveWord WordBeingDefined { get; }
+        NonPrimitiveWord WordBeingDefined { get; set; }
 
 
         /// <summary>
         /// Begins a new word compilation.
         /// </summary>
-        void BeginNewWordCompilation();
+        /// <returns>A new word name, that followed the word, which started the new word definition.</returns>
+        string BeginNewWordCompilation();
 
         /// <summary>
         /// End a new word compilation and adds it into the known words list.
