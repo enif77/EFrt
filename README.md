@@ -110,6 +110,7 @@ Words definition table columns:
 | +LOOP    | yes  | C    | (n -- )   | **Add to loop index**<br>Adds n to the index of the active loop. If the limit is reached, the loop is exited. Otherwise, another iteration is begun. |
 | OVER     | no   | IC   | (n1 n2 -- n1 n2 n1) | **Duplicate second item**<br>The second item on the stack is copied to the top. |
 | PICK     | no   | IC   | (index -- n) | **Pick item from stack**<br>The index is removed from the stack and then the indexth stack item is copied to the top of the stack. The top of stack has index 0, the second item index 1, and so on. |
+| ROLL     | no   | IC   | (index -- n) | **Rotate indexth item to top**<br>The index is removed from the stack and then the stack item selected by index, with 0 designating the top of stack, 1 the second item, and so on, is moved to the top of the stack. The intervening stack items are moved down one item. |
 | >R       | no   | IC   | (n -- ) [ - n] | **To return stack**<br>Removes the top item from the stack and pushes it onto the return stack. |
 | R>       | no   | IC   | ( -- n) [n - ] | **From return stack**<br>The top value is removed from the return stack and pushed onto the stack. |
 | @R       | no   | IC   | ( -- n) [n - n] | **Fetch return stack**<br>The top value on the return stack is pushed onto the stack. The value is not removed from the return stack. |
@@ -125,7 +126,7 @@ Words definition table columns:
 
 #### TODO
 
-Words: SYSTEM STATE ROLL MARKER name CHAR [ ] INCLUDE .S ABORT ABORT" str ARRAY x EXIT IMMEDIATE LITERAL QUIT TRACE
+Words: SYSTEM STATE MARKER name CHAR [ ] INCLUDE .S ABORT ABORT" str ARRAY x EXIT IMMEDIATE LITERAL QUIT TRACE
   VARIABLE name (XDO) (X?DO) (XLOOP) (+XLOOP) ! @ WORDSD ' EXECUTE INT STRING EVALUATE UNLOOP EXIT
 
 ---

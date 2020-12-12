@@ -40,6 +40,7 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "OVER", OverAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2OVER", OverTwoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "PICK", PickAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ROLL", RollAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ROT", RotAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2ROT", RotTwoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "-ROT", RotBackAction));
@@ -176,6 +177,24 @@ namespace EFrt.Libs
         private int PickAction()
         {
             _interpreter.Push(_interpreter.Pick(_interpreter.Pop()));
+
+            return 1;
+        }
+
+        // (index -- n)
+        private int RollAction()
+        {
+            var index = _interpreter.Pop();
+            var item = _interpreter.Pick(index);
+
+            var top = _interpreter.Stack.Top;
+            var stackItems = _interpreter.Stack.Items;
+            for (var i = (top - index) + 1; i <= top; i++)
+            {
+                stackItems[i - 1] = stackItems[i];
+            }
+
+            stackItems[top] = item;
 
             return 1;
         }
