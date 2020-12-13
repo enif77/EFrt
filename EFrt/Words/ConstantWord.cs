@@ -3,7 +3,7 @@
 namespace EFrt.Words
 {
     /// <summary>
-    /// A word keeping an integer value.
+    /// A word keeping an integer value or an address/index of a single or double cell variable.
     /// </summary>
     public class ConstantWord : AWordBase
     {
@@ -11,7 +11,7 @@ namespace EFrt.Words
         /// Constructor.
         /// </summary>
         /// <param name="name">A name of this constant.</param>
-        /// <param name="n">A value.</param>
+        /// <param name="n">A value or an address.</param>
         public ConstantWord(IInterpreter interpreter, string name, int n)
             : base(interpreter)
         {

@@ -6,6 +6,7 @@ namespace EFrt.Libs
     using System.Globalization;
     using System.Text;
 
+    using EFrt.Values;
     using EFrt.Words;
    
 
@@ -25,10 +26,12 @@ namespace EFrt.Libs
         public void DefineWords()
         {
             _interpreter.AddWord(new ImmediateWord(_interpreter, ".(", WriteImmediateStringAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, ".\"", PrintStringAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, ".\"", PrintImmediateStringAction));
 
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, ".", WriteAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "S.", WriteStringAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ".", PrintAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "?", PrintIndirectAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F.", PrintFloatAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "S.", PrintStringAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ".O", PrintObjectStackAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ".S", PrintStackAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "CR", WriteLineAction));
@@ -65,7 +68,7 @@ namespace EFrt.Libs
             return 1;
         }
 
-        private int PrintStringAction()
+        private int PrintImmediateStringAction()
         {
             if (_interpreter.IsCompiling == false)
             {
@@ -99,16 +102,36 @@ namespace EFrt.Libs
             return 1;
         }
 
-        // (a --)
-        private int WriteAction()
+        // (n --)
+        private int PrintAction()
         {
             _outputWriter.Write("{0} ", _interpreter.Pop());
 
             return 1;
         }
-                
-        // {a --}
-        private int WriteStringAction()
+
+        // (addr --)
+        private int PrintIndirectAction()
+        {
+            _outputWriter.Write("{0} ", _interpreter.VariableStack.Items[_interpreter.Pop()]);
+
+            return 1;
+        }
+
+        // (f --)
+        private int PrintFloatAction()
+        {
+            _outputWriter.Write("{0} ", new DoubleVal()
+            {
+                B = _interpreter.Pop(),
+                A = _interpreter.Pop(),
+            }.D.ToString(CultureInfo.InvariantCulture));
+
+            return 1;
+        }
+
+        // {o --}
+        private int PrintStringAction()
         {
             _outputWriter.Write(_interpreter.OPop().ToString());
 

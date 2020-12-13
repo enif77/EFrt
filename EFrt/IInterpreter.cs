@@ -42,6 +42,11 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         ReturnStack ReturnStack { get; }
 
         /// <summary>
+        /// Variables.
+        /// </summary>
+        VariableStack VariableStack { get; }
+
+        /// <summary>
         /// The list of known words.
         /// </summary>
         IWordsList WordsList { get; }

@@ -44,6 +44,11 @@ namespace EFrt
         public ReturnStack ReturnStack { get; }
 
         /// <summary>
+        /// Variables.
+        /// </summary>
+        public VariableStack VariableStack { get; }
+
+        /// <summary>
         /// The list of known words.
         /// </summary>
         public IWordsList WordsList { get; }
@@ -65,11 +70,12 @@ namespace EFrt
         /// <param name="wordsList">A IWordsList instance.</param>
         /// <param name="stackCapacity">A mains stack capacity. 32 by default.</param>
         /// <param name="returnStackCapacity">A returns stack capacity. 32 by default.</param>
-        public Interpreter(IWordsList wordsList, int stackCapacity = 32, int returnStackCapacity = 32)
+        public Interpreter(IWordsList wordsList, int stackCapacity = 32, int returnStackCapacity = 32, int variableStackCapacity = 256)
         {
             Stack = new DataStack(stackCapacity);
             ObjectStack = new ObjectStack(stackCapacity);
             ReturnStack = new ReturnStack(returnStackCapacity);
+            VariableStack = new VariableStack(variableStackCapacity);
 
             WordsList = wordsList;
 
@@ -80,7 +86,9 @@ namespace EFrt
         public void Reset(IEnumerable<IWordsLIbrary> libraries = null)
         {
             Stack.Clear();
+            ObjectStack.Clear();
             ReturnStack.Clear();
+            VariableStack.Clear();
             
             if (libraries != null)
             {

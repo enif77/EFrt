@@ -3,8 +3,6 @@
 namespace EFrt.Libs
 {
     using System;
-    using System.Globalization;
-    using System.Runtime.InteropServices;
 
     using EFrt.Values;
     using EFrt.Words;
@@ -13,21 +11,17 @@ namespace EFrt.Libs
     public class FloatLib : IWordsLIbrary
     {
         private IInterpreter _interpreter;
-        private IOutputWriter _outputWriter;
 
 
-        public FloatLib(IInterpreter efrt, IOutputWriter outputWriter)
+        public FloatLib(IInterpreter efrt)
         {
             _interpreter = efrt;
-            _outputWriter = outputWriter;
         }
 
 
         public void DefineWords()
         {
             //_interpreter.AddWord(new ImmediateWord(_interpreter, "(FLIT)", LiteralAction));
-
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F.", WriteFloatAction));
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F+", AddAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F-", SubAction));
@@ -120,16 +114,6 @@ namespace EFrt.Libs
             var b = FPop();
             FPush(func(FPop(), b));
         }
-
-
-        // F:(f --)
-        private int WriteFloatAction()
-        {
-            _outputWriter.Write("{0} ", FPop().ToString(CultureInfo.InvariantCulture));
-
-            return 1;
-        }
-
 
         //// F:( -- f)
         //private int LiteralAction()

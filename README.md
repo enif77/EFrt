@@ -57,6 +57,20 @@ EFrt is a embeddable FORTH language implementation.
 : 1 2 ;
 1 1 + . CR  \ What result are you expecting here? :-)
 
+( Constants )
+123 CONSTANT C1  \ Defines a constant C1.
+C1 . CR          \ Prints the value of the constant - 123.
+
+( Variables )
+VARIABLE A   \ Defines a single cell variable A.
+123 A !      \ Stores 123 into the variable A.
+A @ . CR     \ Fetches and prints out the value of the variable A.
+A ? CR       \ The same thing - "?" is a shortcut for "@ .". 
+
+2VARIABLE B  \ Defines a double cell variable B.
+1.5 B 2!     \ Stores 1.5 float (a double cell value) into the variable B.
+B 2@ F.      \ Fetches and prints out the double cell (float) value of the variable B.
+
 ```
 
 
@@ -82,6 +96,10 @@ Words definition table columns:
 | \        | yes  | IC   |           | **Line comment**<br>Skips all source characters till the closing EOLN character. |
 | : w      | no   | I    |           | **Begin definition**<br>Begins compilation of a word named "w". |
 | ;        | yes  | C    |           | **End definition**<br>Ends compilation of a word. |
+| !        | no   | IC   | (n addr -- ) | **Store into address**<br>Stores the value n into the address addr (a variables stack index). |
+| @        | no   | IC   | (addr -- n) | **Fetch**<br>Loads the value at addr (a variables stack index) and leaves it at the top of the stack. |
+| 2!       | no   | IC   | (n1 n2 addr -- ) | **Store two words**<br>Stores the two words n1 and n2 at addresses addr and addr + 1. |
+| 2@       | no   | IC   | (addr -- n1 n2) | **Load two words**<br>Places the two words starting at addr on the top of the stack. |
 | 2CONSTANT x | no   | I    | (n1 n2 -- )    | **Double word constant**<br>Declares a double word constant x. When x is executed, n1 and n2 are placed on the stack. |
 | 2DROP    | no   | IC   | (n1 n2 -- ) | **Double drop**<br>Discards two topmost items on the stack. |
 | 2DUP     | no   | IC   | (n1 n2 -- n1 n2 n1 n2) | **Duplicate two**<br>Duplicates two topmost items on the stack. |
@@ -126,8 +144,8 @@ Words definition table columns:
 
 #### TODO
 
-Words: SYSTEM STATE MARKER name CHAR [ ] INCLUDE .S ABORT ABORT" str ARRAY x EXIT IMMEDIATE LITERAL QUIT TRACE
-  VARIABLE name (XDO) (X?DO) (XLOOP) (+XLOOP) ! @ WORDSD ' EXECUTE INT STRING EVALUATE UNLOOP EXIT
+Words: SYSTEM STATE MARKER name CHAR [ ] INCLUDE ABORT ABORT" str ARRAY x EXIT IMMEDIATE LITERAL QUIT TRACE
+  (XDO) (X?DO) (XLOOP) (+XLOOP) WORDSD ' EXECUTE INT STRING EVALUATE UNLOOP EXIT +!
 
 ---
 
@@ -178,7 +196,6 @@ Words: `F1+ F1- F2+ F2- F2* F2/ F0= F0<> F0< F0>`
 
 | Name  | Imm. | Mode | Stack op. | Description |
 | ---   | ---  | ---  | ---       | --- |
-| F.    | no   | IC   | F:(f -- )   | **Print floating point**<br>A floating point value on the top of the stack is printed. |
 | F+    | no   | IC   | F:(f1 f2 -- f3) | **f3 = f1 + f2**<br>Adds two floating point numbers on the top of the stack and leaves the sum on the top of the stack. |
 | F-    | no   | IC   | F:(f1 f2 -- f3) | **f3 = f1 - f2**<br>Substracts the floating value f2 from the floating value f1 and leaves the difference on the top of the stack. |
 | F*    | no   | IC   | F:(f1 f2 -- f3) | **f3 = f1 * f2**<br>Multiplies two floating point numbers on the top of the stack and leaves the product on the stack. |
@@ -235,12 +252,14 @@ Words: STRCPY, STRINT, STRLEN, STRREAL, SUBSTR, STRFORM, STRCAT, STRCHAR, STRCMP
 | Name  | Imm. | Mode | Stack op. | Description |
 | ---   | ---  | ---  | ---       | --- |
 | .     | no   | IC   | (n -- )   | **Print top of stack**<br>Prints the integer number on the top of the stack. |
+| ?     | no   | IC   | (addr -- ) | **Print indirect**<br>Prints the value at the address (a variables stack index) at the top of the stack. |
 | .(    | yes  | IC   |           | **Print constant string**<br>Immediatelly prints the string that follows in the input stream. |
 | ."    | yes  | C    |           | **Print immediate string**<br>Prints the string that follows in the input stream. |
 | .O    | no   | IC   |           | **Print object stack**<br>Prints entire contents of the object stack. TOS is the top-most item. |
 | .S    | no   | IC   |           | **Print stack**<br>Prints entire contents of stack. TOS is the right-most item. |
 | CR    | no   | IC   |           | **Carriage return**<br>The folowing output will start at the new line. |
 | EMIT  | no   | IC   | (n -- )   | **Print char**<br>Prints out a character represented by a number on the top of the stack. |
+| F.    | no   | IC   | (f -- )   | **Print floating point**<br>A floating point value on the top of the stack is printed. |
 | S.    | no   | IC   | {s -- }   | **Print string**<br>A string on the top of the object stack is printed. |
 | SPACE | no   | IC   |           | **Print SPACE**<br>Prints out the SPACE character. |
 | SPACES | no  | IC   | (n -- )   | **Print spaces**<br>Prints out N characters of SPACE, where N is a number on the top of the stack. |

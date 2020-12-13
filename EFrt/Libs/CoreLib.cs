@@ -30,6 +30,13 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "CONSTANT", ConstantCompilationAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2CONSTANT", DoubleConstantCompilationAction));
 
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "VARIABLE", VariableCompilationAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2VARIABLE", DoubleVariableCompilationAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "!", StoreToVariableAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2!", DoubleStoreToVariableAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "@", FetchFromVariableAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2@", DoubleFetchFromVariableAction));
+
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "DUP", DupAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2DUP", DupTwoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "?DUP", DupPosAction));
@@ -348,6 +355,63 @@ namespace EFrt.Libs
             var n2 = _interpreter.Pop();
             _interpreter.AddWord(new DoubleConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.Pop(), n2));
             _interpreter.EndNewWordCompilation();
+
+            return 1;
+        }
+
+        // VARIABLE word-name
+        // ( -- )
+        private int VariableCompilationAction()
+        {
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.VariableStack.Alloc(1)));
+            _interpreter.EndNewWordCompilation();
+
+            return 1;
+        }
+
+        // 2VARIABLE word-name
+        // ( -- )
+        private int DoubleVariableCompilationAction()
+        {
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.VariableStack.Alloc(2)));
+            _interpreter.EndNewWordCompilation();
+
+            return 1;
+        }
+
+        // (n addr -- )
+        private int StoreToVariableAction()
+        {
+            var addr = _interpreter.Pop();
+            _interpreter.VariableStack.Items[addr] = _interpreter.Pop();
+
+            return 1;
+        }
+
+        // (n1 n2 addr -- )
+        private int DoubleStoreToVariableAction()
+        {
+            var addr = _interpreter.Pop();
+            _interpreter.VariableStack.Items[addr + 1] = _interpreter.Pop();  // n2
+            _interpreter.VariableStack.Items[addr] = _interpreter.Pop();      // n1
+
+            return 1;
+        }
+
+        // (addr -- n)
+        private int FetchFromVariableAction()
+        {
+            _interpreter.Push(_interpreter.VariableStack.Items[_interpreter.Pop()]);
+
+            return 1;
+        }
+
+        // (addr -- n1 n2)
+        private int DoubleFetchFromVariableAction()
+        {
+            var addr = _interpreter.Pop();
+            _interpreter.Push(_interpreter.VariableStack.Items[addr]);      // n1
+            _interpreter.Push(_interpreter.VariableStack.Items[addr + 1]);  // n2
 
             return 1;
         }
