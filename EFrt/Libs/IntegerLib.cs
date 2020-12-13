@@ -264,6 +264,14 @@ namespace EFrt.Libs
             return 1;
         }
 
+        // (n -- flag)
+        private int IsPosAction()
+        {
+            Function((a) => (a > 0) ? -1 : 0);
+
+            return 1;
+        }
+
         // (n1 -- n2)
         private int NotAction()
         {
@@ -272,18 +280,18 @@ namespace EFrt.Libs
             return 1;
         }
 
-        // (n1 n2 -- flag)
+        // (n1 n2 -- n3)
         private int AndAction()
         {
-            Function((a, b) => (a != 0 && b != 0) ? -1 : 0);
+            Function((a, b) => a & b);
 
             return 1;
         }
 
-        // (n1 n2 -- flag)
+        // (n1 n2 -- n3)
         private int OrAction()
         {
-            Function((a, b) => (a != 0 || b != 0) ? -1 : 0);
+            Function((a, b) => a | b);
 
             return 1;
         }
@@ -292,14 +300,6 @@ namespace EFrt.Libs
         private int XorAction()
         {
             Function((a, b) => a ^ b);
-
-            return 1;
-        }
-
-        // (n -- flag)
-        private int IsPosAction()
-        {
-            Function((a) => (a > 0) ? -1 : 0);
 
             return 1;
         }
