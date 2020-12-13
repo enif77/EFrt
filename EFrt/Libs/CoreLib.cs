@@ -58,8 +58,8 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "R>", FromReturnStackAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "R@", FetchReturnStackAction));
 
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FALSE", FalseAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "TRUE", TrueAction));
+            _interpreter.AddWord(new ConstantWord(_interpreter, "FALSE", 0));
+            _interpreter.AddWord(new ConstantWord(_interpreter, "TRUE", -1));
 
             _interpreter.AddWord(new ImmediateWord(_interpreter, "IF", IfAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "ELSE", ElseAction));
@@ -416,21 +416,21 @@ namespace EFrt.Libs
             return 1;
         }
 
-        // ( -- a)
-        private int FalseAction()
-        {
-            _interpreter.Push(0);
+        //// ( -- a)
+        //private int FalseAction()
+        //{
+        //    _interpreter.Push(0);
 
-            return 1;
-        }
+        //    return 1;
+        //}
 
-        // ( -- a)
-        private int TrueAction()
-        {
-            _interpreter.Push(-1);
+        //// ( -- a)
+        //private int TrueAction()
+        //{
+        //    _interpreter.Push(-1);
 
-            return 1;
-        }
+        //    return 1;
+        //}
 
         // ( -- )
         private int ByeAction()
