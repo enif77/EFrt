@@ -240,6 +240,7 @@ Words: STRCPY, STRINT, STRLEN, STRREAL, SUBSTR, STRFORM, STRCAT, STRCHAR, STRCMP
 | ODROP  | no   | IC   | {o -- }   | **Discard top of the object stack**<br>Discards the value at the top of the object stack. |
 | ODUP   | no   | IC   | {o -- o o} | **Duplicate object**<br>Duplicates the value at the top of the object stack. |
 | OOVER  | no   | IC   | {o1 o2 -- o1 o2 o1} | **Duplicate the second object stack item**<br>The second item on the object stack is copied to the top. |
+| OPICK  | no   | IC   | (n -- ) { -- o} | **Pick item from the object stack**<br>The index is removed from the stack and then the indexth object stack item is copied to the top of the object stack. The top of object stack has index 0, the second item of the object stack index 1, and so on. |
 | OROLL  | no   | IC   | (n -- )   | **Rotate indexth item to top**<br>The index is removed from the stack and then the object stack item selected by the index, with 0 designating the top of the object stack, 1 the second item, and so on, is moved to the top of the objects stack. The intervening objects stack items are moved down one item. |
 | OROT   | no   | IC   | {o1 o2 o3 -- o2 o3 o1} | **Rotate 3 object stack items**<br>The third item on the object stack is placed on the top of the object stack and the second and first items are moved down. |
 | -OROT  | no   | IC   | {o1 o2 o3 -- o2 o3 o1} | **Reverse object stack rotate**<br>Moves the top of the object stack to the third item, moving the third and second items up. |
