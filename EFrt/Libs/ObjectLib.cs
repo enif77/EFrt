@@ -4,6 +4,7 @@ namespace EFrt.Libs
 {
     using System;
 
+    using EFrt.Stacks;
     using EFrt.Words;
     
 
@@ -13,16 +14,23 @@ namespace EFrt.Libs
     public class ObjectLib : IWordsLIbrary
     {
         private IInterpreter _interpreter;
+        private ObjectStack _objectVariableStack;
 
 
-        public ObjectLib(IInterpreter efrt)
+
+        public ObjectLib(IInterpreter efrt, int variableStackCapacity = 256)
         {
             _interpreter = efrt;
+            _objectVariableStack = new ObjectStack(variableStackCapacity);
         }
 
 
         public void DefineWords()
         {
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "OVARIABLE", VariableCompilationAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "O!", StoreToVariableAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "O@", FetchFromVariableAction));
+
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ODUP", DupAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ODROP", DropAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "OSWAP", SwapAction));
@@ -51,6 +59,32 @@ namespace EFrt.Libs
             stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
         }
 
+        // OVARIABLE word-name
+        // ( -- )
+        private int VariableCompilationAction()
+        {
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _objectVariableStack.Alloc(1)));
+            _interpreter.EndNewWordCompilation();
+
+            return 1;
+        }
+
+        // (addr -- ) {o -- }
+        private int StoreToVariableAction()
+        {
+            var addr = _interpreter.Pop();
+            _objectVariableStack.Items[addr] = _interpreter.OPop();
+
+            return 1;
+        }
+
+        // (addr -- ) { -- o}
+        private int FetchFromVariableAction()
+        {
+            _interpreter.OPush(_objectVariableStack.Items[_interpreter.Pop()]);
+
+            return 1;
+        }
 
         // {o -- o o}
         private int DupAction()

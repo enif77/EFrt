@@ -106,6 +106,7 @@ Words definition table columns:
 | 2OVER    | no   | IC   | (n1 n2 n3 n4 -- n1 n2 n3 n4 n1 n2) | **Double over**<br>Copies the second pair of items on the stack to the top of the stack. |
 | 2ROT     | no   | IC   | (n1 n2 n3 n4 n5 n6 -- n3 n4 n5 n6 n1 n2) | **Double rotate**<br>Rotate the third pair on the stack to the top of the stack, moving down the first and the second pair. |
 | 2SWAP    | no   | IC   | (n1 n2 n3 n4 -- n3 n4 n1 n2) | **Double swap**<br>Swaps the first and the second pair on the stack. |
+| 2VARIABLE x | no   | I    |            | **Double variable**<br>Creates a two cell (8 byte) variable named x. When x is executed, the address of the 8 byte area is placed on the stack. |
 | AGAIN    | yes  | C    |           | **Indefinite loop**<br>Marks the end of an idefinite loop opened by the matching BEGIN. |
 | BEGIN    | yes  | C    |           | **Begin loop**<br>Begins a loop. The end of the loop is marked by the matching AGAIN, REPEAT, or UNTIL. |
 | BYE      | no   | IC   |           | **Terminate execuition**<br>Asks the interpreter to terminate execution. It ends the EFrt program. |
@@ -139,6 +140,7 @@ Words definition table columns:
 | THEN     | yes  | C    | ( -- flag) | **End if**<br>Used in an IF—ELSE—THEN sequence, marks the end of the conditional statement. |
 | TRUE     | no   | IC   | ( -- flag) | **True**<br>Constant that leaves the -1 (true) on the top of the stack. |
 | UNTIL    | yes  | C    | (flag -- ) | **End BEGIN—UNTIL loop**<br>If flag is zero, the loop continues execution at the word following the matching BEGIN. If flag is nonzero, the loop is exited and the word following the UNTIL is executed. |
+| VARIABLE x | no   | I    |            | **Declare variable**<br>A variable named x is declared and its value is set to zero. When x is executed, its address will be placed on the stack. Four bytes are reserved on the heap for the variable's value. |
 | WHILE    | yes  | C    | (flag -- ) | **Decide BEGIN—WHILE—REPEAT loop**<br>If flag is nonzero, execution continues after the WHILE. If flag is zero, the loop is exited and execution resumed after the REPEAT that marks the end of the loop. |
 
 
@@ -235,6 +237,8 @@ Words: STRCPY, STRINT, STRLEN, STRREAL, SUBSTR, STRFORM, STRCAT, STRCHAR, STRCMP
 
 | Name  | Imm. | Mode | Stack op. | Description |
 | ---   | ---  | ---  | ---       | --- |
+| O!     | no   | IC   | (addr -- ) {o -- } | **Store into address**<br>Stores the objct o into the address addr (a object variables stack index). |
+| O@     | no   | IC   | (addr -- ) { -- o} | **Fetch**<br>Loads the object at addr (a object variables stack index) and leaves it at the top of the object stack. |
 | OCLEAR | no   | IC   |           | **Clear object point stack**<br>All items on the object stack are discarded. |
 | ODEPTH | no   | IC   | ( -- n)   | **Object stack depth**<br>Returns the number of items on the object stack. |
 | ODROP  | no   | IC   | {o -- }   | **Discard top of the object stack**<br>Discards the value at the top of the object stack. |
@@ -245,6 +249,7 @@ Words: STRCPY, STRINT, STRLEN, STRREAL, SUBSTR, STRFORM, STRCAT, STRCHAR, STRCMP
 | OROT   | no   | IC   | {o1 o2 o3 -- o2 o3 o1} | **Rotate 3 object stack items**<br>The third item on the object stack is placed on the top of the object stack and the second and first items are moved down. |
 | -OROT  | no   | IC   | {o1 o2 o3 -- o2 o3 o1} | **Reverse object stack rotate**<br>Moves the top of the object stack to the third item, moving the third and second items up. |
 | OSWAP  | no   | IC   | {o1 o2 -- o2 o1} | **Swap top two object stack items**<br>The top two object stack items are interchanged. |
+| OVARIABLE x | no   | I    |            | **Declare object variable**<br>An object type variable named x is declared and its value is set to null. When x is executed, its address will be placed on the stack. An object reference is reserved on the object variables stack for the variable's value. |
 
 ---
 
