@@ -23,6 +23,8 @@ namespace EFrt.Libs
 
         public void DefineWords()
         {
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "OALLOT", AllotAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "OHERE", HereAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "OVARIABLE", VariableCompilationAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "O!", StoreToVariableAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "O@", FetchFromVariableAction));
@@ -53,6 +55,22 @@ namespace EFrt.Libs
             var stack = _interpreter.ObjectStack;
             var top = stack.Top;
             stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
+        }
+
+        // (n -- addr)
+        private int AllotAction()
+        {
+            _interpreter.Push(_interpreter.ObjectHeap.Alloc(_interpreter.Pop()));
+
+            return 1;
+        }
+
+        // ( -- addr)
+        private int HereAction()
+        {
+            _interpreter.Push(_interpreter.ObjectHeap.Top);
+
+            return 1;
         }
 
         // OVARIABLE word-name

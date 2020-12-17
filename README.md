@@ -108,6 +108,7 @@ Words definition table columns:
 | 2SWAP    | no   | IC   | (n1 n2 n3 n4 -- n3 n4 n1 n2) | **Double swap**<br>Swaps the first and the second pair on the stack. |
 | 2VARIABLE x | no   | I    |            | **Double variable**<br>Creates a two cell (8 byte) variable named x. When x is executed, the address of the 8 byte area is placed on the stack. |
 | AGAIN    | yes  | C    |           | **Indefinite loop**<br>Marks the end of an idefinite loop opened by the matching BEGIN. |
+| ALLOT    | no   | IC   | (n -- addr) | **Allocate heap**<br>Allocates n cells of heap space. |
 | BEGIN    | yes  | C    |           | **Begin loop**<br>Begins a loop. The end of the loop is marked by the matching AGAIN, REPEAT, or UNTIL. |
 | BL       | no   | IC   | ( -- n)   | **Blank**<br>Constant that leaves 32 (the ASCII code of the SPACE char) on the top of the stack. |
 | BYE      | no   | IC   |           | **Terminate execuition**<br>Asks the interpreter to terminate execution. It ends the EFrt program. |
@@ -122,6 +123,7 @@ Words definition table columns:
 | ELSE     | yes  | C    | (n -- n n) | **Else**<br>Used in an IF—ELSE—THEN sequence, delimits the code to be executed if the if-condition was false. |
 | FALSE    | no   | IC   | ( -- flag) | **False**<br>Constant that leaves the 0 (false) on the top of the stack. |
 | FORGET w | no   | IC   |           | **Forget word**<br>The most recent definition of word w is deleted, along with all words declared more recently than the named word. |
+| HERE     | no   | IC   | ( -- addr) | **Heap address**<br>The current heap allocation address is placed on the top of the stack. addr + 1 is the first free heap cell. |
 | I        | yes  | C    | ( -- n) [n -- n] | **Inner loop index**<br>The index of the innermost DO—LOOP is placed on the stack. |
 | IF       | yes  | C    | (flag --) | **Conditional statement**<br>If flag is nonzero, the following statements are executed. Otherwise, execution resumes after the matching ELSE clause, if any, or after the matching THEN. |
 | J        | yes  | C    | ( -- n) [J lim I -- J lim I] | **Outer loop index**<br>The loop index of the next to innermost DO—LOOP is placed on the stack. |
@@ -240,10 +242,12 @@ Words: STRCPY, STRINT, STRLEN, STRREAL, SUBSTR, STRFORM, STRCAT, STRCHAR, STRCMP
 | ---   | ---  | ---  | ---       | --- |
 | O!     | no   | IC   | (addr -- ) {o -- } | **Store into address**<br>Stores the objct o into the address addr (a object variables stack index). |
 | O@     | no   | IC   | (addr -- ) { -- o} | **Fetch**<br>Loads the object at addr (a object variables stack index) and leaves it at the top of the object stack. |
+| OALLOT | no   | IC   | (n -- addr) | **Allocate object heap**<br>Allocates n cells of object heap space. |
 | OCLEAR | no   | IC   |           | **Clear object point stack**<br>All items on the object stack are discarded. |
 | ODEPTH | no   | IC   | ( -- n)   | **Object stack depth**<br>Returns the number of items on the object stack. |
 | ODROP  | no   | IC   | {o -- }   | **Discard top of the object stack**<br>Discards the value at the top of the object stack. |
 | ODUP   | no   | IC   | {o -- o o} | **Duplicate object**<br>Duplicates the value at the top of the object stack. |
+| OHERE  | no   | IC   | ( -- addr) | **Object heap address**<br>The current object heap allocation address is placed on the top of the stack. addr + 1 is the first free object heap cell. |
 | OOVER  | no   | IC   | {o1 o2 -- o1 o2 o1} | **Duplicate the second object stack item**<br>The second item on the object stack is copied to the top. |
 | OPICK  | no   | IC   | (n -- ) { -- o} | **Pick item from the object stack**<br>The index is removed from the stack and then the indexth object stack item is copied to the top of the object stack. The top of object stack has index 0, the second item of the object stack index 1, and so on. |
 | OROLL  | no   | IC   | (n -- )   | **Rotate indexth item to top**<br>The index is removed from the stack and then the object stack item selected by the index, with 0 designating the top of the object stack, 1 the second item, and so on, is moved to the top of the objects stack. The intervening objects stack items are moved down one item. |
