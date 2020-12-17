@@ -71,6 +71,13 @@ namespace EFrt.Words
             var index = 0;
             while (index <= _lastWordIndex)
             {
+                if (Interpreter.IsExecutionTerminated)
+                {
+                    index = 0;
+
+                    break;
+                }
+
                 var word = _words[index];
                 index += word.IsControlWord 
                     ? word.Action()                                      // Control and value words are defined by themselves.

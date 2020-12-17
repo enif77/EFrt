@@ -59,14 +59,19 @@ namespace EFrt
         public IWordsList WordsList { get; }
 
         /// <summary>
-        /// Thrue, if this interpreter is currently compiling a new word.
+        /// True, if this interpreter is coml´piling a new word, variable or constant.
         /// </summary>
-        public bool IsCompiling { get; private set; }
+        public bool IsCompiling => InterpreterState == InterpreterState.Compiling;
 
         /// <summary>
-        /// A flag signaling, that this program execution is termineted.
+        /// True, if this program execution is currently termineted.
         /// </summary>
-        public bool IsExecutionTerminated { get; private set; }
+        public bool IsExecutionTerminated => InterpreterState == InterpreterState.Breaking || InterpreterState == InterpreterState.Terminating;
+
+        /// <summary>
+        /// The state, in which is this interpreter.
+        /// </summary>
+        public InterpreterState InterpreterState { get; private set; }
 
 
         /// <summary>
@@ -108,12 +113,20 @@ namespace EFrt
                     library.DefineWords();
                 }
             }
+
+            InterpreterState = InterpreterState.Interpreting;
+        }
+
+
+        public void BreakExecution()
+        {
+            InterpreterState = InterpreterState.Breaking;
         }
 
 
         public void TerminateExecution()
         {
-            IsExecutionTerminated = true;
+            InterpreterState = InterpreterState.Terminating;
         }
 
 
@@ -410,7 +423,7 @@ namespace EFrt
 
                 // Start the new word definition compilation.
                 case TokenType.Word:
-                    IsCompiling = true;
+                    InterpreterState = InterpreterState.Compiling;
                     return tok.SValue.ToUpperInvariant();
 
                 default:
@@ -436,9 +449,9 @@ namespace EFrt
                 AddWord(WordBeingDefined);
                 WordBeingDefined = null;
             }
-            
+
             // Finish this word compilation.
-            IsCompiling = false;
+            InterpreterState = InterpreterState.Interpreting;
         }
 
 
@@ -508,7 +521,7 @@ namespace EFrt
                                 // No, it is some unknown word.
                                 default:
                                     // End this word compiling.
-                                    IsCompiling = false;
+                                    InterpreterState = InterpreterState.Interpreting;   // TODO: Just break here.
 
                                     throw new Exception($"Unknown word '{tok.SValue}' canot be executed.");
                             }

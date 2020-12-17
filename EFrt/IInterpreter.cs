@@ -56,18 +56,22 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// </summary>
         IWordsList WordsList { get; }
 
-
         /// <summary>
-        /// True, if this interpreter is actually compilling a new word.
+        /// True, if this interpreter is compiling a new word, variable or constant.
         /// </summary>
         bool IsCompiling { get; }
 
         /// <summary>
-        /// Returns true, if the interpreter should terminate the current script execution.
+        /// True, if this program execution is currently termineted.
         /// </summary>
         bool IsExecutionTerminated { get; }
-        
 
+        /// <summary>
+        /// The state, in which is this interpreter.
+        /// </summary>
+        InterpreterState InterpreterState { get; }
+
+   
         /// <summary>
         /// Cleans up the interlan interpreters state.
         /// </summary>
@@ -85,6 +89,11 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// </summary>
         /// <param name="sourceReader">A FORTH program source reader.</param>
         void Execute(ISourceReader sourceReader);
+
+        /// <summary>
+        /// Asks the interpreter to break the current script execution.
+        /// </summary>
+        void BreakExecution();
 
         /// <summary>
         /// Asks the interpreter to terminate the current script execution.

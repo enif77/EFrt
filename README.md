@@ -107,6 +107,7 @@ Words definition table columns:
 | 2ROT     | no   | IC   | (n1 n2 n3 n4 n5 n6 -- n3 n4 n5 n6 n1 n2) | **Double rotate**<br>Rotate the third pair on the stack to the top of the stack, moving down the first and the second pair. |
 | 2SWAP    | no   | IC   | (n1 n2 n3 n4 -- n3 n4 n1 n2) | **Double swap**<br>Swaps the first and the second pair on the stack. |
 | 2VARIABLE x | no   | I    |            | **Double variable**<br>Creates a two cell (8 byte) variable named x. When x is executed, the address of the 8 byte area is placed on the stack. |
+| ABORT    | no   | IC   |           | **Abort**<br>Clears the stack and the object and performs a QUIT. |
 | AGAIN    | yes  | C    |           | **Indefinite loop**<br>Marks the end of an idefinite loop opened by the matching BEGIN. |
 | ALLOT    | no   | IC   | (n -- addr) | **Allocate heap**<br>Allocates n cells of heap space. |
 | BEGIN    | yes  | C    |           | **Begin loop**<br>Begins a loop. The end of the loop is marked by the matching AGAIN, REPEAT, or UNTIL. |
@@ -132,6 +133,7 @@ Words definition table columns:
 | +LOOP    | yes  | C    | (n -- )   | **Add to loop index**<br>Adds n to the index of the active loop. If the limit is reached, the loop is exited. Otherwise, another iteration is begun. |
 | OVER     | no   | IC   | (n1 n2 -- n1 n2 n1) | **Duplicate second item**<br>The second item on the stack is copied to the top. |
 | PICK     | no   | IC   | (index -- n) | **Pick item from stack**<br>The index is removed from the stack and then the indexth stack item is copied to the top of the stack. The top of stack has index 0, the second item index 1, and so on. |
+| QUIT     | no   | IC   |           | **Quit execution**<br>The return stack is cleared and control is returned to the interpreter. The stack and the object stack are not disturbed. |
 | ROLL     | no   | IC   | (index -- n) | **Rotate indexth item to top**<br>The index is removed from the stack and then the stack item selected by index, with 0 designating the top of stack, 1 the second item, and so on, is moved to the top of the stack. The intervening stack items are moved down one item. |
 | >R       | no   | IC   | (n -- ) [ - n] | **To return stack**<br>Removes the top item from the stack and pushes it onto the return stack. |
 | R>       | no   | IC   | ( -- n) [n - ] | **From return stack**<br>The top value is removed from the return stack and pushed onto the stack. |
@@ -149,7 +151,7 @@ Words definition table columns:
 
 #### TODO
 
-Words: SYSTEM STATE MARKER name CHAR [ ] INCLUDE ABORT ABORT" str ARRAY x EXIT IMMEDIATE LITERAL QUIT TRACE
+Words: SYSTEM STATE MARKER name CHAR [ ] INCLUDE ABORT" str ARRAY x EXIT IMMEDIATE LITERAL TRACE
   (XDO) (X?DO) (XLOOP) (+XLOOP) WORDSD ' EXECUTE INT STRING EVALUATE UNLOOP EXIT +!
 
 ---

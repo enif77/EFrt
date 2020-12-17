@@ -41,7 +41,9 @@ namespace EFrtApp
                     Console.WriteLine(ex.Message);
                 }
 
-                if (interpreter.IsExecutionTerminated)
+                // TODO: Breaking state.
+
+                if (interpreter.InterpreterState == InterpreterState.Terminating)
                 {
                     Console.WriteLine();
                     Console.WriteLine("Bye!");

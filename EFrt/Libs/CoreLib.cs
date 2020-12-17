@@ -81,6 +81,9 @@ namespace EFrt.Libs
             _interpreter.AddWord(new ImmediateWord(_interpreter, "J", GetOuterIndexAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "LEAVE", LeaveAction));
 
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ABORT", AbortAction));
+            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "ABORT\"", AbortMessageAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "QUIT", QuitAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "BYE", ByeAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "FORGET", ForgetAction));
         }
@@ -435,21 +438,25 @@ namespace EFrt.Libs
             return 1;
         }
 
-        //// ( -- a)
-        //private int FalseAction()
-        //{
-        //    _interpreter.Push(0);
 
-        //    return 1;
-        //}
+        public int AbortAction()
+        {
+            _interpreter.Stack.Clear();
+            _interpreter.ObjectStack.Clear();
 
-        //// ( -- a)
-        //private int TrueAction()
-        //{
-        //    _interpreter.Push(-1);
+            // TODO: Clear the heap?
 
-        //    return 1;
-        //}
+            return QuitAction();
+        }
+
+
+        private int QuitAction()
+        {
+            _interpreter.ReturnStack.Clear();
+            _interpreter.BreakExecution();
+
+            return 1;
+        }
 
         // ( -- )
         private int ByeAction()
