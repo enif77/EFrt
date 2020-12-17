@@ -109,6 +109,7 @@ Words definition table columns:
 | 2VARIABLE x | no   | I    |            | **Double variable**<br>Creates a two cell (8 byte) variable named x. When x is executed, the address of the 8 byte area is placed on the stack. |
 | AGAIN    | yes  | C    |           | **Indefinite loop**<br>Marks the end of an idefinite loop opened by the matching BEGIN. |
 | BEGIN    | yes  | C    |           | **Begin loop**<br>Begins a loop. The end of the loop is marked by the matching AGAIN, REPEAT, or UNTIL. |
+| BL       | no   | IC   | ( -- n)   | **Blank**<br>Constant that leaves 32 (the ASCII code of the SPACE char) on the top of the stack. |
 | BYE      | no   | IC   |           | **Terminate execuition**<br>Asks the interpreter to terminate execution. It ends the EFrt program. |
 | CLEAR    | no   | IC   |           | **Clear stack**<br>All items on the data stack are discarded. |
 | CONSTANT x | no   | I    | (n --)    | **Declare constant**<br>Declares a constant named x. When x is executed, the value n will be left on the stack. |

@@ -58,6 +58,7 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "R>", FromReturnStackAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "R@", FetchReturnStackAction));
 
+            _interpreter.AddWord(new ConstantWord(_interpreter, "BL", ' '));
             _interpreter.AddWord(new ConstantWord(_interpreter, "FALSE", 0));
             _interpreter.AddWord(new ConstantWord(_interpreter, "TRUE", -1));
 
