@@ -29,7 +29,7 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// <summary>
         /// Data stack.
         /// </summary>
-        DataStack Stack { get; }
+        Stack Stack { get; }
 
         /// <summary>
         /// Optional stack for user data.
@@ -42,9 +42,14 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         ReturnStack ReturnStack { get; }
 
         /// <summary>
-        /// Variables.
+        /// Heap - variables etc.
         /// </summary>
-        VariableStack VariableStack { get; }
+        Heap Heap { get; }
+
+        /// <summary>
+        /// Heap - variables etc.
+        /// </summary>
+        ObjectHeap ObjectHeap { get; }
 
         /// <summary>
         /// The list of known words.

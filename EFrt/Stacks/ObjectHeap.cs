@@ -2,9 +2,9 @@
 
 namespace EFrt.Stacks
 {
-    public class VariableStack : AStackBase<int>
+    public class ObjectHeap : AStackBase<object>
     {
-        public VariableStack(int capacity = 256)
+        public ObjectHeap(int capacity = 32)
             : base(capacity)
         {
         }

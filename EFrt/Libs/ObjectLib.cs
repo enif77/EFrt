@@ -4,7 +4,6 @@ namespace EFrt.Libs
 {
     using System;
 
-    using EFrt.Stacks;
     using EFrt.Words;
     
 
@@ -14,14 +13,11 @@ namespace EFrt.Libs
     public class ObjectLib : IWordsLIbrary
     {
         private IInterpreter _interpreter;
-        private ObjectStack _objectVariableStack;
 
 
-
-        public ObjectLib(IInterpreter efrt, int variableStackCapacity = 256)
+        public ObjectLib(IInterpreter efrt)
         {
             _interpreter = efrt;
-            _objectVariableStack = new ObjectStack(variableStackCapacity);
         }
 
 
@@ -63,7 +59,7 @@ namespace EFrt.Libs
         // ( -- )
         private int VariableCompilationAction()
         {
-            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _objectVariableStack.Alloc(1)));
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.ObjectHeap.Alloc(1)));
             _interpreter.EndNewWordCompilation();
 
             return 1;
@@ -73,7 +69,7 @@ namespace EFrt.Libs
         private int StoreToVariableAction()
         {
             var addr = _interpreter.Pop();
-            _objectVariableStack.Items[addr] = _interpreter.OPop();
+            _interpreter.ObjectHeap.Items[addr] = _interpreter.OPop();
 
             return 1;
         }
@@ -81,7 +77,7 @@ namespace EFrt.Libs
         // (addr -- ) { -- o}
         private int FetchFromVariableAction()
         {
-            _interpreter.OPush(_objectVariableStack.Items[_interpreter.Pop()]);
+            _interpreter.OPush(_interpreter.ObjectHeap.Items[_interpreter.Pop()]);
 
             return 1;
         }

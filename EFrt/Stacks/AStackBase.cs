@@ -89,7 +89,8 @@ namespace EFrt.Stacks
         // (a b -- a b a)
         public void Over()
         {
-            Items[Top++] = Items[Top - 1];
+            Items[Top + 1] = Items[Top - 1];
+            Top++;
         }
 
         // (a b c -- b c a)

@@ -113,7 +113,7 @@ namespace EFrt.Libs
         // (addr --)
         private int PrintIndirectAction()
         {
-            _outputWriter.Write("{0} ", _interpreter.VariableStack.Items[_interpreter.Pop()]);
+            _outputWriter.Write("{0} ", _interpreter.Heap.Items[_interpreter.Pop()]);
 
             return 1;
         }

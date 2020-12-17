@@ -31,7 +31,7 @@ namespace EFrt
         /// <summary>
         /// The main stack for user data.
         /// </summary>
-        public DataStack Stack { get; }
+        public Stack Stack { get; }
 
         /// <summary>
         /// Optional stack for user data.
@@ -46,7 +46,12 @@ namespace EFrt
         /// <summary>
         /// Variables.
         /// </summary>
-        public VariableStack VariableStack { get; }
+        public Heap Heap { get; }
+
+        /// <summary>
+        /// Variables.
+        /// </summary>
+        public ObjectHeap ObjectHeap { get; }
 
         /// <summary>
         /// The list of known words.
@@ -70,12 +75,15 @@ namespace EFrt
         /// <param name="wordsList">A IWordsList instance.</param>
         /// <param name="stackCapacity">A mains stack capacity. 32 by default.</param>
         /// <param name="returnStackCapacity">A returns stack capacity. 32 by default.</param>
-        public Interpreter(IWordsList wordsList, int stackCapacity = 32, int returnStackCapacity = 32, int variableStackCapacity = 256)
+        /// <param name="heapCapacity">A heap capacity. 256 by default.</param>
+        /// <param name="returnStackCapacity">An object heap capacity. 256 by default.</param>
+        public Interpreter(IWordsList wordsList, int stackCapacity = 32, int returnStackCapacity = 32, int heapCapacity = 256, int objectHeapCapacity = 256)
         {
-            Stack = new DataStack(stackCapacity);
+            Stack = new Stack(stackCapacity);
             ObjectStack = new ObjectStack(stackCapacity);
             ReturnStack = new ReturnStack(returnStackCapacity);
-            VariableStack = new VariableStack(variableStackCapacity);
+            Heap = new Heap(heapCapacity);
+            ObjectHeap = new ObjectHeap(objectHeapCapacity);
 
             WordsList = wordsList;
 
@@ -88,7 +96,8 @@ namespace EFrt
             Stack.Clear();
             ObjectStack.Clear();
             ReturnStack.Clear();
-            VariableStack.Clear();
+            Heap.Clear();
+            ObjectHeap.Clear();
             
             if (libraries != null)
             {
@@ -401,12 +410,6 @@ namespace EFrt
 
                 // Start the new word definition compilation.
                 case TokenType.Word:
-                    // if (Tokenizer.ParseNumber(tok.SValue).Code != TokenType.Word)
-                    // {
-                    //     // This word can be parsed to a number...
-                    //     throw new Exception($"A name of a new word expected.");
-                    // }
-
                     IsCompiling = true;
                     return tok.SValue.ToUpperInvariant();
 
