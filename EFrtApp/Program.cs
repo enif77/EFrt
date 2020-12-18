@@ -22,6 +22,7 @@ namespace EFrtApp
                 new CoreLib(interpreter),
                 new IoLib(interpreter, outputWriter),
                 new IntegerLib(interpreter),
+                new LongIntegerLib(interpreter),
                 new FloatLib(interpreter),
                 new StringLib(interpreter),
                 new ObjectLib(interpreter),

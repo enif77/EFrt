@@ -49,6 +49,7 @@ namespace EFrt.Libs
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "0<>", IsNonZeroAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "0<", IsNegAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "0>", IsPosAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "NEGATE", NegateAction));
         }
 
 
@@ -268,6 +269,14 @@ namespace EFrt.Libs
         private int IsPosAction()
         {
             Function((a) => (a > 0) ? -1 : 0);
+
+            return 1;
+        }
+
+        // (n1 -- n2)
+        private int NegateAction()
+        {
+            Function((a) => -a);
 
             return 1;
         }

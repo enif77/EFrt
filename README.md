@@ -12,7 +12,7 @@ EFrt is a embeddable FORTH language implementation.
 
 ## Stacks
 
-  - Data stack: Main stack for user data. Holds all 32 bit integers and 64 bit floats (as 2 32 bit items).
+  - Data stack: Main stack for user data. Holds all 32 bit integers and 64 bit floats (as two 32 bit items).
   - Return stack: Stack for interpreter internal use. Holds 32 bit signed integers.
   - Object stack: Can hold any object and strings.
 
@@ -151,8 +151,11 @@ Words definition table columns:
 
 #### TODO
 
-Words: SYSTEM STATE MARKER name CHAR [ ] INCLUDE ABORT" str ARRAY x EXIT IMMEDIATE LITERAL TRACE
+Words: `SYSTEM STATE MARKER name CHAR [ ] INCLUDE ABORT" str ARRAY x EXIT IMMEDIATE LITERAL TRACE
   (XDO) (X?DO) (XLOOP) (+XLOOP) WORDSD ' EXECUTE INT STRING EVALUATE UNLOOP EXIT +!
+  NIP TUCK 2NIP 2TUCK -ROLL S! BRANCH x ?BRANCH x`
+
+Variables: `BASE STATE`
 
 ---
 
@@ -182,6 +185,7 @@ Words: SYSTEM STATE MARKER name CHAR [ ] INCLUDE ABORT" str ARRAY x EXIT IMMEDIA
 | 2/       | no   | IC   | (n1 -- n2)    | **Divide by two**<br>Divides the top of the stack by two. |
 | ABS      | no   | IC   | (n1 -- n2)    | **n2 = Abs(n1)**<br>Replaces the top of stack with its absolute value. |
 | AND      | no   | IC   | (n1 n2 -- n3) | **Bitwise and**<br>Stores the bitwise AND of n1 and n2 on the stack. |
+| NEGATE   | no   | IC   | (n1 -- n2)    | **n2 = -n1**<br>Negates the value the top of the stack. |
 | MAX      | no   | IC   | (n1 n2 -- n3) | **Maximum**<br>The greater of n1 and n2 is left on the top of the stack. |
 | MIN      | no   | IC   | (n1 n2 -- n3) | **Minimum**<br>The lesser of n1 and n2 is left on the top of the stack. |
 | MOD      | no   | IC   | (n1 n2 -- n3) | **Modulus (remainder)**<br>The remainder when n1 is divided by n2 is left on the top of the stack. |
@@ -194,6 +198,46 @@ Words: SYSTEM STATE MARKER name CHAR [ ] INCLUDE ABORT" str ARRAY x EXIT IMMEDIA
 #### TODO
 
 Words: SHIFT INVERT 
+
+---
+
+### DOUBLE (LongIntegerLib)
+
+| Name     | Imm. | Mode | Stack op.    | Description |
+| ---      | ---  | ---  | ---          | --- |
+| D+       | no   | IC   | (d1 d2 -- d3) | **d3 = d1 + d2**<br>Adds d1 and d2 and leaves the sum on the stack. |
+| D-       | no   | IC   | (d1 d2 -- d3) | **d3 = d1 - d2**<br>Substracts d2 from d1 and leaves the difference on the stack. |
+| D*       | no   | IC   | (d1 d2 -- d3) | **d3 = d1 * d2**<br>Multiplies d1 and d2 and leaves the product on the stack. |
+| D/       | no   | IC   | (d1 d2 -- d3) | **d3 = d1 / d2**<br>Divides d1 by d2 and leaves the quotient on the stack. |
+| D<       | no   | IC   | (d1 d2 -- flag) | **Less than**<br>Returns -1 if d1 < d2, 0 otherwise. |
+| D<=      | no   | IC   | (d1 d2 -- flag) | **Less than or equal**<br>Returns -1 if d1 <= d2, 0 otherwise. |
+| D<>      | no   | IC   | (d1 d2 -- flag) | **Not equal**<br>Returns -1 if d1 is not equal to d2, 0 otherwise. |
+| D=       | no   | IC   | (d1 d2 -- flag) | **Equal**<br>Returns -1 if d1 is equal to d2, 0 otherwise. |
+| D>       | no   | IC   | (d1 d2 -- flag) | **Greater than**<br>Returns -1 if d1 > d2, 0 otherwise. |
+| D>S      | no   | IC   | (d -- n) | **Double cell number to single cell number**<br>Converts a double cell number (64bit, long) to a single cell number (32bit, int). |
+| D>=      | no   | IC   | (d1 d2 -- flag) | **Greater than or equal**<br>Returns -1 if d1 >= d2, 0 otherwise. |
+| D0<      | no   | IC   | (d1 -- flag)  | **Less than zero**<br>Returns -1 if d1 is less than 0, 0 otherwise. |
+| D0<>     | no   | IC   | (d1 -- flag)  | **Nonzero**<br>Returns -1 if d1 is not equal to 0, 0 otherwise. |
+| D0=      | no   | IC   | (d1 -- flag)  | **Equal to zero**<br>Returns -1 if d1 is equal to 0, 0 otherwise. |
+| D0>      | no   | IC   | (d1 -- flag)  | **Greater than zero**<br>Returns -1 if d1 is greater than 0, 0 otherwise. |
+| D1+      | no   | IC   | (d1 -- d2)    | **Add one**<br>Adds one to the top of the stack. |
+| D1-      | no   | IC   | (d1 -- d2)    | **Subtract one**<br>Substracts one from the top of the stack. |
+| D2+      | no   | IC   | (d1 -- d2)    | **Add two**<br>Adds two to the top of the stack. |
+| D2-      | no   | IC   | (d1 -- d2)    | **Subtract two**<br>Substracts two from the top of the stack. |
+| D2*      | no   | IC   | (d1 -- d2)    | **Times two**<br>Substracts two from the top of the stack. |
+| D2/      | no   | IC   | (d1 -- d2)    | **Divide by two**<br>Divides the top of the stack by two. |
+| DABS     | no   | IC   | (d1 -- d2)    | **n2 = Abs(n1)**<br>Replaces the top of stack with its absolute value. |
+| DAND     | no   | IC   | (d1 d2 -- d3) | **Bitwise and**<br>Stores the bitwise AND of d1 and n2 on the stack. |
+| DNEGATE  | no   | IC   | (d1 -- d2)    | **n2 = -n1**<br>Negates the value the top of the stack. |
+| DMAX     | no   | IC   | (d1 d2 -- d3) | **Maximum**<br>The greater of d1 and d2 is left on the top of the stack. |
+| DMIN     | no   | IC   | (d1 d2 -- d3) | **Minimum**<br>The lesser of d1 and d2 is left on the top of the stack. |
+| DMOD     | no   | IC   | (d1 d2 -- d3) | **Modulus (remainder)**<br>The remainder when d1 is divided by d2 is left on the top of the stack. |
+| D/MOD    | no   | IC   | (d1 d2 -- d3 d4) | **d3 = d1 mod d2, d4 = d1 / d2**<br>Divides d1 by d2 and leaves quotient on top of stack, remainder as next on stack. |
+| DNOT     | no   | IC   | (d1 -- d2)    | **Bitwise not**<br>Inverts the bits in the value on the top of the stack. This performs logical negation for truth values of −1 (True) and 0 (False). |
+| DOR      | no   | IC   | (d1 d2 -- d3) | **Bitwise or**<br>Stores the bitwise or of d1 and d2 on the stack. |
+| DXOR     | no   | IC   | (d1 d2 -- d3) | **Bitwise exclusive or**<br>Stores the bitwise exclusive or of d1 and d2 on the stack. |
+| S>D      | no   | IC   | (n -- d)      | **Single cell number to double cell number**<br>Converts a single cell number (32bit, int) to a double cell number (64bit, long). |
+
 
 ---
 
@@ -221,7 +265,7 @@ Words: `F1+ F1- F2+ F2- F2* F2/ F0= F0<> F0< F0>`
 
 #### TODO
 
-Words: ACOS ASIN ATAN ATAN2 COS EXP  n NEGATE FNEGATE (LIT) LOG POW SIN SQRT TAN \>FLOAT FLOOR FLITERAL (FLIT)
+Words: ACOS ASIN ATAN ATAN2 COS EXP n NEGATE FNEGATE (LIT) LOG POW SIN SQRT TAN \>FLOAT FLOOR FLITERAL (FLIT)
 
 ---
 
@@ -234,7 +278,7 @@ Words: ACOS ASIN ATAN ATAN2 COS EXP  n NEGATE FNEGATE (LIT) LOG POW SIN SQRT TAN
 
 #### Todo
 
-Words: STRCPY, STRINT, STRLEN, STRREAL, SUBSTR, STRFORM, STRCAT, STRCHAR, STRCMP, STRCMPI, COMPARE, (STRLIT), TYPE
+Words: `STRCPY, STRINT, STRLEN, STRREAL, SUBSTR, STRFORM, STRCAT, STRCHAR, STRCMP, STRCMPI, COMPARE, (STRLIT), TYPE`
 
 ---
 
@@ -279,3 +323,7 @@ Words: STRCPY, STRINT, STRLEN, STRREAL, SUBSTR, STRFORM, STRCAT, STRCHAR, STRCMP
 | WORDS | no   | IC   |           | **List words defined**<br>Defined words are listed, from the most recently defined to the first defined. |
 
 Note: The `."` word works like `S" str" S.` words together.
+
+#### Todo
+
+Words: `.R`
