@@ -311,7 +311,7 @@ namespace EFrt.Libs
         // F:( -- f) (n -- )
         private int FloatAction()
         {
-            FPush((double)_interpreter.Pop());
+            FPush(_interpreter.Pop());
 
             return 1;
         }

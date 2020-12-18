@@ -4,17 +4,22 @@ EFrt is a embeddable FORTH language implementation.
 
 ## Data types
 
-  - integer: 32 bit signed integer number (int).
+  - single cell integer: 32 bit signed integer number (int).
+  - double cell integer: 64 bit signed integer number (long).
   - floating point: 64 bit float number (double), that is 2 times more bits, than the integer type (or 2 data stack items).
   - string: A double quote terminated strings, stored on the objects stack.
-  - other types will be available later - uint, short, ushort, byte etc.
-
+  - object: Any user data reference (object).
 
 ## Stacks
 
-  - Data stack: Main stack for user data. Holds all 32 bit integers and 64 bit floats (as two 32 bit items).
+  - Data stack: Main stack for user data. Holds all 32bit nad 64bit integers and 64 bit floats (as two 32 bit items).
   - Return stack: Stack for interpreter internal use. Holds 32 bit signed integers.
   - Object stack: Can hold any object and strings.
+
+## Heaps
+
+  - Data heap: Main heap for user data. Holds all 32bit and 64bit integers and 64 bit floats (as two 32 bit items).
+  - Object heap: Hold any objects and strings.
 
 
 ## Examples
@@ -152,7 +157,7 @@ Words definition table columns:
 #### TODO
 
 Words: `SYSTEM STATE MARKER name CHAR [ ] INCLUDE ABORT" str ARRAY x EXIT IMMEDIATE LITERAL TRACE
-  (XDO) (X?DO) (XLOOP) (+XLOOP) WORDSD ' EXECUTE INT STRING EVALUATE UNLOOP EXIT +!
+  (XDO) (X?DO) (XLOOP) (+XLOOP) WORDSD ' EXECUTE INT STRING EVALUATE UNLOOP +!
   NIP TUCK 2NIP 2TUCK -ROLL S! BRANCH x ?BRANCH x`
 
 Variables: `BASE STATE`
@@ -247,19 +252,19 @@ Words: `F1+ F1- F2+ F2- F2* F2/ F0= F0<> F0< F0>`
 
 | Name  | Imm. | Mode | Stack op. | Description |
 | ---   | ---  | ---  | ---       | --- |
-| F+    | no   | IC   | F:(f1 f2 -- f3) | **f3 = f1 + f2**<br>Adds two floating point numbers on the top of the stack and leaves the sum on the top of the stack. |
-| F-    | no   | IC   | F:(f1 f2 -- f3) | **f3 = f1 - f2**<br>Substracts the floating value f2 from the floating value f1 and leaves the difference on the top of the stack. |
-| F*    | no   | IC   | F:(f1 f2 -- f3) | **f3 = f1 * f2**<br>Multiplies two floating point numbers on the top of the stack and leaves the product on the stack. |
-| F/    | no   | IC   | F:(f1 f2 -- f3) | **f3 = f1 / f2**<br>Divides the floating number f1 by the floating number f2 and leaves the quotient on the top of the stack stack. |
-| F=    | no   | IC   | F:(f1 f2 -- ) ( -- flag) | **Floating equal**<br>Returns -1 if f1 is equal to f2, 0 otherwise. |
-| F<>   | no   | IC   | F:(f1 f2 -- ) ( -- flag) | **Floating not equal**<br>Returns -1 if f1 is not equal to f2, 0 otherwise. |
-| F<    | no   | IC   | F:(f1 f2 -- ) ( -- flag) | **Floating less than**<br>Returns -1 if f1 < f2, 0 otherwise. |
-| F<=   | no   | IC   | F:(f1 f2 -- ) ( -- flag) | **Floating less than or equal**<br>Returns -1 if f1 <= f2, 0 otherwise. |
-| F>    | no   | IC   | F:(f1 f2 -- ) ( -- flag) | **Floating greater than**<br>Returns -1 if f1 > f2, 0 otherwise. |
-| F>=   | no   | IC   | F:(f1 f2 -- ) ( -- flag) | **Floating greater than or equal**<br>Returns -1 if f1 >= f2, 0 otherwise. |
-| FABS  | no   | IC   | F:(f1 -- f2) | **f2 = Abs(f1)**<br>. |
-| FIX   | no   | IC   | F:(f -- ) ( -- n) | **Floating to integer**<br>Converts a float number on the top of the floating poit stack to integer and stores it on the top of the data stack. |
-| FLOAT | no   | IC   | F:( -- f) (n -- ) | **Integer to floating**<br>Converts an integer on the top of the data stack to a floationg point number and stores it on the top of the floating point stack. |
+| F+    | no   | IC   | (f1 f2 -- f3) | **f3 = f1 + f2**<br>Adds two floating point numbers on the top of the stack and leaves the sum on the top of the stack. |
+| F-    | no   | IC   | (f1 f2 -- f3) | **f3 = f1 - f2**<br>Substracts the floating value f2 from the floating value f1 and leaves the difference on the top of the stack. |
+| F*    | no   | IC   | (f1 f2 -- f3) | **f3 = f1 * f2**<br>Multiplies two floating point numbers on the top of the stack and leaves the product on the stack. |
+| F/    | no   | IC   | (f1 f2 -- f3) | **f3 = f1 / f2**<br>Divides the floating number f1 by the floating number f2 and leaves the quotient on the top of the stack stack. |
+| F=    | no   | IC   | (f1 f2 -- flag) | **Floating equal**<br>Returns -1 if f1 is equal to f2, 0 otherwise. |
+| F<>   | no   | IC   | (f1 f2 -- flag) | **Floating not equal**<br>Returns -1 if f1 is not equal to f2, 0 otherwise. |
+| F<    | no   | IC   | (f1 f2 -- flag) | **Floating less than**<br>Returns -1 if f1 < f2, 0 otherwise. |
+| F<=   | no   | IC   | (f1 f2 -- flag) | **Floating less than or equal**<br>Returns -1 if f1 <= f2, 0 otherwise. |
+| F>    | no   | IC   | (f1 f2 -- flag) | **Floating greater than**<br>Returns -1 if f1 > f2, 0 otherwise. |
+| F>=   | no   | IC   | (f1 f2 -- flag) | **Floating greater than or equal**<br>Returns -1 if f1 >= f2, 0 otherwise. |
+| FABS  | no   | IC   | (f1 -- f2) | **f2 = Abs(f1)**<br>. |
+| FIX   | no   | IC   | (f -- n) | **Floating to integer**<br>Converts a float number on the top of the floating poit stack to integer and stores it on the top of the data stack. |
+| FLOAT | no   | IC   | (n -- f) | **Integer to floating**<br>Converts an integer on the top of the data stack to a floationg point number and stores it on the top of the floating point stack. |
 | FMAX  | no   | IC   | (f1 f2 -- f3) | **Floating point maximum**<br>The greater of the two floating point values on the top of the stack is placed on the top of the stack. |
 | FMIN  | no   | IC   | (f1 f2 -- f3) | **Floating point minimum**<br>The lesser of the two floating point values on the top of the stack is placed on the top of the stack. |
 
