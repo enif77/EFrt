@@ -73,8 +73,6 @@ namespace EFrt.Words
             {
                 if (Interpreter.IsExecutionTerminated)
                 {
-                    index = 0;
-
                     break;
                 }
 

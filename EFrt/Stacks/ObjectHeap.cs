@@ -17,10 +17,19 @@ namespace EFrt.Stacks
         /// <returns>The index (aka address) of the first reserved cell.</returns>
         public int Alloc(int cells = 1)
         {
-            var addr = Top + 1;
-            Top += cells;
+            if (cells > 0)
+            {
+                var addr = Top + 1;
+                Top += cells;
 
-            return addr;
+                return addr;
+            }
+            else if (cells < 0)
+            {
+                Top += cells;
+            }
+
+            return Top;
         }
     }
 }
