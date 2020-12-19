@@ -53,11 +53,6 @@ namespace EFrt.Libs
         // { -- s}
         private int LiteralAction()
         {
-            if (_interpreter.IsCompiling == false)
-            {
-                throw new Exception("S\" outside a new word definition.");
-            }
-
             var sb = new StringBuilder();
 
             var c = _interpreter.NextChar();
@@ -80,9 +75,20 @@ namespace EFrt.Libs
                 throw new Exception("'\"' expected.");
             }
 
-            // TODO: Expect a white char.
+            c = _interpreter.NextChar();
+            if (c != 0 && Tokenizer.IsWhite(c) == false)
+            {
+                throw new Exception("The EOF or an white character after a string literal expected.");
+            }
 
-            _interpreter.WordBeingDefined.AddWord(new StringLiteralWord(_interpreter, sb.ToString()));
+            if (_interpreter.IsCompiling)
+            {
+                _interpreter.WordBeingDefined.AddWord(new StringLiteralWord(_interpreter, sb.ToString()));
+            }
+            else
+            {
+                _interpreter.OPush(sb.ToString());
+            }
 
             return 1;
         }

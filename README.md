@@ -8,7 +8,7 @@ EFrt is a embeddable FORTH language implementation.
   - single cell integer: 32 bit signed integer number (int, 1 cell). Ex.: 123
   - double cell integer: 64 bit signed integer number (long, 2 cells). Ex.: 123L
   - floating point: 64 bit float number (double, 2 cells). Ex.: 123.0
-  - string: A double quote terminated strings, stored on the objects stack. Ex.: "Hello!"
+  - string: A double quote terminated strings, stored on the objects stack. Ex.: S" Hello!"
   - object: Any user data reference (object).
 
 ## Stacks
@@ -280,7 +280,7 @@ Words: ACOS ASIN ATAN ATAN2 COS EXP n NEGATE FNEGATE (LIT) LOG POW SIN SQRT TAN 
 | Name  | Imm. | Mode | Stack op. | Description |
 | ---   | ---  | ---  | ---       | --- |
 | S+    | no   | IC   | {s1 s2 -- s3} | **String concatenate**<br>The string s1 is concatenated with the string s2 and the resulting s1 + s2 string is stored at the top of the object stack. |
-| S"    | no   | C    | { -- s}   | **String literal**<br>Consume all source characters till the closing " character, creating a string from them and storing the result on the top of the object stack. |
+| S"    | no   | IC   | { -- s}   | **String literal**<br>Consume all source characters till the closing " character, creating a string from them and storing the result on the top of the object stack. |
 
 #### Todo
 
