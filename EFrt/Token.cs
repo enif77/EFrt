@@ -15,8 +15,9 @@ namespace EFrt
             Eof = -1,
             Unknown = 0,
             Word = 1,
-            Integer = 2,
-            Float = 3
+            SingleCellInteger = 2,
+            DoubleCellInteger = 3,
+            Float = 4
         }
 
         /// <summary>
@@ -25,12 +26,17 @@ namespace EFrt
         public TokenType Code { get; private set; }
 
         /// <summary>
-        /// An integer value of the integer token.
+        /// A single cell integer value of the Integer token.
         /// </summary>
         public int IValue { get; private set; }
 
         /// <summary>
-        /// An float/real value of the float token.
+        /// A double cell integer value of the Long token.
+        /// </summary>
+        public long LValue { get; private set; }
+
+        /// <summary>
+        /// An float/real value of the Float token.
         /// </summary>
         public float FValue { get; private set; }
 
@@ -60,13 +66,23 @@ namespace EFrt
         }
 
         /// <summary>
-        /// Creates a token representing an integer constant.
+        /// Creates a token representing a single cell integer constant.
         /// </summary>
         /// <param name="i">An integer constant.</param>
         /// <returns>A token representing an integer constant.</returns>
-        public static Token CreateIntegerToken(int i)
+        public static Token CreateSingleCellIntegerToken(int i)
         {
-            return new Token() { Code = TokenType.Integer, IValue = i };
+            return new Token() { Code = TokenType.SingleCellInteger, IValue = i };
+        }
+
+        /// <summary>
+        /// Creates a token representing a double cell integer constant.
+        /// </summary>
+        /// <param name="i">An integer constant.</param>
+        /// <returns>A token representing an integer constant.</returns>
+        public static Token CreateDoubleCellIntegerToken(long i)
+        {
+            return new Token() { Code = TokenType.DoubleCellInteger, LValue = i };
         }
 
         /// <summary>

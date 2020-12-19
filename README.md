@@ -5,10 +5,10 @@ EFrt is a embeddable FORTH language implementation.
 ## Data types
 
   - cell: A 32 bit data unit (int).
-  - single cell integer: 32 bit signed integer number (int, 1 cell).
-  - double cell integer: 64 bit signed integer number (long, 2 cells).
-  - floating point: 64 bit float number (double, 2 cells).
-  - string: A double quote terminated strings, stored on the objects stack.
+  - single cell integer: 32 bit signed integer number (int, 1 cell). Ex.: 123
+  - double cell integer: 64 bit signed integer number (long, 2 cells). Ex.: 123L
+  - floating point: 64 bit float number (double, 2 cells). Ex.: 123.0
+  - string: A double quote terminated strings, stored on the objects stack. Ex.: "Hello!"
   - object: Any user data reference (object).
 
 ## Stacks

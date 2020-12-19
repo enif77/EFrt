@@ -493,14 +493,28 @@ namespace EFrt
                             var t = Tokenizer.ParseNumber(tok.SValue);
                             switch (t.Code)
                             {
-                                case TokenType.Integer:
+                                case TokenType.SingleCellInteger:
                                     if (IsCompiling)
                                     {
-                                        WordBeingDefined.AddWord(new IntegerLiteralWord(this, t.IValue));
+                                        WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(this, t.IValue));
                                     }
                                     else
                                     {
                                         Push(t.IValue);
+                                    }
+                                    break;
+
+                                case TokenType.DoubleCellInteger:
+                                    if (IsCompiling)
+                                    {
+                                        WordBeingDefined.AddWord(new DoubleCellIntegerLiteralWord(this, t.LValue));
+                                    }
+                                    else
+                                    {
+                                        var v = new LongVal() { D = t.LValue };
+
+                                        Push(v.A);
+                                        Push(v.B);
                                     }
                                     break;
 

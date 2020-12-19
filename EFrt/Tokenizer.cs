@@ -81,11 +81,12 @@ namespace EFrt
         }
 
         /// <summary>
-        /// Parses an integer or a real number.
+        /// Parses a single or double cell integer or a real number.
         /// It is called by the interpreter directly, because a word must be checked, if it is defined/known, 
         /// before it is parsed as a number.
-        /// unsigned-integer :: digit-sequence .
-        /// unsigned-number :: unsigned-integer | unsigned-real .
+        /// unsigned-single-cell-integer :: digit-sequence .
+        /// unsigned-double-cell-integer :: digit-sequence ( 'L' | 'l' ) .
+        /// unsigned-number :: unsigned-single-cell-integer | unsigned-double-cell-integer | unsigned-real .
         /// unsigned-real :: ( digit-sequence '.' fractional-part [ 'e' scale-factor ] ) | ( digit-sequence 'e' scale-factor ) .
         /// scale-factor :: [ sign ] digit-sequence .
         /// fractional-part :: digit-sequence .
@@ -99,7 +100,8 @@ namespace EFrt
             sourceReader.NextChar();
 
             var isReal = false;
-            var iValue = 0;
+            var isLong = false;
+            var iValue = 0L;
             var rValue = 0.0;
 
             var sign = 1;
@@ -117,18 +119,31 @@ namespace EFrt
             {
                 iValue = (iValue * 10) + (sourceReader.CurrentChar - '0');
 
+                // An integer number (long) overflow.
                 if (iValue < 0)
                 {
-                    //throw new Exception("Numeric constant overflow.");
+                    //throw new Exception("An integer constant overflow: " + word);
                     return Token.CreateWordToken(word);
                 }
 
                 sourceReader.NextChar();
             }
 
+            if (sourceReader.CurrentChar == 'L' || sourceReader.CurrentChar == 'l')
+            {
+                isLong = true;
+                sourceReader.NextChar();
+            }
+
             // digit-sequence '.' fractional-part
             if (sourceReader.CurrentChar == '.')
             {
+                if (isLong)
+                {
+                    //throw new Exception("Unexpected character in double cell constant: " + word);
+                    return Token.CreateWordToken(word);
+                }
+
                 rValue = iValue;
 
                 // Eat '.'.
@@ -153,11 +168,18 @@ namespace EFrt
                 rValue += frac / scale;
 
                 isReal = true;
+                isLong = false;
             }
 
             // digit-sequence [ '.' fractional-part ] 'e' scale-factor
             if (sourceReader.CurrentChar == 'e' || sourceReader.CurrentChar == 'E')
             {
+                if (isLong)
+                {
+                    //throw new Exception("Unexpected character in double cell constant: " + word);
+                    return Token.CreateWordToken(word);
+                }
+
                 rValue = isReal ? rValue : iValue;
 
                 // Eat 'e'.
@@ -180,6 +202,7 @@ namespace EFrt
                 rValue *= Math.Pow(10, fact);
 
                 isReal = true;
+                isLong = false;
             }
 
             // We expect to eat all chars from a word while parsing a number.
@@ -189,9 +212,22 @@ namespace EFrt
             }
 
             // We eat all chars, its a number.
-            return isReal
-                ? Token.CreateFloatToken((float)(rValue * sign))
-                : Token.CreateIntegerToken(iValue * sign);
+            if (isReal)
+            {
+                return Token.CreateFloatToken((float)(rValue * sign));
+            }
+            else if (isLong)
+            {
+                return Token.CreateDoubleCellIntegerToken(iValue * sign);
+            }
+            else
+            {
+                iValue *= sign;
+
+                return (iValue < int.MinValue || iValue > int.MaxValue)
+                    ? Token.CreateDoubleCellIntegerToken(iValue)
+                    : Token.CreateSingleCellIntegerToken((int)iValue);
+            }
         }
 
         /// <summary>

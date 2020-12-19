@@ -5,13 +5,13 @@ namespace EFrt.Words
     /// <summary>
     /// A word keeping an integer value.
     /// </summary>
-    public class IntegerLiteralWord : AWordBase
+    public class SingleCellIntegerLiteralWord : AWordBase
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="value">A value.</param>
-        public IntegerLiteralWord(IInterpreter interpreter, int value)
+        public SingleCellIntegerLiteralWord(IInterpreter interpreter, int value)
             : base(interpreter)
         {
             Name = "LITERAL";
