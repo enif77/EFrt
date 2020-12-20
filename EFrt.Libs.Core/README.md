@@ -2,10 +2,7 @@
 
 Common words for all base operations.
 
-
 ## Words
-
-Here is a list of implemented words.
 
 Words definition table columns:
 
