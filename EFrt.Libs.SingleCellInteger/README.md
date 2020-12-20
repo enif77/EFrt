@@ -48,4 +48,4 @@ Words definition table columns:
 
 ## TODO
 
-Words: `SHIFT RSHIFT INVERT`
+Words: `SHIFT RSHIFT INVERT +!`

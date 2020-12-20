@@ -13,8 +13,6 @@ Words definition table columns:
 - Stack op.: What happens on the stack - () = data stack, [] = return stack, \{} = object stack.
 - Description: A description of the word.
 
-Words: `F1+ F1- F2+ F2- F2* F2/ F0= F0<> F0< F0>`
-
 | Name  | Imm. | Mode | Stack op. | Description |
 | ---   | ---  | ---  | ---       | --- |
 | F+    | no   | IC   | (f1 f2 -- f3) | **f3 = f1 + f2**<br>Adds two floating point numbers on the top of the stack and leaves the sum on the top of the stack. |
@@ -27,6 +25,16 @@ Words: `F1+ F1- F2+ F2- F2* F2/ F0= F0<> F0< F0>`
 | F<=   | no   | IC   | (f1 f2 -- flag) | **Floating less than or equal**<br>Returns -1 if f1 <= f2, 0 otherwise. |
 | F>    | no   | IC   | (f1 f2 -- flag) | **Floating greater than**<br>Returns -1 if f1 > f2, 0 otherwise. |
 | F>=   | no   | IC   | (f1 f2 -- flag) | **Floating greater than or equal**<br>Returns -1 if f1 >= f2, 0 otherwise. |
+| F0<   | no   | IC   | (f -- flag)  | **Less than zero**<br>Returns -1 if f is less than 0, 0 otherwise. |
+| F0<>  | no   | IC   | (f -- flag)  | **Nonzero**<br>Returns -1 if f is not equal to 0, 0 otherwise. |
+| F0=   | no   | IC   | (f -- flag)  | **Equal to zero**<br>Returns -1 if f is equal to 0, 0 otherwise. |
+| F0>   | no   | IC   | (f -- flag)  | **Greater than zero**<br>Returns -1 if f is greater than 0, 0 otherwise. |
+| F1+   | no   | IC   | (f1 -- f2) | **Add one**<br>Adds one to the top of the stack. |
+| F1-   | no   | IC   | (f1 -- f2) | **Subtract one**<br>Substracts one from the top of the stack. |
+| F2+   | no   | IC   | (f1 -- f2) | **Add two**<br>Adds two to the top of the stack. |
+| F2-   | no   | IC   | (f1 -- f2) | **Subtract two**<br>Substracts two from the top of the stack. |
+| F2*   | no   | IC   | (f1 -- f2) | **Times two**<br>Substracts two from the top of the stack. |
+| F2/   | no   | IC   | (f1 -- f2) | **Divide by two**<br>Divides the top of the stack by two. |
 | FABS  | no   | IC   | (f1 -- f2) | **f2 = Abs(f1)**<br>. |
 | FIX   | no   | IC   | (f -- n) | **Floating to integer**<br>Converts a float number on the top of the floating poit stack to integer and stores it on the top of the data stack. |
 | FLOAT | no   | IC   | (n -- f) | **Integer to floating**<br>Converts an integer on the top of the data stack to a floationg point number and stores it on the top of the floating point stack. |
@@ -35,4 +43,5 @@ Words: `F1+ F1- F2+ F2- F2* F2/ F0= F0<> F0< F0>`
 
 ## TODO
 
-Words: ACOS ASIN ATAN ATAN2 COS EXP n NEGATE FNEGATE (LIT) LOG POW SIN SQRT TAN \>FLOAT FLOOR FLITERAL (FLIT)
+Words: `ACOS ASIN ATAN ATAN2 COS EXP NEGATE FNEGATE (LIT) LOG POW SIN SQRT TAN \>FLOAT FLOOR F! F@ FCONSTANT FDEPTH FVARIABLE F**
+  S>F F>S D>F F>D`

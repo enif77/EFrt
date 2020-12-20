@@ -25,8 +25,6 @@ namespace EFrt.Libs.Float
 
         public void DefineWords()
         {
-            //_interpreter.AddWord(new ImmediateWord(_interpreter, "(FLIT)", LiteralAction));
-
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F+", AddAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F-", SubAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F1+", AddOneAction));
@@ -118,87 +116,6 @@ namespace EFrt.Libs.Float
             var b = FPop();
             FPush(func(FPop(), b));
         }
-
-        //// F:( -- f)
-        //private int LiteralAction()
-        //{
-        //    if (_interpreter.IsCompiling == false)
-        //    {
-        //        throw new Exception("(FLIT) outside a new word definition.");
-        //    }
-
-        //    _interpreter.SkipWhite();
-
-        //    var sign = 1;
-        //    if (_interpreter.CurrentChar == '-')
-        //    {
-        //        sign = -1;
-        //        _interpreter.NextChar();
-        //    }
-        //    else if (_interpreter.CurrentChar == '+')
-        //    {
-        //        _interpreter.NextChar();
-        //    }
-
-        //    var rValue = 0.0;
-        //    while (_interpreter.IsDigit())
-        //    {
-        //        rValue = (rValue * 10.0) + (_interpreter.CurrentChar - '0');
-
-        //        _interpreter.NextChar();
-        //    }
-
-        //    // digit-sequence '.' fractional-part
-        //    if (_interpreter.CurrentChar == '.')
-        //    {
-        //        // Eat '.'.
-        //        _interpreter.NextChar();
-
-        //        if (_interpreter.IsDigit() == false)
-        //        {
-        //            throw new Exception("A fractional part of a real number expected.");
-        //        }
-
-        //        var scale = 1.0;
-        //        var frac = 0.0;
-        //        while (_interpreter.IsDigit())
-        //        {
-        //            frac = (frac * 10.0) + (_interpreter.CurrentChar - '0');
-        //            scale *= 10.0;
-
-        //            _interpreter.NextChar();
-        //        }
-
-        //        rValue += frac / scale;
-        //    }
-
-        //    // digit-sequence [ '.' fractional-part ] 'e' scale-factor
-        //    if (_interpreter.CurrentChar == 'e' || _interpreter.CurrentChar == 'E')
-        //    {
-        //        // Eat 'e'.
-        //        _interpreter.NextChar();
-
-        //        if (_interpreter.IsDigit() == false)
-        //        {
-        //            throw new Exception("A scale factor of a real number expected.");
-        //        }
-
-        //        var fact = 0.0;
-        //        while (_interpreter.IsDigit())
-        //        {
-        //            fact = (fact * 10.0) + (_interpreter.CurrentChar - '0');
-
-        //            _interpreter.NextChar();
-        //        }
-
-        //        rValue *= Math.Pow(10, fact);
-        //    }
-
-        //    _interpreter.WordBeingDefined.AddWord(new FloatLiteralWord(_interpreter, _stack, rValue * sign));
-
-        //    return 1;
-        //}
-
 
         // F:(f1 f2 -- f3)
         private int AddAction()
