@@ -3,7 +3,7 @@
 namespace EFrt.Core.Words
 {
     /// <summary>
-    /// A word that is definig do loop begining.
+    /// A word, that is definig the do loop begining.
     /// </summary>
     public class DoControlWord : AWordBase
     {
@@ -16,19 +16,15 @@ namespace EFrt.Core.Words
         {
             Name = "DoControlWord";
             IsControlWord = true;
-            Action = Execute;
-        }
+            Action = () => 
+            {
+                var index = Interpreter.Pop();
 
+                Interpreter.RPush(Interpreter.Pop());  // limit
+                Interpreter.RPush(index);              // index
 
-        private int Execute()
-        {
-            var index = Interpreter.Pop();
-            var limit = Interpreter.Pop();
-
-            Interpreter.RPush(limit);
-            Interpreter.RPush(index);
-
-            return 1;
+                return 1;
+            };
         }
     }
 }

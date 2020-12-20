@@ -19,18 +19,15 @@ namespace EFrt.Core.Words
         {
             Name = "DLITERAL";
             IsControlWord = true;
-            Action = Execute;
+            Action = () => 
+            {
+                Interpreter.Push(_value.A);
+                Interpreter.Push(_value.B);
+
+                return 1;
+            };
 
             _value = new LongVal() { D = value };
-        }
-
-
-        private int Execute()
-        {
-            Interpreter.Push(_value.A);
-            Interpreter.Push(_value.B);
-
-            return 1;
         }
 
 

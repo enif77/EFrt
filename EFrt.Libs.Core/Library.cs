@@ -370,7 +370,7 @@ namespace EFrt.Libs.Core
         private int DoubleConstantCompilationAction()
         {
             var n2 = _interpreter.Pop();
-            _interpreter.AddWord(new DoubleConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.Pop(), n2));
+            _interpreter.AddWord(new DoubleCellConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.Pop(), n2));
             _interpreter.EndNewWordCompilation();
 
             return 1;

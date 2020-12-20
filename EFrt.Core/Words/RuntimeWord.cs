@@ -15,17 +15,7 @@ namespace EFrt.Core.Words
             : base(interpreter)
         {
             Name = name;
-            Action = Execute;
-        }
-
-
-        /// <summary>
-        /// Executes this words body.
-        /// </summary>
-        private int Execute()
-        {
-            // Get the actual word implementation and execute it.
-            return Interpreter.GetWord(Name).Action();
+            Action = () => Interpreter.GetWord(Name).Action();  // Get the actual word implementation and execute it.
         }
     }
 }

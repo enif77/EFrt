@@ -17,17 +17,14 @@ namespace EFrt.Core.Words
         {
             Name = name;
             IsControlWord = true;
-            Action = Execute;
+            Action = () => 
+            {
+                Interpreter.Push(_n);
+
+                return 1;
+            };
 
             _n = n;
-        }
-
-
-        private int Execute()
-        {
-            Interpreter.Push(_n);
-
-            return 1;
         }
 
 

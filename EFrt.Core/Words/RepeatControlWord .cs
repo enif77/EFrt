@@ -17,18 +17,12 @@ namespace EFrt.Core.Words
         {
             Name = "RepeatControlWord";
             IsControlWord = true;
-            Action = Execute;
+            Action = () => _increment;
 
             _increment = increment;
         }
 
 
         private int _increment;
-
-
-        private int Execute()
-        {
-            return _increment;
-        }
     }
 }

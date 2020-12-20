@@ -8,12 +8,6 @@ namespace EFrt.Core.Words
     public class BeginControlWord : AWordBase
     {
         /// <summary>
-        /// The index of a word folowing this BEGIN word.
-        /// </summary>
-        public int IndexFollowingBegin { get; }
-
-
-        /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="interpreter">An IInterpreter instance.</param>
@@ -23,15 +17,13 @@ namespace EFrt.Core.Words
         {
             Name = "BeginControlWord";
             IsControlWord = true;
-            Action = Execute;
+            Action = () => _indexFollowingBegin;
 
-            IndexFollowingBegin = indexFollowingBegin;
+            _indexFollowingBegin = indexFollowingBegin;
         }
 
 
-        private int Execute()
-        {
-            return IndexFollowingBegin;
-        }
+        // The index of a word folowing this BEGIN word.
+        private int _indexFollowingBegin;
     }
 }

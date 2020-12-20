@@ -17,14 +17,16 @@ namespace EFrt.Core.Words
         {
             Name = "ElseControlWord";
             IsControlWord = true;
-            Action = Execute;
+            Action = () => _thenIndexIncrement - _indexFollowingElse + 1;  // Skip words inside of the ELSE block.
 
             _indexFollowingElse = indexFollowingElse;
             _thenIndexIncrement = 0;
         }
 
 
-        /** Offset pro skok na THEN. */
+        /// <summary>
+        /// Sets the offset for jumping to the THEN word.
+        /// </summary>
         public void SetThenIndexIncrement(int thenIndexIncrement)
         {
             _thenIndexIncrement = thenIndexIncrement;
@@ -33,12 +35,5 @@ namespace EFrt.Core.Words
 
         private int _indexFollowingElse;
         private int _thenIndexIncrement;
-
-
-        private int Execute()
-        {
-            // Skip words inside of the ELSE block.
-            return _thenIndexIncrement - _indexFollowingElse + 1;
-        }
     }
 }
