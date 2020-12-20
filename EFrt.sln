@@ -10,9 +10,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFrt_Tests", "EFrt_Tests\EFrt_Tests.csproj", "{5DAFCCB9-4F93-4638-8AE3-A1BF35C7EB02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFrt_Tests", "EFrt_Tests\EFrt_Tests.csproj", "{5DAFCCB9-4F93-4638-8AE3-A1BF35C7EB02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFrtApp", "EFrtApp\EFrtApp.csproj", "{C80D0E9B-E1F3-4760-9F22-98C584A8EFD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFrtApp", "EFrtApp\EFrtApp.csproj", "{C80D0E9B-E1F3-4760-9F22-98C584A8EFD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFrt.Core", "EFrt.Core\EFrt.Core.csproj", "{5F05B1FA-C9DB-4EFD-8811-622E70F1F38F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +34,10 @@ Global
 		{C80D0E9B-E1F3-4760-9F22-98C584A8EFD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C80D0E9B-E1F3-4760-9F22-98C584A8EFD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C80D0E9B-E1F3-4760-9F22-98C584A8EFD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F05B1FA-C9DB-4EFD-8811-622E70F1F38F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F05B1FA-C9DB-4EFD-8811-622E70F1F38F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F05B1FA-C9DB-4EFD-8811-622E70F1F38F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F05B1FA-C9DB-4EFD-8811-622E70F1F38F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

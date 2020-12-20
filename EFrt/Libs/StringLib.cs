@@ -5,7 +5,8 @@ namespace EFrt.Libs
     using System;
     using System.Text;
 
-    using EFrt.Words;
+    using EFrt.Core;
+    using EFrt.Core.Words;
 
 
     public class StringLib : IWordsLIbrary

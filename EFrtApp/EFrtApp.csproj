@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EFrt.Core\EFrt.Core.csproj" />
     <ProjectReference Include="..\EFrt\EFrt.csproj" />
   </ItemGroup>
 

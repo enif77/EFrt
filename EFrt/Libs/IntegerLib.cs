@@ -4,7 +4,8 @@ namespace EFrt.Libs
 {
     using System;
 
-    using EFrt.Words;
+    using EFrt.Core;
+    using EFrt.Core.Words;
 
 
     public class IntegerLib : IWordsLIbrary

@@ -6,7 +6,7 @@ namespace EFrt_Tests
 
     using Xunit;
 
-    using EFrt.Stacks;
+    using EFrt.Core.Stacks;
 
 
     public class StackTests

@@ -4,8 +4,9 @@ namespace EFrt.Libs
 {
     using System;
 
-    using EFrt.Values;
-    using EFrt.Words;
+    using EFrt.Core;
+    using EFrt.Core.Values;
+    using EFrt.Core.Words;
 
 
     public class FloatLib : IWordsLIbrary

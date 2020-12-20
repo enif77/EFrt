@@ -4,8 +4,9 @@ namespace EFrt.Libs
 {
     using System;
 
-    using EFrt.Words;
-    using static EFrt.Token;
+    using EFrt.Core;
+    using EFrt.Core.Words;
+    using static EFrt.Core.Token;
 
 
     public class CoreLib : IWordsLIbrary

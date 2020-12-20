@@ -6,8 +6,9 @@ namespace EFrt.Libs
     using System.Globalization;
     using System.Text;
 
-    using EFrt.Values;
-    using EFrt.Words;
+    using EFrt.Core;
+    using EFrt.Core.Values;
+    using EFrt.Core.Words;
    
 
     public class IoLib : IWordsLIbrary

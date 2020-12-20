@@ -6,9 +6,9 @@ namespace EFrtApp
     using System.Collections.Generic;
     using System.Text;
 
-    using EFrt;
+    using EFrt.Core;
     using EFrt.Libs;
-    using EFrt.Words;
+    using EFrt.Core.Words;
 
 
     static class Program
