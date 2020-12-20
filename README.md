@@ -96,6 +96,8 @@ Words definition table columns:
 
 ### CORE (CoreLib)
 
+[CORE](EFrt.Libs.Core/README.md)
+
 | Name     | Imm. | Mode | Stack op. | Description |
 | ---      | ---  | ---  | ---       | --- |
 | (        | yes  | IC   |           | **Comment**<br>Skips all source characters till the closing ) character. |
