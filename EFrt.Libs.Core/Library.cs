@@ -1,6 +1,6 @@
 ﻿/* EFrt - (C) 2020 Premysl Fara  */
 
-namespace EFrt.Libs
+namespace EFrt.Libs.Core
 {
     using System;
 
@@ -9,17 +9,27 @@ namespace EFrt.Libs
     using static EFrt.Core.Token;
 
 
-    public class CoreLib : IWordsLIbrary
+    /// <summary>
+    /// The CORE words library.
+    /// </summary>
+    public class Library : IWordsLIbrary
     {
         private IInterpreter _interpreter;
 
 
-        public CoreLib(IInterpreter efrt)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="interpreter"></param>
+        public Library(IInterpreter interpreter)
         {
-            _interpreter = efrt;
+            _interpreter = interpreter;
         }
 
 
+        /// <summary>
+        /// Definas words from this library.
+        /// </summary>
         public void DefineWords()
         {
             _interpreter.AddWord(new ImmediateWord(_interpreter, "(", CommentAction));

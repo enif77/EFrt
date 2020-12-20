@@ -7,7 +7,6 @@ namespace EFrtApp
     using System.Text;
 
     using EFrt.Core;
-    using EFrt.Libs;
     using EFrt.Core.Words;
 
 
@@ -19,13 +18,13 @@ namespace EFrtApp
             var outputWriter = new ConsoleWriter();
             interpreter.DefineWords(new List<IWordsLIbrary>()
             {
-                new CoreLib(interpreter),
-                new IoLib(interpreter, outputWriter),
-                new IntegerLib(interpreter),
-                new LongIntegerLib(interpreter),
-                new FloatLib(interpreter),
-                new StringLib(interpreter),
-                new ObjectLib(interpreter),
+                new EFrt.Libs.Core.Library(interpreter),
+                new EFrt.Libs.IO.Library(interpreter, outputWriter),
+                new EFrt.Libs.SingleCellInteger.Library(interpreter),
+                new EFrt.Libs.DoubleCellInteger.Library(interpreter),
+                new EFrt.Libs.Float.Library(interpreter),
+                new EFrt.Libs.String.Library(interpreter),
+                new EFrt.Libs.Object.Library(interpreter),
             });
 
             while (true)
@@ -79,11 +78,13 @@ namespace EFrtApp
 
             interpreter.DefineWords(new List<IWordsLIbrary>()
             {
-                new CoreLib(interpreter),
-                new IoLib(interpreter, outputWriter),
-                new IntegerLib(interpreter),
-                new FloatLib(interpreter),
-                new StringLib(interpreter)
+                new EFrt.Libs.Core.Library(interpreter),
+                new EFrt.Libs.IO.Library(interpreter, outputWriter),
+                new EFrt.Libs.SingleCellInteger.Library(interpreter),
+                new EFrt.Libs.DoubleCellInteger.Library(interpreter),
+                new EFrt.Libs.Float.Library(interpreter),
+                new EFrt.Libs.String.Library(interpreter),
+                new EFrt.Libs.Object.Library(interpreter)
             });
 
             //efrt.Execute(_src);

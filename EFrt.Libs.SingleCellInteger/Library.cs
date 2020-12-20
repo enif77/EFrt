@@ -1,6 +1,6 @@
 ﻿/* EFrt - (C) 2020 Premysl Fara  */
 
-namespace EFrt.Libs
+namespace EFrt.Libs.SingleCellInteger
 {
     using System;
 
@@ -8,14 +8,14 @@ namespace EFrt.Libs
     using EFrt.Core.Words;
 
 
-    public class IntegerLib : IWordsLIbrary
+    public class Library : IWordsLIbrary
     {
         private IInterpreter _interpreter;
 
 
-        public IntegerLib(IInterpreter efrt)
+        public Library(IInterpreter interpreter)
         {
-            _interpreter = efrt;
+            _interpreter = interpreter;
         }
 
 

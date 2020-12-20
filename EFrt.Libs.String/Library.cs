@@ -1,6 +1,6 @@
 ﻿/* EFrt - (C) 2020 Premysl Fara  */
 
-namespace EFrt.Libs
+namespace EFrt.Libs.String
 {
     using System;
     using System.Text;
@@ -9,12 +9,12 @@ namespace EFrt.Libs
     using EFrt.Core.Words;
 
 
-    public class StringLib : IWordsLIbrary
+    public class Library : IWordsLIbrary
     {
         private IInterpreter _interpreter;
 
 
-        public StringLib(IInterpreter efrt)
+        public Library(IInterpreter efrt)
         {
             _interpreter = efrt;
         }
@@ -76,7 +76,7 @@ namespace EFrt.Libs
                 throw new Exception("'\"' expected.");
             }
 
-            c = _interpreter.NextChar();
+            c = _interpreter.CurrentChar;
             if (c != 0 && Tokenizer.IsWhite(c) == false)
             {
                 throw new Exception("The EOF or an white character after a string literal expected.");

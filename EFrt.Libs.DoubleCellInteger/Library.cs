@@ -1,6 +1,6 @@
 ﻿/* EFrt - (C) 2020 Premysl Fara  */
 
-namespace EFrt.Libs
+namespace EFrt.Libs.DoubleCellInteger
 {
     using System;
 
@@ -9,12 +9,12 @@ namespace EFrt.Libs
     using EFrt.Core.Words;
 
 
-    public class LongIntegerLib : IWordsLIbrary
+    public class Library : IWordsLIbrary
     {
         private IInterpreter _interpreter;
 
 
-        public LongIntegerLib(IInterpreter efrt)
+        public Library(IInterpreter efrt)
         {
             _interpreter = efrt;
         }

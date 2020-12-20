@@ -1,6 +1,6 @@
 ﻿/* EFrt - (C) 2020 Premysl Fara  */
 
-namespace EFrt.Libs
+namespace EFrt.Libs.Object
 {
     using System;
 
@@ -11,12 +11,12 @@ namespace EFrt.Libs
     /// <summary>
     /// Object stack related words.
     /// </summary>
-    public class ObjectLib : IWordsLIbrary
+    public class Library : IWordsLIbrary
     {
         private IInterpreter _interpreter;
 
 
-        public ObjectLib(IInterpreter efrt)
+        public Library(IInterpreter efrt)
         {
             _interpreter = efrt;
         }

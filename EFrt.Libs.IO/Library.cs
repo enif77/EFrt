@@ -1,6 +1,6 @@
 ﻿/* EFrt - (C) 2020 Premysl Fara  */
 
-namespace EFrt.Libs
+namespace EFrt.Libs.IO
 {
     using System;
     using System.Globalization;
@@ -11,15 +11,15 @@ namespace EFrt.Libs
     using EFrt.Core.Words;
    
 
-    public class IoLib : IWordsLIbrary
+    public class Library : IWordsLIbrary
     {
         private IInterpreter _interpreter;
         private IOutputWriter _outputWriter;
         
 
-        public IoLib(IInterpreter efrt, IOutputWriter outputWriter)
+        public Library(IInterpreter interpreter, IOutputWriter outputWriter)
         {
-            _interpreter = efrt;
+            _interpreter = interpreter;
             _outputWriter = outputWriter;
         }
 

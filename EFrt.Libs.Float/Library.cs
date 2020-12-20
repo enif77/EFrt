@@ -1,6 +1,6 @@
 ﻿/* EFrt - (C) 2020 Premysl Fara  */
 
-namespace EFrt.Libs
+namespace EFrt.Libs.Float
 {
     using System;
 
@@ -9,14 +9,17 @@ namespace EFrt.Libs
     using EFrt.Core.Words;
 
 
-    public class FloatLib : IWordsLIbrary
+    /// <summary>
+    /// The FLOAT words library.
+    /// </summary>
+    public class Library : IWordsLIbrary
     {
         private IInterpreter _interpreter;
 
 
-        public FloatLib(IInterpreter efrt)
+        public Library(IInterpreter interpreter)
         {
-            _interpreter = efrt;
+            _interpreter = interpreter;
         }
 
 

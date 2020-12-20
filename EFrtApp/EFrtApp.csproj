@@ -7,6 +7,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EFrt.Core\EFrt.Core.csproj" />
+    <ProjectReference Include="..\EFrt.Libs.Core\EFrt.Libs.Core.csproj" />
+    <ProjectReference Include="..\EFrt.Libs.DoubleCellInteger\EFrt.Libs.DoubleCellInteger.csproj" />
+    <ProjectReference Include="..\EFrt.Libs.Float\EFrt.Libs.Float.csproj" />
+    <ProjectReference Include="..\EFrt.Libs.IO\EFrt.Libs.IO.csproj" />
+    <ProjectReference Include="..\EFrt.Libs.Object\EFrt.Libs.Object.csproj" />
+    <ProjectReference Include="..\EFrt.Libs.SingleCellInteger\EFrt.Libs.SingleCellInteger.csproj" />
+    <ProjectReference Include="..\EFrt.Libs.String\EFrt.Libs.String.csproj" />
     <ProjectReference Include="..\EFrt\EFrt.csproj" />
   </ItemGroup>
 
