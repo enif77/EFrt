@@ -215,7 +215,7 @@ namespace EFrt.Libs.IO
         // (n --)
         private int EmitAction()
         {
-            _outputWriter.Write("{0} ", (char)_interpreter.Pop());
+            _outputWriter.Write("{0}", (char)_interpreter.Pop());
 
             return 1;
         }

@@ -36,6 +36,8 @@ Words definition table columns:
 | BEGIN    | yes  | C    |           | **Begin loop**<br>Begins a loop. The end of the loop is marked by the matching AGAIN, REPEAT, or UNTIL. |
 | BL       | no   | IC   | ( -- n)   | **Blank**<br>Constant that leaves 32 (the ASCII code of the SPACE char) on the top of the stack. |
 | BYE      | no   | IC   |           | **Terminate execuition**<br>Asks the interpreter to terminate execution. It ends the EFrt program. |
+| CHAR ccc | no   | IC   | ( -- c)   | **Char**<br>Skip leading spaces. Parse the string ccc and return c, the display code representing the first character of ccc. |
+| [CHAR] ccc | yes  | C    | ( -- c)   | **Bracket char**<br>Compilation: Skip leading spaces. Parse the string ccc. Run-time: Return c, the display code representing the first character of ccc. Interpretation semantics for this word are undefined. |
 | CLEAR    | no   | IC   |           | **Clear stack**<br>All items on the data stack are discarded. |
 | CONSTANT x | no   | I    | (n --)    | **Declare constant**<br>Declares a constant named x. When x is executed, the value n will be left on the stack. |
 | DEPTH    | no   | IC   | ( -- n)   | **Stack depth**<br>Returns the number of items on the stack before DEPTH was executed. |

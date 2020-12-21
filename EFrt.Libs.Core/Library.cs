@@ -71,6 +71,9 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "R>", FromReturnStackAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "R@", FetchReturnStackAction));
 
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "CHAR", CharAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "[CHAR]", BracketCharAction));
+
             _interpreter.AddWord(new ConstantWord(_interpreter, "BL", ' '));
             _interpreter.AddWord(new ConstantWord(_interpreter, "FALSE", 0));
             _interpreter.AddWord(new ConstantWord(_interpreter, "TRUE", -1));
@@ -295,6 +298,46 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
+        // ( -- n)
+        private int CharAction()
+        {
+            // Get the name.
+            var tok = _interpreter.NextTok();
+            switch (tok.Code)
+            {
+                case TokenType.Word:
+                    _interpreter.Push(tok.SValue[0]);
+                    break;
+
+                default:
+                    throw new Exception("A name expected.");
+            }
+
+            return 1;
+        }
+
+        // ( -- n)
+        private int BracketCharAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("[CHAR] outside a new word definition.");
+            }
+
+            // Get the name.
+            var tok = _interpreter.NextTok();
+            switch (tok.Code)
+            {
+                case TokenType.Word:
+                    _interpreter.WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(_interpreter, tok.SValue[0]));
+                    break;
+
+                default:
+                    throw new Exception("A name expected.");
+            }
+
+            return 1;
+        }
 
         private int CommentAction()
         {
