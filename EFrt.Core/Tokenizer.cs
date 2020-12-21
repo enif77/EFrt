@@ -129,6 +129,8 @@ namespace EFrt.Core
                 sourceReader.NextChar();
             }
 
+            // TODO: Check, that we have atleast one digit here.
+
             if (sourceReader.CurrentChar == 'L' || sourceReader.CurrentChar == 'l')
             {
                 isLong = true;

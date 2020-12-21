@@ -15,6 +15,8 @@ Words definition table columns:
 
 | Name  | Imm. | Mode | Stack op. | Description |
 | ---   | ---  | ---  | ---       | --- |
+| F!    | no   | IC   | (f addr -- ) | **Store into address**<br>Stores the floating point number f into the address addr (a variables stack index). |
+| F@    | no   | IC   | (addr -- f) | **Fetch**<br>Loads the floating point number at addr (a variables stack index) and leaves it at the top of the stack. |
 | F+    | no   | IC   | (f1 f2 -- f3) | **f3 = f1 + f2**<br>Adds two floating point numbers on the top of the stack and leaves the sum on the top of the stack. |
 | F-    | no   | IC   | (f1 f2 -- f3) | **f3 = f1 - f2**<br>Substracts the floating value f2 from the floating value f1 and leaves the difference on the top of the stack. |
 | F*    | no   | IC   | (f1 f2 -- f3) | **f3 = f1 * f2**<br>Multiplies two floating point numbers on the top of the stack and leaves the product on the stack. |
@@ -36,12 +38,14 @@ Words definition table columns:
 | F2*   | no   | IC   | (f1 -- f2) | **Times two**<br>Substracts two from the top of the stack. |
 | F2/   | no   | IC   | (f1 -- f2) | **Divide by two**<br>Divides the top of the stack by two. |
 | FABS  | no   | IC   | (f1 -- f2) | **f2 = Abs(f1)**<br>. |
+| CONSTANT x | no   | I    | (f --)    | **Declare constant**<br>Declares a constant named x. When x is executed, the value f will be left on the stack. |
+| DEPTH    | no   | IC   | ( -- n)   | **Stack depth**<br>Returns the number of items on the stack before DEPTH was executed. |
 | FIX   | no   | IC   | (f -- n) | **Floating to integer**<br>Converts a float number on the top of the floating poit stack to integer and stores it on the top of the data stack. |
 | FLOAT | no   | IC   | (n -- f) | **Integer to floating**<br>Converts an integer on the top of the data stack to a floationg point number and stores it on the top of the floating point stack. |
 | FMAX  | no   | IC   | (f1 f2 -- f3) | **Floating point maximum**<br>The greater of the two floating point values on the top of the stack is placed on the top of the stack. |
 | FMIN  | no   | IC   | (f1 f2 -- f3) | **Floating point minimum**<br>The lesser of the two floating point values on the top of the stack is placed on the top of the stack. |
+| VARIABLE x | no   | I    |            | **Declare variable**<br>A variable named x is declared and its value is set to zero. When x is executed, its address will be placed on the stack. Four bytes are reserved on the heap for the variable's value. |
 
 ## TODO
 
-Words: `ACOS ASIN ATAN ATAN2 COS EXP NEGATE FNEGATE (LIT) LOG POW SIN SQRT TAN \>FLOAT FLOOR F! F@ FCONSTANT FDEPTH FVARIABLE F**
-  S>F F>S D>F F>D`
+Words: `ACOS ASIN ATAN ATAN2 COS EXP NEGATE FNEGATE (LIT) LOG POW SIN SQRT TAN \>FLOAT FLOOR F** S>F F>S D>F F>D`
