@@ -50,6 +50,19 @@ namespace EFrt.Libs.Float
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "FMAX", MaxAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "FMIN", MinAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "FABS", AbsAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FNEGATE", NegateAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FACOS", AcosAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FASIN", AsinAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FATAN", AtanAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FATAN2", Atan2Action));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FCOS", CosAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FEXP", ExpAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FLOG", LogAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FSIN", SinAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FSQRT", SqrtAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FTAN", TanAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FLOOR", FloorAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F**", PowAction));
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F=", IsEqAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F<>", IsNeqAction));
@@ -278,6 +291,110 @@ namespace EFrt.Libs.Float
         private int AbsAction()
         {
             Function((a) => Math.Abs(a));
+
+            return 1;
+        }
+
+        // (f1 -- f2)
+        private int NegateAction()
+        {
+            Function((a) => -a);
+
+            return 1;
+        }
+
+        // (f1 -- f2)
+        private int AcosAction()
+        {
+            Function((a) => Math.Acos(a));
+
+            return 1;
+        }
+
+        // (f1 -- f2)
+        private int AsinAction()
+        {
+            Function((a) => Math.Asin(a));
+
+            return 1;
+        }
+
+        // (f1 -- f2)
+        private int AtanAction()
+        {
+            Function((a) => Math.Atan(a));
+
+            return 1;
+        }
+
+        // (f1 f2 -- f3)
+        private int Atan2Action()
+        {
+            Function((a, b) => Math.Atan2(a, b));
+
+            return 1;
+        }
+
+        // (f1 -- f2)
+        private int CosAction()
+        {
+            Function((a) => Math.Cos(a));
+
+            return 1;
+        }
+
+        // (f1 -- f2)
+        private int ExpAction()
+        {
+            Function((a) => Math.Exp(a));
+
+            return 1;
+        }
+
+        // (f1 -- f2)
+        private int LogAction()
+        {
+            Function((a) => Math.Log(a));
+
+            return 1;
+        }
+
+        // (f1 -- f2)
+        private int SinAction()
+        {
+            Function((a) => Math.Sin(a));
+
+            return 1;
+        }
+
+        // (f1 -- f2)
+        private int SqrtAction()
+        {
+            Function((a) => Math.Sqrt(a));
+
+            return 1;
+        }
+
+        // (f1 -- f2)
+        private int TanAction()
+        {
+            Function((a) => Math.Tan(a));
+
+            return 1;
+        }
+
+        // (f1 -- f2)
+        private int FloorAction()
+        {
+            Function((a) => Math.Floor(a));
+
+            return 1;
+        }
+
+        // (f1 f2 -- f3)
+        private int PowAction()
+        {
+            Function((a, b) => Math.Pow(a, b));
 
             return 1;
         }

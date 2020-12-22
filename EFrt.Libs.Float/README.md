@@ -1,6 +1,6 @@
 ﻿# FLOAT
 
-Floating point (64 bit, double, 2 cells) numbers handling words. The CORE library has words for double cell stack operations.
+Floating point (64 bit, double, 2 cells) numbers handling words.
 
 ## Words
 
@@ -40,7 +40,20 @@ Words definition table columns:
 | F2-   | no   | IC   | (f1 -- f2) | **Subtract two**<br>Substracts two from the top of the stack. |
 | F2*   | no   | IC   | (f1 -- f2) | **Times two**<br>Substracts two from the top of the stack. |
 | F2/   | no   | IC   | (f1 -- f2) | **Divide by two**<br>Divides the top of the stack by two. |
-| FABS  | no   | IC   | (f1 -- f2) | **f2 = Abs(f1)**<br>. |
+| FABS  | no   | IC   | (f1 -- f2) | **f2 = Abs(f1)**<br>Absolute value of f1. |
+| FNEGATE | no   | IC   | (f1 -- f2) | **f2 = -f1**<br>The negative of the floating point value on the top of the stack replaces the floating point value there. |
+| FACOS | no   | IC   | (f1 -- f2) | **f2 = arccos f1**<br>Replaces floating point top of stack with its arc cosine. |
+| FASIN | no   | IC   | (f1 -- f2) | **f2 = arcsin f1**<br>Replaces floating point top of stack with its arc sine. |
+| FATAN | no   | IC   | (f1 -- f2) | **f2 = arctan f1**<br>Replaces floating point top of stack with its arc tangent. |
+| FATAN2 | no   | IC   | (f1 f2 -- f3) | **f3 = arctan f1 / f2**<br>Replaces the two floating point numbers on the top of the stack with the arc tangent of their quotient, properly handling zero denominators. |
+| FCOS  | no   | IC   | (f1 -- f2) | **f2 = Cos(f1)**<br>The floating point value on the top of the stack is replaced by its cosine. | 
+| FEXP  | no   | IC   | (f1 -- f2) | **f2 = Exp(f1)**<br>The floating point value on the top of the stack is replaced by its natural antilogarithm. | 
+| FLOG  | no   | IC   | (f1 -- f2) | **f2 = Log(f1)**<br>The floating point value on the top of the stack is replaced by its natural logarithm. | 
+| FSIN  | no   | IC   | (f1 -- f2) | **f2 = Sin(f1)**<br>The floating point value on the top of the stack is replaced by its sine. | 
+| FSQRT | no   | IC   | (f1 -- f2) | **f2 = Sqrt(f1)**<br>The floating point value on the top of the stack is replaced by its square root. |
+| FTAN  | no   | IC   | (f1 -- f2) | **f2 = Tan(f1)**<br>The floating point value on the top of the stack is replaced by its tangent. | 
+| FLOOR | no   | IC   | (f1 -- f2) | **f2 = Floor(f1)**<br>Returns the largest integral value less than or equal to the specified number. |
+| F**   | no   | IC   | (f1 f2 -- f3) | **f3 = Pow(f1, f2)**<br>The second floating point value on the stack is taken to the power of the top floating point stack value and the result is left on the top of the stack. |
 | FCONSTANT x | no   | I    | (f --)    | **Declare constant**<br>Declares a constant named x. When x is executed, the value f will be left on the stack. |
 | FDEPTH | no   | IC   | ( -- n)   | **Stack depth**<br>Returns the number of items on the stack before DEPTH was executed. |
 | FMAX  | no   | IC   | (f1 f2 -- f3) | **Floating point maximum**<br>The greater of the two floating point values on the top of the stack is placed on the top of the stack. |
@@ -50,4 +63,4 @@ Words definition table columns:
 
 ## TODO
 
-Words: `ACOS ASIN ATAN ATAN2 COS EXP FNEGATE (LIT) LOG POW SIN SQRT TAN \>FLOAT FLOOR F**`
+Words: `(LIT) \>FLOAT`
