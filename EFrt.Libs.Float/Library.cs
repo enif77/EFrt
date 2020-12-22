@@ -31,6 +31,11 @@ namespace EFrt.Libs.Float
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F@", FetchFromVariableAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "FDEPTH", DepthAction));
 
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F>S", FloatToSingleCellIntAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "S>F", SingleCellIntToFloatAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F>D", FloatToDoubleCellIntAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D>F", DoubleCellIntToFloatAction));
+
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F+", AddAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F-", SubAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F1+", AddOneAction));
@@ -41,11 +46,11 @@ namespace EFrt.Libs.Float
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F2/", DivTwoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F*", MulAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F/", DivAction));
+
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "FMAX", MaxAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "FMIN", MinAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "FABS", AbsAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FIX", FixAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FLOAT", FloatAction));
+
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F=", IsEqAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F<>", IsNeqAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F<", IsLtAction));
@@ -278,7 +283,7 @@ namespace EFrt.Libs.Float
         }
 
         // (f -- n)
-        private int FixAction()
+        private int FloatToSingleCellIntAction()
         {
             _interpreter.Push((int)FPop());
 
@@ -286,12 +291,39 @@ namespace EFrt.Libs.Float
         }
 
         // (n -- f)
-        private int FloatAction()
+        private int SingleCellIntToFloatAction()
         {
             FPush(_interpreter.Pop());
 
             return 1;
         }
+
+        // (f -- d)
+        private int FloatToDoubleCellIntAction()
+        {
+            var v = new LongVal()
+            {
+                D = (long)FPop()
+            };
+
+            _interpreter.Push(v.A);
+            _interpreter.Push(v.B);
+
+            return 1;
+        }
+
+        // (d -- f)
+        private int DoubleCellIntToFloatAction()
+        {
+            FPush(new LongVal()
+            {
+                B = _interpreter.Pop(),
+                A = _interpreter.Pop()
+            }.D);
+
+            return 1;
+        }
+
 
         // (f1 f2 -- flag)
         private int IsEqAction()
