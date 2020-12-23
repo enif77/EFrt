@@ -1,11 +1,58 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net452;netstandard2.0;net5.0</TargetFrameworks>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<IsPackable>true</IsPackable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\EFrt.Core\EFrt.Core.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="EFrt.*.nupkg" />
+	</ItemGroup>
+	
+	
+	<PropertyGroup>
+		<AssemblyTitle>EFrt - Embeddable FORTH programing language</AssemblyTitle>
+		<Copyright>(c) 2020-2021</Copyright>
+	</PropertyGroup>
+	
+	<PropertyGroup>
+		<PackageId>EFrt</PackageId>
+		<Version>1.0.0</Version>
+		<Authors>Premysl Fara</Authors>
+		<Title>EFrt - Embeddable FORTH</Title>
+		<Description>
+			Gives you a simple way, how to add a scripting feature to your .NET app.
+		</Description>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageDescription>EFrt - Embeddable FORTH programing language interpreter.</PackageDescription>
+		<PackageTags>efrt;forth;embeddable;interpreter;language</PackageTags>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\README.md" Pack="true" PackagePath="" />
+		<None Include="..\README.md" Pack="true" PackagePath="docs\EFrt.md" />
+		<None Include="..\EFrt.Libs.Core\README.md" Pack="true" PackagePath="docs\CORE.md" />
+		<None Include="..\EFrt.Libs.DoubleCellInteger\README.md" Pack="true" PackagePath="docs\DOUBLE.md" />
+		<None Include="..\EFrt.Libs.Float\README.md" Pack="true" PackagePath="docs\FLOAT.md" />
+		<None Include="..\EFrt.Libs.IO\README.md" Pack="true" PackagePath="docs\IO.md" />
+		<None Include="..\EFrt.Libs.Object\README.md" Pack="true" PackagePath="docs\OBJECT.md" />
+		<None Include="..\EFrt.Libs.SingleCellInteger\README.md" Pack="true" PackagePath="docs\INT.md" />
+		<None Include="..\EFrt.Libs.String\README.md" Pack="true" PackagePath="docs\STRING.md" />
+		<!--<None Include="..\..\license.txt" Pack="true" PackagePath="" />-->
+		<!--<None Include="..\..\efrt-logo.png" Pack="true" PackagePath="" />-->
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\EFrt.Core\EFrt.Core.csproj" />
+		<ProjectReference Include="..\EFrt.Libs.Core\EFrt.Libs.Core.csproj" />
+		<ProjectReference Include="..\EFrt.Libs.DoubleCellInteger\EFrt.Libs.DoubleCellInteger.csproj" />
+		<ProjectReference Include="..\EFrt.Libs.Float\EFrt.Libs.Float.csproj" />
+		<ProjectReference Include="..\EFrt.Libs.IO\EFrt.Libs.IO.csproj" />
+		<ProjectReference Include="..\EFrt.Libs.Object\EFrt.Libs.Object.csproj" />
+		<ProjectReference Include="..\EFrt.Libs.SingleCellInteger\EFrt.Libs.SingleCellInteger.csproj" />
+		<ProjectReference Include="..\EFrt.Libs.String\EFrt.Libs.String.csproj" />
+	</ItemGroup>
 
 </Project>
