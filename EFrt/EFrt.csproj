@@ -3,20 +3,19 @@
 	<PropertyGroup>
 		<TargetFrameworks>net452;netstandard2.0;net5.0</TargetFrameworks>
 		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<IsPackable>true</IsPackable>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<None Remove="EFrt.*.nupkg" />
 	</ItemGroup>
-	
-	
+
 	<PropertyGroup>
 		<AssemblyTitle>EFrt - Embeddable FORTH programing language</AssemblyTitle>
-		<Copyright>(c) 2020-2021</Copyright>
+		<Copyright>(C) 2020 - 2021</Copyright>
 	</PropertyGroup>
-	
+
 	<PropertyGroup>
 		<PackageId>EFrt</PackageId>
 		<Version>1.0.0</Version>
@@ -32,6 +31,8 @@
 
 	<ItemGroup>
 		<None Include="..\README.md" Pack="true" PackagePath="" />
+		<None Include="..\LICENSE.txt" Pack="true" PackagePath="" />
+
 		<None Include="..\README.md" Pack="true" PackagePath="docs\EFrt.md" />
 		<None Include="..\EFrt.Libs.Core\README.md" Pack="true" PackagePath="docs\CORE.md" />
 		<None Include="..\EFrt.Libs.DoubleCellInteger\README.md" Pack="true" PackagePath="docs\DOUBLE.md" />
@@ -40,11 +41,22 @@
 		<None Include="..\EFrt.Libs.Object\README.md" Pack="true" PackagePath="docs\OBJECT.md" />
 		<None Include="..\EFrt.Libs.SingleCellInteger\README.md" Pack="true" PackagePath="docs\INT.md" />
 		<None Include="..\EFrt.Libs.String\README.md" Pack="true" PackagePath="docs\STRING.md" />
-		<!--<None Include="..\..\license.txt" Pack="true" PackagePath="" />-->
+
 		<!--<None Include="..\..\efrt-logo.png" Pack="true" PackagePath="" />-->
 	</ItemGroup>
 
-	<ItemGroup>
+	<ItemGroup Condition="'$(Configuration)' == 'Release'">
+		<PackageReference Include="EFrt.Core" Version="1.0.0" />
+		<PackageReference Include="EFrt.Libs.Core" Version="0.5.0" />
+		<PackageReference Include="EFrt.Libs.DoubleCellInteger" Version="0.5.0" />
+		<PackageReference Include="EFrt.Libs.Float" Version="0.5.0" />
+		<PackageReference Include="EFrt.Libs.IO" Version="0.5.0" />
+		<PackageReference Include="EFrt.Libs.Object" Version="0.5.0" />
+		<PackageReference Include="EFrt.Libs.SingleCellInteger" Version="0.5.0" />
+		<PackageReference Include="EFrt.Libs.String" Version="0.5.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
 		<ProjectReference Include="..\EFrt.Core\EFrt.Core.csproj" />
 		<ProjectReference Include="..\EFrt.Libs.Core\EFrt.Libs.Core.csproj" />
 		<ProjectReference Include="..\EFrt.Libs.DoubleCellInteger\EFrt.Libs.DoubleCellInteger.csproj" />

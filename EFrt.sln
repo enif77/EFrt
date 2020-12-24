@@ -7,8 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFrt", "EFrt\EFrt.csproj", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{738AC7B8-125D-404D-AE86-95CBCB227F0A}"
 	ProjectSection(SolutionItems) = preProject
-		NuGet.Debug.Config = NuGet.Debug.Config
-		NuGet.Release.Config = NuGet.Release.Config
+		LICENSE.txt = LICENSE.txt
+		NuGet.Config = NuGet.Config
 		README.md = README.md
 		release.bat = release.bat
 	EndProjectSection
@@ -35,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFrt.Libs.Object", "EFrt.Li
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFrt.Libs.String", "EFrt.Libs.String\EFrt.Libs.String.csproj", "{20CEAF77-13CB-420B-BB2C-0516083C426A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFrt.GetVersion", "EFrt.GetVersion\EFrt.GetVersion.csproj", "{4437F066-6EAE-4BF1-8C07-3BA7D1144A43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFrt.GetVersion", "EFrt.GetVersion\EFrt.GetVersion.csproj", "{4437F066-6EAE-4BF1-8C07-3BA7D1144A43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

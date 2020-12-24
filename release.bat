@@ -8,9 +8,6 @@
 @REM Package name. (EFrt)
 @SET PACKAGE_NAME=%1
 
-@REM A Debug or Release configuration? (0 = Debug, 1 = Release)
-@SET BUILD_AS_RELEASE_CONF=1
-
 @REM If this is 0, it is a normal release.
 @REM If this is not 0, it is a rerelease. Existing packages with the same versions are deleted from the source first, then readded.
 @SET RERELEASE=1
@@ -19,26 +16,13 @@
 
  @REM Build configuration selection.
 
-@IF %BUILD_AS_RELEASE_CONF%==0 GOTO build_configuration_debug
-
 @SET BUILD_CONFIGURATION=Release
-@SET WITH_SYMBOLS=
-
-@GOTO build_configuration_set
-
-:build_configuration_debug
-
-@SET BUILD_CONFIGURATION=Debug
-@SET WITH_SYMBOLS=.symbols
-
-:build_configuration_set
-
 
 @REM --- DIRECTORIES ---
 
 @SET TOOLS_PATH=D:\Devel\bin
 @SET BUILD_START_DIR=%CD%
-@SET NUGET_DIR=D:\Devel\nuget\%BUILD_CONFIGURATION%
+@SET NUGET_DIR=D:\Devel\nuget
 
 @REM --- PACKAGE ---
 
@@ -53,7 +37,7 @@
 @REM https://docs.microsoft.com/cs-cz/nuget/quickstart/create-and-publish-a-package-using-the-dotnet-cli
 @REM https://stackoverflow.com/questions/45897271/dotnet-restore-vs-nuget-restore-with-teamcity
 
-dotnet restore --configfile %BUILD_START_DIR%\NuGet.%BUILD_CONFIGURATION%.Config --force --no-cache --verbosity normal
+dotnet restore --configfile %BUILD_START_DIR%\NuGet.Config --force --no-cache --verbosity normal
 dotnet build --configuration %BUILD_CONFIGURATION% --no-restore --verbosity minimal
 dotnet pack --configuration %BUILD_CONFIGURATION% --no-restore --force --include-source --output nupkgs --verbosity minimal
 
@@ -68,7 +52,7 @@ dotnet pack --configuration %BUILD_CONFIGURATION% --no-restore --force --include
 
 @REM --- PUBLISH ---
 
-%TOOLS_PATH%\nuget\nuget.exe add nupkgs\%PACKAGE_NAME%.%PACKAGE_VERSION%%WITH_SYMBOLS%.nupkg -source %NUGET_DIR%
+%TOOLS_PATH%\nuget\nuget.exe add nupkgs\%PACKAGE_NAME%.%PACKAGE_VERSION%.nupkg -source %NUGET_DIR%
 
 
 @CD %BUILD_START_DIR%
