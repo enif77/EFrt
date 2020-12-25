@@ -46,10 +46,11 @@ namespace EFrt.Core
 
             Reset();
         }
-        
+
 
         #region tokenizer
 
+        private Tokenizer _tokenizer;
         public char CurrentChar => _tokenizer.CurrentChar;
         public int SourcePos => _tokenizer.SourcePos;
 
@@ -475,8 +476,5 @@ namespace EFrt.Core
         }
 
         #endregion
-
-
-        private Tokenizer _tokenizer;
     }
 }
