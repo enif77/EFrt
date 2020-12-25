@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE.txt = LICENSE.txt
 		NuGet.Config = NuGet.Config
 		README.md = README.md
+		release-local.bat = release-local.bat
+		release-package.bat = release-package.bat
 		release.bat = release.bat
 	EndProjectSection
 EndProject
