@@ -45,7 +45,7 @@ namespace EFrt.Libs.Object
 
         private void Function(Func<object, object> func)
         {
-            var stack = _interpreter.ObjectStack;
+            var stack = _interpreter.State.ObjectStack;
             var top = stack.Top;
             stack.Items[stack.Top] = func(stack.Items[top]);
         }
@@ -53,7 +53,7 @@ namespace EFrt.Libs.Object
 
         private void Function(Func<object, object, object> func)
         {
-            var stack = _interpreter.ObjectStack;
+            var stack = _interpreter.State.ObjectStack;
             var top = stack.Top;
             stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
         }
@@ -61,7 +61,7 @@ namespace EFrt.Libs.Object
         // (n -- addr)
         private int AllotAction()
         {
-            _interpreter.Push(_interpreter.ObjectHeap.Alloc(_interpreter.Pop()));
+            _interpreter.Push(_interpreter.State.ObjectHeap.Alloc(_interpreter.Pop()));
 
             return 1;
         }
@@ -69,7 +69,7 @@ namespace EFrt.Libs.Object
         // ( -- addr)
         private int HereAction()
         {
-            _interpreter.Push(_interpreter.ObjectHeap.Top);
+            _interpreter.Push(_interpreter.State.ObjectHeap.Top);
 
             return 1;
         }
@@ -78,7 +78,7 @@ namespace EFrt.Libs.Object
         // ( -- )
         private int VariableCompilationAction()
         {
-            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.ObjectHeap.Alloc(1)));
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.State.ObjectHeap.Alloc(1)));
             _interpreter.EndNewWordCompilation();
 
             return 1;
@@ -88,7 +88,7 @@ namespace EFrt.Libs.Object
         private int StoreToVariableAction()
         {
             var addr = _interpreter.Pop();
-            _interpreter.ObjectHeap.Items[addr] = _interpreter.OPop();
+            _interpreter.State.ObjectHeap.Items[addr] = _interpreter.OPop();
 
             return 1;
         }
@@ -96,7 +96,7 @@ namespace EFrt.Libs.Object
         // (addr -- ) { -- o}
         private int FetchFromVariableAction()
         {
-            _interpreter.OPush(_interpreter.ObjectHeap.Items[_interpreter.Pop()]);
+            _interpreter.OPush(_interpreter.State.ObjectHeap.Items[_interpreter.Pop()]);
 
             return 1;
         }
@@ -174,7 +174,7 @@ namespace EFrt.Libs.Object
         // ( -- a)
         private int DepthAction()
         {
-            _interpreter.Push(_interpreter.ObjectStack.Count);
+            _interpreter.Push(_interpreter.State.ObjectStack.Count);
 
             return 1;
         }
@@ -182,7 +182,7 @@ namespace EFrt.Libs.Object
         // ( -- )
         private int ClearAction()
         {
-            _interpreter.ObjectStack.Clear();
+            _interpreter.State.ObjectStack.Clear();
 
             return 1;
         }

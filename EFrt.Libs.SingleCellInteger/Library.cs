@@ -56,7 +56,7 @@ namespace EFrt.Libs.SingleCellInteger
 
         private void Function(Func<int, int> func)
         {
-            var stack = _interpreter.Stack;
+            var stack = _interpreter.State.Stack;
             var top = stack.Top;
             stack.Items[stack.Top] = func(stack.Items[top]);
         }
@@ -64,7 +64,7 @@ namespace EFrt.Libs.SingleCellInteger
 
         private void Function(Func<int, int, int> func)
         {
-            var stack = _interpreter.Stack;
+            var stack = _interpreter.State.Stack;
             var top = stack.Top;
             stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
         }

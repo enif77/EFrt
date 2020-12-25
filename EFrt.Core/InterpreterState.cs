@@ -2,29 +2,45 @@
 
 namespace EFrt.Core
 {
-    /// <summary>
-    /// Defines a state, in which an interpreter can be.
-    /// </summary>
-    public enum InterpreterState
+    using System;
+
+    using EFrt.Core.Stacks;
+
+
+    public class InterpreterState : IInterpreterState
     {
-        /// <summary>
-        /// The interpreter is in the interpretation mode.
-        /// </summary>
-        Interpreting,
+        public Stack Stack { get; }
 
-        /// <summary>
-        /// The interpreter is compiling a new word, variable or constant.
-        /// </summary>
-        Compiling,
+        public ObjectStack ObjectStack { get; }
 
-        /// <summary>
-        /// The interpreter just executed the QUIT word. The current interpretation is terminated and can be resumed.
-        /// </summary>
-        Breaking,
+        public ReturnStack ReturnStack { get; }
 
-        /// <summary>
-        /// The interpreter just executed the BYE word. The current interpretation is terminated and should not be restart.
-        /// </summary>
-        Terminating
+        public Heap Heap { get; }
+
+        public ObjectHeap ObjectHeap { get; }
+
+        public IWordsList WordsList { get; }
+
+
+        public InterpreterState(Stack stack, ObjectStack objectStack, ReturnStack returnStack, Heap heap, ObjectHeap objectHeap, IWordsList wordsList)
+        {
+            Stack = stack ?? throw new ArgumentNullException(nameof(stack));
+            ObjectStack = objectStack ?? throw new ArgumentNullException(nameof(objectStack));
+            ReturnStack = returnStack ?? throw new ArgumentNullException(nameof(returnStack));
+            Heap = heap ?? throw new ArgumentNullException(nameof(heap));
+            ObjectHeap = objectHeap ?? throw new ArgumentNullException(nameof(objectHeap));
+            WordsList = wordsList ?? throw new ArgumentNullException(nameof(wordsList));
+        }
+
+
+        public void Reset()
+        {
+            Stack.Clear();
+            ObjectStack.Clear();
+            ReturnStack.Clear();
+            Heap.Clear();
+            ObjectHeap.Clear();
+            WordsList.Clear();
+        }
     }
 }

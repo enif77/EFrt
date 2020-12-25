@@ -2,9 +2,6 @@
 
 namespace EFrt.Core
 {
-    using System.Collections.Generic;
-
-    using EFrt.Core.Stacks;
     using EFrt.Core.Words;
 
 /*
@@ -25,35 +22,10 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
     public interface IInterpreter
     {
         /// <summary>
-        /// Data stack.
+        /// Runtime data of this interpreter instance.
         /// </summary>
-        Stack Stack { get; }
-
-        /// <summary>
-        /// Optional stack for user data.
-        /// </summary>
-        ObjectStack ObjectStack { get; }
-
-        /// <summary>
-        /// Return stack.
-        /// </summary>
-        ReturnStack ReturnStack { get; }
-
-        /// <summary>
-        /// Heap - variables etc.
-        /// </summary>
-        Heap Heap { get; }
-
-        /// <summary>
-        /// Heap - variables etc.
-        /// </summary>
-        ObjectHeap ObjectHeap { get; }
-
-        /// <summary>
-        /// The list of known words.
-        /// </summary>
-        IWordsList WordsList { get; }
-
+        IInterpreterState State { get; }
+                
         /// <summary>
         /// True, if this interpreter is compiling a new word, variable or constant.
         /// </summary>
@@ -67,37 +39,8 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// <summary>
         /// The state, in which is this interpreter.
         /// </summary>
-        InterpreterState InterpreterState { get; }
-
-   
-        /// <summary>
-        /// Cleans up the interlan interpreters state.
-        /// </summary>
-        /// <param name="libraries">If set, all defined words are removed and new words are defined using this list of words libraries.</param>
-        void Reset(IEnumerable<IWordsLIbrary> libraries = null);
-
-        /// <summary>
-        /// Executes a string as a FORTH program.
-        /// </summary>
-        /// <param name="src">A FORTH program source.</param>
-        void Execute(string src);
-
-        /// <summary>
-        /// Executes a FORTH program using a source reader.
-        /// </summary>
-        /// <param name="sourceReader">A FORTH program source reader.</param>
-        void Execute(ISourceReader sourceReader);
-
-        /// <summary>
-        /// Asks the interpreter to break the current script execution.
-        /// </summary>
-        void BreakExecution();
-
-        /// <summary>
-        /// Asks the interpreter to terminate the current script execution.
-        /// </summary>
-        void TerminateExecution();
-
+        InterpreterStateCode InterpreterState { get; }
+        
 
         #region tokenizer
 
@@ -128,6 +71,56 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// </summary>
         /// <returns>A token.</returns>
         Token NextTok();
+
+        #endregion
+
+
+        #region words list
+
+        /// <summary>
+        /// Returns true, if a word is defined;
+        /// </summary>
+        /// <param name="wordName">A word name.</param>
+        /// <returns></returns>
+        bool IsWordDefined(string wordName);
+
+        /// <summary>
+        /// Gets a defined word.
+        /// Throws an exception, if no such word is defined.
+        /// </summary>
+        /// <param name="wordName">A word name.</param>
+        /// <returns>A word.</returns>
+        IWord GetWord(string wordName);
+
+        /// <summary>
+        /// Adds a word to the words list.
+        /// </summary>
+        /// <param name="word">A word.</param>
+        void AddWord(IWord word);
+
+        /// <summary>
+        /// Addss words from a words library.
+        /// </summary>
+        /// <param name="library">A library of words.</param>
+        void AddWords(IWordsLIbrary library);
+
+        /// <summary>
+        /// Forgets a word and all word defined after it.
+        /// </summary>
+        /// <param name="wordName">A word name.</param>
+        void ForgetWord(string wordName);
+
+        /// <summary>
+        /// Removes a word from the list of words.
+        /// Throws an exception, if no such word is defined.
+        /// </summary>
+        /// <param name="wordName">A word name.</param>
+        void RemoveWord(string wordName);
+
+        /// <summary>
+        /// Removes all words from the list of words.
+        /// </summary>
+        void RemoveAllWords();
 
         #endregion
 
@@ -322,55 +315,34 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         #endregion
 
 
-        #region words list
+        #region execution
 
         /// <summary>
-        /// Returns true, if a word is defined;
+        /// Cleans up the internal interpreters state.
         /// </summary>
-        /// <param name="wordName">A word name.</param>
-        /// <returns></returns>
-        bool IsWordDefined(string wordName);
+        void Reset();
 
         /// <summary>
-        /// Gets a defined word.
-        /// Throws an exception, if no such word is defined.
+        /// Executes a string as a FORTH program.
         /// </summary>
-        /// <param name="wordName">A word name.</param>
-        /// <returns>A word.</returns>
-        IWord GetWord(string wordName);
+        /// <param name="src">A FORTH program source.</param>
+        void Execute(string src);
 
         /// <summary>
-        /// Adds a word to the words list.
+        /// Executes a FORTH program using a source reader.
         /// </summary>
-        /// <param name="word">A word.</param>
-        void AddWord(IWord word);
+        /// <param name="sourceReader">A FORTH program source reader.</param>
+        void Execute(ISourceReader sourceReader);
 
         /// <summary>
-        /// Removes a word from the list of words.
-        /// Throws an exception, if no such word is defined.
+        /// Asks the interpreter to break the current script execution.
         /// </summary>
-        /// <param name="wordName">A word name.</param>
-        void RemoveWord(string wordName);
+        void BreakExecution();
 
         /// <summary>
-        /// Defines words from given words libraries.
+        /// Asks the interpreter to terminate the current script execution.
         /// </summary>
-        /// <param name="libraries">A list of libraries of words.</param>
-        /// <param name="removeExistingWords">If true, existing word definitions are removed before new ones are added.</param>
-        void DefineWords(IEnumerable<IWordsLIbrary> libraries, bool removeExistingWords = false);
-
-        /// <summary>
-        /// Defines words from given words library.
-        /// </summary>
-        /// <param name="libraries">A library of words.</param>
-        /// <param name="removeExistingWords">If true, existing word definitions are removed before new ones are added.</param>
-        void DefineWords(IWordsLIbrary library, bool removeExistingWords = false);
-
-        /// <summary>
-        /// Forgets a word and all word defined after it.
-        /// </summary>
-        /// <param name="wordName">A word name.</param>
-        void ForgetWord(string wordName);
+        void TerminateExecution();
 
         #endregion
     }

@@ -261,7 +261,7 @@ namespace EFrt.Libs.Core
         // ( -- a)
         private int DepthAction()
         {
-            _interpreter.Push(_interpreter.Stack.Count);
+            _interpreter.Push(_interpreter.State.Stack.Count);
 
             return 1;
         }
@@ -269,7 +269,7 @@ namespace EFrt.Libs.Core
         // ( -- )
         private int ClearAction()
         {
-            _interpreter.Stack.Clear();
+            _interpreter.State.Stack.Clear();
 
             return 1;
         }
@@ -422,7 +422,7 @@ namespace EFrt.Libs.Core
         // (n -- addr)
         private int AllotAction()
         {
-            _interpreter.Push(_interpreter.Heap.Alloc(_interpreter.Pop()));
+            _interpreter.Push(_interpreter.State.Heap.Alloc(_interpreter.Pop()));
 
             return 1;
         }
@@ -430,7 +430,7 @@ namespace EFrt.Libs.Core
         // ( -- addr)
         private int HereAction()
         {
-            _interpreter.Push(_interpreter.Heap.Top);
+            _interpreter.Push(_interpreter.State.Heap.Top);
 
             return 1;
         }
@@ -439,7 +439,7 @@ namespace EFrt.Libs.Core
         // ( -- )
         private int VariableCompilationAction()
         {
-            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.Heap.Alloc(1)));
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.State.Heap.Alloc(1)));
             _interpreter.EndNewWordCompilation();
 
             return 1;
@@ -449,7 +449,7 @@ namespace EFrt.Libs.Core
         // ( -- )
         private int DoubleVariableCompilationAction()
         {
-            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.Heap.Alloc(2)));
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.State.Heap.Alloc(2)));
             _interpreter.EndNewWordCompilation();
 
             return 1;
@@ -459,7 +459,7 @@ namespace EFrt.Libs.Core
         private int StoreToVariableAction()
         {
             var addr = _interpreter.Pop();
-            _interpreter.Heap.Items[addr] = _interpreter.Pop();
+            _interpreter.State.Heap.Items[addr] = _interpreter.Pop();
 
             return 1;
         }
@@ -468,8 +468,8 @@ namespace EFrt.Libs.Core
         private int DoubleStoreToVariableAction()
         {
             var addr = _interpreter.Pop();
-            _interpreter.Heap.Items[addr + 1] = _interpreter.Pop();  // n2
-            _interpreter.Heap.Items[addr] = _interpreter.Pop();      // n1
+            _interpreter.State.Heap.Items[addr + 1] = _interpreter.Pop();  // n2
+            _interpreter.State.Heap.Items[addr] = _interpreter.Pop();      // n1
 
             return 1;
         }
@@ -477,7 +477,7 @@ namespace EFrt.Libs.Core
         // (addr -- n)
         private int FetchFromVariableAction()
         {
-            _interpreter.Push(_interpreter.Heap.Items[_interpreter.Pop()]);
+            _interpreter.Push(_interpreter.State.Heap.Items[_interpreter.Pop()]);
 
             return 1;
         }
@@ -486,8 +486,8 @@ namespace EFrt.Libs.Core
         private int DoubleFetchFromVariableAction()
         {
             var addr = _interpreter.Pop();
-            _interpreter.Push(_interpreter.Heap.Items[addr]);      // n1
-            _interpreter.Push(_interpreter.Heap.Items[addr + 1]);  // n2
+            _interpreter.Push(_interpreter.State.Heap.Items[addr]);      // n1
+            _interpreter.Push(_interpreter.State.Heap.Items[addr + 1]);  // n2
 
             return 1;
         }
@@ -495,8 +495,8 @@ namespace EFrt.Libs.Core
 
         public int AbortAction()
         {
-            _interpreter.Stack.Clear();
-            _interpreter.ObjectStack.Clear();
+            _interpreter.State.Stack.Clear();
+            _interpreter.State.ObjectStack.Clear();
 
             // TODO: Clear the heap?
 
@@ -506,7 +506,7 @@ namespace EFrt.Libs.Core
 
         private int QuitAction()
         {
-            _interpreter.ReturnStack.Clear();
+            _interpreter.State.ReturnStack.Clear();
             _interpreter.BreakExecution();
 
             return 1;

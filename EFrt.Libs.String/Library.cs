@@ -29,7 +29,7 @@ namespace EFrt.Libs.String
 
         private void Function(Func<string, string> func)
         {
-            var stack = _interpreter.ObjectStack;
+            var stack = _interpreter.State.ObjectStack;
             var top = stack.Top;
             stack.Items[stack.Top] = func(stack.Items[top].ToString());
         }
@@ -37,7 +37,7 @@ namespace EFrt.Libs.String
 
         private void Function(Func<string, string, string> func)
         {
-            var stack = _interpreter.ObjectStack;
+            var stack = _interpreter.State.ObjectStack;
             var top = stack.Top;
             stack.Items[--stack.Top] = func(stack.Items[top - 1].ToString(), stack.Items[top].ToString());
         }

@@ -7,6 +7,7 @@ namespace EFrtApp
     using System.Text;
 
     using EFrt.Core;
+    using EFrt.Core.Stacks;
     using EFrt.Core.Words;
 
 
@@ -14,18 +15,23 @@ namespace EFrtApp
     {
         static void Main(string[] args)
         {
-            var interpreter = new Interpreter(new WordsList());
+            var interpreter = new Interpreter(new InterpreterState(
+                new Stack(32),
+                new ObjectStack(32),
+                new ReturnStack(32),
+                new Heap(1024),
+                new ObjectHeap(1024),
+                new WordsList()));
+
             var outputWriter = new ConsoleWriter();
-            interpreter.DefineWords(new List<IWordsLIbrary>()
-            {
-                new EFrt.Libs.Core.Library(interpreter),
-                new EFrt.Libs.IO.Library(interpreter, outputWriter),
-                new EFrt.Libs.SingleCellInteger.Library(interpreter),
-                new EFrt.Libs.DoubleCellInteger.Library(interpreter),
-                new EFrt.Libs.Float.Library(interpreter),
-                new EFrt.Libs.String.Library(interpreter),
-                new EFrt.Libs.Object.Library(interpreter),
-            });
+
+            interpreter.AddWords(new EFrt.Libs.Core.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.IO.Library(interpreter, outputWriter));
+            interpreter.AddWords(new EFrt.Libs.SingleCellInteger.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.DoubleCellInteger.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.Float.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.String.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.Object.Library(interpreter));
 
             while (true)
             {
@@ -43,7 +49,7 @@ namespace EFrtApp
 
                 // TODO: Breaking state.
 
-                if (interpreter.InterpreterState == InterpreterState.Terminating)
+                if (interpreter.InterpreterState == InterpreterStateCode.Terminating)
                 {
                     Console.WriteLine();
                     Console.WriteLine("Bye!");
@@ -73,19 +79,23 @@ namespace EFrtApp
 
         static void TestEfrt()
         {
-            var interpreter = new Interpreter(new WordsList());
+            var interpreter = new Interpreter(new InterpreterState(
+                new Stack(32),
+                new ObjectStack(32),
+                new ReturnStack(32),
+                new Heap(1024),
+                new ObjectHeap(1024),
+                new WordsList()));
+
             var outputWriter = new ConsoleWriter();
 
-            interpreter.DefineWords(new List<IWordsLIbrary>()
-            {
-                new EFrt.Libs.Core.Library(interpreter),
-                new EFrt.Libs.IO.Library(interpreter, outputWriter),
-                new EFrt.Libs.SingleCellInteger.Library(interpreter),
-                new EFrt.Libs.DoubleCellInteger.Library(interpreter),
-                new EFrt.Libs.Float.Library(interpreter),
-                new EFrt.Libs.String.Library(interpreter),
-                new EFrt.Libs.Object.Library(interpreter)
-            });
+            interpreter.AddWords(new EFrt.Libs.Core.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.IO.Library(interpreter, outputWriter));
+            interpreter.AddWords(new EFrt.Libs.SingleCellInteger.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.DoubleCellInteger.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.Float.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.String.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.Object.Library(interpreter));
 
             //efrt.Execute(_src);
             //efrt.Execute("CR .( ---)");
@@ -130,7 +140,13 @@ namespace EFrtApp
         {
             var wl = new WordsList();
 
-            var i = new Interpreter(wl);
+            var i = new Interpreter(new InterpreterState(
+                new Stack(32),
+                new ObjectStack(32),
+                new ReturnStack(32),
+                new Heap(1024),
+                new ObjectHeap(1024),
+                new WordsList()));
 
             wl.RegisterWord(new PrimitiveWord(i, "w1", () => 1));
             wl.RegisterWord(new PrimitiveWord(i, "w1", () => 1));

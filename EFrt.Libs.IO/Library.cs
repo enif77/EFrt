@@ -115,7 +115,7 @@ namespace EFrt.Libs.IO
         // (addr --)
         private int PrintIndirectAction()
         {
-            _outputWriter.Write("{0} ", _interpreter.Heap.Items[_interpreter.Pop()]);
+            _outputWriter.Write("{0} ", _interpreter.State.Heap.Items[_interpreter.Pop()]);
 
             return 1;
         }
@@ -156,8 +156,8 @@ namespace EFrt.Libs.IO
         private int PrintStackAction()
         {
             _outputWriter.Write("Stack: ");
-            var stackItems = _interpreter.Stack.Items;
-            for (var i = 0; i <= _interpreter.Stack.Top; i++)
+            var stackItems = _interpreter.State.Stack.Items;
+            for (var i = 0; i <= _interpreter.State.Stack.Top; i++)
             {
                 _outputWriter.Write(stackItems[i].ToString(CultureInfo.InvariantCulture));
                 _outputWriter.Write(" ");
@@ -169,8 +169,8 @@ namespace EFrt.Libs.IO
         private int PrintObjectStackAction()
         {
             _outputWriter.WriteLine("Object stack: ");
-            var stackItems = _interpreter.ObjectStack.Items;
-            for (var i = _interpreter.ObjectStack.Top; i >= 0; i--)
+            var stackItems = _interpreter.State.ObjectStack.Items;
+            for (var i = _interpreter.State.ObjectStack.Top; i >= 0; i--)
             {
                 _outputWriter.WriteLine($"  { stackItems[i] }");
             }
@@ -223,7 +223,7 @@ namespace EFrt.Libs.IO
 
         private int WordsAction()
         {
-            _outputWriter.Write("{0} ", _interpreter.WordsList.ToString());
+            _outputWriter.Write("{0} ", _interpreter.State.WordsList.ToString());
 
             return 1;
         }

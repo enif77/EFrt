@@ -157,7 +157,7 @@ namespace EFrt.Libs.Float
         // ( -- )
         private int VariableCompilationAction()
         {
-            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.Heap.Alloc(2)));
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.State.Heap.Alloc(2)));
             _interpreter.EndNewWordCompilation();
 
             return 1;
@@ -167,8 +167,8 @@ namespace EFrt.Libs.Float
         private int StoreToVariableAction()
         {
             var addr = _interpreter.Pop();
-            _interpreter.Heap.Items[addr + 1] = _interpreter.Pop();  // n2
-            _interpreter.Heap.Items[addr] = _interpreter.Pop();      // n1
+            _interpreter.State.Heap.Items[addr + 1] = _interpreter.Pop();  // n2
+            _interpreter.State.Heap.Items[addr] = _interpreter.Pop();      // n1
 
             return 1;
         }
@@ -177,8 +177,8 @@ namespace EFrt.Libs.Float
         private int FetchFromVariableAction()
         {
             var addr = _interpreter.Pop();
-            _interpreter.Push(_interpreter.Heap.Items[addr]);      // n1
-            _interpreter.Push(_interpreter.Heap.Items[addr + 1]);  // n2
+            _interpreter.Push(_interpreter.State.Heap.Items[addr]);      // n1
+            _interpreter.Push(_interpreter.State.Heap.Items[addr + 1]);  // n2
 
             return 1;
         }
@@ -186,7 +186,7 @@ namespace EFrt.Libs.Float
         // ( -- n)
         private int DepthAction()
         {
-            _interpreter.Push(_interpreter.Stack.Count / 2);
+            _interpreter.Push(_interpreter.State.Stack.Count / 2);
 
             return 1;
         }

@@ -3,9 +3,7 @@
 namespace EFrt.Core
 {
     using System;
-    using System.Collections.Generic;
 
-    using EFrt.Core.Stacks;
     using EFrt.Core.Values;
     using EFrt.Core.Words;
 
@@ -27,384 +25,123 @@ namespace EFrt.Core
 
     public class Interpreter : IInterpreter
     {
-        /// <summary>
-        /// The main stack for user data.
-        /// </summary>
-        public Stack Stack { get; }
+        public InterpreterStateCode InterpreterState { get; private set; }
 
-        /// <summary>
-        /// Optional stack for user data.
-        /// </summary>
-        public ObjectStack ObjectStack { get; }
+        public IInterpreterState State { get; }
 
-        /// <summary>
-        /// The support stack for internal interpreters use.
-        /// </summary>
-        public ReturnStack ReturnStack { get; }
+        public bool IsCompiling => InterpreterState == InterpreterStateCode.Compiling;
 
-        /// <summary>
-        /// Variables.
-        /// </summary>
-        public Heap Heap { get; }
-
-        /// <summary>
-        /// Variables.
-        /// </summary>
-        public ObjectHeap ObjectHeap { get; }
-
-        /// <summary>
-        /// The list of known words.
-        /// </summary>
-        public IWordsList WordsList { get; }
-
-        /// <summary>
-        /// True, if this interpreter is coml´piling a new word, variable or constant.
-        /// </summary>
-        public bool IsCompiling => InterpreterState == InterpreterState.Compiling;
-
-        /// <summary>
-        /// True, if this program execution is currently termineted.
-        /// </summary>
-        public bool IsExecutionTerminated => InterpreterState == InterpreterState.Breaking || InterpreterState == InterpreterState.Terminating;
-
-        /// <summary>
-        /// The state, in which is this interpreter.
-        /// </summary>
-        public InterpreterState InterpreterState { get; private set; }
+        public bool IsExecutionTerminated => InterpreterState == InterpreterStateCode.Breaking || InterpreterState == InterpreterStateCode.Terminating;
 
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="wordsList">A IWordsList instance.</param>
-        /// <param name="stackCapacity">A mains stack capacity. 32 by default.</param>
-        /// <param name="returnStackCapacity">A returns stack capacity. 32 by default.</param>
-        /// <param name="heapCapacity">A heap capacity. 256 by default.</param>
-        /// <param name="returnStackCapacity">An object heap capacity. 256 by default.</param>
-        public Interpreter(IWordsList wordsList, int stackCapacity = 32, int returnStackCapacity = 32, int heapCapacity = 256, int objectHeapCapacity = 256)
+        /// <param name="state">A IInterpreterState instance.</param>
+        public Interpreter(IInterpreterState state)
         {
-            Stack = new Stack(stackCapacity);
-            ObjectStack = new ObjectStack(stackCapacity);
-            ReturnStack = new ReturnStack(returnStackCapacity);
-            Heap = new Heap(heapCapacity);
-            ObjectHeap = new ObjectHeap(objectHeapCapacity);
+            if (state == null) throw new ArgumentNullException(nameof(state));
 
-            WordsList = wordsList;
+            State = state;
 
             Reset();
         }
         
 
-        public void Reset(IEnumerable<IWordsLIbrary> libraries = null)
+        #region tokenizer
+
+        public char CurrentChar => _tokenizer.CurrentChar;
+        public int SourcePos => _tokenizer.SourcePos;
+
+
+        public char NextChar()
         {
-            Stack.Clear();
-            ObjectStack.Clear();
-            ReturnStack.Clear();
-            Heap.Clear();
-            ObjectHeap.Clear();
-            
-            if (libraries != null)
-            {
-                WordsList.Clear();
-
-                foreach (var library in libraries)
-                {
-                    library.DefineWords();
-                }
-            }
-
-            InterpreterState = InterpreterState.Interpreting;
+            return _tokenizer.NextChar();
         }
 
 
-        public void BreakExecution()
+        public bool IsWhite()
         {
-            InterpreterState = InterpreterState.Breaking;
+            return Tokenizer.IsWhite(_tokenizer.CurrentChar);
         }
 
 
-        public void TerminateExecution()
+        public bool IsDigit()
         {
-            InterpreterState = InterpreterState.Terminating;
+            return Tokenizer.IsDigit(_tokenizer.CurrentChar);
         }
 
 
-        #region words
+        public void SkipWhite()
+        {
+            _tokenizer.SkipWhite();
+        }
+
+
+        public Token NextTok()
+        {
+            return _tokenizer.NextTok();
+        }
+
+        #endregion
+
+
+        #region words list
 
         public IWord CurrentWord { get; private set; }
 
 
         public bool IsWordDefined(string wordName)
         {
-            return WordsList.IsWordDefined(wordName.ToUpperInvariant());
+            return State.WordsList.IsWordDefined(wordName.ToUpperInvariant());
         }
 
 
         public IWord GetWord(string wordName)
         {
-            return WordsList.GetWord(wordName.ToUpperInvariant());
+            return State.WordsList.GetWord(wordName.ToUpperInvariant());
         }
 
 
         public void AddWord(IWord word)
         {
-            WordsList.RegisterWord(word);
+            State.WordsList.RegisterWord(word);
         }
 
 
-        public void RemoveWord(string wordName)
+        public void AddWords(IWordsLIbrary library)
         {
-            WordsList.RemoveWord(wordName.ToUpperInvariant());
+            if (library == null) throw new ArgumentNullException(nameof(library));
+
+            library.DefineWords();
         }
 
 
         public void ForgetWord(string wordName)
         {
-            WordsList.Forget(wordName.ToUpperInvariant());
+            State.WordsList.Forget(wordName.ToUpperInvariant());
         }
 
 
-        public void DefineWords(IEnumerable<IWordsLIbrary> libraries, bool removeExistingWords = false)
+        public void RemoveWord(string wordName)
         {
-            if (libraries == null) throw new ArgumentNullException(nameof(libraries));
-
-            if (removeExistingWords)
-            {
-                WordsList.Clear();
-            }
-
-            foreach (var library in libraries)
-            {
-                library.DefineWords();
-            }
+            State.WordsList.RemoveWord(wordName.ToUpperInvariant());
         }
 
 
-        public void DefineWords(IWordsLIbrary library, bool removeExistingWords = false)
+        public void RemoveAllWords()
         {
-            if (library == null) throw new ArgumentNullException(nameof(library));
-
-            if (removeExistingWords)
-            {
-                WordsList.Clear();
-            }
-
-            library.DefineWords();
+            State.WordsList.Clear();
         }
 
         #endregion
 
 
-        #region stacks
+        #region word compilation
 
-        // Data stack.
-
-        public int Pick(int index)
-        {
-            return Stack.Pick(index);
-        }
-
-
-        public int Peek()
-        {
-            return Stack.Peek();
-        }
-
-
-        public int Pop()
-        {
-            return Stack.Pop();
-        }
-
-
-        public void Push(int value)
-        {
-            Stack.Push(value);
-        }
-
-
-        public void Drop(int count = 1)
-        {
-            Stack.Drop(count);
-        }
-
-
-        public void Dup()
-        {
-            Stack.Dup();
-        }
-
-
-        public void Swap()
-        {
-            Stack.Swap();
-        }
-
-
-        public void Over()
-        {
-            Stack.Over();
-        }
-
-
-        public void Rot()
-        {
-            Stack.Rot();
-        }
-
-
-        public void Roll(int index)
-        {
-            Stack.Roll(index);
-        }
-
-        // Object stack.
-
-        public object OPick(int index)
-        {
-            return ObjectStack.Pick(index);
-        }
-
-
-        public object OPeek()
-        {
-            return ObjectStack.Peek();
-        }
-
-
-        public object OPop()
-        {
-            return ObjectStack.Pop();
-        }
-
-
-        public void OPush(object value)
-        {
-            ObjectStack.Push(value);
-        }
-
-
-        public void ODrop(int count = 1)
-        {
-            ObjectStack.Drop();
-        }
-
-
-        public void ODup()
-        {
-            ObjectStack.Dup();
-        }
-
-
-        public void OSwap()
-        {
-            ObjectStack.Swap();
-        }
-
-
-        public void OOver()
-        {
-            ObjectStack.Over();
-        }
-
-
-        public void ORot()
-        {
-            ObjectStack.Rot();
-        }
-
-        public void ORoll(int index)
-        {
-            ObjectStack.Roll(index);
-        }
-
-        // Return stack.
-
-        public int RPick(int index)
-        {
-            return ReturnStack.Pick(index);
-        }
-
-
-        public int RPeek()
-        {
-            return ReturnStack.Peek();
-        }
-
-
-        public int RPop()
-        {
-            return ReturnStack.Pop();
-        }
-
-
-        public void RPush(int value)
-        {
-            ReturnStack.Push(value);
-        }
-
-
-        public void RDrop(int count = 1)
-        {
-            ReturnStack.Drop();
-        }
-
-
-        public void RDup()
-        {
-            ReturnStack.Dup();
-        }
-
-        #endregion
-
-
-        #region tokenizer
-
-        public char CurrentChar => Tokenizer.CurrentChar;
-        public int SourcePos => Tokenizer.SourcePos;
-
-
-        public char NextChar()
-        {
-            return Tokenizer.NextChar();
-        }
-
-
-        public bool IsWhite()
-        {
-            return Tokenizer.IsWhite(Tokenizer.CurrentChar);
-        }
-
-
-        public bool IsDigit()
-        {
-            return Tokenizer.IsDigit(Tokenizer.CurrentChar);
-        }
-
-
-        public void SkipWhite()
-        {
-            Tokenizer.SkipWhite();
-        }
-
-
-        public Token NextTok()
-        {
-            return Tokenizer.NextTok();
-        }
-
-        #endregion
-
-
-        /// <summary>
-        /// Returns a word, that we are actually compileing.
-        /// </summary>
         public NonPrimitiveWord WordBeingDefined { get; set; }
 
 
-        /// <summary>
-        /// Begins a new word compilation.
-        /// </summary>
         public string BeginNewWordCompilation()
         {
             // Cannot start a compilation, when already compiling.
@@ -422,7 +159,7 @@ namespace EFrt.Core
 
                 // Start the new word definition compilation.
                 case TokenType.Word:
-                    InterpreterState = InterpreterState.Compiling;
+                    InterpreterState = InterpreterStateCode.Compiling;
                     return tok.SValue.ToUpperInvariant();
 
                 default:
@@ -430,9 +167,7 @@ namespace EFrt.Core
             }
         }
 
-        /// <summary>
-        /// End a new word compilation and adds it into the known words list.
-        /// </summary>
+
         public void EndNewWordCompilation()
         {
             // Cannot end a new word compilation, if not compiling.
@@ -450,7 +185,182 @@ namespace EFrt.Core
             }
 
             // Finish this word compilation.
-            InterpreterState = InterpreterState.Interpreting;
+            InterpreterState = InterpreterStateCode.Interpreting;
+        }
+
+        #endregion
+
+
+        #region stacks
+
+        // Data stack.
+
+        public int Pick(int index)
+        {
+            return State.Stack.Pick(index);
+        }
+
+
+        public int Peek()
+        {
+            return State.Stack.Peek();
+        }
+
+
+        public int Pop()
+        {
+            return State.Stack.Pop();
+        }
+
+
+        public void Push(int value)
+        {
+            State.Stack.Push(value);
+        }
+
+
+        public void Drop(int count = 1)
+        {
+            State.Stack.Drop(count);
+        }
+
+
+        public void Dup()
+        {
+            State.Stack.Dup();
+        }
+
+
+        public void Swap()
+        {
+            State.Stack.Swap();
+        }
+
+
+        public void Over()
+        {
+            State.Stack.Over();
+        }
+
+
+        public void Rot()
+        {
+            State.Stack.Rot();
+        }
+
+
+        public void Roll(int index)
+        {
+            State.Stack.Roll(index);
+        }
+
+        // Object stack.
+
+        public object OPick(int index)
+        {
+            return State.ObjectStack.Pick(index);
+        }
+
+
+        public object OPeek()
+        {
+            return State.ObjectStack.Peek();
+        }
+
+
+        public object OPop()
+        {
+            return State.ObjectStack.Pop();
+        }
+
+
+        public void OPush(object value)
+        {
+            State.ObjectStack.Push(value);
+        }
+
+
+        public void ODrop(int count = 1)
+        {
+            State.ObjectStack.Drop();
+        }
+
+
+        public void ODup()
+        {
+            State.ObjectStack.Dup();
+        }
+
+
+        public void OSwap()
+        {
+            State.ObjectStack.Swap();
+        }
+
+
+        public void OOver()
+        {
+            State.ObjectStack.Over();
+        }
+
+
+        public void ORot()
+        {
+            State.ObjectStack.Rot();
+        }
+
+        public void ORoll(int index)
+        {
+            State.ObjectStack.Roll(index);
+        }
+
+        // Return stack.
+
+        public int RPick(int index)
+        {
+            return State.ReturnStack.Pick(index);
+        }
+
+
+        public int RPeek()
+        {
+            return State.ReturnStack.Peek();
+        }
+
+
+        public int RPop()
+        {
+            return State.ReturnStack.Pop();
+        }
+
+
+        public void RPush(int value)
+        {
+            State.ReturnStack.Push(value);
+        }
+
+
+        public void RDrop(int count = 1)
+        {
+            State.ReturnStack.Drop();
+        }
+
+
+        public void RDup()
+        {
+            State.ReturnStack.Dup();
+        }
+
+        #endregion
+
+
+        #region execution
+
+        public void Reset()
+        {
+            State.Reset();
+
+            InterpreterState = InterpreterStateCode.Interpreting;
         }
 
 
@@ -462,10 +372,10 @@ namespace EFrt.Core
 
         public void Execute(ISourceReader sourceReader)
         {
-            Tokenizer = new Tokenizer(sourceReader);
-            Tokenizer.NextChar();
+            _tokenizer = new Tokenizer(sourceReader);
+            _tokenizer.NextChar();
 
-            var tok = Tokenizer.NextTok();
+            var tok = _tokenizer.NextTok();
             while (tok.Code >= 0)
             {
                 switch (tok.Code)
@@ -473,9 +383,9 @@ namespace EFrt.Core
                     // A word can be known or a number.
                     case TokenType.Word:
                         var wordName = tok.SValue.ToUpperInvariant();
-                        if (WordsList.IsWordDefined(wordName))
+                        if (State.WordsList.IsWordDefined(wordName))
                         {
-                            CurrentWord = WordsList.GetWord(wordName);
+                            CurrentWord = State.WordsList.GetWord(wordName);
 
                             if (IsCompiling && CurrentWord.IsImmediate == false)
                             {
@@ -489,7 +399,7 @@ namespace EFrt.Core
                         else
                         {
                             // An unknown word can be a number.
-                            var t = Tokenizer.ParseNumber(tok.SValue);
+                            var t = _tokenizer.ParseNumber(tok.SValue);
                             switch (t.Code)
                             {
                                 case TokenType.SingleCellInteger:
@@ -534,7 +444,7 @@ namespace EFrt.Core
                                 // No, it is some unknown word.
                                 default:
                                     // End this word compiling.
-                                    InterpreterState = InterpreterState.Interpreting;   // TODO: Just break here.
+                                    InterpreterState = InterpreterStateCode.Interpreting;   // TODO: Just break here.
 
                                     throw new Exception($"Unknown word '{tok.SValue}' canot be executed.");
                             }
@@ -548,11 +458,25 @@ namespace EFrt.Core
                 // Finish program execution, when requested.
                 if (IsExecutionTerminated) break;
 
-                tok = Tokenizer.NextTok();
+                tok = _tokenizer.NextTok();
             }
         }
 
 
-        private Tokenizer Tokenizer { get; set; }
+        public void BreakExecution()
+        {
+            InterpreterState = InterpreterStateCode.Breaking;
+        }
+
+
+        public void TerminateExecution()
+        {
+            InterpreterState = InterpreterStateCode.Terminating;
+        }
+
+        #endregion
+
+
+        private Tokenizer _tokenizer;
     }
 }
