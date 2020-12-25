@@ -29,8 +29,8 @@ namespace EFrt.Core
 
         public IInterpreterState State { get; }
 
-
         private IOutputWriter _outputWriter;
+
         public IOutputWriter Output
         {
             get
