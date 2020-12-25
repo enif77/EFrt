@@ -18,7 +18,7 @@
 
 	<PropertyGroup>
 		<PackageId>EFrt.Core</PackageId>
-		<Version>1.0.0</Version>
+		<Version>0.5.0</Version>
 		<Authors>Premysl Fara</Authors>
 		<Title>EFrt.Core - Embeddable FORTH core functions</Title>
 		<Description>
