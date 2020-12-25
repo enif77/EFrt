@@ -22,7 +22,7 @@
 
 @SET TOOLS_PATH=D:\Devel\bin
 @SET BUILD_START_DIR=%CD%
-@SET NUGET_DIR=D:\Devel\nuget
+@SET NUGET_DIR=%BUILD_START_DIR%\nuget
 
 @REM --- PACKAGE ---
 
@@ -48,7 +48,6 @@ dotnet pack --configuration %BUILD_CONFIGURATION% --no-restore --force --include
 %TOOLS_PATH%\nuget\nuget.exe delete %PACKAGE_NAME% %PACKAGE_VERSION% -noninteractive -source %NUGET_DIR%
 
 :skip_cleanup
-
 
 @REM --- PUBLISH ---
 
