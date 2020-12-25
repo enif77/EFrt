@@ -6,6 +6,7 @@ namespace EFrtApp
     using System.Collections.Generic;
     using System.Text;
 
+    using EFrt;
     using EFrt.Core;
     using EFrt.Core.Stacks;
     using EFrt.Core.Words;
@@ -15,18 +16,12 @@ namespace EFrtApp
     {
         static void Main(string[] args)
         {
-            var interpreter = new Interpreter(new InterpreterState(
-                new Stack(32),
-                new ObjectStack(32),
-                new ReturnStack(32),
-                new Heap(1024),
-                new ObjectHeap(1024),
-                new WordsList()));
+            var interpreter = InterpreterFactory.CreateWithDefaults();
 
-            var outputWriter = new ConsoleWriter();
+            interpreter.Output = new ConsoleWriter();
 
             interpreter.AddWords(new EFrt.Libs.Core.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.IO.Library(interpreter, outputWriter));
+            interpreter.AddWords(new EFrt.Libs.IO.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.SingleCellInteger.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.DoubleCellInteger.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.Float.Library(interpreter));
@@ -79,18 +74,12 @@ namespace EFrtApp
 
         static void TestEfrt()
         {
-            var interpreter = new Interpreter(new InterpreterState(
-                new Stack(32),
-                new ObjectStack(32),
-                new ReturnStack(32),
-                new Heap(1024),
-                new ObjectHeap(1024),
-                new WordsList()));
+            var interpreter = InterpreterFactory.CreateWithDefaults();
 
-            var outputWriter = new ConsoleWriter();
+            interpreter.Output = new ConsoleWriter();
 
             interpreter.AddWords(new EFrt.Libs.Core.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.IO.Library(interpreter, outputWriter));
+            interpreter.AddWords(new EFrt.Libs.IO.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.SingleCellInteger.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.DoubleCellInteger.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.Float.Library(interpreter));

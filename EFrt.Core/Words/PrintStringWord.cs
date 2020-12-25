@@ -11,27 +11,25 @@ namespace EFrt.Core.Words
         /// Constructor.
         /// </summary>
         /// <param name="value">A value.</param>
-        public PrintStringWord(IInterpreter interpreter, IOutputWriter outputWriter, string value)
+        public PrintStringWord(IInterpreter interpreter, string value)
             : base(interpreter)
         {
             Name = "string";
             IsControlWord = true;
             Action = Execute;
 
-            _outputWriter = outputWriter;
             _value = value;
         }
 
 
         private int Execute()
         {
-            _outputWriter.Write(_value);
+            Interpreter.Output.Write(_value);
 
             return 1;
         }
 
 
-        private IOutputWriter _outputWriter;
         private string _value;
     }
 }

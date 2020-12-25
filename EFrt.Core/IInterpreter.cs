@@ -25,7 +25,12 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// Runtime data of this interpreter instance.
         /// </summary>
         IInterpreterState State { get; }
-                
+              
+        /// <summary>
+        /// An output writer for IO operations.
+        /// </summary>
+        IOutputWriter Output { get; set; }
+
         /// <summary>
         /// True, if this interpreter is compiling a new word, variable or constant.
         /// </summary>

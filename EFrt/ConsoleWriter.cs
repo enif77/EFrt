@@ -1,8 +1,10 @@
 ﻿/* EFrt - (C) 2020 Premysl Fara  */
 
-namespace EFrt.Core
+namespace EFrt
 {
     using System;
+
+    using EFrt.Core;
 
 
     public class ConsoleWriter : IOutputWriter

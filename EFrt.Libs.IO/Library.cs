@@ -14,13 +14,11 @@ namespace EFrt.Libs.IO
     public class Library : IWordsLIbrary
     {
         private IInterpreter _interpreter;
-        private IOutputWriter _outputWriter;
-        
+       
 
-        public Library(IInterpreter interpreter, IOutputWriter outputWriter)
+        public Library(IInterpreter interpreter)
         {
             _interpreter = interpreter;
-            _outputWriter = outputWriter;
         }
 
 
@@ -57,7 +55,7 @@ namespace EFrt.Libs.IO
                     break;
                 }
 
-                _outputWriter.Write("{0}", _interpreter.CurrentChar);
+                _interpreter.Output.Write("{0}", _interpreter.CurrentChar);
 
                 c = _interpreter.NextChar();
             }
@@ -99,7 +97,7 @@ namespace EFrt.Libs.IO
                 throw new Exception("'\"' expected.");
             }
 
-            _interpreter.WordBeingDefined.AddWord(new PrintStringWord(_interpreter, _outputWriter, sb.ToString()));
+            _interpreter.WordBeingDefined.AddWord(new PrintStringWord(_interpreter, sb.ToString()));
 
             return 1;
         }
@@ -107,7 +105,7 @@ namespace EFrt.Libs.IO
         // (n --)
         private int PrintAction()
         {
-            _outputWriter.Write("{0} ", _interpreter.Pop());
+            _interpreter.Output.Write("{0} ", _interpreter.Pop());
 
             return 1;
         }
@@ -115,7 +113,7 @@ namespace EFrt.Libs.IO
         // (addr --)
         private int PrintIndirectAction()
         {
-            _outputWriter.Write("{0} ", _interpreter.State.Heap.Items[_interpreter.Pop()]);
+            _interpreter.Output.Write("{0} ", _interpreter.State.Heap.Items[_interpreter.Pop()]);
 
             return 1;
         }
@@ -123,7 +121,7 @@ namespace EFrt.Libs.IO
         // (d --)
         private int PrintLongAction()
         {
-            _outputWriter.Write("{0} ", new LongVal()
+            _interpreter.Output.Write("{0} ", new LongVal()
             {
                 B = _interpreter.Pop(),
                 A = _interpreter.Pop(),
@@ -135,7 +133,7 @@ namespace EFrt.Libs.IO
         // (f --)
         private int PrintFloatAction()
         {
-            _outputWriter.Write("{0} ", new DoubleVal()
+            _interpreter.Output.Write("{0} ", new DoubleVal()
             {
                 B = _interpreter.Pop(),
                 A = _interpreter.Pop(),
@@ -147,7 +145,7 @@ namespace EFrt.Libs.IO
         // {o --}
         private int PrintStringAction()
         {
-            _outputWriter.Write(_interpreter.OPop().ToString());
+            _interpreter.Output.Write(_interpreter.OPop().ToString());
 
             return 1;
         }
@@ -155,12 +153,12 @@ namespace EFrt.Libs.IO
 
         private int PrintStackAction()
         {
-            _outputWriter.Write("Stack: ");
+            _interpreter.Output.Write("Stack: ");
             var stackItems = _interpreter.State.Stack.Items;
             for (var i = 0; i <= _interpreter.State.Stack.Top; i++)
             {
-                _outputWriter.Write(stackItems[i].ToString(CultureInfo.InvariantCulture));
-                _outputWriter.Write(" ");
+                _interpreter.Output.Write(stackItems[i].ToString(CultureInfo.InvariantCulture));
+                _interpreter.Output.Write(" ");
             }
             
             return 1;
@@ -168,11 +166,11 @@ namespace EFrt.Libs.IO
 
         private int PrintObjectStackAction()
         {
-            _outputWriter.WriteLine("Object stack: ");
+            _interpreter.Output.WriteLine("Object stack: ");
             var stackItems = _interpreter.State.ObjectStack.Items;
             for (var i = _interpreter.State.ObjectStack.Top; i >= 0; i--)
             {
-                _outputWriter.WriteLine($"  { stackItems[i] }");
+                _interpreter.Output.WriteLine($"  { stackItems[i] }");
             }
 
             return 1;
@@ -181,7 +179,7 @@ namespace EFrt.Libs.IO
 
         private int WriteLineAction()
         {
-            _outputWriter.WriteLine();
+            _interpreter.Output.WriteLine();
 
             return 1;
         }
@@ -198,7 +196,7 @@ namespace EFrt.Libs.IO
                     sb.Append(' ');
                 }
 
-                _outputWriter.Write(sb.ToString());
+                _interpreter.Output.Write(sb.ToString());
             }
 
             return 1;
@@ -207,7 +205,7 @@ namespace EFrt.Libs.IO
 
         private int WriteSpaceAction()
         {
-            _outputWriter.Write(" ");
+            _interpreter.Output.Write(" ");
      
             return 1;
         }
@@ -215,7 +213,7 @@ namespace EFrt.Libs.IO
         // (n --)
         private int EmitAction()
         {
-            _outputWriter.Write("{0}", (char)_interpreter.Pop());
+            _interpreter.Output.Write("{0}", (char)_interpreter.Pop());
 
             return 1;
         }
@@ -223,7 +221,7 @@ namespace EFrt.Libs.IO
 
         private int WordsAction()
         {
-            _outputWriter.Write("{0} ", _interpreter.State.WordsList.ToString());
+            _interpreter.Output.Write("{0} ", _interpreter.State.WordsList.ToString());
 
             return 1;
         }

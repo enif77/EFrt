@@ -29,6 +29,21 @@ namespace EFrt.Core
 
         public IInterpreterState State { get; }
 
+
+        private IOutputWriter _outputWriter;
+        public IOutputWriter Output
+        {
+            get
+            {
+                return _outputWriter;
+            }
+
+            set
+            {
+                _outputWriter = value ?? new NullWriter();
+            }
+        }
+
         public bool IsCompiling => InterpreterState == InterpreterStateCode.Compiling;
 
         public bool IsExecutionTerminated => InterpreterState == InterpreterStateCode.Breaking || InterpreterState == InterpreterStateCode.Terminating;
@@ -43,6 +58,7 @@ namespace EFrt.Core
             if (state == null) throw new ArgumentNullException(nameof(state));
 
             State = state;
+            Output = new NullWriter();
 
             Reset();
         }
