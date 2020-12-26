@@ -198,7 +198,6 @@ namespace EFrt.Core
             {
                 // Now add the new word to the dictionary
                 AddWord(WordBeingDefined);
-                WordBeingDefined = null;
             }
 
             // Finish this word compilation.

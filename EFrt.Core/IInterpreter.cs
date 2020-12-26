@@ -133,7 +133,7 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         #region word compilation
 
         /// <summary>
-        /// Returns a word, that we are actually compileing.
+        /// Returns a word, that is actually compiled (if IsCompiling is true), or the last user defined word (if IsCompiling is false).
         /// </summary>
         NonPrimitiveWord WordBeingDefined { get; set; }
 

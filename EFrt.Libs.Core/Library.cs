@@ -38,6 +38,9 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ":", BeginNewWordCompilationAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, ";", EndNewWordCompilationAction));
 
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "LITERAL", LiteralAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "IMMEDIATE", ImmediateAction));
+
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "CONSTANT", ConstantCompilationAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2CONSTANT", DoubleConstantCompilationAction));
 
@@ -395,6 +398,33 @@ namespace EFrt.Libs.Core
         private int EndNewWordCompilationAction()
         {
             _interpreter.EndNewWordCompilation();
+
+            return 1;
+        }
+
+
+        // (n -- )
+        private int LiteralAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("LITERAL outside a new word definition.");
+            }
+
+            _interpreter.WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(_interpreter, _interpreter.Pop()));
+
+            return 1;
+        }
+
+
+        private int ImmediateAction()
+        {
+            if (_interpreter.WordBeingDefined == null)
+            {
+                throw new Exception("No previous word definition to be set as immediate found.");
+            }
+
+            _interpreter.WordBeingDefined.SetImmediate();
 
             return 1;
         }

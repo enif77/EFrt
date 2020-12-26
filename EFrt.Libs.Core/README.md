@@ -51,8 +51,10 @@ Words definition table columns:
 | HERE     | no   | IC   | **Heap address**<br>( -- addr)<br>The current heap allocation address is placed on the top of the stack. addr + 1 is the first free heap cell. |
 | I        | yes  | C    | **Inner loop index**<br>( -- n) [n -- n]<br>The index of the innermost DO—LOOP is placed on the stack. |
 | IF       | yes  | C    | **Conditional statement**<br>(flag --)<br>If flag is nonzero, the following statements are executed. Otherwise, execution resumes after the matching ELSE clause, if any, or after the matching THEN. |
+| IMMEDIATE | no   | IC   | **Mark immediate**<br><br>The most recently defined word is marked for immediate execution; it will be executed even if entered in compile state. |
 | J        | yes  | C    | **Outer loop index**<br>( -- n) [J lim I -- J lim I]<br>The loop index of the next to innermost DO—LOOP is placed on the stack. |
 | LEAVE    | yes  | C    | **Exit DO—LOOP**<br>The innermost DO—LOOP is immediately exited. Execution resumes after the LOOP statement marking the end of the loop. |
+| LITERAL  | yes  | C    | **Compile literal**<br>(n -- )<br>Compiles the value on the top of the stack into the current definition. When the definition is executed, that value will be pushed onto the top of the stack. |
 | LOOP     | yes  | C    | **Increment loop index**<br>Adds one to the index of the active loop. If the limit is reached, the loop is exited. Otherwise, another iteration is begun. |
 | +LOOP    | yes  | C    | **Add to loop index**<br>(n -- )<br>Adds n to the index of the active loop. If the limit is reached, the loop is exited. Otherwise, another iteration is begun. |
 | OVER     | no   | IC   | **Duplicate second item**<br>(n1 n2 -- n1 n2 n1)<br>The second item on the stack is copied to the top. |
@@ -76,8 +78,8 @@ Words definition table columns:
 
 #### TODO
 
-Words: `SYSTEM STATE MARKER name [ ] INCLUDE ABORT" str ARRAY x EXIT IMMEDIATE LITERAL TRACE
-  (XDO) (X?DO) (XLOOP) (+XLOOP) WORDSD ' EXECUTE INT STRING EVALUATE UNLOOP +!
+Words: `SYSTEM STATE MARKER name [ ] INCLUDE ABORT" str ARRAY x EXIT IMMEDIATE TRACE
+  (XDO) (X?DO) (XLOOP) (+XLOOP) WORDSD ' x ['] x EXECUTE INT STRING EVALUATE UNLOOP +!
   NIP TUCK 2NIP 2TUCK -ROLL S! BRANCH x ?BRANCH x 2>R 2R> 2R@`
 
 Variables: `BASE STATE`

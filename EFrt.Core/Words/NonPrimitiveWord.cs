@@ -13,7 +13,7 @@ namespace EFrt.Core.Words
         /// Constructor.
         /// </summary>
         /// <param name="name">A  words name.</param>
-        public NonPrimitiveWord(IInterpreter interpreter, string name, int sourcePos = -1)
+        public NonPrimitiveWord(IInterpreter interpreter, string name)
             : base(interpreter)
         {
             Name = name;
@@ -28,6 +28,14 @@ namespace EFrt.Core.Words
         /// Returns the index of the next word inserted into this word.
         /// </summary>
         public int NextWordIndex => _lastWordIndex + 1;
+
+        /// <summary>
+        /// Marks this word as immediate.
+        /// </summary>
+        public void SetImmediate()
+        {
+            IsImmediate = true;
+        }
 
         /// <summary>
         /// Returns a word defined at index.
