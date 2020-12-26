@@ -413,6 +413,11 @@ namespace EFrt.Core
                                 CurrentWord.Action();
                             }
                         }
+                        else if (IsCompiling && string.Compare(WordBeingDefined.Name, wordName, true) == 0)
+                        {
+                            // Recursive call of the currently compiled word.
+                            WordBeingDefined.AddWord(new RuntimeWord(this, wordName));
+                        }
                         else
                         {
                             // An unknown word can be a number.

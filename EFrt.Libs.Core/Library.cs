@@ -94,6 +94,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new ImmediateWord(_interpreter, "I", GetInnerIndexAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "J", GetOuterIndexAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "LEAVE", LeaveAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "RECURSE", RecurseAction));
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ABORT", AbortAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "ABORT\"", AbortMessageAction));
@@ -768,6 +769,21 @@ namespace EFrt.Libs.Core
             // LEAVE word doesn't have a runtime behavior.
 
             _interpreter.WordBeingDefined.AddWord(new LeaveControlWord(_interpreter));
+
+            return 1;
+        }
+
+
+        private int RecurseAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("RECURSE outside a new word definition.");
+            }
+
+            // LEAVE word doesn't have a runtime behavior.
+
+            _interpreter.WordBeingDefined.AddWord(new RuntimeWord(_interpreter, _interpreter.WordBeingDefined.Name));
 
             return 1;
         }
