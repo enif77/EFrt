@@ -21,6 +21,7 @@ namespace EFrtApp
             interpreter.Output = new ConsoleWriter();
 
             interpreter.AddWords(new EFrt.Libs.Core.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.CoreExt.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.IO.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.SingleCellInteger.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.DoubleCellInteger.Library(interpreter));
@@ -79,6 +80,7 @@ namespace EFrtApp
             interpreter.Output = new ConsoleWriter();
 
             interpreter.AddWords(new EFrt.Libs.Core.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.CoreExt.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.IO.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.SingleCellInteger.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.DoubleCellInteger.Library(interpreter));

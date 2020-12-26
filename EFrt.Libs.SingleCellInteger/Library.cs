@@ -10,6 +10,11 @@ namespace EFrt.Libs.SingleCellInteger
 
     public class Library : IWordsLIbrary
     {
+        /// <summary>
+        /// The name of this library.
+        /// </summary>
+        public string Name => "INT";
+
         private IInterpreter _interpreter;
 
 

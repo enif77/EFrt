@@ -28,6 +28,7 @@ EFrt is a embeddable FORTH language implementation.
 ## Libraries
 
  * [CORE](EFrt.Libs.Core/README.md)
+ * [CORE-EXT](EFrt.Libs.CoreExt/README.md)
  * [DOUBLE](EFrt.Libs.DoubleCellInteger/README.md)
  * [FLOAT](EFrt.Libs.Float/README.md)
  * [INTEGER](EFrt.Libs.SingleCellInteger/README.md)

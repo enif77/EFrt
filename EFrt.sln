@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFrt.Libs.String", "EFrt.Li
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFrt.GetVersion", "EFrt.GetVersion\EFrt.GetVersion.csproj", "{4437F066-6EAE-4BF1-8C07-3BA7D1144A43}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFrt.Libs.CoreExt", "EFrt.Libs.CoreExt\EFrt.Libs.CoreExt.csproj", "{1F27EC1F-4CD4-4931-8F75-F7B47DDF4ADF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,10 @@ Global
 		{4437F066-6EAE-4BF1-8C07-3BA7D1144A43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4437F066-6EAE-4BF1-8C07-3BA7D1144A43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4437F066-6EAE-4BF1-8C07-3BA7D1144A43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F27EC1F-4CD4-4931-8F75-F7B47DDF4ADF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F27EC1F-4CD4-4931-8F75-F7B47DDF4ADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F27EC1F-4CD4-4931-8F75-F7B47DDF4ADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F27EC1F-4CD4-4931-8F75-F7B47DDF4ADF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -105,6 +111,7 @@ Global
 		{58BBE81E-8835-40CE-8074-B2D5EE57DF4C} = {F7C44659-853E-4F5E-8B1B-D976286CDB47}
 		{ACE37F6D-1864-4B64-AB43-DEB99E437952} = {F7C44659-853E-4F5E-8B1B-D976286CDB47}
 		{20CEAF77-13CB-420B-BB2C-0516083C426A} = {F7C44659-853E-4F5E-8B1B-D976286CDB47}
+		{1F27EC1F-4CD4-4931-8F75-F7B47DDF4ADF} = {F7C44659-853E-4F5E-8B1B-D976286CDB47}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5B5049EE-046D-4710-AFD0-161607B2A4B2}

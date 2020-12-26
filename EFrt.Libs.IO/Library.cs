@@ -13,6 +13,11 @@ namespace EFrt.Libs.IO
 
     public class Library : IWordsLIbrary
     {
+        /// <summary>
+        /// The name of this library.
+        /// </summary>
+        public string Name => "IO";
+
         private IInterpreter _interpreter;
        
 

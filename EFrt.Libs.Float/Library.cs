@@ -14,6 +14,11 @@ namespace EFrt.Libs.Float
     /// </summary>
     public class Library : IWordsLIbrary
     {
+        /// <summary>
+        /// The name of this library.
+        /// </summary>
+        public string Name => "FLOAT";
+
         private IInterpreter _interpreter;
 
 

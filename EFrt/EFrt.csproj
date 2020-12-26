@@ -18,7 +18,7 @@
 
 	<PropertyGroup>
 		<PackageId>EFrt</PackageId>
-		<Version>0.5.0</Version>
+		<Version>0.5.4</Version>
 		<Authors>Premysl Fara</Authors>
 		<Title>EFrt - Embeddable FORTH</Title>
 		<Description>
@@ -35,6 +35,7 @@
 
 		<None Include="..\README.md" Pack="true" PackagePath="docs\EFrt.md" />
 		<None Include="..\EFrt.Libs.Core\README.md" Pack="true" PackagePath="docs\CORE.md" />
+		<None Include="..\EFrt.Libs.CoreExt\README.md" Pack="true" PackagePath="docs\CORE-EXT.md" />
 		<None Include="..\EFrt.Libs.DoubleCellInteger\README.md" Pack="true" PackagePath="docs\DOUBLE.md" />
 		<None Include="..\EFrt.Libs.Float\README.md" Pack="true" PackagePath="docs\FLOAT.md" />
 		<None Include="..\EFrt.Libs.IO\README.md" Pack="true" PackagePath="docs\IO.md" />
@@ -51,9 +52,10 @@
 		<ProjectReference Include="..\EFrt.Core\EFrt.Core.csproj" />
 		
 		<PackageReference Include="EFrt.Libs.Core" Version="0.5.0" />
+		<PackageReference Include="EFrt.Libs.CoreExt" Version="0.1.1" />
 		<PackageReference Include="EFrt.Libs.DoubleCellInteger" Version="0.5.0" />
 		<PackageReference Include="EFrt.Libs.Float" Version="0.5.0" />
-		<PackageReference Include="EFrt.Libs.IO" Version="0.5.0" />
+		<PackageReference Include="EFrt.Libs.IO" Version="0.5.1" />
 		<PackageReference Include="EFrt.Libs.Object" Version="0.5.0" />
 		<PackageReference Include="EFrt.Libs.SingleCellInteger" Version="0.5.0" />
 		<PackageReference Include="EFrt.Libs.String" Version="0.5.0" />
@@ -62,6 +64,7 @@
 	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
 		<ProjectReference Include="..\EFrt.Core\EFrt.Core.csproj" />
 		<ProjectReference Include="..\EFrt.Libs.Core\EFrt.Libs.Core.csproj" />
+		<ProjectReference Include="..\EFrt.Libs.CoreExt\EFrt.Libs.CoreExt.csproj" />
 		<ProjectReference Include="..\EFrt.Libs.DoubleCellInteger\EFrt.Libs.DoubleCellInteger.csproj" />
 		<ProjectReference Include="..\EFrt.Libs.Float\EFrt.Libs.Float.csproj" />
 		<ProjectReference Include="..\EFrt.Libs.IO\EFrt.Libs.IO.csproj" />

@@ -13,6 +13,11 @@ namespace EFrt.Libs.Object
     /// </summary>
     public class Library : IWordsLIbrary
     {
+        /// <summary>
+        /// The name of this library.
+        /// </summary>
+        public string Name => "OBJECT";
+
         private IInterpreter _interpreter;
 
 

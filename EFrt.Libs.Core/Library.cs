@@ -14,6 +14,11 @@ namespace EFrt.Libs.Core
     /// </summary>
     public class Library : IWordsLIbrary
     {
+        /// <summary>
+        /// The name of this library.
+        /// </summary>
+        public string Name => "CORE";
+
         private IInterpreter _interpreter;
 
 

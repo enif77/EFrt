@@ -11,6 +11,11 @@ namespace EFrt.Libs.String
 
     public class Library : IWordsLIbrary
     {
+        /// <summary>
+        /// The name of this library.
+        /// </summary>
+        public string Name => "STRING";
+
         private IInterpreter _interpreter;
 
 

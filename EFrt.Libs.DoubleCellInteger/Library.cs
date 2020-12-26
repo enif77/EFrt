@@ -11,6 +11,11 @@ namespace EFrt.Libs.DoubleCellInteger
 
     public class Library : IWordsLIbrary
     {
+        /// <summary>
+        /// The name of this library.
+        /// </summary>
+        public string Name => "DOUBLE";
+
         private IInterpreter _interpreter;
 
 
