@@ -451,10 +451,11 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // (n -- addr)
+        // (n -- )
         private int AllotAction()
         {
-            _interpreter.Push(_interpreter.State.Heap.Alloc(_interpreter.Pop()));
+            // We do not return the "address" returned by the Alloc() method.
+            _ =_interpreter.State.Heap.Alloc(_interpreter.Pop());
 
             return 1;
         }

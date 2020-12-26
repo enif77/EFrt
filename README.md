@@ -90,6 +90,17 @@ A ? CR       \ The same thing - "?" is a shortcut for "@ .".
 1.5 B 2!     \ Stores 1.5 float (a double cell value) into the variable B.
 B 2@ F.      \ Fetches and prints out the double cell (float) value of the variable B.
 
+( 100 cells long array )
+VARIABLE arr    \ Variable for storring the "address" of the first cell of the new array.
+HERE 1+ arr !   \ Getting the first cell address.
+100 ALLOT       \ Allocation of the array.
+HERE . CR       \ Will print out the index ("address") of the last cell of the new array.
+123 arr @ !     \ Stores 123 to the first cell of the array arr.
+456 arr @ 1+ !  \ Stores 456 to the second cell of the array arr.
+arr @ @ . CR    \ Gets and prints out the contents of the first cell of the array arr (123).
+arr @ ? CR      \ Shorter version of the previous example.
+arr @ 1+ ? CR   \ Gets and prints out the contents of the second cell of the array arr (456).
+
 ( Storing a number on the heap and printing it out )
 123 , HERE @ . CR
 
