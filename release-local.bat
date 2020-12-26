@@ -11,10 +11,10 @@ dotnet build EFrt.sln --configuration %BUILD_CONFIGURATION% --configfile %CD%\Nu
 @CALL release.bat %BUILD_CONFIGURATION% EFrt.Core
 @if %ERRORLEVEL% GEQ 1 GOTO error
 
-@CALL release.bat %BUILD_CONFIGURATION% EFrt.CoreExt
+@CALL release.bat %BUILD_CONFIGURATION% EFrt.Libs.Core
 @if %ERRORLEVEL% GEQ 1 GOTO error
 
-@CALL release.bat %BUILD_CONFIGURATION% EFrt.Libs.Core
+@CALL release.bat %BUILD_CONFIGURATION% EFrt.Libs.CoreExt
 @if %ERRORLEVEL% GEQ 1 GOTO error
 
 @CALL release.bat %BUILD_CONFIGURATION% EFrt.Libs.DoubleCellInteger

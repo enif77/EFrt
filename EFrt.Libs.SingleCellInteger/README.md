@@ -20,14 +20,11 @@ Words definition table columns:
 | /        | no   | IC   | **n3 = n1 / n2**<br>(n1 n2 -- n3)<br>Divides n1 by n2 and leaves the quotient on the stack. |
 | <        | no   | IC   | **Less than**<br>(n1 n2 -- flag)<br>Returns -1 if n1 < n2, 0 otherwise. |
 | <=       | no   | IC   | **Less than or equal**<br>(n1 n2 -- flag)<br>Returns -1 if n1 <= n2, 0 otherwise. |
-| <>       | no   | IC   | **Not equal**<br>(n1 n2 -- flag)<br>Returns -1 if n1 is not equal to n2, 0 otherwise. |
 | =        | no   | IC   | **Equal**<br>(n1 n2 -- flag)<br>Returns -1 if n1 is equal to n2, 0 otherwise. |
 | >        | no   | IC   | **Greater than**<br>(n1 n2 -- flag)<br>Returns -1 if n1 > n2, 0 otherwise. |
 | >=       | no   | IC   | **Greater than or equal**<br>(n1 n2 -- flag)<br>Returns -1 if n1 >= n2, 0 otherwise. |
 | 0<       | no   | IC   | **Less than zero**<br>(n -- flag)<br>Returns -1 if n1 is less than 0, 0 otherwise. |
-| 0<>      | no   | IC   | **Nonzero**<br>(n -- flag)<br>Returns -1 if n1 is not equal to 0, 0 otherwise. |
 | 0=       | no   | IC   | **Equal to zero**<br>(n -- flag)<br>Returns -1 if n1 is equal to 0, 0 otherwise. |
-| 0>       | no   | IC   | **Greater than zero**<br>(n -- flag)<br>Returns -1 if n1 is greater than 0, 0 otherwise. |
 | 1+       | no   | IC   | **Add one**<br>(n1 -- n2)<br>Adds one to the top of the stack. |
 | 1-       | no   | IC   | **Subtract one**<br>(n1 -- n2)<br>Substracts one from the top of the stack. |
 | 2+       | no   | IC   | **Add two**<br>(n1 -- n2)<br>Adds two to the top of the stack. |

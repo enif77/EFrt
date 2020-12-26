@@ -38,8 +38,7 @@ namespace EFrt.Libs.Core
         public void DefineWords()
         {
             _interpreter.AddWord(new ImmediateWord(_interpreter, "(", CommentAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "\\", CommentLineAction));
-
+            
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ":", BeginNewWordCompilationAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, ";", EndNewWordCompilationAction));
 
@@ -68,8 +67,6 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2SWAP", SwapTwoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "OVER", OverAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2OVER", OverTwoAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "PICK", PickAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ROLL", RollAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ROT", RotAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2ROT", RotTwoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "-ROT", RotBackAction));
@@ -84,21 +81,17 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new ImmediateWord(_interpreter, "[CHAR]", BracketCharAction));
 
             _interpreter.AddWord(new ConstantWord(_interpreter, "BL", ' '));
-            _interpreter.AddWord(new ConstantWord(_interpreter, "FALSE", 0));
-            _interpreter.AddWord(new ConstantWord(_interpreter, "TRUE", -1));
-
+            
             _interpreter.AddWord(new ImmediateWord(_interpreter, "IF", IfAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "ELSE", ElseAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "THEN", ThenAction));
 
             _interpreter.AddWord(new ImmediateWord(_interpreter, "DO", DoAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "?DO", IfDoAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "LOOP", LoopAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "+LOOP", PlusLoopAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "BEGIN", BeginAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "WHILE", WhileAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "REPEAT", RepeatAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "AGAIN", AgainAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "UNTIL", UntilAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "I", GetInnerIndexAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "J", GetOuterIndexAction));
@@ -209,23 +202,7 @@ namespace EFrt.Libs.Core
 
             return 1;
         }
-
-        // (index -- n)
-        private int PickAction()
-        {
-            _interpreter.Push(_interpreter.Pick(_interpreter.Pop()));
-
-            return 1;
-        }
-
-        // (index -- )
-        private int RollAction()
-        {
-            _interpreter.Roll(_interpreter.Pop());
-
-            return 1;
-        }
-
+        
         // (a b c -- b c a)
         private int RotAction()
         {
@@ -371,26 +348,6 @@ namespace EFrt.Libs.Core
 
             return 1;
         }
-
-
-        private int CommentLineAction()
-        {
-            _interpreter.NextChar();
-            while (_interpreter.CurrentChar != 0)
-            {
-                if (_interpreter.CurrentChar == '\n')
-                {
-                    _interpreter.NextChar();
-
-                    break;
-                }
-
-                _interpreter.NextChar();
-            }
-
-            return 1;
-        }
-
 
         // : word-name body ;
         private int BeginNewWordCompilationAction()
@@ -737,24 +694,6 @@ namespace EFrt.Libs.Core
         }
 
         // [ index-of-a-word-folowing-BEGIN -- ]
-        private int AgainAction()
-        {
-            if (_interpreter.IsCompiling == false)
-            {
-                throw new Exception("AGAIN outside a new word definition.");
-            }
-
-            // AGAIN word doesn't have a runtime behavior.
-
-            _interpreter.WordBeingDefined.AddWord(
-                new AgainControlWord(
-                    _interpreter,
-                    _interpreter.RPop() - _interpreter.WordBeingDefined.NextWordIndex));
-
-            return 1;
-        }
-
-        // [ index-of-a-word-folowing-BEGIN -- ]
         private int UntilAction()
         {
             if (_interpreter.IsCompiling == false)
@@ -844,21 +783,6 @@ namespace EFrt.Libs.Core
             _interpreter.RPush(
                 _interpreter.WordBeingDefined.AddWord(
                     new DoControlWord(_interpreter)));
-
-            return 1;
-        }
-
-        // (limit end -- )
-        private int IfDoAction()
-        {
-            if (_interpreter.IsCompiling == false)
-            {
-                throw new Exception("?DO outside a new word definition.");
-            }
-
-            _interpreter.RPush(
-                _interpreter.WordBeingDefined.AddWord(
-                    new IfDoControlWord(_interpreter, _interpreter.WordBeingDefined.NextWordIndex)));
 
             return 1;
         }

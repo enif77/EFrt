@@ -29,7 +29,7 @@ namespace EFrt.Libs.IO
 
         public void DefineWords()
         {
-            _interpreter.AddWord(new ImmediateWord(_interpreter, ".(", WriteImmediateStringAction));
+            
             _interpreter.AddWord(new ImmediateWord(_interpreter, ".\"", PrintImmediateStringAction));
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ".", PrintAction));
@@ -46,32 +46,7 @@ namespace EFrt.Libs.IO
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "WORDS", WordsAction));
         }
-
-
-        private int WriteImmediateStringAction()
-        {
-            var c = _interpreter.NextChar();
-            while (_interpreter.CurrentChar != 0)
-            {
-                if (_interpreter.CurrentChar == ')')
-                {
-                    _interpreter.NextChar();
-
-                    break;
-                }
-
-                _interpreter.Output.Write("{0}", _interpreter.CurrentChar);
-
-                c = _interpreter.NextChar();
-            }
-
-            if (c != ')')
-            {
-                throw new Exception("')' expected.");
-            }
-
-            return 1;
-        }
+                
 
         private int PrintImmediateStringAction()
         {

@@ -16,7 +16,6 @@ Words definition table columns:
 | ---   | ---  | ---  | --- |
 | .     | no   | IC   | **Print top of stack**<br>(n -- )<br>Prints the integer number on the top of the stack. |
 | ?     | no   | IC   | **Print indirect**<br>(addr -- )<br>Prints the value at the address (a variables stack index) at the top of the stack. |
-| .(    | yes  | IC   | **Print constant string**<br>Immediatelly prints the string that follows in the input stream. |
 | ."    | yes  | C    | **Print immediate string**<br>Prints the string that follows in the input stream. |
 | .O    | no   | IC   | **Print object stack**<br>Prints entire contents of the object stack. TOS is the top-most item. |
 | .S    | no   | IC   | **Print stack**<br>Prints entire contents of stack. TOS is the right-most item. |

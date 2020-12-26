@@ -46,15 +46,12 @@ namespace EFrt.Libs.SingleCellInteger
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "MIN", MinAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ABS", AbsAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "=", IsEqAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "<>", IsNeqAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "<", IsLtAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "<=", IsLtEAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ">", IsGtAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ">=", IsGtEAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "0=", IsZeroAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "0<>", IsNonZeroAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "0<", IsNegAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "0>", IsPosAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "NEGATE", NegateAction));
         }
 
@@ -208,14 +205,6 @@ namespace EFrt.Libs.SingleCellInteger
         }
 
         // (n1 n2 -- flag)
-        private int IsNeqAction()
-        {
-            Function((a, b) => (a != b) ? -1 : 0);
-
-            return 1;
-        }
-
-        // (n1 n2 -- flag)
         private int IsLtAction()
         {
             Function((a, b) => (a < b) ? -1 : 0);
@@ -254,15 +243,7 @@ namespace EFrt.Libs.SingleCellInteger
 
             return 1;
         }
-
-        // (n -- flag)
-        private int IsNonZeroAction()
-        {
-            Function((a) => (a != 0) ? -1 : 0);
-
-            return 1;
-        }
-
+        
         // (n -- flag)
         private int IsNegAction()
         {
@@ -270,15 +251,7 @@ namespace EFrt.Libs.SingleCellInteger
 
             return 1;
         }
-
-        // (n -- flag)
-        private int IsPosAction()
-        {
-            Function((a) => (a > 0) ? -1 : 0);
-
-            return 1;
-        }
-
+        
         // (n1 -- n2)
         private int NegateAction()
         {

@@ -18,7 +18,7 @@
 
 	<PropertyGroup>
 		<PackageId>EFrt.Libs.String</PackageId>
-		<Version>0.5.0</Version>
+		<Version>0.5.1</Version>
 		<Authors>Premysl Fara</Authors>
 		<Title>EFrt.Libs.String - Embeddable FORTH STRING library</Title>
 		<Description>
