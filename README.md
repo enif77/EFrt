@@ -90,6 +90,9 @@ A ? CR       \ The same thing - "?" is a shortcut for "@ .".
 1.5 B 2!     \ Stores 1.5 float (a double cell value) into the variable B.
 B 2@ F.      \ Fetches and prints out the double cell (float) value of the variable B.
 
+( Storing a number on the heap and printing it out )
+123 , HERE @ . CR
+
 ( Factorial of N - without RECURSE )
 : factorial DUP 0= IF DROP 1 ELSE DUP 1- FACTORIAL * THEN ;
 

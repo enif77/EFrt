@@ -46,6 +46,7 @@ namespace EFrt.Libs.Core
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ALLOT", AllotAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "HERE", HereAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ",", CommaAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "VARIABLE", VariableCompilationAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2VARIABLE", DoubleVariableCompilationAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "!", StoreToVariableAction));
@@ -462,6 +463,14 @@ namespace EFrt.Libs.Core
         private int HereAction()
         {
             _interpreter.Push(_interpreter.State.Heap.Top);
+
+            return 1;
+        }
+
+        // (n -- )
+        private int CommaAction()
+        {
+            _interpreter.State.Heap.Items[_interpreter.State.Heap.Alloc(1)] = _interpreter.Pop();
 
             return 1;
         }

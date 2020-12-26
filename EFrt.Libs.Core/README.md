@@ -14,6 +14,7 @@ Words definition table columns:
 
 | Name     | Imm. | Mode | Description |
 | ---      | ---  | ---  | --- |
+| ,        | no   | IC   | **Store in heap**<br>Reserves a single cell of data heap, initialising it to n. |
 | (        | yes  | IC   | **Comment**<br>Skips all source characters till the closing ) character. |
 | \        | yes  | IC   | **Line comment**<br>Skips all source characters till the closing EOLN character. |
 | : w      | no   | I    | **Begin definition**<br>Begins compilation of a word named "w". |
