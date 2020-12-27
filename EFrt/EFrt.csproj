@@ -7,10 +7,6 @@
 		<IsPackable>true</IsPackable>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<None Remove="EFrt.*.nupkg" />
-	</ItemGroup>
-
 	<PropertyGroup>
 		<AssemblyTitle>EFrt - Embeddable FORTH programing language</AssemblyTitle>
 		<Copyright>(C) 2020 - 2021</Copyright>

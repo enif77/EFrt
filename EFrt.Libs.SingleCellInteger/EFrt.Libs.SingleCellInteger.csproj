@@ -7,10 +7,6 @@
 		<IsPackable>true</IsPackable>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<None Remove="EFrt.Libs.SingleCellInteger.*.nupkg" />
-	</ItemGroup>
-
 	<PropertyGroup>
 		<AssemblyTitle>EFrt - Embeddable FORTH programing language INTEGER library</AssemblyTitle>
 		<Copyright>(C) 2020 - 2021</Copyright>
