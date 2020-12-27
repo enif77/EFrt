@@ -15,7 +15,6 @@ Words definition table columns:
 | Name  | Imm. | Mode | Description |
 | ---   | ---  | ---  | --- |
 | S+    | no   | IC   | **String concatenate**<br>{s1 s2 -- s3}<br>The string s1 is concatenated with the string s2 and the resulting s1 + s2 string is stored at the top of the object stack. |
-| S"    | no   | IC   | **String literal**<br>{ -- s}<br>Consume all source characters till the closing " character, creating a string from them and storing the result on the top of the object stack. |
 
 ## Todo
 

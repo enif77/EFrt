@@ -24,6 +24,7 @@ Words definition table columns:
 | PICK     | no   | IC   | **Pick item from stack**<br>(index -- n)<br>The index is removed from the stack and then the indexth stack item is copied to the top of the stack. The top of stack has index 0, the second item index 1, and so on. |
 | ROLL     | no   | IC   | **Rotate indexth item to top**<br>(index -- n)<br>The index is removed from the stack and then the stack item selected by index, with 0 designating the top of stack, 1 the second item, and so on, is moved to the top of the stack. The intervening stack items are moved down one item. |
 | TRUE     | no   | IC   | **True**<br>( -- flag)<br>Constant that leaves the -1 (true) on the top of the stack. |
+| \        | yes  | IC   | **Line comment**<br>Skips all source characters till the closing EOLN character. |
 
 
 #### TODO

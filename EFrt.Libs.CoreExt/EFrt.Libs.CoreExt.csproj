@@ -14,7 +14,7 @@
 
 	<PropertyGroup>
 		<PackageId>EFrt.Libs.CoreExt</PackageId>
-		<Version>0.2.0</Version>
+		<Version>0.2.1</Version>
 		<Authors>Premysl Fara</Authors>
 		<Title>EFrt.Libs.CoreExt - Embeddable FORTH CORE-EXT library</Title>
 		<Description>

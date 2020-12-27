@@ -14,7 +14,7 @@
 
 	<PropertyGroup>
 		<PackageId>EFrt.Libs.DoubleCellInteger</PackageId>
-		<Version>0.5.2</Version>
+		<Version>0.5.3</Version>
 		<Authors>Premysl Fara</Authors>
 		<Title>EFrt.Libs.DoubleCellInteger - Embeddable FORTH DOUBLE library</Title>
 		<Description>

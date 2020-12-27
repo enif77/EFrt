@@ -3,8 +3,10 @@
 namespace EFrt.Libs.Core
 {
     using System;
+    using System.Text;
 
     using EFrt.Core;
+    using EFrt.Core.Values;
     using EFrt.Core.Words;
     using static EFrt.Core.Token;
 
@@ -37,296 +39,135 @@ namespace EFrt.Libs.Core
         /// </summary>
         public void DefineWords()
         {
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "(", CommentAction));
-            
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, ":", BeginNewWordCompilationAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, ";", EndNewWordCompilationAction));
-
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "LITERAL", LiteralAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "IMMEDIATE", ImmediateAction));
-
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "CONSTANT", ConstantCompilationAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2CONSTANT", DoubleConstantCompilationAction));
-
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ALLOT", AllotAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "HERE", HereAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, ",", CommaAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "VARIABLE", VariableCompilationAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2VARIABLE", DoubleVariableCompilationAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "!", StoreToVariableAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2!", DoubleStoreToVariableAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "@", FetchFromVariableAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2@", DoubleFetchFromVariableAction));
-
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DUP", DupAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2DUP", DupTwoAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "?DUP", DupPosAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DROP", DropAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2DROP", DropTwoAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "SWAP", SwapAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2SWAP", SwapTwoAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "OVER", OverAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2OVER", OverTwoAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ROT", RotAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2ROT", RotTwoAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "-ROT", RotBackAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DEPTH", DepthAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "CLEAR", ClearAction));
-
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, ">R", ToReturnStackAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "R>", FromReturnStackAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "R@", FetchReturnStackAction));
-
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "CHAR", CharAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "[CHAR]", BracketCharAction));
-
-            _interpreter.AddWord(new ConstantWord(_interpreter, "BL", ' '));
-            
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "IF", IfAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "ELSE", ElseAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "THEN", ThenAction));
-
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "DO", DoAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "LOOP", LoopAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "!", StoreAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "(", ParenAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "*", StarAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "+", PlusAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "+LOOP", PlusLoopAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "BEGIN", BeginAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "WHILE", WhileAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "REPEAT", RepeatAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "UNTIL", UntilAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "I", GetInnerIndexAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "J", GetOuterIndexAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "LEAVE", LeaveAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "RECURSE", RecurseAction));
-
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ",", CommaAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "-", MinusAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ".", DotAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, ".\"", DotQuoteAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "/", SlashAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "/MOD", SlashModAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "0<", ZeroLessAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "0=", ZeroEqualsAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "1+", OnePlusAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "1-", OneMinusAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2!", TwoStoreAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2*", TwoStarAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2/", TwoSlashAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2@", TwoFetchAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2DROP", TwoDropAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2DUP", TwoDupAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2OVER", TwoOverAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2SWAP", TwoSwapAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ":", ColonAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, ";", SemicolonAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "<", LessThanAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "=", EqualsAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ">", GreaterThanAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ">R", ToRAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "@", FetchAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ABORT", AbortAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "ABORT\"", AbortMessageAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ABS", AbsAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ALLOT", AllotAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "AND", AndAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "BEGIN", BeginAction));
+            _interpreter.AddWord(new ConstantWord(_interpreter, "BL", ' '));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "CHAR", CharAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "CONSTANT", ConstantAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "CR", CrAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DEPTH", DepthAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "DO", DoAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DROP", DropAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DUP", DupAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "ELSE", ElseAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "EMIT", EmitAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "HERE", HereAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "I", GetInnerIndexAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "IF", IfAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "IMMEDIATE", ImmediateAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "LEAVE", LeaveAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "LITERAL", LiteralAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "LOOP", LoopAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "MAX", MaxAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "MIN", MinAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "MOD", ModAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "NEGATE", NegateAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "OR", OrAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "OVER", OverAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "QUIT", QuitAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "R>", RFromAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "R@", RFetchAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "RECURSE", RecurseAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "REPEAT", RepeatAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ROT", RoteAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "S\"", SQuoteAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "S>D", SToDAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "SPACE", SpaceAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "SPACES", SpacesAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "SWAP", SwapAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "THEN", ThenAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "UNTIL", UntilAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "VARIABLE", VariableAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "WHILE", WhileAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "XOR", XorAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "[CHAR]", BracketCharAction));
+
+
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2CONSTANT", DoubleConstantCompilationAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2VARIABLE", DoubleVariableCompilationAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "?DUP", DupPosAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2ROT", RotTwoAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "-ROT", RotBackAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "CLEAR", ClearAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "J", GetOuterIndexAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "BYE", ByeAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "FORGET", ForgetAction));
         }
 
 
-        // (a -- a a)
-        private int DupAction()
+        private void Function(Func<int, int> func)
         {
-            _interpreter.Dup();
-
-            return 1;
+            var stack = _interpreter.State.Stack;
+            var top = stack.Top;
+            stack.Items[stack.Top] = func(stack.Items[top]);
         }
 
-        // (a b -- a b a b)
-        private int DupTwoAction()
+
+        private void Function(Func<int, int, int> func)
         {
-            var b = _interpreter.Pop();
-            var a = _interpreter.Peek();
-
-            _interpreter.Push(b);
-            _interpreter.Push(a);
-            _interpreter.Push(b);
-
-            return 1;
+            var stack = _interpreter.State.Stack;
+            var top = stack.Top;
+            stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
         }
 
-        // (a -- a a) or (a -- 0)
-        private int DupPosAction()
+
+        private void DPush(long value)
         {
-            if (_interpreter.Peek() != 0)
+            var v = new LongVal()
             {
-                _interpreter.Dup();
-            }
+                D = value
+            };
 
-            return 1;
+            _interpreter.Push(v.A);
+            _interpreter.Push(v.B);
         }
 
-        // (a --)
-        private int DropAction()
+
+        // (n addr -- )
+        private int StoreAction()
         {
-            _interpreter.Drop();
-
-            return 1;
-        }
-
-        // (a b --)
-        private int DropTwoAction()
-        {
-            _interpreter.Drop(2);
-
-            return 1;
-        }
-
-        // (a b -- b a)
-        private int SwapAction()
-        {
-            _interpreter.Swap();
-
-            return 1;
-        }
-
-        // (a b c d -- c d a b)
-        private int SwapTwoAction()
-        {
-            var d = _interpreter.Pop();
-            var c = _interpreter.Pop();
-            var b = _interpreter.Pop();
-            var a = _interpreter.Pop();
-
-            _interpreter.Push(c);
-            _interpreter.Push(d);
-            _interpreter.Push(a);
-            _interpreter.Push(b);
-
-            return 1;
-        }
-
-        // (a b -- a b a)
-        private int OverAction()
-        {
-            _interpreter.Over();
-
-            return 1;
-        }
-
-        // (a b c d -- a b c d a b)
-        private int OverTwoAction()
-        {
-            var d = _interpreter.Pop();
-            var c = _interpreter.Pop();
-            var b = _interpreter.Pop();
-            var a = _interpreter.Peek();
-
-            _interpreter.Push(b);
-            _interpreter.Push(c);
-            _interpreter.Push(d);
-            _interpreter.Push(a);
-            _interpreter.Push(b);
-
-            return 1;
-        }
-        
-        // (a b c -- b c a)
-        private int RotAction()
-        {
-            _interpreter.Rot();
-
-            return 1;
-        }
-
-        // (a b c d e f -- c d e f a b)
-        private int RotTwoAction()
-        {
-            var f = _interpreter.Pop();
-            var e = _interpreter.Pop();
-            var d = _interpreter.Pop();
-            var c = _interpreter.Pop();
-            var b = _interpreter.Pop();
-            var a = _interpreter.Pop();
-
-            _interpreter.Push(c);
-            _interpreter.Push(d);
-            _interpreter.Push(e);
-            _interpreter.Push(f);
-            _interpreter.Push(a);
-            _interpreter.Push(b);
-
-            return 1;
-        }
-
-        // (a b c -- c a b)
-        private int RotBackAction()
-        {
-            var v3 = _interpreter.Pop();
-            var v2 = _interpreter.Pop();
-            var v1 = _interpreter.Pop();
-
-            _interpreter.Push(v3);
-            _interpreter.Push(v1);
-            _interpreter.Push(v2);
-
-            return 1;
-        }
-
-        // ( -- a)
-        private int DepthAction()
-        {
-            _interpreter.Push(_interpreter.State.Stack.Count);
+            var addr = _interpreter.Pop();
+            _interpreter.State.Heap.Items[addr] = _interpreter.Pop();
 
             return 1;
         }
 
         // ( -- )
-        private int ClearAction()
-        {
-            _interpreter.State.Stack.Clear();
-
-            return 1;
-        }
-
-        // (a -- ) [ - a ]
-        private int ToReturnStackAction()
-        {
-            _interpreter.RPush(_interpreter.Pop());
-
-            return 1;
-        }
-
-        // ( -- a) [a - ]
-        private int FromReturnStackAction()
-        {
-            _interpreter.Push(_interpreter.RPop());
-
-            return 1;
-        }
-
-        // ( -- a) [a - a]
-        private int FetchReturnStackAction()
-        {
-            _interpreter.Push(_interpreter.RPeek());
-
-            return 1;
-        }
-
-        // ( -- n)
-        private int CharAction()
-        {
-            // Get the name.
-            var tok = _interpreter.NextTok();
-            switch (tok.Code)
-            {
-                case TokenType.Word:
-                    _interpreter.Push(tok.SValue[0]);
-                    break;
-
-                default:
-                    throw new Exception("A name expected.");
-            }
-
-            return 1;
-        }
-
-        // ( -- n)
-        private int BracketCharAction()
-        {
-            if (_interpreter.IsCompiling == false)
-            {
-                throw new Exception("[CHAR] outside a new word definition.");
-            }
-
-            // Get the name.
-            var tok = _interpreter.NextTok();
-            switch (tok.Code)
-            {
-                case TokenType.Word:
-                    _interpreter.WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(_interpreter, tok.SValue[0]));
-                    break;
-
-                default:
-                    throw new Exception("A name expected.");
-            }
-
-            return 1;
-        }
-
-        private int CommentAction()
+        private int ParenAction()
         {
             var c = _interpreter.NextChar();
             while (_interpreter.CurrentChar != 0)
@@ -349,83 +190,42 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // : word-name body ;
-        private int BeginNewWordCompilationAction()
+        // (n1 n2 -- n3)
+        private int StarAction()
         {
-            _interpreter.WordBeingDefined = new NonPrimitiveWord(_interpreter, _interpreter.BeginNewWordCompilation());
+            Function((n1, n2) => n1 * n2);
 
             return 1;
         }
 
-        // : word-name body ;
-        private int EndNewWordCompilationAction()
+        // (n1 n2 -- n3)
+        private int PlusAction()
         {
-            _interpreter.EndNewWordCompilation();
+            Function((n1, n2) => n1 + n2);
 
             return 1;
         }
 
-
-        // (n -- )
-        private int LiteralAction()
+        // Compilation: [index of the word folowing DO/?DO -- ], runtime: (n -- )
+        private int PlusLoopAction()
         {
             if (_interpreter.IsCompiling == false)
             {
-                throw new Exception("LITERAL outside a new word definition.");
+                throw new Exception("+LOOP outside a new word definition.");
             }
 
-            _interpreter.WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(_interpreter, _interpreter.Pop()));
+            var cWordIndex = _interpreter.RPop();
 
-            return 1;
-        }
+            var loopIndex = _interpreter.WordBeingDefined.AddWord(
+                new PlusLoopControlWord(
+                    _interpreter,
+                    (cWordIndex + 1) - _interpreter.WordBeingDefined.NextWordIndex));  // c + 1 -> index of the word folowing DO/?DO.
 
-
-        private int ImmediateAction()
-        {
-            if (_interpreter.WordBeingDefined == null)
+            var cWord = _interpreter.WordBeingDefined.GetWord(cWordIndex);
+            if (cWord is IfDoControlWord)
             {
-                throw new Exception("No previous word definition to be set as immediate found.");
+                ((IfDoControlWord)cWord).SetLoopIndex(loopIndex);
             }
-
-            _interpreter.WordBeingDefined.SetImmediate();
-
-            return 1;
-        }
-
-        // CONSTANT word-name
-        // (n1 -- )
-        private int ConstantCompilationAction()
-        {
-            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.Pop()));
-            _interpreter.EndNewWordCompilation();
-
-            return 1;
-        }
-
-        // 2CONSTANT word-name
-        // (n1 n2 -- )
-        private int DoubleConstantCompilationAction()
-        {
-            var n2 = _interpreter.Pop();
-            _interpreter.AddWord(new DoubleCellConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.Pop(), n2));
-            _interpreter.EndNewWordCompilation();
-
-            return 1;
-        }
-
-        // (n -- )
-        private int AllotAction()
-        {
-            // We do not return the "address" returned by the Alloc() method.
-            _ =_interpreter.State.Heap.Alloc(_interpreter.Pop());
-
-            return 1;
-        }
-
-        // ( -- addr)
-        private int HereAction()
-        {
-            _interpreter.Push(_interpreter.State.Heap.Top);
 
             return 1;
         }
@@ -438,37 +238,111 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // VARIABLE word-name
-        // ( -- )
-        private int VariableCompilationAction()
+        // (n1 n2 -- n3)
+        private int MinusAction()
         {
-            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.State.Heap.Alloc(1)));
-            _interpreter.EndNewWordCompilation();
+            Function((n1, n2) => n1 - n2);
 
             return 1;
         }
 
-        // 2VARIABLE word-name
-        // ( -- )
-        private int DoubleVariableCompilationAction()
+        // (n --)
+        private int DotAction()
         {
-            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.State.Heap.Alloc(2)));
-            _interpreter.EndNewWordCompilation();
+            _interpreter.Output.Write("{0} ", _interpreter.Pop());
 
             return 1;
         }
 
-        // (n addr -- )
-        private int StoreToVariableAction()
+        // ( -- )
+        private int DotQuoteAction()
         {
-            var addr = _interpreter.Pop();
-            _interpreter.State.Heap.Items[addr] = _interpreter.Pop();
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception(".\" outside a new word definition.");
+            }
+
+            var sb = new StringBuilder();
+
+            var c = _interpreter.NextChar();
+            while (_interpreter.CurrentChar != 0)
+            {
+                if (_interpreter.CurrentChar == '"')
+                {
+                    _interpreter.NextChar();
+
+                    break;
+                }
+
+                sb.Append(_interpreter.CurrentChar);
+
+                c = _interpreter.NextChar();
+            }
+
+            if (c != '"')
+            {
+                throw new Exception("'\"' expected.");
+            }
+
+            _interpreter.WordBeingDefined.AddWord(new PrintStringWord(_interpreter, sb.ToString()));
+
+            return 1;
+        }
+
+        // (n1 n2 -- n3)
+        private int SlashAction()
+        {
+            Function((n1, n2) => n1 / n2);
+
+            return 1;
+        }
+
+        // (n1 n2b -- n3 n4)
+        private int SlashModAction()
+        {
+            var n2 = _interpreter.Pop();
+            var n1 = _interpreter.Pop();
+
+            _interpreter.Push(n1 / n2);
+            _interpreter.Push(n1 % n2);
+
+            return 1;
+        }
+
+        // (n -- flag)
+        private int ZeroLessAction()
+        {
+            Function((n) => (n < 0) ? -1 : 0);
+
+            return 1;
+        }
+
+        // (n -- flag)
+        private int ZeroEqualsAction()
+        {
+            Function((n) => (n == 0) ? -1 : 0);
+
+            return 1;
+        }
+
+        // (n1 -- n2)
+        private int OnePlusAction()
+        {
+            Function((n) => ++n);
+
+            return 1;
+        }
+
+        // (n1 -- n2)
+        private int OneMinusAction()
+        {
+            Function((n) => --n);
 
             return 1;
         }
 
         // (n1 n2 addr -- )
-        private int DoubleStoreToVariableAction()
+        private int TwoStoreAction()
         {
             var addr = _interpreter.Pop();
             _interpreter.State.Heap.Items[addr + 1] = _interpreter.Pop();  // n2
@@ -477,16 +351,24 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // (addr -- n)
-        private int FetchFromVariableAction()
+        // (n1 -- n2)
+        private int TwoStarAction()
         {
-            _interpreter.Push(_interpreter.State.Heap.Items[_interpreter.Pop()]);
+            Function((n) => n * 2);
+
+            return 1;
+        }
+
+        // (n1 -- n2)
+        private int TwoSlashAction()
+        {
+            Function((n) => n / 2);
 
             return 1;
         }
 
         // (addr -- n1 n2)
-        private int DoubleFetchFromVariableAction()
+        private int TwoFetchAction()
         {
             var addr = _interpreter.Pop();
             _interpreter.Push(_interpreter.State.Heap.Items[addr]);      // n1
@@ -495,7 +377,117 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
+        // (n1 n2 -- )
+        private int TwoDropAction()
+        {
+            _interpreter.Drop(2);
 
+            return 1;
+        }
+
+        // (n1 n2 -- n1 n2 n1 n2)
+        private int TwoDupAction()
+        {
+            var n2 = _interpreter.Pop();
+            var n1 = _interpreter.Peek();
+
+            _interpreter.Push(n2);
+            _interpreter.Push(n1);
+            _interpreter.Push(n2);
+
+            return 1;
+        }
+
+        // (n1 n2 n3 n4 -- n1 n2 n3 n4 n1 n2)
+        private int TwoOverAction()
+        {
+            var n4 = _interpreter.Pop();
+            var n3 = _interpreter.Pop();
+            var n2 = _interpreter.Pop();
+            var n1 = _interpreter.Peek();
+
+            _interpreter.Push(n2);
+            _interpreter.Push(n3);
+            _interpreter.Push(n4);
+            _interpreter.Push(n1);
+            _interpreter.Push(n2);
+
+            return 1;
+        }
+
+        // (n1 n2 n3 n4 -- n3 n4 n1 n2)
+        private int TwoSwapAction()
+        {
+            var n4 = _interpreter.Pop();
+            var n3 = _interpreter.Pop();
+            var n2 = _interpreter.Pop();
+            var n1 = _interpreter.Pop();
+
+            _interpreter.Push(n3);
+            _interpreter.Push(n4);
+            _interpreter.Push(n1);
+            _interpreter.Push(n2);
+
+            return 1;
+        }
+
+        // : word-name body ;
+        private int ColonAction()
+        {
+            _interpreter.WordBeingDefined = new NonPrimitiveWord(_interpreter, _interpreter.BeginNewWordCompilation());
+
+            return 1;
+        }
+
+        // : word-name body ;
+        private int SemicolonAction()
+        {
+            _interpreter.EndNewWordCompilation();
+
+            return 1;
+        }
+
+        // (n1 n2 -- flag)
+        private int LessThanAction()
+        {
+            Function((n1, n2) => (n1 < n2) ? -1 : 0);
+
+            return 1;
+        }
+
+        // (n1 n2 -- flag)
+        private int EqualsAction()
+        {
+            Function((n1, n2) => (n1 == n2) ? -1 : 0);
+
+            return 1;
+        }
+
+        // (n1 n2 -- flag)
+        private int GreaterThanAction()
+        {
+            Function((n1, n2) => (n1 > n2) ? -1 : 0);
+
+            return 1;
+        }
+
+        // (a -- ) [ - a ]
+        private int ToRAction()
+        {
+            _interpreter.RPush(_interpreter.Pop());
+
+            return 1;
+        }
+
+        // (addr -- n)
+        private int FetchAction()
+        {
+            _interpreter.Push(_interpreter.State.Heap.Items[_interpreter.Pop()]);
+
+            return 1;
+        }
+
+        // ( -- )
         public int AbortAction()
         {
             _interpreter.State.Stack.Clear();
@@ -506,64 +498,122 @@ namespace EFrt.Libs.Core
             return QuitAction();
         }
 
-
-        private int QuitAction()
+        // (n1 -- n2)
+        private int AbsAction()
         {
-            _interpreter.State.ReturnStack.Clear();
-            _interpreter.BreakExecution();
+            Function((n1) => n1 < 0 ? -n1 : n1);
 
             return 1;
         }
 
-        // ( -- )
-        private int ByeAction()
+        // (n -- )
+        private int AllotAction()
         {
-            _interpreter.TerminateExecution();
+            // We do not return the "address" returned by the Alloc() method.
+            _ = _interpreter.State.Heap.Alloc(_interpreter.Pop());
 
             return 1;
         }
 
-        // ( -- )
-        private int ForgetAction()
+        // (n1 n2 -- n3)
+        private int AndAction()
         {
-            // Cannot forget a word, when a new word is currently compiled.
-            if (_interpreter.IsCompiling)
+            Function((n1, n2) => n1 & n2);
+
+            return 1;
+        }
+
+        // [ -- index-of-a-word-folowing-BEGIN ]
+        private int BeginAction()
+        {
+            if (_interpreter.IsCompiling == false)
             {
-                throw new Exception("A word compilation is running.");
+                throw new Exception("BEGIN outside a new word definition.");
             }
 
-            // Get the name of a word.
+            // BEGIN word doesn't have a runtime behavior.
+
+            _interpreter.RPush(_interpreter.WordBeingDefined.NextWordIndex);
+
+            return 1;
+        }
+
+        // ( -- n)
+        private int CharAction()
+        {
+            // Get the name.
             var tok = _interpreter.NextTok();
             switch (tok.Code)
             {
                 case TokenType.Word:
-                    _interpreter.ForgetWord(tok.SValue);
+                    _interpreter.Push(tok.SValue[0]);
                     break;
 
                 default:
-                    throw new Exception($"A name of a word expected.");
+                    throw new Exception("A name expected.");
             }
 
             return 1;
         }
 
-        // IF ... ELSE .. THEN
-        // ( flag -- )
-        private int IfAction()
+        // CONSTANT word-name
+        // (n -- )
+        private int ConstantAction()
+        {
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.Pop()));
+            _interpreter.EndNewWordCompilation();
+
+            return 1;
+        }
+
+        // ( -- )
+        private int CrAction()
+        {
+            _interpreter.Output.WriteLine();
+
+            return 1;
+        }
+
+        // ( -- n)
+        private int DepthAction()
+        {
+            _interpreter.Push(_interpreter.State.Stack.Count);
+
+            return 1;
+        }
+
+        // (limit index -- ) [ - limit index ]
+        private int DoAction()
         {
             if (_interpreter.IsCompiling == false)
             {
-                throw new Exception("IF outside a new word definition.");
+                throw new Exception("DO outside a new word definition.");
             }
 
             _interpreter.RPush(
                 _interpreter.WordBeingDefined.AddWord(
-                    new IfControlWord(_interpreter, _interpreter.WordBeingDefined.NextWordIndex)));
+                    new DoControlWord(_interpreter)));
 
             return 1;
         }
 
+        // (n --)
+        private int DropAction()
+        {
+            _interpreter.Drop();
 
+            return 1;
+        }
+
+        // (n -- n n)
+        private int DupAction()
+        {
+            _interpreter.Dup();
+
+            return 1;
+        }
+
+        // ( -- )
         private int ElseAction()
         {
             if (_interpreter.IsCompiling == false)
@@ -594,68 +644,202 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-
-        private int ThenAction()
+        // (n --)
+        private int EmitAction()
         {
-            if (_interpreter.IsCompiling == false)
-            {
-                throw new Exception("THEN outside a new word definition.");
-            }
-
-            // Get the index of the next free slot in the non-primitive word being defined.
-            var thenIndex = _interpreter.WordBeingDefined.NextWordIndex;
-
-            var controlWord = _interpreter.WordBeingDefined.GetWord(_interpreter.RPop());
-            if (controlWord is ElseControlWord)
-            {
-                // We had a previous else 
-                ((ElseControlWord)controlWord).SetThenIndexIncrement(thenIndex);
-
-                // Pop control stack again to find IF.
-                controlWord = _interpreter.WordBeingDefined.GetWord(_interpreter.RPop());
-            }
-
-            if (controlWord is IfControlWord) 
-			{
-                // We had a previous if. Set the then index into
-                // the if control word.
-                ((IfControlWord)controlWord).SetThenIndex(thenIndex);
-            }
-            else
-            {
-                throw new Exception("THEN requires a previous IF or ELSE.");
-            }
+            _interpreter.Output.Write("{0}", (char)_interpreter.Pop());
 
             return 1;
         }
 
-        // [ -- index-of-a-word-folowing-BEGIN ]
-        private int BeginAction()
+        // ( -- addr)
+        private int HereAction()
         {
-            if (_interpreter.IsCompiling == false)
-            {
-                throw new Exception("BEGIN outside a new word definition.");
-            }
-
-            // BEGIN word doesn't have a runtime behavior.
-           
-            _interpreter.RPush(_interpreter.WordBeingDefined.NextWordIndex);
+            _interpreter.Push(_interpreter.State.Heap.Top);
 
             return 1;
         }
 
-        // BEGIN ... WHILE .. REPEAT
+        // ( -- n)
+        private int GetInnerIndexAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("I outside a new word definition.");
+            }
+
+            // I word doesn't have a runtime behavior.
+
+            _interpreter.WordBeingDefined.AddWord(new IndexControlWord(_interpreter));
+
+            return 1;
+        }
+
+        // IF ... ELSE ... THEN
         // ( flag -- )
-        private int WhileAction()
+        private int IfAction()
         {
             if (_interpreter.IsCompiling == false)
             {
-                throw new Exception("WHILE outside a new word definition.");
+                throw new Exception("IF outside a new word definition.");
             }
 
             _interpreter.RPush(
                 _interpreter.WordBeingDefined.AddWord(
-                    new WhileControlWord(_interpreter, _interpreter.WordBeingDefined.NextWordIndex)));
+                    new IfControlWord(_interpreter, _interpreter.WordBeingDefined.NextWordIndex)));
+
+            return 1;
+        }
+
+        // ( -- )
+        private int ImmediateAction()
+        {
+            if (_interpreter.WordBeingDefined == null)
+            {
+                throw new Exception("No previous word definition to be set as immediate found.");
+            }
+
+            _interpreter.WordBeingDefined.SetImmediate();
+
+            return 1;
+        }
+
+        // ( -- )
+        private int LeaveAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("LEAVE outside a new word definition.");
+            }
+
+            // LEAVE word doesn't have a runtime behavior.
+
+            _interpreter.WordBeingDefined.AddWord(new LeaveControlWord(_interpreter));
+
+            return 1;
+        }
+
+        // (n -- )
+        private int LiteralAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("LITERAL outside a new word definition.");
+            }
+
+            _interpreter.WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(_interpreter, _interpreter.Pop()));
+
+            return 1;
+        }
+
+        // ( -- )
+        private int LoopAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("LOOP outside a new word definition.");
+            }
+
+            var cWordIndex = _interpreter.RPop();
+
+            var loopIndex = _interpreter.WordBeingDefined.AddWord(
+                new LoopControlWord(
+                    _interpreter,
+                    (cWordIndex + 1) - _interpreter.WordBeingDefined.NextWordIndex));  // c + 1 -> index of the word folowing DO/?DO.
+
+            var cWord = _interpreter.WordBeingDefined.GetWord(cWordIndex);
+            if (cWord is IfDoControlWord)
+            {
+                ((IfDoControlWord)cWord).SetLoopIndex(loopIndex);
+            }
+
+            return 1;
+        }
+
+        // (n1 n2 -- n3)
+        private int MaxAction()
+        {
+            Function((n1, n2) => (n1 > n2) ? n1 : n2);
+
+            return 1;
+        }
+
+        // (n1 n2 -- n3)
+        private int MinAction()
+        {
+            Function((n1, n2) => (n1 < n2) ? n1 : n2);
+
+            return 1;
+        }
+
+        // (n1 n2 -- n3)
+        private int ModAction()
+        {
+            Function((n1, n2) => n1 % n2);
+
+            return 1;
+        }
+
+        // (n1 -- n2)
+        private int NegateAction()
+        {
+            Function((n1) => -n1);
+
+            return 1;
+        }
+
+        // (n1 n2 -- n3)
+        private int OrAction()
+        {
+            Function((n1, n2) => n1 | n2);
+
+            return 1;
+        }
+
+        // (a b -- a b a)
+        private int OverAction()
+        {
+            _interpreter.Over();
+
+            return 1;
+        }
+
+        // ( -- )
+        private int QuitAction()
+        {
+            _interpreter.State.ReturnStack.Clear();
+            _interpreter.BreakExecution();
+
+            return 1;
+        }
+
+        // ( -- a) [a - ]
+        private int RFromAction()
+        {
+            _interpreter.Push(_interpreter.RPop());
+
+            return 1;
+        }
+
+        // ( -- a) [a - a]
+        private int RFetchAction()
+        {
+            _interpreter.Push(_interpreter.RPeek());
+
+            return 1;
+        }
+
+        // ( -- )
+        private int RecurseAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("RECURSE outside a new word definition.");
+            }
+
+            // LEAVE word doesn't have a runtime behavior.
+
+            _interpreter.WordBeingDefined.AddWord(new RuntimeWord(_interpreter, _interpreter.WordBeingDefined.Name));
 
             return 1;
         }
@@ -693,6 +877,134 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
+        // (n1 n2 n3 -- n2 n3 n1)
+        private int RoteAction()
+        {
+            _interpreter.Rot();
+
+            return 1;
+        }
+
+        // { -- s}
+        private int SQuoteAction()
+        {
+            var sb = new StringBuilder();
+
+            var c = _interpreter.NextChar();
+            while (_interpreter.CurrentChar != 0)
+            {
+                if (_interpreter.CurrentChar == '"')
+                {
+                    _interpreter.NextChar();
+
+                    break;
+                }
+
+                sb.Append(_interpreter.CurrentChar);
+
+                c = _interpreter.NextChar();
+            }
+
+            if (c != '"')
+            {
+                throw new Exception("'\"' expected.");
+            }
+
+            c = _interpreter.CurrentChar;
+            if (c != 0 && Tokenizer.IsWhite(c) == false)
+            {
+                throw new Exception("The EOF or an white character after a string literal expected.");
+            }
+
+            if (_interpreter.IsCompiling)
+            {
+                _interpreter.WordBeingDefined.AddWord(new StringLiteralWord(_interpreter, sb.ToString()));
+            }
+            else
+            {
+                _interpreter.OPush(sb.ToString());
+            }
+
+            return 1;
+        }
+
+        // (n -- d)
+        private int SToDAction()
+        {
+            DPush(_interpreter.Pop());
+
+            return 1;
+        }
+
+        // ( -- )
+        private int SpaceAction()
+        {
+            _interpreter.Output.Write(" ");
+
+            return 1;
+        }
+
+        // (n -- )
+        private int SpacesAction()
+        {
+            var count = _interpreter.Pop();
+            if (count > 0)
+            {
+                var sb = new StringBuilder(count);
+                for (var i = 0; i < count; i++)
+                {
+                    sb.Append(' ');
+                }
+
+                _interpreter.Output.Write(sb.ToString());
+            }
+
+            return 1;
+        }
+
+        // (n1 n2 -- n2 n1)
+        private int SwapAction()
+        {
+            _interpreter.Swap();
+
+            return 1;
+        }
+
+
+        private int ThenAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("THEN outside a new word definition.");
+            }
+
+            // Get the index of the next free slot in the non-primitive word being defined.
+            var thenIndex = _interpreter.WordBeingDefined.NextWordIndex;
+
+            var controlWord = _interpreter.WordBeingDefined.GetWord(_interpreter.RPop());
+            if (controlWord is ElseControlWord)
+            {
+                // We had a previous else 
+                ((ElseControlWord)controlWord).SetThenIndexIncrement(thenIndex);
+
+                // Pop control stack again to find IF.
+                controlWord = _interpreter.WordBeingDefined.GetWord(_interpreter.RPop());
+            }
+
+            if (controlWord is IfControlWord)
+            {
+                // We had a previous if. Set the then index into
+                // the if control word.
+                ((IfControlWord)controlWord).SetThenIndex(thenIndex);
+            }
+            else
+            {
+                throw new Exception("THEN requires a previous IF or ELSE.");
+            }
+
+            return 1;
+        }
+
         // [ index-of-a-word-folowing-BEGIN -- ]
         private int UntilAction()
         {
@@ -711,20 +1023,220 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // ( -- n)
-        private int GetInnerIndexAction()
+        // VARIABLE word-name
+        // ( -- )
+        private int VariableAction()
         {
-            if (_interpreter.IsCompiling == false)
-            {
-                throw new Exception("I outside a new word definition.");
-            }
-
-            // I word doesn't have a runtime behavior.
-
-            _interpreter.WordBeingDefined.AddWord(new IndexControlWord(_interpreter));
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.State.Heap.Alloc(1)));
+            _interpreter.EndNewWordCompilation();
 
             return 1;
         }
+
+        // BEGIN ... WHILE ... REPEAT
+        // ( flag -- )
+        private int WhileAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("WHILE outside a new word definition.");
+            }
+
+            _interpreter.RPush(
+                _interpreter.WordBeingDefined.AddWord(
+                    new WhileControlWord(_interpreter, _interpreter.WordBeingDefined.NextWordIndex)));
+
+            return 1;
+        }
+
+        // (n1 n2 -- n3)
+        private int XorAction()
+        {
+            Function((n1, n2) => n1 ^ n2);
+
+            return 1;
+        }
+
+        // ( -- n)
+        private int BracketCharAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("[CHAR] outside a new word definition.");
+            }
+
+            // Get the name.
+            var tok = _interpreter.NextTok();
+            switch (tok.Code)
+            {
+                case TokenType.Word:
+                    _interpreter.WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(_interpreter, tok.SValue[0]));
+                    break;
+
+                default:
+                    throw new Exception("A name expected.");
+            }
+
+            return 1;
+        }
+
+
+
+
+        // (a -- a a) or (a -- 0)
+        private int DupPosAction()
+        {
+            if (_interpreter.Peek() != 0)
+            {
+                _interpreter.Dup();
+            }
+
+            return 1;
+        }
+
+
+        // (a b c d e f -- c d e f a b)
+        private int RotTwoAction()
+        {
+            var f = _interpreter.Pop();
+            var e = _interpreter.Pop();
+            var d = _interpreter.Pop();
+            var c = _interpreter.Pop();
+            var b = _interpreter.Pop();
+            var a = _interpreter.Pop();
+
+            _interpreter.Push(c);
+            _interpreter.Push(d);
+            _interpreter.Push(e);
+            _interpreter.Push(f);
+            _interpreter.Push(a);
+            _interpreter.Push(b);
+
+            return 1;
+        }
+
+        // (a b c -- c a b)
+        private int RotBackAction()
+        {
+            var v3 = _interpreter.Pop();
+            var v2 = _interpreter.Pop();
+            var v1 = _interpreter.Pop();
+
+            _interpreter.Push(v3);
+            _interpreter.Push(v1);
+            _interpreter.Push(v2);
+
+            return 1;
+        }
+
+        
+
+        // ( -- )
+        private int ClearAction()
+        {
+            _interpreter.State.Stack.Clear();
+
+            return 1;
+        }
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+
+
+        
+
+
+        
+
+        
+
+        // 2CONSTANT word-name
+        // (n1 n2 -- )
+        private int DoubleConstantCompilationAction()
+        {
+            var n2 = _interpreter.Pop();
+            _interpreter.AddWord(new DoubleCellConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.Pop(), n2));
+            _interpreter.EndNewWordCompilation();
+
+            return 1;
+        }
+
+        
+
+        
+
+        
+
+        
+
+        // 2VARIABLE word-name
+        // ( -- )
+        private int DoubleVariableCompilationAction()
+        {
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.State.Heap.Alloc(2)));
+            _interpreter.EndNewWordCompilation();
+
+            return 1;
+        }
+
+
+        
+
+        // ( -- )
+        private int ByeAction()
+        {
+            _interpreter.TerminateExecution();
+
+            return 1;
+        }
+
+        // ( -- )
+        private int ForgetAction()
+        {
+            // Cannot forget a word, when a new word is currently compiled.
+            if (_interpreter.IsCompiling)
+            {
+                throw new Exception("A word compilation is running.");
+            }
+
+            // Get the name of a word.
+            var tok = _interpreter.NextTok();
+            switch (tok.Code)
+            {
+                case TokenType.Word:
+                    _interpreter.ForgetWord(tok.SValue);
+                    break;
+
+                default:
+                    throw new Exception($"A name of a word expected.");
+            }
+
+            return 1;
+        }
+
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
 
 
         // ( -- n)
@@ -743,96 +1255,14 @@ namespace EFrt.Libs.Core
         }
 
 
-        private int LeaveAction()
-        {
-            if (_interpreter.IsCompiling == false)
-            {
-                throw new Exception("LEAVE outside a new word definition.");
-            }
-
-            // LEAVE word doesn't have a runtime behavior.
-
-            _interpreter.WordBeingDefined.AddWord(new LeaveControlWord(_interpreter));
-
-            return 1;
-        }
+        
 
 
-        private int RecurseAction()
-        {
-            if (_interpreter.IsCompiling == false)
-            {
-                throw new Exception("RECURSE outside a new word definition.");
-            }
+        
 
-            // LEAVE word doesn't have a runtime behavior.
-
-            _interpreter.WordBeingDefined.AddWord(new RuntimeWord(_interpreter, _interpreter.WordBeingDefined.Name));
-
-            return 1;
-        }
-
-        // (limit index -- ) [ - limit index ]
-        private int DoAction()
-        {
-            if (_interpreter.IsCompiling == false)
-            {
-                throw new Exception("DO outside a new word definition.");
-            }
-
-            _interpreter.RPush(
-                _interpreter.WordBeingDefined.AddWord(
-                    new DoControlWord(_interpreter)));
-
-            return 1;
-        }
+       
 
 
-        private int LoopAction()
-        {
-            if (_interpreter.IsCompiling == false)
-            {
-                throw new Exception("LOOP outside a new word definition.");
-            }
-
-            var cWordIndex = _interpreter.RPop();
-
-            var loopIndex = _interpreter.WordBeingDefined.AddWord(
-                new LoopControlWord(
-                    _interpreter,
-                    (cWordIndex + 1) - _interpreter.WordBeingDefined.NextWordIndex));  // c + 1 -> index of the word folowing DO/?DO.
-
-            var cWord = _interpreter.WordBeingDefined.GetWord(cWordIndex);
-            if (cWord is IfDoControlWord)
-            {
-                ((IfDoControlWord)cWord).SetLoopIndex(loopIndex);
-            }
-            
-            return 1;
-        }
-
-
-        private int PlusLoopAction()
-        {
-            if (_interpreter.IsCompiling == false)
-            {
-                throw new Exception("+LOOP outside a new word definition.");
-            }
-
-            var cWordIndex = _interpreter.RPop();
-
-            var loopIndex = _interpreter.WordBeingDefined.AddWord(
-                new PlusLoopControlWord(
-                    _interpreter,
-                    (cWordIndex + 1) - _interpreter.WordBeingDefined.NextWordIndex));  // c + 1 -> index of the word folowing DO/?DO.
-
-            var cWord = _interpreter.WordBeingDefined.GetWord(cWordIndex);
-            if (cWord is IfDoControlWord)
-            {
-                ((IfDoControlWord)cWord).SetLoopIndex(loopIndex);
-            }
-
-            return 1;
-        }
+        
     }
 }

@@ -58,7 +58,6 @@ namespace EFrt.Libs.DoubleCellInteger
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "D0>", IsPosAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "DNEGATE", NegateAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "D>S", LongToIntAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "S>D", IntToLongAction));
         }
 
 
@@ -153,15 +152,7 @@ namespace EFrt.Libs.DoubleCellInteger
 
             return 1;
         }
-
-        // (n -- d)
-        private int IntToLongAction()
-        {
-            DPush(_interpreter.Pop());
-
-            return 1;
-        }
-
+        
         // (d1 d2 -- d3)
         private int AddAction()
         {

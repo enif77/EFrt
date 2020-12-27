@@ -14,7 +14,7 @@
 
 	<PropertyGroup>
 		<PackageId>EFrt.Libs.SingleCellInteger</PackageId>
-		<Version>0.5.1</Version>
+		<Version>0.5.2</Version>
 		<Authors>Premysl Fara</Authors>
 		<Title>EFrt.Libs.SingleCellInteger - Embeddable FORTH INTEGER library</Title>
 		<Description>

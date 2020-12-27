@@ -45,4 +45,3 @@ Words definition table columns:
 | DNOT     | no   | IC   | **Bitwise not**<br>(d1 -- d2)<br>Inverts the bits in the value on the top of the stack. This performs logical negation for truth values of −1 (True) and 0 (False). |
 | DOR      | no   | IC   | **Bitwise or**<br>(d1 d2 -- d3)<br>Stores the bitwise or of d1 and d2 on the stack. |
 | DXOR     | no   | IC   | **Bitwise exclusive or**<br>(d1 d2 -- d3)<br>Stores the bitwise exclusive or of d1 and d2 on the stack. |
-| S>D      | no   | IC   | **Single cell number to double cell number**<br>(n -- d)<br>Converts a single cell number (32bit, int) to a double cell number (64bit, long). |
