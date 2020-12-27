@@ -7,12 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFrt", "EFrt\EFrt.csproj", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{738AC7B8-125D-404D-AE86-95CBCB227F0A}"
 	ProjectSection(SolutionItems) = preProject
+		build-package.ps1 = build-package.ps1
+		build.ps1 = build.ps1
+		include.ps1 = include.ps1
 		LICENSE.txt = LICENSE.txt
 		NuGet.Config = NuGet.Config
 		README.md = README.md
-		release-local.bat = release-local.bat
-		release-package.bat = release-package.bat
-		release.bat = release.bat
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFrt_Tests", "EFrt_Tests\EFrt_Tests.csproj", "{5DAFCCB9-4F93-4638-8AE3-A1BF35C7EB02}"
@@ -37,9 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFrt.Libs.Object", "EFrt.Li
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFrt.Libs.String", "EFrt.Libs.String\EFrt.Libs.String.csproj", "{20CEAF77-13CB-420B-BB2C-0516083C426A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFrt.GetVersion", "EFrt.GetVersion\EFrt.GetVersion.csproj", "{4437F066-6EAE-4BF1-8C07-3BA7D1144A43}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFrt.Libs.CoreExt", "EFrt.Libs.CoreExt\EFrt.Libs.CoreExt.csproj", "{1F27EC1F-4CD4-4931-8F75-F7B47DDF4ADF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFrt.Libs.CoreExt", "EFrt.Libs.CoreExt\EFrt.Libs.CoreExt.csproj", "{1F27EC1F-4CD4-4931-8F75-F7B47DDF4ADF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,10 +89,6 @@ Global
 		{20CEAF77-13CB-420B-BB2C-0516083C426A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20CEAF77-13CB-420B-BB2C-0516083C426A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20CEAF77-13CB-420B-BB2C-0516083C426A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4437F066-6EAE-4BF1-8C07-3BA7D1144A43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4437F066-6EAE-4BF1-8C07-3BA7D1144A43}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4437F066-6EAE-4BF1-8C07-3BA7D1144A43}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4437F066-6EAE-4BF1-8C07-3BA7D1144A43}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1F27EC1F-4CD4-4931-8F75-F7B47DDF4ADF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1F27EC1F-4CD4-4931-8F75-F7B47DDF4ADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F27EC1F-4CD4-4931-8F75-F7B47DDF4ADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
