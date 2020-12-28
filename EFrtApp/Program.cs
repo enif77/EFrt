@@ -25,7 +25,7 @@ namespace EFrtApp
             interpreter.AddWords(new EFrt.Libs.IO.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.SingleCellInteger.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.DoubleCellInteger.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.Float.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.Floating.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.String.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.Object.Library(interpreter));
 
@@ -84,7 +84,7 @@ namespace EFrtApp
             interpreter.AddWords(new EFrt.Libs.IO.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.SingleCellInteger.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.DoubleCellInteger.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.Float.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.Floating.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.String.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.Object.Library(interpreter));
 

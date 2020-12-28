@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net452;netstandard2.0;net5.0</TargetFrameworks>
@@ -8,20 +8,20 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<AssemblyTitle>EFrt - Embeddable FORTH programing language FLOAT library</AssemblyTitle>
+		<AssemblyTitle>EFrt - Embeddable FORTH programing language FLOATING library</AssemblyTitle>
 		<Copyright>(C) 2020 - 2021</Copyright>
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<PackageId>EFrt.Libs.Float</PackageId>
-		<Version>0.5.1</Version>
+		<PackageId>EFrt.Libs.Floating</PackageId>
+		<Version>0.1.0</Version>
 		<Authors>Premysl Fara</Authors>
-		<Title>EFrt.Libs.Float - Embeddable FORTH FLOAT library</Title>
+		<Title>EFrt.Libs.Floating - Embeddable FORTH FLOATING library</Title>
 		<Description>
-			The FLOAT library for the EFrt embeddable programming language.
+			The FLOATING library for the EFrt embeddable programming language.
 		</Description>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageDescription>EFrt - Embeddable FORTH programing language interpreter - the FLOAT library.</PackageDescription>
+		<PackageDescription>EFrt - Embeddable FORTH programing language interpreter - the FLOATING library.</PackageDescription>
 		<PackageTags>efrt;forth;embeddable;interpreter;language</PackageTags>
 	</PropertyGroup>
 

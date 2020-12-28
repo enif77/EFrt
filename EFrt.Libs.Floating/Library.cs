@@ -1,6 +1,6 @@
 ﻿/* EFrt - (C) 2020 Premysl Fara  */
 
-namespace EFrt.Libs.Float
+namespace EFrt.Libs.Floating
 {
     using System;
 
@@ -17,7 +17,7 @@ namespace EFrt.Libs.Float
         /// <summary>
         /// The name of this library.
         /// </summary>
-        public string Name => "FLOAT";
+        public string Name => "FLOATING";
 
         private IInterpreter _interpreter;
 
