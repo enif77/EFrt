@@ -48,6 +48,11 @@ namespace EFrt.Libs.CoreExt
 
             _interpreter.AddWord(new ConstantWord(_interpreter, "FALSE", 0));
             _interpreter.AddWord(new ConstantWord(_interpreter, "TRUE", -1));
+
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2+", AddTwoAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2-", SubTwoAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "<=", IsLtEAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ">=", IsGtEAction));
         }
 
 
@@ -179,6 +184,42 @@ namespace EFrt.Libs.CoreExt
 
                 _interpreter.NextChar();
             }
+
+            return 1;
+        }
+
+
+        // Extra
+
+
+        // (n1 -- n2)
+        private int AddTwoAction()
+        {
+            Function((a) => a + 2);
+
+            return 1;
+        }
+
+        // (n1 -- n2)
+        private int SubTwoAction()
+        {
+            Function((a) => a - 2);
+
+            return 1;
+        }
+
+        // (n1 n2 -- flag)
+        private int IsLtEAction()
+        {
+            Function((a, b) => (a <= b) ? -1 : 0);
+
+            return 1;
+        }
+
+        // (n1 n2 -- flag)
+        private int IsGtEAction()
+        {
+            Function((a, b) => (a >= b) ? -1 : 0);
 
             return 1;
         }

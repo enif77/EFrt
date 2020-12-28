@@ -1,13 +1,10 @@
 ﻿/* EFrt - (C) 2020 Premysl Fara  */
 
-namespace EFrt.Libs.IO
+namespace EFrt.Libs.Tools
 {
-    using System;
     using System.Globalization;
-    using System.Text;
 
     using EFrt.Core;
-    using EFrt.Core.Values;
     using EFrt.Core.Words;
    
 
@@ -16,7 +13,7 @@ namespace EFrt.Libs.IO
         /// <summary>
         /// The name of this library.
         /// </summary>
-        public string Name => "IO";
+        public string Name => "TOOLS";
 
         private IInterpreter _interpreter;
        
@@ -30,8 +27,6 @@ namespace EFrt.Libs.IO
         public void DefineWords()
         {
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "?", PrintIndirectAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F.", PrintFloatAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "S.", PrintStringAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ".O", PrintObjectStackAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ".S", PrintStackAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "WORDS", WordsAction));
@@ -46,29 +41,7 @@ namespace EFrt.Libs.IO
             return 1;
         }
 
-        
-
-        // (f --)
-        private int PrintFloatAction()
-        {
-            _interpreter.Output.Write("{0} ", new DoubleVal()
-            {
-                B = _interpreter.Pop(),
-                A = _interpreter.Pop(),
-            }.D.ToString(CultureInfo.InvariantCulture));
-
-            return 1;
-        }
-
-        // {o --}
-        private int PrintStringAction()
-        {
-            _interpreter.Output.Write(_interpreter.OPop().ToString());
-
-            return 1;
-        }
-
-
+        // ( -- )
         private int PrintStackAction()
         {
             _interpreter.Output.Write("Stack: ");
@@ -82,7 +55,7 @@ namespace EFrt.Libs.IO
             return 1;
         }
 
-
+        // { -- }
         private int PrintObjectStackAction()
         {
             _interpreter.Output.WriteLine("Object stack: ");
@@ -95,7 +68,7 @@ namespace EFrt.Libs.IO
             return 1;
         }
 
-
+        // ( -- )
         private int WordsAction()
         {
             _interpreter.Output.Write("{0} ", _interpreter.State.WordsList.ToString());

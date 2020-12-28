@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net452;netstandard2.0;net5.0</TargetFrameworks>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<IsPackable>true</IsPackable>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<AssemblyTitle>EFrt - Embeddable FORTH programing language TOOLS library</AssemblyTitle>
+		<Copyright>(C) 2020 - 2021</Copyright>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<PackageId>EFrt.Libs.Tools</PackageId>
+		<Version>0.1.0</Version>
+		<Authors>Premysl Fara</Authors>
+		<Title>EFrt.Libs.Tools - Embeddable FORTH TOOLS library</Title>
+		<Description>
+			The TOOLS library for the EFrt embeddable programming language.
+		</Description>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageDescription>EFrt - Embeddable FORTH programing language interpreter - the TOOLS library.</PackageDescription>
+		<PackageTags>efrt;forth;embeddable;interpreter;language</PackageTags>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!--<None Include="..\README.md" Pack="true" PackagePath="" />-->
+		<None Include="..\LICENSE.txt" Pack="true" PackagePath="" />
+
+		<!--<None Include="..\..\efrt-logo.png" Pack="true" PackagePath="" />-->
+	</ItemGroup>
+
+	<!--<ItemGroup Condition="'$(Configuration)' == 'Release'">
+		<PackageReference Include="EFrt.Core" Version="0.5.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
+		<ProjectReference Include="..\EFrt.Core\EFrt.Core.csproj" />
+	</ItemGroup>-->
+
+	<ItemGroup>
+		<ProjectReference Include="..\EFrt.Core\EFrt.Core.csproj" />
+	</ItemGroup>
+
+</Project>

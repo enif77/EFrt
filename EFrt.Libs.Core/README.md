@@ -95,19 +95,6 @@ Words definition table columns:
 
 Note: The `."` word works like `S" str" S.` words together.
 
-## Words (TOOLS-EXT)
-
-| Name     | Imm. | Mode | Description |
-| ---      | ---  | ---  | --- |
-| BYE      | no   | IC   | **Terminate execuition**<br>Asks the interpreter to terminate execution. It ends the EFrt program. |
-| FORGET w | no   | IC   | **Forget word**<br>The most recent definition of word w is deleted, along with all words declared more recently than the named word. |
-
-## Words (DOUBLE-EXT)
-
-| Name     | Imm. | Mode | Description |
-| ---      | ---  | ---  | --- |
-| 2ROT     | no   | IC   | **Double rotate**<br>(n1 n2 n3 n4 n5 n6 -- n3 n4 n5 n6 n1 n2)<br>Rotate the third pair on the stack to the top of the stack, moving down the first and the second pair. |
-
 ## Words (Extra)
 
 | Name     | Imm. | Mode | Description |

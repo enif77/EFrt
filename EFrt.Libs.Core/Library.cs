@@ -118,12 +118,9 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new ImmediateWord(_interpreter, "WHILE", WhileAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "XOR", XorAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "[CHAR]", BracketCharAction));
-                     
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2ROT", RotTwoAction));
+                                 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "-ROT", RotBackAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "CLEAR", ClearAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "BYE", ByeAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FORGET", ForgetAction));
         }
 
 
@@ -1115,29 +1112,6 @@ namespace EFrt.Libs.Core
 
 
 
-        
-
-
-        // (a b c d e f -- c d e f a b)
-        private int RotTwoAction()
-        {
-            var f = _interpreter.Pop();
-            var e = _interpreter.Pop();
-            var d = _interpreter.Pop();
-            var c = _interpreter.Pop();
-            var b = _interpreter.Pop();
-            var a = _interpreter.Pop();
-
-            _interpreter.Push(c);
-            _interpreter.Push(d);
-            _interpreter.Push(e);
-            _interpreter.Push(f);
-            _interpreter.Push(a);
-            _interpreter.Push(b);
-
-            return 1;
-        }
-
         // (a b c -- c a b)
         private int RotBackAction()
         {
@@ -1152,8 +1126,6 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        
-
         // ( -- )
         private int ClearAction()
         {
@@ -1161,65 +1133,5 @@ namespace EFrt.Libs.Core
 
             return 1;
         }
-                
-
-        // ( -- )
-        private int ByeAction()
-        {
-            _interpreter.TerminateExecution();
-
-            return 1;
-        }
-
-        // ( -- )
-        private int ForgetAction()
-        {
-            // Cannot forget a word, when a new word is currently compiled.
-            if (_interpreter.IsCompiling)
-            {
-                throw new Exception("A word compilation is running.");
-            }
-
-            // Get the name of a word.
-            var tok = _interpreter.NextTok();
-            switch (tok.Code)
-            {
-                case TokenType.Word:
-                    _interpreter.ForgetWord(tok.SValue);
-                    break;
-
-                default:
-                    throw new Exception($"A name of a word expected.");
-            }
-
-            return 1;
-        }
-
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
-
-        
-
-
-        
-
-
-        
-
-       
-
-
-        
     }
 }

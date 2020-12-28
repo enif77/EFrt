@@ -1,6 +1,6 @@
 ﻿# DOUBLE (Double Cell Integer)
 
-Double cell integer manipulating words. The CORE library has words for double cell stack operations.
+Double cell integer manipulating words.
 
 ## Words
 
@@ -58,4 +58,3 @@ Words definition table columns:
 
 Words: `2LITERAL D.R M*/ M+`
 
-Words (EXT): `2ROT DU<`

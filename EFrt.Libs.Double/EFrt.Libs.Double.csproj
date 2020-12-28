@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net452;netstandard2.0;net5.0</TargetFrameworks>
@@ -8,20 +8,20 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<AssemblyTitle>EFrt - Embeddable FORTH programing language IO library</AssemblyTitle>
+		<AssemblyTitle>EFrt - Embeddable FORTH programing language DOUBLE library</AssemblyTitle>
 		<Copyright>(C) 2020 - 2021</Copyright>
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<PackageId>EFrt.Libs.IO</PackageId>
-		<Version>0.5.3</Version>
+		<PackageId>EFrt.Libs.Double</PackageId>
+		<Version>0.1.0</Version>
 		<Authors>Premysl Fara</Authors>
-		<Title>EFrt.Libs.IO - Embeddable FORTH IO library</Title>
+		<Title>EFrt.Libs.Double - Embeddable FORTH DOUBLE library</Title>
 		<Description>
-			The IO library for the EFrt embeddable programming language.
+			The DOUBLE library for the EFrt embeddable programming language.
 		</Description>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageDescription>EFrt - Embeddable FORTH programing language interpreter - the IO library.</PackageDescription>
+		<PackageDescription>EFrt - Embeddable FORTH programing language interpreter - the DOUBLE library.</PackageDescription>
 		<PackageTags>efrt;forth;embeddable;interpreter;language</PackageTags>
 	</PropertyGroup>
 

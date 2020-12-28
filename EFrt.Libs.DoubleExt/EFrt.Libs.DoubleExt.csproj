@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net452;netstandard2.0;net5.0</TargetFrameworks>
@@ -8,20 +8,20 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<AssemblyTitle>EFrt - Embeddable FORTH programing language DOUBLE library</AssemblyTitle>
+		<AssemblyTitle>EFrt - Embeddable FORTH programing language DOUBLE-EXT library</AssemblyTitle>
 		<Copyright>(C) 2020 - 2021</Copyright>
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<PackageId>EFrt.Libs.DoubleCellInteger</PackageId>
-		<Version>0.5.3</Version>
+		<PackageId>EFrt.Libs.DoubleExt</PackageId>
+		<Version>0.1.0</Version>
 		<Authors>Premysl Fara</Authors>
-		<Title>EFrt.Libs.DoubleCellInteger - Embeddable FORTH DOUBLE library</Title>
+		<Title>EFrt.Libs.DoubleExt - Embeddable FORTH DOUBLE-EXT library</Title>
 		<Description>
-			The DOUBLE library for the EFrt embeddable programming language.
+			The DOUBLE-EXT library for the EFrt embeddable programming language.
 		</Description>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageDescription>EFrt - Embeddable FORTH programing language interpreter - the DOUBLE library.</PackageDescription>
+		<PackageDescription>EFrt - Embeddable FORTH programing language interpreter - the DOUBLE-EXT library.</PackageDescription>
 		<PackageTags>efrt;forth;embeddable;interpreter;language</PackageTags>
 	</PropertyGroup>
 

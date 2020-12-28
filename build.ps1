@@ -25,12 +25,13 @@ PackProject "EFrt.Core"
 
 PackProject "EFrt.Libs.Core"
 PackProject "EFrt.Libs.CoreExt"
-PackProject "EFrt.Libs.DoubleCellInteger"
+PackProject "EFrt.Libs.Double"
+PackProject "EFrt.Libs.DoubleExt"
 PackProject "EFrt.Libs.Floating"
-PackProject "EFrt.Libs.IO"
 PackProject "EFrt.Libs.Object"
-PackProject "EFrt.Libs.SingleCellInteger"
 PackProject "EFrt.Libs.String"
+PackProject "EFrt.Libs.Tools"
+PackProject "EFrt.Libs.ToolsExt"
 
 PackProject "EFrt"
 

@@ -14,7 +14,7 @@
 
 	<PropertyGroup>
 		<PackageId>EFrt</PackageId>
-		<Version>0.5.8</Version>
+		<Version>0.5.9</Version>
 		<Authors>Premysl Fara</Authors>
 		<Title>EFrt - Embeddable FORTH</Title>
 		<Description>
@@ -32,12 +32,13 @@
 		<None Include="..\README.md" Pack="true" PackagePath="docs\EFrt.md" />
 		<None Include="..\EFrt.Libs.Core\README.md" Pack="true" PackagePath="docs\CORE.md" />
 		<None Include="..\EFrt.Libs.CoreExt\README.md" Pack="true" PackagePath="docs\CORE-EXT.md" />
-		<None Include="..\EFrt.Libs.DoubleCellInteger\README.md" Pack="true" PackagePath="docs\DOUBLE.md" />
+		<None Include="..\EFrt.Libs.Double\README.md" Pack="true" PackagePath="docs\DOUBLE.md" />
+		<None Include="..\EFrt.Libs.DoubleExt\README.md" Pack="true" PackagePath="docs\DOUBLE-EXT.md" />
 		<None Include="..\EFrt.Libs.Floating\README.md" Pack="true" PackagePath="docs\FLOATING.md" />
-		<None Include="..\EFrt.Libs.IO\README.md" Pack="true" PackagePath="docs\IO.md" />
 		<None Include="..\EFrt.Libs.Object\README.md" Pack="true" PackagePath="docs\OBJECT.md" />
-		<None Include="..\EFrt.Libs.SingleCellInteger\README.md" Pack="true" PackagePath="docs\INT.md" />
 		<None Include="..\EFrt.Libs.String\README.md" Pack="true" PackagePath="docs\STRING.md" />
+		<None Include="..\EFrt.Libs.Tools\README.md" Pack="true" PackagePath="docs\TOOLS.md" />
+		<None Include="..\EFrt.Libs.ToolsExt\README.md" Pack="true" PackagePath="docs\TOOLS-EXT.md" />
 
 		<!--<None Include="..\..\efrt-logo.png" Pack="true" PackagePath="" />-->
 	</ItemGroup>
@@ -49,24 +50,26 @@
 		
 		<PackageReference Include="EFrt.Libs.Core" Version="0.5.2" />
 		<PackageReference Include="EFrt.Libs.CoreExt" Version="0.2.1" />
-		<PackageReference Include="EFrt.Libs.DoubleCellInteger" Version="0.5.3" />
+		<PackageReference Include="EFrt.Libs.Double" Version="0.1.0" />
+		<PackageReference Include="EFrt.Libs.DoubleExt" Version="0.1.0" />
 		<PackageReference Include="EFrt.Libs.Floating" Version="0.1.0" />
-		<PackageReference Include="EFrt.Libs.IO" Version="0.5.3" />
 		<PackageReference Include="EFrt.Libs.Object" Version="0.5.1" />
-		<PackageReference Include="EFrt.Libs.SingleCellInteger" Version="0.5.2" />
 		<PackageReference Include="EFrt.Libs.String" Version="0.5.2" />
+		<PackageReference Include="EFrt.Libs.Tools" Version="0.1.0" />
+		<PackageReference Include="EFrt.Libs.ToolsExt" Version="0.1.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
 		<ProjectReference Include="..\EFrt.Core\EFrt.Core.csproj" />
 		<ProjectReference Include="..\EFrt.Libs.Core\EFrt.Libs.Core.csproj" />
 		<ProjectReference Include="..\EFrt.Libs.CoreExt\EFrt.Libs.CoreExt.csproj" />
-		<ProjectReference Include="..\EFrt.Libs.DoubleCellInteger\EFrt.Libs.DoubleCellInteger.csproj" />
+		<ProjectReference Include="..\EFrt.Libs.Double\EFrt.Libs.Double.csproj" />
+		<ProjectReference Include="..\EFrt.Libs.DoubleExt\EFrt.Libs.DoubleExt.csproj" />
 		<ProjectReference Include="..\EFrt.Libs.Floating\EFrt.Libs.Floating.csproj" />
-		<ProjectReference Include="..\EFrt.Libs.IO\EFrt.Libs.IO.csproj" />
 		<ProjectReference Include="..\EFrt.Libs.Object\EFrt.Libs.Object.csproj" />
-		<ProjectReference Include="..\EFrt.Libs.SingleCellInteger\EFrt.Libs.SingleCellInteger.csproj" />
 		<ProjectReference Include="..\EFrt.Libs.String\EFrt.Libs.String.csproj" />
+		<ProjectReference Include="..\EFrt.Libs.Tools\EFrt.Libs.Tools.csproj" />
+		<ProjectReference Include="..\EFrt.Libs.ToolsExt\EFrt.Libs.ToolsExt.csproj" />
 	</ItemGroup>
 
 </Project>

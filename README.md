@@ -29,12 +29,13 @@ EFrt is a embeddable FORTH language implementation.
 
  * [CORE](EFrt.Libs.Core/README.md)
  * [CORE-EXT](EFrt.Libs.CoreExt/README.md)
- * [DOUBLE](EFrt.Libs.DoubleCellInteger/README.md)
+ * [DOUBLE](EFrt.Libs.Double/README.md)
+ * [DOUBLE-EXT](EFrt.Libs.DoubleExt/README.md)
  * [FLOATING](EFrt.Libs.Floating/README.md)
- * [INTEGER](EFrt.Libs.SingleCellInteger/README.md)
- * [IO](EFrt.Libs.IO/README.md)
  * [OBJECT](EFrt.Libs.Object/README.md)
  * [STRING](EFrt.Libs.String/README.md)
+ * [TOOLS](EFrt.Libs.Tools/README.md)
+ * [TOOLS-EXT](EFrt.Libs.ToolsExt/README.md)
 
 
 ## Examples

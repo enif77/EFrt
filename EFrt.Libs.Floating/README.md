@@ -14,6 +14,7 @@ Words definition table columns:
 
 | Name  | Imm. | Mode | Stack op. | Description |
 | ---   | ---  | ---  | ---       | --- |
+| F.    | no   | IC   | **Print floating point**<br>(f -- )<br>A floating point value on the top of the stack is printed. |
 | D>F   | no   | IC   | **Double cell integer to floating**<br>(d -- f)<br>Converts a double cell integer on the top of the stack to a floationg point number and stores it on the top of the stack. |
 | F!    | no   | IC   | **Store into address**<br>(f addr -- )<br>Stores the floating point number f into the address addr (a variables stack index). |
 | F@    | no   | IC   | **Fetch**<br>(addr -- f)<br>Loads the floating point number at addr (a variables stack index) and leaves it at the top of the stack. |

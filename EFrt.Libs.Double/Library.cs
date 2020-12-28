@@ -1,6 +1,6 @@
 ﻿/* EFrt - (C) 2020 Premysl Fara  */
 
-namespace EFrt.Libs.DoubleCellInteger
+namespace EFrt.Libs.Double
 {
     using System;
     using System.Globalization;

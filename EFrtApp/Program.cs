@@ -22,13 +22,14 @@ namespace EFrtApp
 
             interpreter.AddWords(new EFrt.Libs.Core.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.CoreExt.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.IO.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.SingleCellInteger.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.DoubleCellInteger.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.Double.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.DoubleExt.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.Floating.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.String.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.Object.Library(interpreter));
-
+            interpreter.AddWords(new EFrt.Libs.String.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.Tools.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.ToolsExt.Library(interpreter));
+            
             while (true)
             {
                 Console.Write("-> ");
@@ -81,11 +82,12 @@ namespace EFrtApp
 
             interpreter.AddWords(new EFrt.Libs.Core.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.CoreExt.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.IO.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.SingleCellInteger.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.DoubleCellInteger.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.Double.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.DoubleExt.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.Floating.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.String.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.Tools.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.ToolsExt.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.Object.Library(interpreter));
 
             //efrt.Execute(_src);

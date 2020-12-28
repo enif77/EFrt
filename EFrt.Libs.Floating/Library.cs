@@ -3,6 +3,7 @@
 namespace EFrt.Libs.Floating
 {
     using System;
+    using System.Globalization;
 
     using EFrt.Core;
     using EFrt.Core.Values;
@@ -30,6 +31,7 @@ namespace EFrt.Libs.Floating
 
         public void DefineWords()
         {
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "F.", PrintFloatAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "FCONSTANT", ConstantCompilationAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "FVARIABLE", VariableCompilationAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F!", StoreToVariableAction));
@@ -144,6 +146,19 @@ namespace EFrt.Libs.Floating
 
             var b = FPop();
             FPush(func(FPop(), b));
+        }
+
+
+        // (f --)
+        private int PrintFloatAction()
+        {
+            _interpreter.Output.Write("{0} ", new DoubleVal()
+            {
+                B = _interpreter.Pop(),
+                A = _interpreter.Pop(),
+            }.D.ToString(CultureInfo.InvariantCulture));
+
+            return 1;
         }
 
 
