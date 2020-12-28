@@ -29,7 +29,6 @@ namespace EFrt.Libs.SingleCellInteger
             
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2+", AddTwoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2-", SubTwoAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "NOT", NotAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "<=", IsLtEAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ">=", IsGtEAction));
                         
@@ -81,14 +80,6 @@ namespace EFrt.Libs.SingleCellInteger
         private int IsGtEAction()
         {
             Function((a, b) => (a >= b) ? -1 : 0);
-
-            return 1;
-        }
-
-        // (n1 -- n2)
-        private int NotAction()
-        {
-            Function((a) => ~a);
 
             return 1;
         }

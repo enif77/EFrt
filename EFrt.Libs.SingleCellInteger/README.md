@@ -18,8 +18,4 @@ Words definition table columns:
 | >=       | no   | IC   | **Greater than or equal**<br>(n1 n2 -- flag)<br>Returns -1 if n1 >= n2, 0 otherwise. |
 | 2+       | no   | IC   | **Add two**<br>(n1 -- n2)<br>Adds two to the top of the stack. |
 | 2-       | no   | IC   | **Subtract two**<br>(n1 -- n2)<br>Substracts two from the top of the stack. |
-| NOT      | no   | IC   | **Bitwise not**<br>(n1 -- n2)<br>Inverts the bits in the value on the top of the stack. This performs logical negation for truth values of −1 (True) and 0 (False). |
 
-## TODO
-
-Words: `SHIFT RSHIFT INVERT +!`

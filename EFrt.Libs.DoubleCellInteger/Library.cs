@@ -3,6 +3,7 @@
 namespace EFrt.Libs.DoubleCellInteger
 {
     using System;
+    using System.Globalization;
 
     using EFrt.Core;
     using EFrt.Core.Values;
@@ -27,14 +28,27 @@ namespace EFrt.Libs.DoubleCellInteger
 
         public void DefineWords()
         {
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D+", AddAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D-", SubAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2CONSTANT", TwoConstantAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2VARIABLE", TwoVariableAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D+", DPlusAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D-", DMinusAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D.", DDotAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D0<", DZeroLessAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D0=", DZeroEqualsAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D2*", DTwoStarAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D2/", DTwoSlashAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D<", DLessThanAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D=", DEqualsAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D>S", DToSAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DABS", DAbsAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DMAX", DMaxAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DMIN", DMinAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DNEGATE", DNegateAction));
+
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "D1+", AddOneAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "D1-", SubOneAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "D2+", AddTwoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "D2-", SubTwoAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D2*", MulTwoAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D2/", DivTwoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "D*", MulAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "D/", DivAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "DMOD", ModAction));
@@ -43,21 +57,12 @@ namespace EFrt.Libs.DoubleCellInteger
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "DAND", AndAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "DOR", OrAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "DXOR", XorAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DMAX", MaxAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DMIN", MinAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DABS", AbsAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D=", IsEqAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "D<>", IsNeqAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D<", IsLtAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "D<=", IsLtEAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "D>", IsGtAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "D>=", IsGtEAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D0=", IsZeroAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "D0<>", IsNonZeroAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D0<", IsNegAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "D0>", IsPosAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DNEGATE", NegateAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D>S", LongToIntAction));
         }
 
 
@@ -145,16 +150,29 @@ namespace EFrt.Libs.DoubleCellInteger
         }
 
 
-        // (d -- n)
-        private int LongToIntAction()
+        // 2CONSTANT word-name
+        // (n1 n2 -- )
+        private int TwoConstantAction()
         {
-            _interpreter.Push((int)DPop());
+            var n2 = _interpreter.Pop();
+            _interpreter.AddWord(new DoubleCellConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.Pop(), n2));
+            _interpreter.EndNewWordCompilation();
 
             return 1;
         }
-        
+
+        // 2VARIABLE word-name
+        // ( -- )
+        private int TwoVariableAction()
+        {
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.State.Heap.Alloc(2)));
+            _interpreter.EndNewWordCompilation();
+
+            return 1;
+        }
+
         // (d1 d2 -- d3)
-        private int AddAction()
+        private int DPlusAction()
         {
             Function((a, b) => a + b);
 
@@ -162,12 +180,116 @@ namespace EFrt.Libs.DoubleCellInteger
         }
 
         // (d1 d2 -- d3)
-        private int SubAction()
+        private int DMinusAction()
         {
             Function((a, b) => a - b);
 
             return 1;
         }
+
+        // (d --)
+        private int DDotAction()
+        {
+            _interpreter.Output.Write("{0} ", new LongVal()
+            {
+                B = _interpreter.Pop(),
+                A = _interpreter.Pop(),
+            }.D.ToString(CultureInfo.InvariantCulture));
+
+            return 1;
+        }
+
+        // (d -- flag)
+        private int DZeroLessAction()
+        {
+            Function((a) => (a < 0) ? -1 : 0);
+
+            return 1;
+        }
+
+        // (d -- flag)
+        private int DZeroEqualsAction()
+        {
+            Function((a) => (a == 0) ? -1 : 0);
+
+            return 1;
+        }
+
+        // (d1 -- d2)
+        private int DTwoStarAction()
+        {
+            Function((a) => a * 2);
+
+            return 1;
+        }
+
+        // (d1 -- d2)
+        private int DTwoSlashAction()
+        {
+            Function((a) => a / 2);
+
+            return 1;
+        }
+
+        // (d1 d2 -- flag)
+        private int DLessThanAction()
+        {
+            Function((a, b) => (a < b) ? -1 : 0);
+
+            return 1;
+        }
+
+        // (d1 d2 -- flag)
+        private int DEqualsAction()
+        {
+            Function((a, b) => (a == b) ? -1 : 0);
+
+            return 1;
+        }
+
+        // (d -- n)
+        private int DToSAction()
+        {
+            _interpreter.Push((int)DPop());
+
+            return 1;
+        }
+
+        // (d1 -- d2)
+        private int DAbsAction()
+        {
+            Function((a) => a < 0 ? -a : a);
+
+            return 1;
+        }
+
+        // (d1 d2 -- d3)
+        private int DMaxAction()
+        {
+            Function((a, b) => (a > b) ? a : b);
+
+            return 1;
+        }
+
+        // (d1 d2 -- d3)
+        private int DMinAction()
+        {
+            Function((a, b) => (a < b) ? a : b);
+
+            return 1;
+        }
+
+        // (d1 -- d2)
+        private int DNegateAction()
+        {
+            Function((a) => -a);
+
+            return 1;
+        }
+
+
+        // Extra
+
 
         // (d1 -- d2)
         private int AddOneAction()
@@ -197,22 +319,6 @@ namespace EFrt.Libs.DoubleCellInteger
         private int SubTwoAction()
         {
             Function((a) => a - 2L);
-
-            return 1;
-        }
-
-        // (d1 -- d2)
-        private int MulTwoAction()
-        {
-            Function((a) => a * 2);
-
-            return 1;
-        }
-
-        // (d1 -- d2)
-        private int DivTwoAction()
-        {
-            Function((a) => a / 2);
 
             return 1;
         }
@@ -252,39 +358,7 @@ namespace EFrt.Libs.DoubleCellInteger
 
             return 1;
         }
-
-        // (d1 d2 -- d3)
-        private int MaxAction()
-        {
-            Function((a, b) => (a > b) ? a : b);
-
-            return 1;
-        }
-
-        // (d1 d2 -- d3)
-        private int MinAction()
-        {
-            Function((a, b) => (a < b) ? a : b);
-
-            return 1;
-        }
-
-        // (d1 -- d2)
-        private int AbsAction()
-        {
-            Function((a) => a < 0 ? -a : a);
-
-            return 1;
-        }
-
-        // (d1 d2 -- flag)
-        private int IsEqAction()
-        {
-            Function((a, b) => (a == b) ? -1 : 0);
-
-            return 1;
-        }
-
+                
         // (d1 d2 -- flag)
         private int IsNeqAction()
         {
@@ -292,15 +366,7 @@ namespace EFrt.Libs.DoubleCellInteger
 
             return 1;
         }
-
-        // (d1 d2 -- flag)
-        private int IsLtAction()
-        {
-            Function((a, b) => (a < b) ? -1 : 0);
-
-            return 1;
-        }
-
+        
         // (d1 d2 -- flag)
         private int IsLtEAction()
         {
@@ -326,14 +392,6 @@ namespace EFrt.Libs.DoubleCellInteger
         }
 
         // (d -- flag)
-        private int IsZeroAction()
-        {
-            Function((a) => (a == 0) ? -1 : 0);
-
-            return 1;
-        }
-
-        // (d -- flag)
         private int IsNonZeroAction()
         {
             Function((a) => (a != 0) ? -1 : 0);
@@ -342,25 +400,9 @@ namespace EFrt.Libs.DoubleCellInteger
         }
 
         // (d -- flag)
-        private int IsNegAction()
-        {
-            Function((a) => (a < 0) ? -1 : 0);
-
-            return 1;
-        }
-
-        // (d -- flag)
         private int IsPosAction()
         {
             Function((a) => (a > 0) ? -1 : 0);
-
-            return 1;
-        }
-
-        // (d1 -- d2)
-        private int NegateAction()
-        {
-            Function((a) => -a);
 
             return 1;
         }

@@ -1,4 +1,4 @@
-﻿# FLOAT
+﻿# FLOATING
 
 Floating point (64 bit, double, 2 cells) numbers handling words.
 

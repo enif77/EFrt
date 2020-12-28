@@ -30,7 +30,6 @@ namespace EFrt.Libs.IO
         public void DefineWords()
         {
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "?", PrintIndirectAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D.", PrintLongAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F.", PrintFloatAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "S.", PrintStringAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ".O", PrintObjectStackAction));
@@ -47,17 +46,7 @@ namespace EFrt.Libs.IO
             return 1;
         }
 
-        // (d --)
-        private int PrintLongAction()
-        {
-            _interpreter.Output.Write("{0} ", new LongVal()
-            {
-                B = _interpreter.Pop(),
-                A = _interpreter.Pop(),
-            }.D.ToString(CultureInfo.InvariantCulture));
-
-            return 1;
-        }
+        
 
         // (f --)
         private int PrintFloatAction()

@@ -68,6 +68,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "=", EqualsAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ">", GreaterThanAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ">R", ToRAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "?DUP", QuestionDupeAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "@", FetchAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ABORT", AbortAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "ABORT\"", AbortMessageAction));
@@ -89,6 +90,8 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new ImmediateWord(_interpreter, "I", GetInnerIndexAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "IF", IfAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "IMMEDIATE", ImmediateAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "INVERT", InvertAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "J", GetOuterIndexAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "LEAVE", LeaveAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "LITERAL", LiteralAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "LOOP", LoopAction));
@@ -115,15 +118,10 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new ImmediateWord(_interpreter, "WHILE", WhileAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "XOR", XorAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "[CHAR]", BracketCharAction));
-
-
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2CONSTANT", DoubleConstantCompilationAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2VARIABLE", DoubleVariableCompilationAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "?DUP", DupPosAction));
+                     
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2ROT", RotTwoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "-ROT", RotBackAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "CLEAR", ClearAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "J", GetOuterIndexAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "BYE", ByeAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "FORGET", ForgetAction));
         }
@@ -479,6 +477,17 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
+        // (n -- n n) or ( -- )
+        private int QuestionDupeAction()
+        {
+            if (_interpreter.Peek() != 0)
+            {
+                _interpreter.Dup();
+            }
+
+            return 1;
+        }
+
         // (addr -- n)
         private int FetchAction()
         {
@@ -704,6 +713,29 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
+        // (n1 -- n2)
+        private int InvertAction()
+        {
+            Function((a) => ~a);
+
+            return 1;
+        }
+
+        // ( -- n)
+        private int GetOuterIndexAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("J outside a new word definition.");
+            }
+
+            // J word doesn't have a runtime behavior.
+
+            _interpreter.WordBeingDefined.AddWord(new SecondIndexControlWord(_interpreter));
+
+            return 1;
+        }
+        
         // ( -- )
         private int LeaveAction()
         {
@@ -1083,16 +1115,7 @@ namespace EFrt.Libs.Core
 
 
 
-        // (a -- a a) or (a -- 0)
-        private int DupPosAction()
-        {
-            if (_interpreter.Peek() != 0)
-            {
-                _interpreter.Dup();
-            }
-
-            return 1;
-        }
+        
 
 
         // (a b c d e f -- c d e f a b)
@@ -1138,60 +1161,7 @@ namespace EFrt.Libs.Core
 
             return 1;
         }
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
-
-        
-
-
-        
-
-        
-
-        // 2CONSTANT word-name
-        // (n1 n2 -- )
-        private int DoubleConstantCompilationAction()
-        {
-            var n2 = _interpreter.Pop();
-            _interpreter.AddWord(new DoubleCellConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.Pop(), n2));
-            _interpreter.EndNewWordCompilation();
-
-            return 1;
-        }
-
-        
-
-        
-
-        
-
-        
-
-        // 2VARIABLE word-name
-        // ( -- )
-        private int DoubleVariableCompilationAction()
-        {
-            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.State.Heap.Alloc(2)));
-            _interpreter.EndNewWordCompilation();
-
-            return 1;
-        }
-
-
-        
+                
 
         // ( -- )
         private int ByeAction()
@@ -1239,20 +1209,7 @@ namespace EFrt.Libs.Core
         
 
 
-        // ( -- n)
-        private int GetOuterIndexAction()
-        {
-            if (_interpreter.IsCompiling == false)
-            {
-                throw new Exception("J outside a new word definition.");
-            }
-
-            // J word doesn't have a runtime behavior.
-
-            _interpreter.WordBeingDefined.AddWord(new SecondIndexControlWord(_interpreter));
-
-            return 1;
-        }
+        
 
 
         

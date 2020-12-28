@@ -43,6 +43,7 @@ Words definition table columns:
 | =        | no   | IC   | **Equal**<br>(n1 n2 -- flag)<br>Returns -1 if n1 is equal to n2, 0 otherwise. |
 | >        | no   | IC   | **Greater than**<br>(n1 n2 -- flag)<br>Returns -1 if n1 > n2, 0 otherwise. |
 | >R       | no   | IC   | **To return stack**<br>(n -- ) [ - n]<br>Removes the top item from the stack and pushes it onto the return stack. |
+| ?DUP     | no   | IC   | **Conditional duplicate**<br>(n -- 0 / n n)<br>If top of stack is nonzero, duplicate it. Otherwise leave zero on top of stack. |
 | @        | no   | IC   | **Fetch**<br>(addr -- n)<br>Loads the value at addr (a variables stack index) and leaves it at the top of the stack. |
 | ABORT    | no   | IC   | **Abort**<br>Clears the stack and the object and performs a QUIT. |
 | ABS      | no   | IC   | **n2 = Abs(n1)**<br>(n1 -- n2)<br>Replaces the top of stack with its absolute value. |
@@ -52,17 +53,19 @@ Words definition table columns:
 | BL       | no   | IC   | **Blank**<br>( -- n)<br>Constant that leaves 32 (the ASCII code of the SPACE char) on the top of the stack. |
 | CHAR ccc | no   | IC   | **Char**<br>( -- c)<br>Skip leading spaces. Parse the string ccc and return c, the display code representing the first character of ccc. |
 | CONSTANT x | no   | I    | **Declare constant**<br>(n --)<br>Declares a constant named x. When x is executed, the value n will be left on the stack. |
-| CR    | no   | IC   | **Carriage return**<br>The folowing output will start at the new line. |
+| CR       | no   | IC   | **Carriage return**<br>The folowing output will start at the new line. |
 | DEPTH    | no   | IC   | **Stack depth**<br>( -- n)<br>Returns the number of items on the stack before DEPTH was executed. |
 | DO       | yes  | C    | **Definite loop**<br>(limit index -- ) [ - limit index ]<br>Executes the loop from the following word to the matching LOOP or +LOOP until n increments past the boundary between limit−1 and limit. Note that the loop is always executed at least once (see ?DO for an alternative to this). |
 | DROP     | no   | IC   | **Discard top of stack**<br>(n --)<br>Discards the value at the top of the stack. |
 | DUP      | no   | IC   | **Duplicate**<br>(n -- n n)<br>Duplicates the value at the top of the stack. |
 | ELSE     | yes  | C    | **Else**<br><br>Used in an IF—ELSE—THEN sequence, delimits the code to be executed if the if-condition was false. |
-| EMIT  | no   | IC   | **Print char**<br>(n -- )<br>Prints out a character represented by a number on the top of the stack. |
+| EMIT     | no   | IC   | **Print char**<br>(n -- )<br>Prints out a character represented by a number on the top of the stack. |
 | HERE     | no   | IC   | **Heap address**<br>( -- addr)<br>The current heap allocation address is placed on the top of the stack. addr + 1 is the first free heap cell. |
 | I        | yes  | C    | **Inner loop index**<br>( -- n) [n -- n]<br>The index of the innermost DO—LOOP is placed on the stack. |
 | IF       | yes  | C    | **Conditional statement**<br>(flag --)<br>If flag is nonzero, the following statements are executed. Otherwise, execution resumes after the matching ELSE clause, if any, or after the matching THEN. |
 | IMMEDIATE | no   | IC   | **Mark immediate**<br><br>The most recently defined word is marked for immediate execution; it will be executed even if entered in compile state. |
+| INVERT   | no   | IC   | **Bitwise not**<br>(n1 -- n2)<br>Inverts the bits in the value on the top of the stack. This performs logical negation for truth values of −1 (True) and 0 (False). |
+| J        | yes  | C    | **Outer loop index**<br>( -- n) [J lim I -- J lim I]<br>The loop index of the next to innermost DO—LOOP is placed on the stack. |
 | LEAVE    | yes  | C    | **Exit DO—LOOP**<br>The innermost DO—LOOP is immediately exited. Execution resumes after the LOOP statement marking the end of the loop. |
 | LITERAL  | yes  | C    | **Compile literal**<br>(n -- )<br>Compiles the value on the top of the stack into the current definition. When the definition is executed, that value will be pushed onto the top of the stack. |
 | LOOP     | yes  | C    | **Increment loop index**<br>Adds one to the index of the active loop. If the limit is reached, the loop is exited. Otherwise, another iteration is begun. |
@@ -90,26 +93,34 @@ Words definition table columns:
 | XOR      | no   | IC   | **Bitwise exclusive or**<br>(n1 n2 -- n3)<br>Stores the bitwise exclusive or of n1 and n2 on the stack. |
 | [CHAR] ccc | yes  | C    | **Bracket char**<br>( -- c)<br>Compilation: Skip leading spaces. Parse the string ccc. Run-time: Return c, the display code representing the first character of ccc. Interpretation semantics for this word are undefined. |
 
-## Words (Extra or to be moved)
+Note: The `."` word works like `S" str" S.` words together.
+
+## Words (TOOLS-EXT)
 
 | Name     | Imm. | Mode | Description |
 | ---      | ---  | ---  | --- |
 | BYE      | no   | IC   | **Terminate execuition**<br>Asks the interpreter to terminate execution. It ends the EFrt program. |
-| CLEAR    | no   | IC   | **Clear stack**<b<br><br>r>All items on the data stack are discarded. |
-| ?DUP     | no   | IC   | **Conditional duplicate**<br>(n -- 0 / n n)<br>If top of stack is nonzero, duplicate it. Otherwise leave zero on top of stack. |
 | FORGET w | no   | IC   | **Forget word**<br>The most recent definition of word w is deleted, along with all words declared more recently than the named word. |
-| J        | yes  | C    | **Outer loop index**<br>( -- n) [J lim I -- J lim I]<br>The loop index of the next to innermost DO—LOOP is placed on the stack. |
-| -ROT     | no   | IC   | **Reverse rotate**<br>(n1 n2 n3 -- n2 n3 n1)<br>Moves the top of stack to the third item, moving the third and second items up. |
-| 2CONSTANT x | no   | I   | **Double word constant**<br>(n1 n2 -- )<br>Declares a double word constant x. When x is executed, n1 and n2 are placed on the stack. |
+
+## Words (DOUBLE-EXT)
+
+| Name     | Imm. | Mode | Description |
+| ---      | ---  | ---  | --- |
 | 2ROT     | no   | IC   | **Double rotate**<br>(n1 n2 n3 n4 n5 n6 -- n3 n4 n5 n6 n1 n2)<br>Rotate the third pair on the stack to the top of the stack, moving down the first and the second pair. |
-| 2VARIABLE x | no   | I   | **Double variable**<br>Creates a two cell (8 byte) variable named x. When x is executed, the address of the 8 byte area is placed on the stack. |
+
+## Words (Extra)
+
+| Name     | Imm. | Mode | Description |
+| ---      | ---  | ---  | --- |
+| CLEAR    | no   | IC   | **Clear stack**<b<br><br>r>All items on the data stack are discarded. |
+| -ROT     | no   | IC   | **Reverse rotate**<br>(n1 n2 n3 -- n2 n3 n1)<br>Moves the top of stack to the third item, moving the third and second items up. |
 
 
 #### TODO
 
 Words: `' x */ */MOD +! >NUMBER ABORT" str CELLS COUNT DECIMAL 
-  EVALUATE EXECUTE EXIT FM/MOD INVERT LSHIFT M* MOVE POSTPONE RSHIFT SM/REM
-  TYPE U. U< UM* UM/MOD UNLOOP XOR [ ['] x ]` 
+  EVALUATE EXECUTE EXIT FM/MOD LSHIFT M* MOVE POSTPONE RSHIFT SM/REM
+  TYPE U. U< UM* UM/MOD UNLOOP XOR [ ['] x ] ?DO`
 
 Words (opt): `SYSTEM INCLUDE ARRAY x TRACE
   (XDO) (X?DO) (XLOOP) (+XLOOP) WORDSD  INT STRING 
