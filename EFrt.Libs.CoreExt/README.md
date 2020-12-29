@@ -14,7 +14,7 @@ Words definition table columns:
 
 | Name     | Imm. | Mode | Description |
 | ---      | ---  | ---  | --- |
-| .(    | yes  | IC   | **Print constant string**<br>Immediatelly prints the string that follows in the input stream. |
+| .(       | yes  | IC   | **Print constant string**<br>Immediatelly prints the string that follows in the input stream. |
 | 0<>      | no   | IC   | **Nonzero**<br>(n -- flag)<br>Returns -1 if n1 is not equal to 0, 0 otherwise. |
 | 0>       | no   | IC   | **Greater than zero**<br>(n -- flag)<br>Returns -1 if n1 is greater than 0, 0 otherwise. |
 | <>       | no   | IC   | **Not equal**<br>(n1 n2 -- flag)<br>Returns -1 if n1 is not equal to n2, 0 otherwise. |
@@ -38,6 +38,9 @@ Words definition table columns:
 
 #### TODO
 
-Words: `.R 2>R 2R> 2R@ :NONAME CASE CONVERT ENDCASE ENDOF ERASE HEX MARKER NIP OF TO TUCK UNUSED WITHIN 2NIP 2TUCK -ROLL`
+Words: `.R 2>R 2R> 2R@ :NONAME CASE COMPILE, CONVERT ENDCASE ENDOF ERASE HEX MARKER NIP OF PARSE TO TUCK
+  U.R U> UNUSED VALUE x WITHIN [COMPILE] 2NIP 2TUCK -ROLL`
+
+Words (Extra): `2NIP 2TUCK -ROLL`
 
 Variables: `...`

@@ -22,4 +22,4 @@ Words definition table columns:
 
 #### TODO
 
-Words: `...`
+Words: `AHEAD `

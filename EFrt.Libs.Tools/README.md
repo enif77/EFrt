@@ -16,7 +16,11 @@ Words definition table columns:
 
 | Name  | Imm. | Mode | Description |
 | ---   | ---  | ---  | --- |
-| .O    | no   | IC   | **Print object stack**<br>Prints entire contents of the object stack. TOS is the top-most item. |
 | .S    | no   | IC   | **Print stack**<br>Prints entire contents of stack. TOS is the right-most item. |
+| .O    | no   | IC   | **Print object stack**<br>Prints entire contents of the object stack. TOS is the top-most item. |
 | ?     | no   | IC   | **Print indirect**<br>(addr -- )<br>Prints the value at the address (a variables stack index) at the top of the stack. |
 | WORDS | no   | IC   | **List words defined**<br>Defined words are listed, from the most recently defined to the first defined. |
+
+## TODO
+
+Words: `SEE`
