@@ -51,11 +51,14 @@ Words definition table columns:
 | AND      | no   | IC   | **Bitwise and**<br>(n1 n2 -- n3)<br>Stores the bitwise AND of n1 and n2 on the stack. |
 | BEGIN    | yes  | C    | **Begin loop**<br><br>Begins a loop. The end of the loop is marked by the matching AGAIN, REPEAT, or UNTIL. |
 | BL       | no   | IC   | **Blank**<br>( -- n)<br>Constant that leaves 32 (the ASCII code of the SPACE char) on the top of the stack. |
+| CELLS    | no   | IC   | **Cells to bytes**<br>(n1 -- n2)<br>Converts n1 cells to n2 memory address units (bytes). Does actually nothing, since the heap is addressed in cells and not in bytes. |
 | CHAR ccc | no   | IC   | **Char**<br>( -- c)<br>Skip leading spaces. Parse the string ccc and return c, the display code representing the first character of ccc. |
 | CONSTANT x | no   | I    | **Declare constant**<br>(n --)<br>Declares a constant named x. When x is executed, the value n will be left on the stack. |
 | CR       | no   | IC   | **Carriage return**<br>The folowing output will start at the new line. |
+| CREATE   | no   | IC   | **Create object**<br>Create an object, given the name which appears next in the input stream, with a default action of pushing the parameter field address of the object when executed. No storage is allocated; normally the parameter field will be allocated and initialised by the defining word code that follows the CREATE. |
 | DEPTH    | no   | IC   | **Stack depth**<br>( -- n)<br>Returns the number of items on the stack before DEPTH was executed. |
 | DO       | yes  | C    | **Definite loop**<br>(limit index -- ) [ - limit index ]<br>Executes the loop from the following word to the matching LOOP or +LOOP until n increments past the boundary between limit−1 and limit. Note that the loop is always executed at least once (see ?DO for an alternative to this). |
+| DOES>    | no   | IC   | **Run-time action**<br>Sets the run-time action of a word created by the last CREATE to the code that follows. When the word is executed, its body is copied to the CREATEd word, and then the code that follows the DOES> is be executed. |
 | DROP     | no   | IC   | **Discard top of stack**<br>(n --)<br>Discards the value at the top of the stack. |
 | DUP      | no   | IC   | **Duplicate**<br>(n -- n n)<br>Duplicates the value at the top of the stack. |
 | ELSE     | yes  | C    | **Else**<br><br>Used in an IF—ELSE—THEN sequence, delimits the code to be executed if the if-condition was false. |
@@ -103,7 +106,7 @@ Note: The `."` word works like `S" str" S.` words together.
 | -ROT     | no   | IC   | **Reverse rotate**<br>(n1 n2 n3 -- n2 n3 n1)<br>Moves the top of stack to the third item, moving the third and second items up. |
 
 
-#### TODO
+## TODO
 
 Words: `' x */ */MOD +! >NUMBER ABORT" str" ACCEPT ALIGNALIGNED CELL+ CELLS COUNT DECIMAL 
   ENVIRONMENT? EVALUATE EXECUTE EXIT FILL FIND FM/MOD LSHIFT M* MOVE POSTPONE RSHIFT SM/REM
@@ -116,3 +119,8 @@ Words (opt): `SYSTEM INCLUDE ARRAY x TRACE
   S! BRANCH x ?BRANCH x`
 
 Variables: `BASE STATE`
+
+## CREATE or BUILDS?
+
+http://amforth.sourceforge.net/TG/recipes/Builds.html
+http://www.forth.org/svfig/Len/definwds.htm

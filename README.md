@@ -114,5 +114,17 @@ arr @ 1+ ? CR   \ Gets and prints out the contents of the second cell of the arr
 
 5 fatorial . CR  \ 120
 
+( Indexed array )
+( Source: http://www.forth.org/svfig/Len/definwds.htm )
+: indexed-array (n -- ) (i -- a)
+     CREATE CELLS ALLOT
+     DOES> SWAP CELLS + ;
+
+20 indexed-array foo  \ Make a 1-dimensional array with 20 cells
+ 3 foo                \ Put addr of fourth element on the stack
+
+( 80 cells long buffer/array )
+CREATE buffer 80 CELLS ALLOT
+
 ```
 

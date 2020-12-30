@@ -77,11 +77,14 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "AND", AndAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "BEGIN", BeginAction));
             _interpreter.AddWord(new ConstantWord(_interpreter, "BL", ' '));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "CELLS", () => 1));  // Does nothing, because the cell size is 1.
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "CHAR", CharAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "CONSTANT", ConstantAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "CR", CrAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "CREATE", CreateAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "DEPTH", DepthAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "DO", DoAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "DOES>", DoesAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "DROP", DropAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "DUP", DupAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "ELSE", ElseAction));
@@ -580,6 +583,17 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
+        // CREATE word-name
+        // ( -- )
+        private int CreateAction()
+        {
+            _interpreter.WordBeingDefined = new CreatedWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.State.Heap.Top + 1);
+            _interpreter.AddWord(_interpreter.WordBeingDefined);
+            _interpreter.EndNewWordCompilation();
+
+            return 1;
+        }
+
         // ( -- n)
         private int DepthAction()
         {
@@ -599,6 +613,20 @@ namespace EFrt.Libs.Core
             _interpreter.RPush(
                 _interpreter.WordBeingDefined.AddWord(
                     new DoControlWord(_interpreter)));
+
+            return 1;
+        }
+
+        // ( -- )
+        private int DoesAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("DOES> outside a new word definition.");
+            }
+
+            _interpreter.WordBeingDefined.AddWord(
+                    new DoesWord(_interpreter, _interpreter.WordBeingDefined, _interpreter.WordBeingDefined.NextWordIndex));
 
             return 1;
         }

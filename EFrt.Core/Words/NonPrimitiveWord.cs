@@ -25,7 +25,7 @@ namespace EFrt.Core.Words
 
 
         /// <summary>
-        /// Returns the index of the next word inserted into this word.
+        /// Returns the index of the next word, that will be inserted into this word.
         /// </summary>
         public int NextWordIndex => _lastWordIndex + 1;
 
@@ -36,6 +36,11 @@ namespace EFrt.Core.Words
         {
             IsImmediate = true;
         }
+
+        /// <summary>
+        /// Gets the number of words defined in this word.
+        /// </summary>
+        public int WordsCount => _lastWordIndex + 1;
 
         /// <summary>
         /// Returns a word defined at index.
@@ -74,8 +79,9 @@ namespace EFrt.Core.Words
         /// <summary>
         /// Executes this words body.
         /// </summary>
-        private int Execute()
+        protected int Execute()
         {
+            _executionBreaked = false;
             var index = 0;
             while (index <= _lastWordIndex)
             {
@@ -88,9 +94,23 @@ namespace EFrt.Core.Words
                 index += word.IsControlWord 
                     ? word.Action()                                      // Control and value words are defined by themselves.
                     : Interpreter.GetWord(_words[index].Name).Action();  // Get the actual word implementation and execute it.
+
+                // Used by the DoesWord.
+                if (_executionBreaked)
+                {
+                    break;
+                }
             }
 
             return 1;
+        }
+
+        /// <summary>
+        /// If called, no more words from this word are executed.
+        /// </summary>
+        public void BreakExecution()
+        {
+            _executionBreaked = true;
         }
 
 
@@ -103,5 +123,10 @@ namespace EFrt.Core.Words
         /// The index of the last word inserted to this word definition.
         /// </summary>
         private int _lastWordIndex;
+
+        /// <summary>
+        /// If true, no more words are executed.
+        /// </summary>
+        private bool _executionBreaked;
     }
 }
