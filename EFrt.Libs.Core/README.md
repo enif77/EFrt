@@ -106,7 +106,7 @@ Note: The `."` word works like `S" str" S.` words together.
 
 Words: `*/ */MOD +! >NUMBER ABORT" str" ACCEPT ALIGNALIGNED CELL+ COUNT DECIMAL 
   ENVIRONMENT? EVALUATE EXIT FILL FIND FM/MOD LSHIFT M* MOVE POSTPONE RSHIFT SM/REM
-  TYPE U. U< UM* UM/MOD UNLOOP WORD [ ['] x ]`
+  TYPE U. U< UM* UM/MOD UNLOOP WORD [ x ]`
 
 Words (?): `>BODY`
 
