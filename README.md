@@ -126,7 +126,7 @@ arr @ 1+ ? CR   \ Gets and prints out the contents of the second cell of the arr
 ( 80 cells long buffer/array )
 CREATE buffer 80 CELLS ALLOT
 
-( ' and execute )
+( ' and EXECUTE )
 : goodbye ." Goodbye" CR ;
 : hello ." Hello" CR ;
 VARIABLE a
@@ -135,6 +135,32 @@ VARIABLE a
 greet                   \ greet will say "Hello".
 ' goodbye a !           \ Set the variable a to the xt of the word goodbye.
 greet                   \ greet will say "Goodbye".
+
+( ' ['] and EXECUTE )
+( Source: https://www.forth.com/starting-forth/9-forth-execution/ ) 
+( 1 ) : hello    ." Hello " ;
+( 2 ) : goodbye  ." Goodbye " ;
+( 3 ) VARIABLE 'aloha  ' hello 'aloha !
+( 4 ) : aloha    'aloha @ EXECUTE ;
+
+aloha                   \ Prints out "Hello".
+' goodbye 'aloha !      \ Sets the 'aloha variable to xt of the goodbye word.
+aloha                   \ Prints out "Goodbye".
+
+: say  ' 'aloha ! ;
+
+say hello
+aloha                   \ Prints out "Hello".
+say goodbye
+aloha                   \ Prints out "Goodbye".
+
+: coming   ['] hello   'aloha ! ;
+: going    ['] goodbye 'aloha ! ;
+
+coming                  \ Sets 'aloha to the xt of the word hello.
+aloha                   \ Prints out "Hello".
+going                   \ Sets 'aloha to the xt of the word goodbye.
+aloha                   \ Prints out "Goodbye".
 
 ```
 

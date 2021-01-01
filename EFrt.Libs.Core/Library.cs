@@ -122,6 +122,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "VARIABLE", VariableAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "WHILE", WhileAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "XOR", XorAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "[']", BracketTickAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "[CHAR]", BracketCharAction));
         }
 
@@ -1098,6 +1099,11 @@ namespace EFrt.Libs.Core
         // ( -- )
         private int VariableAction()
         {
+            if (_interpreter.IsCompiling)
+            {
+                throw new Exception("VARIABLE inside a new word definition.");
+            }
+
             _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.State.Heap.Alloc(1)));
             _interpreter.EndNewWordCompilation();
 
@@ -1128,6 +1134,20 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
+        // ['] word-name
+        // ( -- xt)
+        private int BracketTickAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("['] outside a new word definition.");
+            }
+
+            _interpreter.WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(_interpreter, _interpreter.GetWord(_interpreter.GetWordName()).ExecutionToken));
+
+            return 1;
+        }
+
         // ( -- n)
         private int BracketCharAction()
         {
@@ -1136,17 +1156,7 @@ namespace EFrt.Libs.Core
                 throw new Exception("[CHAR] outside a new word definition.");
             }
 
-            // Get the name.
-            var tok = _interpreter.NextTok();
-            switch (tok.Code)
-            {
-                case TokenType.Word:
-                    _interpreter.WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(_interpreter, tok.SValue[0]));
-                    break;
-
-                default:
-                    throw new Exception("A name expected.");
-            }
+             _interpreter.WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(_interpreter, _interpreter.GetWordName()[0]));
 
             return 1;
         }

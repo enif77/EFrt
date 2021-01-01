@@ -96,6 +96,7 @@ Words definition table columns:
 | VARIABLE x | no   | I    | **Declare variable**<br>A variable named x is declared and its value is set to zero. When x is executed, its address will be placed on the stack. Four bytes are reserved on the heap for the variable's value. |
 | WHILE    | yes  | C    | **Decide BEGIN—WHILE—REPEAT loop**<br>(flag -- )<br>If flag is nonzero, execution continues after the WHILE. If flag is zero, the loop is exited and execution resumed after the REPEAT that marks the end of the loop. |
 | XOR      | no   | IC   | **Bitwise exclusive or**<br>(n1 n2 -- n3)<br>Stores the bitwise exclusive or of n1 and n2 on the stack. |
+| [']      | yes  | C    | **Obtain execution token**<br>Places the execution token of the following word to the currently compiled word as a literal. |
 | [CHAR] ccc | yes  | C    | **Bracket char**<br>( -- c)<br>Compilation: Skip leading spaces. Parse the string ccc. Run-time: Return c, the display code representing the first character of ccc. Interpretation semantics for this word are undefined. |
 
 Note: The `."` word works like `S" str" S.` words together.
