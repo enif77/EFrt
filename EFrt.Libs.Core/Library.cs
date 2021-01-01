@@ -121,9 +121,6 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new ImmediateWord(_interpreter, "WHILE", WhileAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "XOR", XorAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "[CHAR]", BracketCharAction));
-                                 
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "-ROT", RotBackAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "CLEAR", ClearAction));
         }
 
 
@@ -1133,31 +1130,6 @@ namespace EFrt.Libs.Core
                 default:
                     throw new Exception("A name expected.");
             }
-
-            return 1;
-        }
-
-
-
-
-        // (a b c -- c a b)
-        private int RotBackAction()
-        {
-            var v3 = _interpreter.Pop();
-            var v2 = _interpreter.Pop();
-            var v1 = _interpreter.Pop();
-
-            _interpreter.Push(v3);
-            _interpreter.Push(v1);
-            _interpreter.Push(v2);
-
-            return 1;
-        }
-
-        // ( -- )
-        private int ClearAction()
-        {
-            _interpreter.State.Stack.Clear();
 
             return 1;
         }

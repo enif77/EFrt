@@ -42,17 +42,24 @@ namespace EFrt.Libs.CoreExt
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "<>", NotEqualsAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "?DO", QuestionDoAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "AGAIN", AgainAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "NIP", NipAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "PICK", PickAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ROLL", RollAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "TUCK", TuckAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "\\", BackslashAction));
 
             _interpreter.AddWord(new ConstantWord(_interpreter, "FALSE", 0));
             _interpreter.AddWord(new ConstantWord(_interpreter, "TRUE", -1));
 
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "-ROLL", MinusRollAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "-ROT", MinusRotAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2+", AddTwoAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2-", SubTwoAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2NIP", TwoNipAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2TUCK", TwoTuckAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "<=", IsLtEAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ">=", IsGtEAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "CLEAR", ClearAction));
         }
 
 
@@ -154,6 +161,16 @@ namespace EFrt.Libs.CoreExt
             return 1;
         }
 
+        // (n1 n2 -- n2)
+        private int NipAction()
+        {
+            var n2 = _interpreter.Pop();
+            _interpreter.Drop();     // n1
+            _interpreter.Push(n2);
+
+            return 1;
+        }
+
         // (index -- n)
         private int PickAction()
         {
@@ -166,6 +183,16 @@ namespace EFrt.Libs.CoreExt
         private int RollAction()
         {
             _interpreter.Roll(_interpreter.Pop());
+
+            return 1;
+        }
+
+        // (n1 n2 -- n2 n1 n2)
+        private int TuckAction()
+        {
+            var n2 = _interpreter.Peek();
+            _interpreter.Swap();    // n2 n1
+            _interpreter.Push(n2);  // n2 n1 n2
 
             return 1;
         }
@@ -191,6 +218,23 @@ namespace EFrt.Libs.CoreExt
 
         // Extra
 
+        // (index -- n)
+        private int MinusRollAction()
+        {
+            var index = _interpreter.Pop();
+            var items = _interpreter.State.Stack.Items;
+            var top = _interpreter.State.Stack.Top;
+
+            var item = items[top];
+            for (var i = top - 1; i >= top - index; i--)
+            {
+                items[i + 1] = items[i];
+            }
+
+            items[top - index] = item;
+
+            return 1;
+        }
 
         // (n1 -- n2)
         private int AddTwoAction()
@@ -208,6 +252,35 @@ namespace EFrt.Libs.CoreExt
             return 1;
         }
 
+        // (n1 n2 n3 n4 -- n3 n4)
+        private int TwoNipAction()
+        {
+            var n4 = _interpreter.Pop();
+            var n3 = _interpreter.Pop();
+            _interpreter.Drop(2);
+            _interpreter.Push(n3);
+            _interpreter.Push(n4);
+
+            return 1;
+        }
+
+        // (n1 n2 n3 n4 -- n3 n4 n1 n2 n3 n4)
+        private int TwoTuckAction()
+        {
+            var n4 = _interpreter.Pop();
+            var n3 = _interpreter.Pop();
+            var n2 = _interpreter.Pop();
+            var n1 = _interpreter.Pop();
+            _interpreter.Push(n3);
+            _interpreter.Push(n4);
+            _interpreter.Push(n1);
+            _interpreter.Push(n2);
+            _interpreter.Push(n3);
+            _interpreter.Push(n4);
+
+            return 1;
+        }
+
         // (n1 n2 -- flag)
         private int IsLtEAction()
         {
@@ -220,6 +293,28 @@ namespace EFrt.Libs.CoreExt
         private int IsGtEAction()
         {
             Function((a, b) => (a >= b) ? -1 : 0);
+
+            return 1;
+        }
+
+        // (a b c -- c a b)
+        private int MinusRotAction()
+        {
+            var v3 = _interpreter.Pop();
+            var v2 = _interpreter.Pop();
+            var v1 = _interpreter.Pop();
+
+            _interpreter.Push(v3);
+            _interpreter.Push(v1);
+            _interpreter.Push(v2);
+
+            return 1;
+        }
+
+        // ( -- )
+        private int ClearAction()
+        {
+            _interpreter.State.Stack.Clear();
 
             return 1;
         }

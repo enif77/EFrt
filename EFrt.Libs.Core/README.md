@@ -98,13 +98,6 @@ Words definition table columns:
 
 Note: The `."` word works like `S" str" S.` words together.
 
-## Words (Extra)
-
-| Name     | Imm. | Mode | Description |
-| ---      | ---  | ---  | --- |
-| CLEAR    | no   | IC   | **Clear stack**<b<br><br>r>All items on the data stack are discarded. |
-| -ROT     | no   | IC   | **Reverse rotate**<br>(n1 n2 n3 -- n2 n3 n1)<br>Moves the top of stack to the third item, moving the third and second items up. |
-
 
 ## TODO
 
