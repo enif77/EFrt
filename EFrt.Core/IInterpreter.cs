@@ -139,6 +139,12 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
 
 
         /// <summary>
+        /// Returns a word name following in the input stream.
+        /// </summary>
+        /// <returns>A word name.</returns>
+        string GetWordName();
+
+        /// <summary>
         /// Begins a new word compilation.
         /// </summary>
         /// <returns>A new word name, that followed the word, which started the new word definition.</returns>

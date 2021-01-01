@@ -44,6 +44,13 @@ namespace EFrt.Core
         IWord GetWord(string wordName);
 
         /// <summary>
+        /// Gets a definition of a word by its execution token.
+        /// </summary>
+        /// <param name="executionToken">An execution token of a word.</param>
+        /// <returns>A word definition.</returns>
+        IWord GetWord(int executionToken);
+
+        /// <summary>
         /// Checks, if a word is defined.
         /// </summary>
         /// <param name="wordName">A name of a word.</param>
@@ -51,10 +58,17 @@ namespace EFrt.Core
         bool IsWordDefined(string wordName);
 
         /// <summary>
-        /// Registers a new word definition.
+        /// Checks, if a word is defined.
+        /// </summary>
+        /// <param name="executionToken">An execution token of a word.</param>
+        /// <returns>True, if a word with an execution token is defined.</returns>
+        bool IsWordDefined(int executionToken);
+
+        /// <summary>
+        /// Adds a new word definition.
         /// </summary>
         /// <param name="word">A Word.</param>
-        void RegisterWord(IWord word);
+        void AddWord(IWord word);
 
         /// <summary>
         /// Remove the latest definition of a word from this list of words.

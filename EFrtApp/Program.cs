@@ -141,11 +141,11 @@ namespace EFrtApp
                 new ObjectHeap(1024),
                 new WordsList()));
 
-            wl.RegisterWord(new PrimitiveWord(i, "w1", () => 1));
-            wl.RegisterWord(new PrimitiveWord(i, "w1", () => 1));
-            wl.RegisterWord(new PrimitiveWord(i, "w2", () => 1));
-            wl.RegisterWord(new PrimitiveWord(i, "w3", () => 1));
-            wl.RegisterWord(new PrimitiveWord(i, "w1", () => 1));
+            wl.AddWord(new PrimitiveWord(i, "w1", () => 1));
+            wl.AddWord(new PrimitiveWord(i, "w1", () => 1));
+            wl.AddWord(new PrimitiveWord(i, "w2", () => 1));
+            wl.AddWord(new PrimitiveWord(i, "w3", () => 1));
+            wl.AddWord(new PrimitiveWord(i, "w1", () => 1));
 
             Console.WriteLine(WordsListToString(wl.DefinedWords));
             Console.WriteLine(WordsListToString(wl.WordsHistory));

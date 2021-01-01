@@ -40,6 +40,7 @@ namespace EFrt.Libs.Core
         public void DefineWords()
         {
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "!", StoreAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "'", TickAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "(", ParenAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "*", StarAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "+", PlusAction));
@@ -89,6 +90,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "DUP", DupAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "ELSE", ElseAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "EMIT", EmitAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "EXECUTE", ExecuteAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "HERE", HereAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "I", GetInnerIndexAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "IF", IfAction));
@@ -157,6 +159,15 @@ namespace EFrt.Libs.Core
         {
             var addr = _interpreter.Pop();
             _interpreter.State.Heap.Items[addr] = _interpreter.Pop();
+
+            return 1;
+        }
+
+        // ' word-name
+        // ( -- xt)
+        private int TickAction()
+        {
+            _interpreter.Push(_interpreter.GetWord(_interpreter.GetWordName()).ExecutionToken);
 
             return 1;
         }
@@ -681,6 +692,12 @@ namespace EFrt.Libs.Core
             _interpreter.Output.Write("{0}", (char)_interpreter.Pop());
 
             return 1;
+        }
+
+        // (xt --)
+        private int ExecuteAction()
+        {
+            return _interpreter.State.WordsList.GetWord(_interpreter.Pop()).Action();
         }
 
         // ( -- addr)

@@ -41,6 +41,11 @@ namespace EFrt.Core.Words
         public bool IsControlWord { get; protected set; }
 
         /// <summary>
+        /// An execution token. Used by the EXECUTE word to find a words definition for execution.
+        /// </summary>
+        public int ExecutionToken { get; set; }
+
+        /// <summary>
         /// The body of this word.
         /// </summary>
         public Func<int> Action { get; protected set; }

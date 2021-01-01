@@ -126,5 +126,15 @@ arr @ 1+ ? CR   \ Gets and prints out the contents of the second cell of the arr
 ( 80 cells long buffer/array )
 CREATE buffer 80 CELLS ALLOT
 
+( ' and execute )
+: goodbye ." Goodbye" CR ;
+: hello ." Hello" CR ;
+VARIABLE a
+: greet a @ execute ;   \ Expects an execution token (xt) of a word.
+' hello a !             \ Set the variable a to the xt of the word hello.
+greet                   \ greet will say "Hello".
+' goodbye a !           \ Set the variable a to the xt of the word goodbye.
+greet                   \ greet will say "Goodbye".
+
 ```
 

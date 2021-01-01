@@ -15,6 +15,7 @@ Words definition table columns:
 | Name     | Imm. | Mode | Description |
 | ---      | ---  | ---  | --- |
 | !        | no   | IC   | **Store into address**<br>(n addr -- )<br>Stores the value n into the address addr (a variables stack index). |
+| ' x      | no   | IC   | **Obtain execution token**<br>( -- xt)<br>Places the execution token of the following word on the stack. |
 | (        | yes  | IC   | **Comment**<br>Skips all source characters till the closing ) character. |
 | *        | no   | IC   | **n3 = n1 * n2**<br>(n1 n2 -- n3)<br>Multiplies n1 and n2 and leaves the product on the stack. |
 | +        | no   | IC   | **n3 = n1 + n2**<br>(n1 n2 -- n3)<br>Adds n1 and n2 and leaves the sum on the stack. |
@@ -63,6 +64,7 @@ Words definition table columns:
 | DUP      | no   | IC   | **Duplicate**<br>(n -- n n)<br>Duplicates the value at the top of the stack. |
 | ELSE     | yes  | C    | **Else**<br><br>Used in an IF—ELSE—THEN sequence, delimits the code to be executed if the if-condition was false. |
 | EMIT     | no   | IC   | **Print char**<br>(n -- )<br>Prints out a character represented by a number on the top of the stack. |
+| EXECUTE  | no   | IC   | **Execute word**<br>(xt -- )<br>Executes the word with execution token xt. |
 | HERE     | no   | IC   | **Heap address**<br>( -- addr)<br>The current heap allocation address is placed on the top of the stack. addr + 1 is the first free heap cell. |
 | I        | yes  | C    | **Inner loop index**<br>( -- n) [n -- n]<br>The index of the innermost DO—LOOP is placed on the stack. |
 | IF       | yes  | C    | **Conditional statement**<br>(flag --)<br>If flag is nonzero, the following statements are executed. Otherwise, execution resumes after the matching ELSE clause, if any, or after the matching THEN. |
@@ -101,8 +103,8 @@ Note: The `."` word works like `S" str" S.` words together.
 
 ## TODO
 
-Words: `' x */ */MOD +! >NUMBER ABORT" str" ACCEPT ALIGNALIGNED CELL+ COUNT DECIMAL 
-  ENVIRONMENT? EVALUATE EXECUTE EXIT FILL FIND FM/MOD LSHIFT M* MOVE POSTPONE RSHIFT SM/REM
+Words: `*/ */MOD +! >NUMBER ABORT" str" ACCEPT ALIGNALIGNED CELL+ COUNT DECIMAL 
+  ENVIRONMENT? EVALUATE EXIT FILL FIND FM/MOD LSHIFT M* MOVE POSTPONE RSHIFT SM/REM
   TYPE U. U< UM* UM/MOD UNLOOP WORD [ ['] x ]`
 
 Words (?): `>BODY`

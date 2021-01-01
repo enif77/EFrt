@@ -122,7 +122,7 @@ namespace EFrt.Core
 
         public void AddWord(IWord word)
         {
-            State.WordsList.RegisterWord(word);
+            State.WordsList.AddWord(word);
         }
 
 
@@ -159,14 +159,8 @@ namespace EFrt.Core
         public NonPrimitiveWord WordBeingDefined { get; set; }
 
 
-        public string BeginNewWordCompilation()
+        public string GetWordName()
         {
-            // Cannot start a compilation, when already compiling.
-            if (IsCompiling)
-            {
-                throw new Exception("A word compilation is already running.");
-            }
-
             // Get the name of the new word.
             var tok = NextTok();
             switch (tok.Code)
@@ -176,12 +170,28 @@ namespace EFrt.Core
 
                 // Start the new word definition compilation.
                 case TokenType.Word:
-                    InterpreterState = InterpreterStateCode.Compiling;
                     return tok.SValue.ToUpperInvariant();
 
                 default:
                     throw new Exception($"Unknown token type ({tok}) in a new word definition.");
             }
+        }
+
+
+        public string BeginNewWordCompilation()
+        {
+            // Cannot start a compilation, when already compiling.
+            if (IsCompiling)
+            {
+                throw new Exception("A word compilation is already running.");
+            }
+
+            // Get the name of the new word.
+            var wordName =  GetWordName();
+
+            InterpreterState = InterpreterStateCode.Compiling;
+
+            return wordName;
         }
 
 
