@@ -24,8 +24,10 @@ Words definition table columns:
 | NIP      | no   | IC   | **Drop item below stack top**<br>(n1 n2 -- n2)<br>Drop the first item below the top of the stack. |
 | PICK     | no   | IC   | **Pick item from stack**<br>(index -- n)<br>The index is removed from the stack and then the indexth stack item is copied to the top of the stack. The top of stack has index 0, the second item index 1, and so on. |
 | ROLL     | no   | IC   | **Rotate indexth item to top**<br>(index -- n)<br>The index is removed from the stack and then the stack item selected by index, with 0 designating the top of stack, 1 the second item, and so on, is moved to the top of the stack. The intervening stack items are moved down one item. |
+| TO       | no   | IC   | **Set value**<br>(n -- )<br>Sets a value of a by VALUE created word. |
 | TRUE     | no   | IC   | **True**<br>( -- flag)<br>Constant that leaves the -1 (true) on the top of the stack. |
 | TUCK     | no   | IC   | **Dup stack top**<br>(n1 n2 -- n2 n1 n2)<br>Copy the first (top) stack item below the second stack item. |
+| VALUE x  | no   | IC   | **Named value**<br>(n -- )<br>Like a CONSTANT, but the value can be changed using the word TO. |
 | \        | yes  | IC   | **Line comment**<br>Skips all source characters till the closing EOLN character. |
 
 ## Words (Extra)
@@ -46,6 +48,6 @@ Words definition table columns:
 #### TODO
 
 Words: `.R 2>R 2R> 2R@ :NONAME CASE COMPILE, CONVERT ENDCASE ENDOF ERASE HEX MARKER OF PARSE TO
-  U.R U> UNUSED VALUE x WITHIN [COMPILE]`
+  U.R U> UNUSED WITHIN [COMPILE]`
 
 Variables: `...`

@@ -45,7 +45,9 @@ namespace EFrt.Libs.CoreExt
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "NIP", NipAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "PICK", PickAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ROLL", RollAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "TO", ToAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "TUCK", TuckAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "VALUE", ValueAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "\\", BackslashAction));
 
             _interpreter.AddWord(new ConstantWord(_interpreter, "FALSE", 0));
@@ -187,6 +189,20 @@ namespace EFrt.Libs.CoreExt
             return 1;
         }
 
+        // (n -- )
+        private int ToAction()
+        {
+            var valueWord = _interpreter.GetWord(_interpreter.GetWordName());
+            if (valueWord is ValueWord)
+            {
+                ((ValueWord)valueWord).Value = _interpreter.Pop();
+
+                return 1;
+            }
+
+            throw new Exception("A VALUE created word expected.");            
+        }
+
         // (n1 n2 -- n2 n1 n2)
         private int TuckAction()
         {
@@ -197,6 +213,17 @@ namespace EFrt.Libs.CoreExt
             return 1;
         }
 
+        // VALUE word-name
+        // (n -- )
+        private int ValueAction()
+        {
+            _interpreter.AddWord(new ValueWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.Pop()));
+            _interpreter.EndNewWordCompilation();
+
+            return 1;
+        }
+
+        // ( -- )
         private int BackslashAction()
         {
             _interpreter.NextChar();
