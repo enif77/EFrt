@@ -39,6 +39,7 @@ namespace EFrt.Libs.CoreExt
             _interpreter.AddWord(new ImmediateWord(_interpreter, ".(", DotParenAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "0<>", ZeroNotEqualsAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "0>", ZeroGreaterAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ":NONAME", NonameAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "<>", NotEqualsAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "?DO", QuestionDoAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "AGAIN", AgainAction));
@@ -118,6 +119,15 @@ namespace EFrt.Libs.CoreExt
         private int ZeroGreaterAction()
         {
             Function((a) => (a > 0) ? -1 : 0);
+
+            return 1;
+        }
+
+        // :NONAME body ;
+        private int NonameAction()
+        {
+            _interpreter.BeginNewWordCompilation();
+            _interpreter.WordBeingDefined = new NonameWord(_interpreter);
 
             return 1;
         }
@@ -217,7 +227,8 @@ namespace EFrt.Libs.CoreExt
         // (n -- )
         private int ValueAction()
         {
-            _interpreter.AddWord(new ValueWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.Pop()));
+            _interpreter.BeginNewWordCompilation();
+            _interpreter.AddWord(new ValueWord(_interpreter, _interpreter.GetWordName(), _interpreter.Pop()));
             _interpreter.EndNewWordCompilation();
 
             return 1;

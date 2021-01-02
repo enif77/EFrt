@@ -441,7 +441,8 @@ namespace EFrt.Libs.Core
         // : word-name body ;
         private int ColonAction()
         {
-            _interpreter.WordBeingDefined = new NonPrimitiveWord(_interpreter, _interpreter.BeginNewWordCompilation());
+            _interpreter.BeginNewWordCompilation();
+            _interpreter.WordBeingDefined = new NonPrimitiveWord(_interpreter, _interpreter.GetWordName());
 
             return 1;
         }
@@ -578,7 +579,8 @@ namespace EFrt.Libs.Core
         // (n -- )
         private int ConstantAction()
         {
-            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.Pop()));
+            _interpreter.BeginNewWordCompilation();
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.GetWordName(), _interpreter.Pop()));
             _interpreter.EndNewWordCompilation();
 
             return 1;
@@ -596,7 +598,8 @@ namespace EFrt.Libs.Core
         // ( -- )
         private int CreateAction()
         {
-            _interpreter.WordBeingDefined = new CreatedWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.State.Heap.Top + 1);
+            _interpreter.BeginNewWordCompilation();
+            _interpreter.WordBeingDefined = new CreatedWord(_interpreter, _interpreter.GetWordName(), _interpreter.State.Heap.Top + 1);
             _interpreter.AddWord(_interpreter.WordBeingDefined);
             _interpreter.EndNewWordCompilation();
 
@@ -1104,7 +1107,8 @@ namespace EFrt.Libs.Core
                 throw new Exception("VARIABLE inside a new word definition.");
             }
 
-            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.State.Heap.Alloc(1)));
+            _interpreter.BeginNewWordCompilation();
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.GetWordName(), _interpreter.State.Heap.Alloc(1)));
             _interpreter.EndNewWordCompilation();
 
             return 1;

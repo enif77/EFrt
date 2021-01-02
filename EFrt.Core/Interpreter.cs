@@ -178,7 +178,7 @@ namespace EFrt.Core
         }
 
 
-        public string BeginNewWordCompilation()
+        public void BeginNewWordCompilation()
         {
             // Cannot start a compilation, when already compiling.
             if (IsCompiling)
@@ -186,12 +186,7 @@ namespace EFrt.Core
                 throw new Exception("A word compilation is already running.");
             }
 
-            // Get the name of the new word.
-            var wordName =  GetWordName();
-
             InterpreterState = InterpreterStateCode.Compiling;
-
-            return wordName;
         }
 
 
@@ -208,6 +203,12 @@ namespace EFrt.Core
             {
                 // Now add the new word to the dictionary
                 AddWord(WordBeingDefined);
+
+                // Compilation of NONAME words leaves their execution token on the stack.
+                if (WordBeingDefined is NonameWord)
+                {
+                    Push(WordBeingDefined.ExecutionToken);
+                }
             }
 
             // Finish this word compilation.

@@ -138,7 +138,8 @@ namespace EFrt.Libs.Double
         private int TwoConstantAction()
         {
             var n2 = _interpreter.Pop();
-            _interpreter.AddWord(new DoubleCellConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.Pop(), n2));
+            _interpreter.BeginNewWordCompilation();
+            _interpreter.AddWord(new DoubleCellConstantWord(_interpreter, _interpreter.GetWordName(), _interpreter.Pop(), n2));
             _interpreter.EndNewWordCompilation();
 
             return 1;
@@ -148,7 +149,8 @@ namespace EFrt.Libs.Double
         // ( -- )
         private int TwoVariableAction()
         {
-            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.BeginNewWordCompilation(), _interpreter.State.Heap.Alloc(2)));
+            _interpreter.BeginNewWordCompilation();
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.GetWordName(), _interpreter.State.Heap.Alloc(2)));
             _interpreter.EndNewWordCompilation();
 
             return 1;
