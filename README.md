@@ -166,10 +166,10 @@ aloha                   \ Prints out "Goodbye".
 ( Source: And so Forth..., J.L. Bezemer )
 -1 VALUE (step2)            \ A place to store a reference (execution token) to the word step2.
 : step2 (step2) EXECUTE ;   \ The step2 word. Without a body for now.
-: step1 1+ dup . cr step2 ; \ The step1 word, calling the step2 word.
-:noname 1+ dup . cr step1 ; \ The body of the step2 word. :NONAME leaves an execution token of the created word on the stack.
-to (step2)                  \ Sets to body to the step2 (using the VALUE (step2)).
-1 step1                     \ Executes the step1 word, that in turn calls the step2, which calls the step1 word...
+: step1 1+ DUP . CR step2 ; \ The step1 word, calling the step2 word.
+:noname 1+ DUP . CR step1 ; \ The body of the step2 word. :NONAME leaves an execution token of the created word on the stack.
+TO (step2)                  \ Sets the body of the word step2 (using the value of the VALUE (step2)).
+1 step1                     \ Executes the step1 word, that in turn calls the step2 word, which calls the step1 word...
 
 ```
 
