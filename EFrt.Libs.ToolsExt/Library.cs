@@ -58,17 +58,7 @@ namespace EFrt.Libs.ToolsExt
                 throw new Exception("A word compilation is running.");
             }
 
-            // Get the name of a word.
-            var tok = _interpreter.NextTok();
-            switch (tok.Code)
-            {
-                case TokenType.Word:
-                    _interpreter.ForgetWord(tok.SValue);
-                    break;
-
-                default:
-                    throw new Exception($"A name of a word expected.");
-            }
+            _interpreter.ForgetWord(_interpreter.GetWordName());
 
             return 1;
         }
