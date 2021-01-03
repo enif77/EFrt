@@ -8,6 +8,9 @@ namespace EFrt.Libs.Core
     using EFrt.Core;
     using EFrt.Core.Values;
     using EFrt.Core.Words;
+
+    using EFrt.Libs.Core.Words;
+
     using static EFrt.Core.Token;
 
 
@@ -822,6 +825,7 @@ namespace EFrt.Libs.Core
                     _interpreter,
                     (doWordIndex + 1) - _interpreter.WordBeingDefined.NextWordIndex));  // c + 1 -> index of the word folowing DO/?DO.
 
+            // TODO: Toto v CORE-EXT udělat LoopAction, která přepíše tuto základní verzi.
             var cWord = _interpreter.WordBeingDefined.GetWord(doWordIndex);
             if (cWord is IBranchingWord)
             {
@@ -1045,7 +1049,7 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-
+        // ( -- )
         private int ThenAction()
         {
             if (_interpreter.IsCompiling == false)

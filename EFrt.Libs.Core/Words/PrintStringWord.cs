@@ -1,7 +1,11 @@
 ﻿/* EFrt - (C) 2020 Premysl Fara  */
 
-namespace EFrt.Core.Words
+namespace EFrt.Libs.Core.Words
 {
+    using EFrt.Core;
+    using EFrt.Core.Words;
+
+
     /// <summary>
     /// A word keeping and printing a string value.
     /// </summary>
