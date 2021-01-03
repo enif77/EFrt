@@ -229,9 +229,9 @@ namespace EFrt.Libs.Core
                     (cWordIndex + 1) - _interpreter.WordBeingDefined.NextWordIndex));  // c + 1 -> index of the word folowing DO/?DO.
 
             var cWord = _interpreter.WordBeingDefined.GetWord(cWordIndex);
-            if (cWord is IfDoControlWord)
+            if (cWord is IBranchingWord)
             {
-                ((IfDoControlWord)cWord).SetLoopIndex(loopIndex);
+                ((IBranchingWord)cWord).SetBranchTargetIndex(loopIndex);
             }
 
             return 1;
@@ -815,17 +815,17 @@ namespace EFrt.Libs.Core
                 throw new Exception("LOOP outside a new word definition.");
             }
 
-            var cWordIndex = _interpreter.RPop();
+            var doWordIndex = _interpreter.RPop();
 
             var loopIndex = _interpreter.WordBeingDefined.AddWord(
                 new LoopControlWord(
                     _interpreter,
-                    (cWordIndex + 1) - _interpreter.WordBeingDefined.NextWordIndex));  // c + 1 -> index of the word folowing DO/?DO.
+                    (doWordIndex + 1) - _interpreter.WordBeingDefined.NextWordIndex));  // c + 1 -> index of the word folowing DO/?DO.
 
-            var cWord = _interpreter.WordBeingDefined.GetWord(cWordIndex);
-            if (cWord is IfDoControlWord)
+            var cWord = _interpreter.WordBeingDefined.GetWord(doWordIndex);
+            if (cWord is IBranchingWord)
             {
-                ((IfDoControlWord)cWord).SetLoopIndex(loopIndex);
+                ((IBranchingWord)cWord).SetBranchTargetIndex(loopIndex);
             }
 
             return 1;

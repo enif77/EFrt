@@ -7,6 +7,8 @@ namespace EFrt.Libs.CoreExt
     using EFrt.Core;
     using EFrt.Core.Words;
 
+    using EFrt.Libs.CoreEx.Words;
+
 
     /// <summary>
     /// The CORE-EXT words library.
@@ -40,6 +42,7 @@ namespace EFrt.Libs.CoreExt
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "0<>", ZeroNotEqualsAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "0>", ZeroGreaterAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ":NONAME", NonameAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, ";", SemicolonAction));  // Extended version.
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "<>", NotEqualsAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "?DO", QuestionDoAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "AGAIN", AgainAction));
@@ -128,6 +131,21 @@ namespace EFrt.Libs.CoreExt
         {
             _interpreter.BeginNewWordCompilation();
             _interpreter.WordBeingDefined = new NonameWord(_interpreter);
+
+            return 1;
+        }
+
+        // : word-name body ;
+        // :NONAME body ;
+        private int SemicolonAction()
+        {
+            _interpreter.EndNewWordCompilation();
+
+            // Compilation of NONAME words leaves their execution token on the stack.
+            if (_interpreter.WordBeingDefined is NonameWord)
+            {
+                _interpreter.Push(_interpreter.WordBeingDefined.ExecutionToken);
+            }
 
             return 1;
         }

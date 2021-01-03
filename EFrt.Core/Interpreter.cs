@@ -203,12 +203,6 @@ namespace EFrt.Core
             {
                 // Now add the new word to the dictionary
                 AddWord(WordBeingDefined);
-
-                // Compilation of NONAME words leaves their execution token on the stack.
-                if (WordBeingDefined is NonameWord)
-                {
-                    Push(WordBeingDefined.ExecutionToken);
-                }
             }
 
             // Finish this word compilation.

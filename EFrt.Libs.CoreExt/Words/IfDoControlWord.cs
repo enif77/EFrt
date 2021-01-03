@@ -1,11 +1,15 @@
 ﻿/* EFrt - (C) 2020 Premysl Fara  */
 
-namespace EFrt.Core.Words
+namespace EFrt.Libs.CoreEx.Words
 {
+    using EFrt.Core;
+    using EFrt.Core.Words;
+
+
     /// <summary>
     /// A word that is definig ?DO loop begining.
     /// </summary>
-    public class IfDoControlWord : AWordBase
+    public class IfDoControlWord : AWordBase, IBranchingWord
     {
         /// <summary>
         /// Constructor.
@@ -26,9 +30,9 @@ namespace EFrt.Core.Words
 
         /** Volá slovo LOOP or +LOOP. Vloží sem svůj index v rámci definovaného slova,
 	     *  do kterého patří. */
-        public void SetLoopIndex(int loopIndex)
+        public void SetBranchTargetIndex(int branchIndex)
         {
-            _loopIndexIncrement = loopIndex - _thisIndex;
+            _loopIndexIncrement = branchIndex - _thisIndex;
         }
 
 
