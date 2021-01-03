@@ -6,7 +6,6 @@ namespace EFrt.Libs.ToolsExt
 
     using EFrt.Core;
     using EFrt.Core.Words;
-    using static EFrt.Core.Token;
 
 
     /// <summary>
