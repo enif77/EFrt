@@ -171,5 +171,11 @@ aloha                   \ Prints out "Goodbye".
 TO (step2)                  \ Sets the body of the word step2 (using the value of the VALUE (step2)).
 1 step1                     \ Executes the step1 word, that in turn calls the step2 word, which calls the step1 word...
 
+( Unloop )
+: unloop-test 10 1 DO I DUP . CR 5 > IF ." Exiting..." CR UNLOOP EXIT THEN LOOP ." Never printer out..." ;
+
+( Abort with a message )
+: abort-with-message 10 1 DO I DUP . CR 5 > IF ABORT" Too big!" THEN LOOP ." Never printer out..." ;
+
 ```
 

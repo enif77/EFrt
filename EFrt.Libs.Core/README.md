@@ -23,7 +23,7 @@ Words definition table columns:
 | ,        | no   | IC   | **Store in heap**<br>Reserves a single cell of data heap, initialising it to n. |
 | -        | no   | IC   | **n3 = n1 - n2**<br>(n1 n2 -- n3)<br>Substracts n2 from n1 and leaves the difference on the stack. |
 | .        | no   | IC   | **Print top of stack**<br>(n -- )<br>Prints the integer number on the top of the stack. |
-| ."       | yes  | C    | **Print immediate string**<br>Prints the string that follows in the input stream. |
+| ." str   | yes  | C    | **Print immediate string**<br>Prints the string that follows in the input stream. |
 | /        | no   | IC   | **n3 = n1 / n2**<br>(n1 n2 -- n3)<br>Divides n1 by n2 and leaves the quotient on the stack. |
 | /MOD     | no   | IC   | **n3 = n1 mod n2, n4 = n1 / n2**<br>(n1 n2 -- n3 n4)<br>Divides n1 by n2 and leaves quotient on top of stack, remainder as next on stack. |
 | 0<       | no   | IC   | **Less than zero**<br>(n -- flag)<br>Returns -1 if n1 is less than 0, 0 otherwise. |
@@ -47,6 +47,7 @@ Words definition table columns:
 | ?DUP     | no   | IC   | **Conditional duplicate**<br>(n -- 0 / n n)<br>If top of stack is nonzero, duplicate it. Otherwise leave zero on top of stack. |
 | @        | no   | IC   | **Fetch**<br>(addr -- n)<br>Loads the value at addr (a variables stack index) and leaves it at the top of the stack. |
 | ABORT    | no   | IC   | **Abort**<br>Clears the stack and the object and performs a QUIT. |
+| ABORT" str | yes  | C    | **Abort with message**<br>Prints the string literal that follows in line, then aborts, clearing all execution state to return to the interpreter. |
 | ABS      | no   | IC   | **n2 = Abs(n1)**<br>(n1 -- n2)<br>Replaces the top of stack with its absolute value. |
 | ALLOT    | no   | IC   | **Allocate heap**<br>(n -- )<br>Allocates n cells of heap space. |
 | AND      | no   | IC   | **Bitwise and**<br>(n1 n2 -- n3)<br>Stores the bitwise AND of n1 and n2 on the stack. |
@@ -88,7 +89,7 @@ Words definition table columns:
 | RECURSE  | yes  | C    | **Recurse**<br><br>Appends a call of the current word definition to the current word definition. The same thing can be done simple by using the current words definition name. |
 | REPEAT   | yes  | C    | **Close BEGIN—WHILE—REPEAT loop**<br>( -- n)<br>Another iteration of the current BEGIN—WHILE—REPEAT loop having been completed, execution continues after the matching BEGIN. |
 | ROT      | no   | IC   | **Rotate 3 items**<br>(n1 n2 n3 -- n2 n3 n1)<br>The third item on the stack is placed on the top of the stack and the second and first items are moved down. |
-| S"       | no   | IC   | **String literal**<br>{ -- s}<br>Consume all source characters till the closing " character, creating a string from them and storing the result on the top of the object stack. |
+| S" str   | no   | IC   | **String literal**<br>{ -- s}<br>Consume all source characters till the closing " character, creating a string from them and storing the result on the top of the object stack. |
 | S>D      | no   | IC   | **Single cell number to double cell number**<br>(n -- d)<br>Converts a single cell number (32bit, int) to a double cell number (64bit, long). |
 | SPACE    | no   | IC   | **Print SPACE**<br>Prints out the SPACE character. |
 | SPACES   | no   | IC   | **Print spaces**<br>(n -- )<br>Prints out N characters of SPACE, where N is a number on the top of the stack. |

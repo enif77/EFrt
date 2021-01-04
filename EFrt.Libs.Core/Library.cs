@@ -75,6 +75,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "?DUP", QuestionDupeAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "@", FetchAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ABORT", AbortAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "ABORT\"", AbortWithMessageAction));
             //_interpreter.AddWord(new PrimitiveWord(_interpreter, "ABORT\"", AbortMessageAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ABS", AbsAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ALLOT", AllotAction));
@@ -521,6 +522,43 @@ namespace EFrt.Libs.Core
             // TODO: Clear the heap?
 
             return QuitAction();
+        }
+
+        // ( -- )
+        private int AbortWithMessageAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("ABORT\" outside a new word definition.");
+            }
+
+            // TODO: Interpreter.GetTerminatedString(string terminator)
+
+            var sb = new StringBuilder();
+
+            var c = _interpreter.NextChar();
+            while (_interpreter.CurrentChar != 0)
+            {
+                if (_interpreter.CurrentChar == '"')
+                {
+                    _interpreter.NextChar();
+
+                    break;
+                }
+
+                sb.Append(_interpreter.CurrentChar);
+
+                c = _interpreter.NextChar();
+            }
+
+            if (c != '"')
+            {
+                throw new Exception("'\"' expected.");
+            }
+
+            _interpreter.WordBeingDefined.AddWord(new AbortWithMessageWord(_interpreter, sb.ToString()));
+
+            return 1;
         }
 
         // (n1 -- n2)
