@@ -94,6 +94,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new ImmediateWord(_interpreter, "ELSE", ElseAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "EMIT", EmitAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "EXECUTE", ExecuteAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "EXIT", ExitAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "HERE", HereAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "I", GetInnerIndexAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "IF", IfAction));
@@ -121,6 +122,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "SPACES", SpacesAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "SWAP", SwapAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "THEN", ThenAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "UNLOOP", UnloopAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "UNTIL", UntilAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "VARIABLE", VariableAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "WHILE", WhileAction));
@@ -707,6 +709,21 @@ namespace EFrt.Libs.Core
             return _interpreter.State.WordsList.GetWord(_interpreter.Pop()).Action();
         }
 
+        // ( - )
+        private int ExitAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("EXIT outside a new word definition.");
+            }
+
+            // EXIT word doesn't have a runtime behavior.
+
+            _interpreter.WordBeingDefined.AddWord(new ExitControlWord(_interpreter, _interpreter.WordBeingDefined));
+
+            return 1;
+        }
+
         // ( -- addr)
         private int HereAction()
         {
@@ -1080,6 +1097,19 @@ namespace EFrt.Libs.Core
             {
                 throw new Exception("THEN requires a previous IF or ELSE.");
             }
+
+            return 1;
+        }
+
+        // ( -- )
+        private int UnloopAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("UNLOOP outside a new word definition.");
+            }
+
+            _interpreter.WordBeingDefined.AddWord(new UnloopControlWord(_interpreter));
 
             return 1;
         }

@@ -65,6 +65,7 @@ Words definition table columns:
 | ELSE     | yes  | C    | **Else**<br><br>Used in an IF—ELSE—THEN sequence, delimits the code to be executed if the if-condition was false. |
 | EMIT     | no   | IC   | **Print char**<br>(n -- )<br>Prints out a character represented by a number on the top of the stack. |
 | EXECUTE  | no   | IC   | **Execute word**<br>(xt -- )<br>Executes the word with execution token xt. |
+| EXIT     | yes  | C    | **Exit definition**<br>Exit from the current definition immediately. Note that EXIT cannot be used within a DO—LOOP without UNLOOP. Use LEAVE instead. |
 | HERE     | no   | IC   | **Heap address**<br>( -- addr)<br>The current heap allocation address is placed on the top of the stack. addr + 1 is the first free heap cell. |
 | I        | yes  | C    | **Inner loop index**<br>( -- n) [n -- n]<br>The index of the innermost DO—LOOP is placed on the stack. |
 | IF       | yes  | C    | **Conditional statement**<br>(flag --)<br>If flag is nonzero, the following statements are executed. Otherwise, execution resumes after the matching ELSE clause, if any, or after the matching THEN. |
@@ -93,6 +94,7 @@ Words definition table columns:
 | SWAP     | no   | IC   | **Swap top two items**<br>(n1 n2 -- n2 n1)<br>The top two stack items are interchanged. |
 | THEN     | yes  | C    | **End if**<br>( -- flag)<br>Used in an IF—ELSE—THEN sequence, marks the end of the conditional statement. |
 | UNTIL    | yes  | C    | **End BEGIN—UNTIL loop**<br>(flag -- )<br>If flag is zero, the loop continues execution at the word following the matching BEGIN. If flag is nonzero, the loop is exited and the word following the UNTIL is executed. |
+| UNLOOP   | no   | C    | **Discard DO—LOOP control parameters**<br>[limit index -- ]<br>Loop control parameters are removed from the return stack. Use this before the EXITing a loop. |
 | VARIABLE x | no   | I    | **Declare variable**<br>A variable named x is declared and its value is set to zero. When x is executed, its address will be placed on the stack. Four bytes are reserved on the heap for the variable's value. |
 | WHILE    | yes  | C    | **Decide BEGIN—WHILE—REPEAT loop**<br>(flag -- )<br>If flag is nonzero, execution continues after the WHILE. If flag is zero, the loop is exited and execution resumed after the REPEAT that marks the end of the loop. |
 | XOR      | no   | IC   | **Bitwise exclusive or**<br>(n1 n2 -- n3)<br>Stores the bitwise exclusive or of n1 and n2 on the stack. |
@@ -105,7 +107,7 @@ Note: The `."` word works like `S" str" S.` words together.
 ## TODO
 
 Words: `*/ */MOD +! >NUMBER ABORT" str" ACCEPT ALIGNALIGNED CELL+ COUNT DECIMAL 
-  ENVIRONMENT? EVALUATE EXIT FILL FIND FM/MOD LSHIFT M* MOVE POSTPONE RSHIFT SM/REM
+  ENVIRONMENT? EVALUATE FILL FIND FM/MOD LSHIFT M* MOVE POSTPONE RSHIFT SM/REM
   TYPE U. U< UM* UM/MOD UNLOOP WORD [ x ]`
 
 Words (?): `>BODY`
