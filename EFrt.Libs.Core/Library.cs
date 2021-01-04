@@ -126,6 +126,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "SPACES", SpacesAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "SWAP", SwapAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "THEN", ThenAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "TYPE", TypeAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "UNLOOP", UnloopAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "UNTIL", UntilAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "VARIABLE", VariableAction));
@@ -1181,6 +1182,14 @@ namespace EFrt.Libs.Core
             {
                 throw new Exception("THEN requires a previous IF or ELSE.");
             }
+
+            return 1;
+        }
+
+        // {s -- }
+        private int TypeAction()
+        {
+            _interpreter.Output.Write(_interpreter.OPop().ToString());
 
             return 1;
         }
