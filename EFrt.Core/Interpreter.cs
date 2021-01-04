@@ -446,7 +446,7 @@ namespace EFrt.Core
                                     }
                                     else
                                     {
-                                        var v = new LongVal() { D = t.LValue };
+                                        var v = new DoubleCellIntegerValue() { D = t.LValue };
 
                                         Push(v.A);
                                         Push(v.B);
@@ -460,7 +460,7 @@ namespace EFrt.Core
                                     }
                                     else
                                     {
-                                        var v = new DoubleVal() { D = t.FValue };
+                                        var v = new FloatingPointValue() { D = t.FValue };
 
                                         Push(v.A);
                                         Push(v.B);

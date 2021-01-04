@@ -152,7 +152,7 @@ namespace EFrt.Libs.Core
 
         private void DPush(long value)
         {
-            var v = new LongVal()
+            var v = new DoubleCellIntegerValue()
             {
                 D = value
             };

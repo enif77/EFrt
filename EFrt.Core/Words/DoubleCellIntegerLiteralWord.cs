@@ -27,10 +27,10 @@ namespace EFrt.Core.Words
                 return 1;
             };
 
-            _value = new LongVal() { D = value };
+            _value = new DoubleCellIntegerValue() { D = value };
         }
 
 
-        private LongVal _value;
+        private DoubleCellIntegerValue _value;
     }
 }

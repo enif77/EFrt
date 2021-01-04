@@ -88,7 +88,7 @@ namespace EFrt.Libs.Floating
 
         private double FGet(int index)
         {
-            return new DoubleVal()
+            return new FloatingPointValue()
             {
                 A = _interpreter.Pick(index * 2),
                 B = _interpreter.Pick(index * 2 + 2),
@@ -98,7 +98,7 @@ namespace EFrt.Libs.Floating
 
         private double FPeek()
         {
-            return new DoubleVal()
+            return new FloatingPointValue()
             {
                 B = _interpreter.Pick(1),
                 A = _interpreter.Peek(),
@@ -108,7 +108,7 @@ namespace EFrt.Libs.Floating
 
         private double FPop()
         {
-            return new DoubleVal()
+            return new FloatingPointValue()
             {
                 B = _interpreter.Pop(),
                 A = _interpreter.Pop(),
@@ -118,7 +118,7 @@ namespace EFrt.Libs.Floating
 
         private void FPush(double value)
         {
-            var v = new DoubleVal()
+            var v = new FloatingPointValue()
             {
                 D = value
             };
@@ -152,7 +152,7 @@ namespace EFrt.Libs.Floating
         // (f --)
         private int PrintFloatAction()
         {
-            _interpreter.Output.Write("{0} ", new DoubleVal()
+            _interpreter.Output.Write("{0} ", new FloatingPointValue()
             {
                 B = _interpreter.Pop(),
                 A = _interpreter.Pop(),
@@ -440,7 +440,7 @@ namespace EFrt.Libs.Floating
         // (f -- d)
         private int FloatToDoubleCellIntAction()
         {
-            var v = new LongVal()
+            var v = new DoubleCellIntegerValue()
             {
                 D = (long)FPop()
             };
@@ -454,7 +454,7 @@ namespace EFrt.Libs.Floating
         // (d -- f)
         private int DoubleCellIntToFloatAction()
         {
-            FPush(new LongVal()
+            FPush(new DoubleCellIntegerValue()
             {
                 B = _interpreter.Pop(),
                 A = _interpreter.Pop()

@@ -51,7 +51,7 @@ namespace EFrt.Libs.Double
 
         private long DGet(int index)
         {
-            return new LongVal()
+            return new DoubleCellIntegerValue()
             {
                 A = _interpreter.Pick(index * 2),
                 B = _interpreter.Pick(index * 2 + 2),
@@ -61,7 +61,7 @@ namespace EFrt.Libs.Double
 
         private long DPeek()
         {
-            return new LongVal()
+            return new DoubleCellIntegerValue()
             {
                 B = _interpreter.Pick(1),
                 A = _interpreter.Peek(),
@@ -71,7 +71,7 @@ namespace EFrt.Libs.Double
 
         private long DPop()
         {
-            return new LongVal()
+            return new DoubleCellIntegerValue()
             {
                 B = _interpreter.Pop(),
                 A = _interpreter.Pop(),
@@ -81,7 +81,7 @@ namespace EFrt.Libs.Double
 
         private void DPush(long value)
         {
-            var v = new LongVal()
+            var v = new DoubleCellIntegerValue()
             {
                 D = value
             };
@@ -175,7 +175,7 @@ namespace EFrt.Libs.Double
         // (d --)
         private int DDotAction()
         {
-            _interpreter.Output.Write("{0} ", new LongVal()
+            _interpreter.Output.Write("{0} ", new DoubleCellIntegerValue()
             {
                 B = _interpreter.Pop(),
                 A = _interpreter.Pop(),

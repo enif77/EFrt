@@ -62,7 +62,7 @@ namespace EFrt.Libs.DoubleExt
 
         private long DPop()
         {
-            return new LongVal()
+            return new DoubleCellIntegerValue()
             {
                 B = _interpreter.Pop(),
                 A = _interpreter.Pop(),
@@ -72,7 +72,7 @@ namespace EFrt.Libs.DoubleExt
 
         private void DPush(long value)
         {
-            var v = new LongVal()
+            var v = new DoubleCellIntegerValue()
             {
                 D = value
             };

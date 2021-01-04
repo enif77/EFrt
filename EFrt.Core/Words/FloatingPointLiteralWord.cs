@@ -27,13 +27,13 @@ namespace EFrt.Core.Words
                 return 1;
             };
 
-            _value = new DoubleVal()
+            _value = new FloatingPointValue()
             {
                 D = value
             };
         }
 
 
-        private DoubleVal _value;
+        private FloatingPointValue _value;
     }
 }

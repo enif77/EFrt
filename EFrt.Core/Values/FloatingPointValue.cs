@@ -6,9 +6,9 @@ namespace EFrt.Core.Values
 
 
     [StructLayout(LayoutKind.Explicit)]
-    public struct LongVal
+    public struct FloatingPointValue
     {
-        [FieldOffset(0)] public long D;
+        [FieldOffset(0)] public double D;
         [FieldOffset(0)] public int A;
         [FieldOffset(4)] public int B;
     }
