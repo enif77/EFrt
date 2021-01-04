@@ -18,6 +18,8 @@ Words definition table columns:
 | ' x      | no   | IC   | **Obtain execution token**<br>( -- xt)<br>Places the execution token of the following word on the stack. |
 | (        | yes  | IC   | **Comment**<br>Skips all source characters till the closing ) character. |
 | *        | no   | IC   | **n3 = n1 * n2**<br>(n1 n2 -- n3)<br>Multiplies n1 and n2 and leaves the product on the stack. |
+| */       | no   | IC   | **n4 = (n1 * n2) / n3**<br>(n1 n2 n3 -- n4)<br>Multiplies n1 and n2 producing the double-cell result d. Divides d by n3 giving the single cell quotient n4. |
+| */MOD    | no   | IC   | **n5 = (n1 * n2) / n3, n4 = (n1 * n2) % n3**<br>(n1 n2 n3 -- n4 n5)<br>Multiplies n1 and n2 producing the double-cell result d. Divides d by n3 giving the single cell remainder n4 and singlecell quotient n5. |
 | +        | no   | IC   | **n3 = n1 + n2**<br>(n1 n2 -- n3)<br>Adds n1 and n2 and leaves the sum on the stack. |
 | +LOOP    | yes  | C    | **Add to loop index**<br>(n -- )<br>Adds n to the index of the active loop. If the limit is reached, the loop is exited. Otherwise, another iteration is begun. |
 | ,        | no   | IC   | **Store in heap**<br>Reserves a single cell of data heap, initialising it to n. |
@@ -108,7 +110,7 @@ Note: The `."` word works like `S" str" S.` words together.
 
 ## TODO
 
-Words: `*/ */MOD +! >NUMBER ACCEPT ALIGNALIGNED CELL+ COUNT DECIMAL 
+Words: `+! >NUMBER ACCEPT ALIGNALIGNED CELL+ COUNT DECIMAL 
   ENVIRONMENT? EVALUATE FILL FIND FM/MOD LSHIFT M* MOVE RSHIFT SM/REM
   TYPE U. U< UM* UM/MOD WORD [ x ]`
 

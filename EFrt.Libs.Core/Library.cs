@@ -46,6 +46,8 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "'", TickAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "(", ParenAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "*", StarAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "*/", StarSlashAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "*/MOD", StarSlashModAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "+", PlusAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "+LOOP", PlusLoopAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ",", CommaAction));
@@ -208,6 +210,26 @@ namespace EFrt.Libs.Core
         private int StarAction()
         {
             Function((n1, n2) => n1 * n2);
+
+            return 1;
+        }
+
+        // (n1 n2 n3 -- n4)
+        private int StarSlashAction()
+        {
+            var n3 = (long)_interpreter.Pop();
+            _interpreter.Push((int)((long)_interpreter.Pop() * (long)_interpreter.Pop() / n3));  // n2 * n1 / n3 
+
+            return 1;
+        }
+
+        // (n1 n2 n3 -- n4 n5)
+        private int StarSlashModAction()
+        {
+            var n3 = (long)_interpreter.Pop();
+            var d = (long)_interpreter.Pop() * (long)_interpreter.Pop();
+            _interpreter.Push((int)(d % n3));  // n4 = d % n3
+            _interpreter.Push((int)(d / n3));  // n5 = d / n3
 
             return 1;
         }
