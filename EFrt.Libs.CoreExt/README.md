@@ -17,6 +17,9 @@ Words definition table columns:
 | .(       | yes  | IC   | **Print constant string**<br>Immediatelly prints the string that follows in the input stream. |
 | 0<>      | no   | IC   | **Nonzero**<br>(n -- flag)<br>Returns -1 if n1 is not equal to 0, 0 otherwise. |
 | 0>       | no   | IC   | **Greater than zero**<br>(n -- flag)<br>Returns -1 if n1 is greater than 0, 0 otherwise. |
+| 2>R      | no   | IC   | **To return stack**<br>(n1 n2 -- ) [ -- n1 n2]<br>Removes top two item from the stack and pushes them onto the return stack. |
+| 2R>      | no   | IC   | **From return stack**<br>( -- n1 n2) [n1 n2 -- ]<br>Removes top two item from the return stack and pushes them onto the data stack. |
+| 2R@      | no   | IC   | **Fetch from return stack**<br>( -- n1 n2) [n1 n2 -- n1 n2]<br>Reads top two item from the return stack and pushes them onto the data stack. |
 | :NONAME  | no   | IC   | **Begin definition without a name**<br>( -- xt)<br>Begins compilation of a word without a name. The ; word then leaves this new word execution token on the stack. |
 | <>       | no   | IC   | **Not equal**<br>(n1 n2 -- flag)<br>Returns -1 if n1 is not equal to n2, 0 otherwise. |
 | ?DO      | yes  | C    | **Conditional loop**<br>(limit index -- ) [ - limit index ]<br>If n equals limit, skip immediately to the matching LOOP or +LOOP. Otherwise, enter the loop, which is thenceforth treated as a normal DO loop. |
@@ -48,7 +51,7 @@ Words definition table columns:
 
 #### TODO
 
-Words: `.R 2>R 2R> 2R@ CASE COMPILE, CONVERT ENDCASE ENDOF ERASE HEX MARKER OF PARSE
+Words: `.R CASE COMPILE, CONVERT ENDCASE ENDOF ERASE HEX MARKER OF PARSE
   U.R U> UNUSED WITHIN [COMPILE]`
 
 Variables: `...`

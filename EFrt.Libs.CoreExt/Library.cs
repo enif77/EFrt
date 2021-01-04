@@ -41,6 +41,9 @@ namespace EFrt.Libs.CoreExt
             _interpreter.AddWord(new ImmediateWord(_interpreter, ".(", DotParenAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "0<>", ZeroNotEqualsAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "0>", ZeroGreaterAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2>R", TwoToRAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2R>", TwoRFromAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2R@", TwoRFetchAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ":NONAME", NonameAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, ";", SemicolonAction));  // Extended version.
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "<>", NotEqualsAction));
@@ -122,6 +125,35 @@ namespace EFrt.Libs.CoreExt
         private int ZeroGreaterAction()
         {
             Function((a) => (a > 0) ? -1 : 0);
+
+            return 1;
+        }
+
+        // (n1 n2 -- ) [ -- n1 n2]
+        private int TwoToRAction()
+        {
+            var n2 = _interpreter.Pop();
+            _interpreter.RPush(_interpreter.Pop());
+            _interpreter.RPush(n2);
+
+            return 1;
+        }
+
+        // ( -- n1 n2) [n1 n2 -- ]
+        private int TwoRFromAction()
+        {
+            var n2 = _interpreter.RPop();
+            _interpreter.Push(_interpreter.RPop());
+            _interpreter.Push(n2);
+
+            return 1;
+        }
+
+        // ( -- n1 n2) [n1 n2 -- ]
+        private int TwoRFetchAction()
+        {
+            _interpreter.Push(_interpreter.RPick(1));  // n1
+            _interpreter.Push(_interpreter.RPick(0));  // n2
 
             return 1;
         }
