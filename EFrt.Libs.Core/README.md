@@ -70,6 +70,7 @@ Words definition table columns:
 | EMIT     | no   | IC   | **Print char**<br>(n -- )<br>Prints out a character represented by a number on the top of the stack. |
 | EXECUTE  | no   | IC   | **Execute word**<br>(xt -- )<br>Executes the word with execution token xt. |
 | EXIT     | yes  | C    | **Exit definition**<br>Exit from the current definition immediately. Note that EXIT cannot be used within a DO—LOOP without UNLOOP. Use LEAVE instead. |
+| FM/MOD   | no   | IC   | **n2 = d % n1, n3 = d / n1**<br>(d n1 -- n2 n3)<br>Divide d by n1, giving the floored quotient n3 and the remainder n2. |
 | HERE     | no   | IC   | **Heap address**<br>( -- addr)<br>The current heap allocation address is placed on the top of the stack. addr + 1 is the first free heap cell. |
 | I        | yes  | C    | **Inner loop index**<br>( -- n) [n -- n]<br>The index of the innermost DO—LOOP is placed on the stack. |
 | IF       | yes  | C    | **Conditional statement**<br>(flag --)<br>If flag is nonzero, the following statements are executed. Otherwise, execution resumes after the matching ELSE clause, if any, or after the matching THEN. |
@@ -79,6 +80,8 @@ Words definition table columns:
 | LEAVE    | yes  | C    | **Exit DO—LOOP**<br>The innermost DO—LOOP is immediately exited. Execution resumes after the LOOP statement marking the end of the loop. |
 | LITERAL  | yes  | C    | **Compile literal**<br>(n -- )<br>Compiles the value on the top of the stack into the current definition. When the definition is executed, that value will be pushed onto the top of the stack. |
 | LOOP     | yes  | C    | **Increment loop index**<br>Adds one to the index of the active loop. If the limit is reached, the loop is exited. Otherwise, another iteration is begun. |
+| LSHIFT   | no   | IC   | **n2 = n1 << u**<br>(n1 u -- n2)<br>Perform a logical left shift of u bit-places on x1, giving x2. |
+| M*       | no   | IC   | **d = n1 * n2**<br>(n1 n2 -- d)<br>d is the signed product of n1 times n2. |
 | MAX      | no   | IC   | **Maximum**<br>(n1 n2 -- n3)<br>The greater of n1 and n2 is left on the top of the stack. |
 | MIN      | no   | IC   | **Minimum**<br>(n1 n2 -- n3)<br>The lesser of n1 and n2 is left on the top of the stack. |
 | MOD      | no   | IC   | **Modulus (remainder)**<br>(n1 n2 -- n3)<br>The remainder when n1 is divided by n2 is left on the top of the stack. |
@@ -92,8 +95,10 @@ Words definition table columns:
 | RECURSE  | yes  | C    | **Recurse**<br><br>Appends a call of the current word definition to the current word definition. The same thing can be done simple by using the current words definition name. |
 | REPEAT   | yes  | C    | **Close BEGIN—WHILE—REPEAT loop**<br>( -- n)<br>Another iteration of the current BEGIN—WHILE—REPEAT loop having been completed, execution continues after the matching BEGIN. |
 | ROT      | no   | IC   | **Rotate 3 items**<br>(n1 n2 n3 -- n2 n3 n1)<br>The third item on the stack is placed on the top of the stack and the second and first items are moved down. |
+| RSHIFT   | no   | IC   | **n2 = n1 >> u**<br>(n1 u -- n2)<br>Perform a logical right shift of u bit-places on x1, giving x2. |
 | S" str   | no   | IC   | **String literal**<br>{ -- s}<br>Consume all source characters till the closing " character, creating a string from them and storing the result on the top of the object stack. |
 | S>D      | no   | IC   | **Single cell number to double cell number**<br>(n -- d)<br>Converts a single cell number (32bit, int) to a double cell number (64bit, long). |
+| SM/REM   | no   | IC   | **n2 = d % n1, n3 = d / n1**<br>(d n1 -- n2 n3)<br>Divide d by n1, giving the symmetric quotient n3 and the remainder n2. |
 | SPACE    | no   | IC   | **Print SPACE**<br>Prints out the SPACE character. |
 | SPACES   | no   | IC   | **Print spaces**<br>(n -- )<br>Prints out N characters of SPACE, where N is a number on the top of the stack. |
 | SWAP     | no   | IC   | **Swap top two items**<br>(n1 n2 -- n2 n1)<br>The top two stack items are interchanged. |
@@ -113,14 +118,14 @@ Note: The `."` word works like `S" str" S.` words together.
 ## TODO
 
 Words: `>NUMBER ACCEPT ALIGNALIGNED CELL+ COUNT DECIMAL 
-  ENVIRONMENT? EVALUATE FILL FIND FM/MOD LSHIFT M* MOVE RSHIFT SM/REM
-  TYPE U. U< UM* UM/MOD WORD [ x ]`
+  ENVIRONMENT? EVALUATE FILL FIND MOVE
+  U. U< UM* UM/MOD WORD [ x ]`
 
 Words (?): `>BODY`
 
 Words (opt): `SYSTEM INCLUDE ARRAY x TRACE
   (XDO) (X?DO) (XLOOP) (+XLOOP) WORDSD  INT STRING 
-  S! BRANCH x ?BRANCH x`
+  S! BRANCH x ?BRANCH x SHIFT`
 
 Variables: `BASE STATE`
 

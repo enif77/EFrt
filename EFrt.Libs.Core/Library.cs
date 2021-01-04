@@ -98,6 +98,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "EMIT", EmitAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "EXECUTE", ExecuteAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "EXIT", ExitAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "FM/MOD", FMSlashModAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "HERE", HereAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "I", GetInnerIndexAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "IF", IfAction));
@@ -106,6 +107,8 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new ImmediateWord(_interpreter, "J", GetOuterIndexAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "LEAVE", LeaveAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "LITERAL", LiteralAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "LSHIFT", LShiftAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "M*", MStarAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "LOOP", LoopAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "MAX", MaxAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "MIN", MinAction));
@@ -120,8 +123,10 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new ImmediateWord(_interpreter, "RECURSE", RecurseAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "REPEAT", RepeatAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ROT", RoteAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "RSHIFT", RShiftAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "S\"", SQuoteAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "S>D", SToDAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "SM/REM", SMSlashRemAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "SPACE", SpaceAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "SPACES", SpacesAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "SWAP", SwapAction));
@@ -150,6 +155,16 @@ namespace EFrt.Libs.Core
             var stack = _interpreter.State.Stack;
             var top = stack.Top;
             stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
+        }
+
+
+        private long DPop()
+        {
+            return new DoubleCellIntegerValue()
+            {
+                B = _interpreter.Pop(),
+                A = _interpreter.Pop(),
+            }.D;
         }
 
 
@@ -795,6 +810,19 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
+        // (d n1 -- n2 n3)
+        private int FMSlashModAction()
+        {
+            // TODO: Fix to produce floored quotient.
+
+            var n1 = (long)_interpreter.Pop();
+            var d = DPop();
+            _interpreter.Push((int)(d % n1));  // n2
+            _interpreter.Push((int)(d / n1));  // n3
+
+            return 1;
+        }
+
         // ( -- addr)
         private int HereAction()
         {
@@ -919,6 +947,23 @@ namespace EFrt.Libs.Core
             {
                 ((IBranchingWord)cWord).SetBranchTargetIndex(loopIndex);
             }
+
+            return 1;
+        }
+
+        // (n1 u -- n2)
+        private int LShiftAction()
+        {
+            var bits = _interpreter.Pop();
+            _interpreter.Push(_interpreter.Pop() << bits);
+
+            return 1;
+        }
+
+        // (n1 n2 -- d)
+        private int MStarAction()
+        {
+            DPush((long)_interpreter.Pop() * (long)_interpreter.Pop());
 
             return 1;
         }
@@ -1066,6 +1111,15 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
+        // (n1 u -- n2)
+        private int RShiftAction()
+        {
+            var bits = _interpreter.Pop();
+            _interpreter.Push(_interpreter.Pop() >> bits);
+
+            return 1;
+        }
+
         // { -- s}
         private int SQuoteAction()
         {
@@ -1113,6 +1167,19 @@ namespace EFrt.Libs.Core
         private int SToDAction()
         {
             DPush(_interpreter.Pop());
+
+            return 1;
+        }
+
+        // (d n1 -- n2 n3)
+        private int SMSlashRemAction()
+        {
+            // TODO: Fix to produce symmetric quotient.
+
+            var n1 = (long)_interpreter.Pop();
+            var d = DPop();
+            _interpreter.Push((int)(d % n1));  // n2
+            _interpreter.Push((int)(d / n1));  // n3
 
             return 1;
         }
