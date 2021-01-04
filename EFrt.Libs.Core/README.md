@@ -54,7 +54,7 @@ Words definition table columns:
 | BL       | no   | IC   | **Blank**<br>( -- n)<br>Constant that leaves 32 (the ASCII code of the SPACE char) on the top of the stack. |
 | CELLS    | no   | IC   | **Cells to bytes**<br>(n1 -- n2)<br>Converts n1 cells to n2 memory address units (bytes). Does actually nothing, since the heap is addressed in cells and not in bytes. |
 | CHAR ccc | no   | IC   | **Char**<br>( -- c)<br>Skip leading spaces. Parse the string ccc and return c, the display code representing the first character of ccc. |
-| CONSTANT x | no   | I    | **Declare constant**<br>(n --)<br>Declares a constant named x. When x is executed, the value n will be left on the stack. |
+| CONSTANT x | no   | I    | **Declare constant**<br>(n -- )<br>Declares a constant named x. When x is executed, the value n will be left on the stack. |
 | CR       | no   | IC   | **Carriage return**<br>The folowing output will start at the new line. |
 | CREATE   | no   | IC   | **Create object**<br>Create an object, given the name which appears next in the input stream, with a default action of pushing the parameter field address of the object when executed. No storage is allocated; normally the parameter field will be allocated and initialised by the defining word code that follows the CREATE. |
 | DEPTH    | no   | IC   | **Stack depth**<br>( -- n)<br>Returns the number of items on the stack before DEPTH was executed. |
@@ -81,6 +81,7 @@ Words definition table columns:
 | NEGATE   | no   | IC   | **n2 = -n1**<br>(n1 -- n2)<br>Negates the value the top of the stack. |
 | OR       | no   | IC   | **Bitwise or**<br>(n1 n2 -- n3)<br>Stores the bitwise or of n1 and n2 on the stack. |
 | OVER     | no   | IC   | **Duplicate second item**<br>(n1 n2 -- n1 n2 n1)<br>The second item on the stack is copied to the top. |
+| POSTPONE x | yes  | C    | **Append word**<br>( -- )<br>During compilation finds a word with the name x and adds it to the new word definition. |
 | QUIT     | no   | IC   | **Quit execution**<br>The return stack is cleared and control is returned to the interpreter. The stack and the object stack are not disturbed. |
 | R>       | no   | IC   | **From return stack**<br>( -- n) [n - ]<br>The top value is removed from the return stack and pushed onto the stack. |
 | @R       | no   | IC   | **Fetch return stack**<br>( -- n) [n - n]<br>The top value on the return stack is pushed onto the stack. The value is not removed from the return stack. |
@@ -107,8 +108,8 @@ Note: The `."` word works like `S" str" S.` words together.
 ## TODO
 
 Words: `*/ */MOD +! >NUMBER ABORT" str" ACCEPT ALIGNALIGNED CELL+ COUNT DECIMAL 
-  ENVIRONMENT? EVALUATE FILL FIND FM/MOD LSHIFT M* MOVE POSTPONE RSHIFT SM/REM
-  TYPE U. U< UM* UM/MOD UNLOOP WORD [ x ]`
+  ENVIRONMENT? EVALUATE FILL FIND FM/MOD LSHIFT M* MOVE RSHIFT SM/REM
+  TYPE U. U< UM* UM/MOD WORD [ x ]`
 
 Words (?): `>BODY`
 

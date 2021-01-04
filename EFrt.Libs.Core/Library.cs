@@ -110,6 +110,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "NEGATE", NegateAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "OR", OrAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "OVER", OverAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "POSTPONE", PostponeAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "QUIT", QuitAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "R>", RFromAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "R@", RFetchAction));
@@ -896,6 +897,20 @@ namespace EFrt.Libs.Core
         private int OverAction()
         {
             _interpreter.Over();
+
+            return 1;
+        }
+
+        // POSTPONE word-name
+        // ( -- )
+        private int PostponeAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("POSTPONE outside a new word definition.");
+            }
+
+            _interpreter.WordBeingDefined.AddWord(_interpreter.GetWord(_interpreter.GetWordName()));
 
             return 1;
         }
