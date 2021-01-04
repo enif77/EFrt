@@ -15,6 +15,7 @@ Words definition table columns:
 | Name     | Imm. | Mode | Description |
 | ---      | ---  | ---  | --- |
 | 2CONSTANT x | no   | I   | **Double word constant**<br>(n1 n2 -- )<br>Declares a double word constant x. When x is executed, n1 and n2 are placed on the stack. |
+| 2LITERAL | yes  | C    | **Compile literal**<br>(d -- )<br>Compiles the value on the top of the stack into the current definition. When the definition is executed, that value will be pushed onto the top of the stack. |
 | 2VARIABLE x | no   | I   | **Double variable**<br>Creates a two cell (8 byte) variable named x. When x is executed, the address of the 8 byte area is placed on the stack. |
 | D+       | no   | IC   | **d3 = d1 + d2**<br>(d1 d2 -- d3)<br>Adds d1 and d2 and leaves the sum on the stack. |
 | D-       | no   | IC   | **d3 = d1 - d2**<br>(d1 d2 -- d3)<br>Substracts d2 from d1 and leaves the difference on the stack. |
@@ -33,5 +34,5 @@ Words definition table columns:
 
 ## TODO
 
-Words: `2LITERAL D.R M*/ M+`
+Words: `D.R M*/ M+`
 

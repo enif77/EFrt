@@ -29,6 +29,7 @@ namespace EFrt.Libs.Double
         public void DefineWords()
         {
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2CONSTANT", TwoConstantAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "2LITERAL", TwoLiteralAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2VARIABLE", TwoVariableAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "D+", DPlusAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "D-", DMinusAction));
@@ -141,6 +142,19 @@ namespace EFrt.Libs.Double
             _interpreter.BeginNewWordCompilation();
             _interpreter.AddWord(new DoubleCellConstantWord(_interpreter, _interpreter.GetWordName(), _interpreter.Pop(), n2));
             _interpreter.EndNewWordCompilation();
+
+            return 1;
+        }
+
+        // (n1 n2 -- )
+        private int TwoLiteralAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("2LITERAL outside a new word definition.");
+            }
+
+            _interpreter.WordBeingDefined.AddWord(new DoubleCellIntegerLiteralWord(_interpreter, DPop()));
 
             return 1;
         }
