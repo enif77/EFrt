@@ -49,6 +49,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "*/", StarSlashAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "*/MOD", StarSlashModAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "+", PlusAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "+!", PlusStoreAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "+LOOP", PlusLoopAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ",", CommaAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "-", MinusAction));
@@ -78,7 +79,6 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "@", FetchAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ABORT", AbortAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "ABORT\"", AbortWithMessageAction));
-            //_interpreter.AddWord(new PrimitiveWord(_interpreter, "ABORT\"", AbortMessageAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ABS", AbsAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ALLOT", AllotAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "AND", AndAction));
@@ -238,6 +238,15 @@ namespace EFrt.Libs.Core
         private int PlusAction()
         {
             Function((n1, n2) => n1 + n2);
+
+            return 1;
+        }
+
+        // (n addr -- )
+        private int PlusStoreAction()
+        {
+            var addr = _interpreter.Pop();
+            _interpreter.State.Heap.Items[addr] += _interpreter.Pop();
 
             return 1;
         }

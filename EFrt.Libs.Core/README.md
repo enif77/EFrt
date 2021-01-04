@@ -21,6 +21,7 @@ Words definition table columns:
 | */       | no   | IC   | **n4 = (n1 * n2) / n3**<br>(n1 n2 n3 -- n4)<br>Multiplies n1 and n2 producing the double-cell result d. Divides d by n3 giving the single cell quotient n4. |
 | */MOD    | no   | IC   | **n5 = (n1 * n2) / n3, n4 = (n1 * n2) % n3**<br>(n1 n2 n3 -- n4 n5)<br>Multiplies n1 and n2 producing the double-cell result d. Divides d by n3 giving the single cell remainder n4 and singlecell quotient n5. |
 | +        | no   | IC   | **n3 = n1 + n2**<br>(n1 n2 -- n3)<br>Adds n1 and n2 and leaves the sum on the stack. |
+| +!       | no   | IC   | **addr += n**<br>(n addr -- )<br>Adds n to the contens at the address addr. |
 | +LOOP    | yes  | C    | **Add to loop index**<br>(n -- )<br>Adds n to the index of the active loop. If the limit is reached, the loop is exited. Otherwise, another iteration is begun. |
 | ,        | no   | IC   | **Store in heap**<br>Reserves a single cell of data heap, initialising it to n. |
 | -        | no   | IC   | **n3 = n1 - n2**<br>(n1 n2 -- n3)<br>Substracts n2 from n1 and leaves the difference on the stack. |
@@ -110,7 +111,7 @@ Note: The `."` word works like `S" str" S.` words together.
 
 ## TODO
 
-Words: `+! >NUMBER ACCEPT ALIGNALIGNED CELL+ COUNT DECIMAL 
+Words: `>NUMBER ACCEPT ALIGNALIGNED CELL+ COUNT DECIMAL 
   ENVIRONMENT? EVALUATE FILL FIND FM/MOD LSHIFT M* MOVE RSHIFT SM/REM
   TYPE U. U< UM* UM/MOD WORD [ x ]`
 
