@@ -416,21 +416,30 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// <param name="func">A function.</param>
         void DFunction(Func<long, long, long> func);
 
+
         /// <summary>
         /// stack[top] = func(stack[top])
         /// </summary>
         /// <param name="func">A function.</param>
         void FFunction(Func<double, double> func);
 
+        /// <summary>
+        /// stack[top] = func(stack[top - 1], stack[top])
+        /// </summary>
+        /// <param name="func">A function.</param>
         void FFunction(Func<double, double, double> func);
 
 
         /// <summary>
-        /// ostack[top] = func(ostack[top])
+        /// obj-stack[top] = func(obj-stack[top])
         /// </summary>
         /// <param name="func">A function.</param>
         void SFunction(Func<string, string> func);
 
+        /// <summary>
+        /// obj-stack[top] = func(obj-stack[top - 1], obj-stack[top])
+        /// </summary>
+        /// <param name="func">A function.</param>
         void SFunction(Func<string, string, string> func);
 
         #endregion
