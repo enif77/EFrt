@@ -90,25 +90,7 @@ namespace EFrt.Libs.CoreExt
 
         private int DotParenAction()
         {
-            var c = _interpreter.NextChar();
-            while (_interpreter.CurrentChar != 0)
-            {
-                if (_interpreter.CurrentChar == ')')
-                {
-                    _interpreter.NextChar();
-
-                    break;
-                }
-
-                _interpreter.Output.Write("{0}", _interpreter.CurrentChar);
-
-                c = _interpreter.NextChar();
-            }
-
-            if (c != ')')
-            {
-                throw new Exception("')' expected.");
-            }
+            _interpreter.Output.Write(_interpreter.GetTerminatedString(')'));
 
             return 1;
         }

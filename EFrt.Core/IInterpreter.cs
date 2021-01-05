@@ -47,10 +47,16 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         InterpreterStateCode InterpreterState { get; }
         
 
-        #region tokenizer
+        #region parsing
 
+        /// <summary>
+        /// The last character red from the source.
+        /// </summary>
         char CurrentChar { get; }
 
+        /// <summary>
+        /// A position in the source in consumed characters.
+        /// </summary>
         int SourcePos { get; }
 
 
@@ -60,22 +66,19 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// <returns>A character.</returns>
         char NextChar();
 
-
-        bool IsWhite();
-
-        bool IsDigit();
-
+        /// <summary>
+        /// Returns a word name following in the input stream.
+        /// </summary>
+        /// <param name="toUpperCase">If true (the default), returned word is converted to UPPERCASE.</param>
+        /// <returns>A word name.</returns>
+        string GetWordName(bool toUpperCase = true);
 
         /// <summary>
-        /// Skips all white characters in the source from the current position.
+        /// Gets a string terminated by a terminator char.
         /// </summary>
-        void SkipWhite();
-
-        /// <summary>
-        /// Extracts and returns the next token from the source.
-        /// </summary>
-        /// <returns>A token.</returns>
-        Token NextTok();
+        /// <param name="terminator">A character terminating the string.</param>
+        /// <returns>A string.</returns>
+        string GetTerminatedString(char terminator);
 
         #endregion
 
@@ -137,12 +140,6 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// </summary>
         NonPrimitiveWord WordBeingDefined { get; set; }
 
-
-        /// <summary>
-        /// Returns a word name following in the input stream.
-        /// </summary>
-        /// <returns>A word name.</returns>
-        string GetWordName();
 
         /// <summary>
         /// Begins a new word compilation.

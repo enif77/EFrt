@@ -323,29 +323,7 @@ namespace EFrt.Libs.Core
                 throw new Exception(".\" outside a new word definition.");
             }
 
-            var sb = new StringBuilder();
-
-            var c = _interpreter.NextChar();
-            while (_interpreter.CurrentChar != 0)
-            {
-                if (_interpreter.CurrentChar == '"')
-                {
-                    _interpreter.NextChar();
-
-                    break;
-                }
-
-                sb.Append(_interpreter.CurrentChar);
-
-                c = _interpreter.NextChar();
-            }
-
-            if (c != '"')
-            {
-                throw new Exception("'\"' expected.");
-            }
-
-            _interpreter.WordBeingDefined.AddWord(new PrintStringWord(_interpreter, sb.ToString()));
+            _interpreter.WordBeingDefined.AddWord(new PrintStringWord(_interpreter, _interpreter.GetTerminatedString('"')));
 
             return 1;
         }
@@ -579,31 +557,7 @@ namespace EFrt.Libs.Core
                 throw new Exception("ABORT\" outside a new word definition.");
             }
 
-            // TODO: Interpreter.GetTerminatedString(string terminator)
-
-            var sb = new StringBuilder();
-
-            var c = _interpreter.NextChar();
-            while (_interpreter.CurrentChar != 0)
-            {
-                if (_interpreter.CurrentChar == '"')
-                {
-                    _interpreter.NextChar();
-
-                    break;
-                }
-
-                sb.Append(_interpreter.CurrentChar);
-
-                c = _interpreter.NextChar();
-            }
-
-            if (c != '"')
-            {
-                throw new Exception("'\"' expected.");
-            }
-
-            _interpreter.WordBeingDefined.AddWord(new AbortWithMessageWord(_interpreter, sb.ToString()));
+            _interpreter.WordBeingDefined.AddWord(new AbortWithMessageWord(_interpreter, _interpreter.GetTerminatedString('"')));
 
             return 1;
         }
@@ -651,17 +605,7 @@ namespace EFrt.Libs.Core
         // ( -- n)
         private int CharAction()
         {
-            // Get the name.
-            var tok = _interpreter.NextTok();
-            switch (tok.Code)
-            {
-                case TokenType.Word:
-                    _interpreter.Push(tok.SValue[0]);
-                    break;
-
-                default:
-                    throw new Exception("A name expected.");
-            }
+            _interpreter.Push(_interpreter.GetWordName(false)[0]);
 
             return 1;
         }
@@ -1123,41 +1067,15 @@ namespace EFrt.Libs.Core
         // { -- s}
         private int SQuoteAction()
         {
-            var sb = new StringBuilder();
-
-            var c = _interpreter.NextChar();
-            while (_interpreter.CurrentChar != 0)
-            {
-                if (_interpreter.CurrentChar == '"')
-                {
-                    _interpreter.NextChar();
-
-                    break;
-                }
-
-                sb.Append(_interpreter.CurrentChar);
-
-                c = _interpreter.NextChar();
-            }
-
-            if (c != '"')
-            {
-                throw new Exception("'\"' expected.");
-            }
-
-            c = _interpreter.CurrentChar;
-            if (c != 0 && Tokenizer.IsWhite(c) == false)
-            {
-                throw new Exception("The EOF or an white character after a string literal expected.");
-            }
+            var s = _interpreter.GetTerminatedString('"');
 
             if (_interpreter.IsCompiling)
             {
-                _interpreter.WordBeingDefined.AddWord(new StringLiteralWord(_interpreter, sb.ToString()));
+                _interpreter.WordBeingDefined.AddWord(new StringLiteralWord(_interpreter, s));
             }
             else
             {
-                _interpreter.OPush(sb.ToString());
+                _interpreter.OPush(s);
             }
 
             return 1;

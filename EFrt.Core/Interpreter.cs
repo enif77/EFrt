@@ -3,6 +3,7 @@
 namespace EFrt.Core
 {
     using System;
+    using System.Text;
 
     using EFrt.Core.Values;
     using EFrt.Core.Words;
@@ -64,7 +65,7 @@ namespace EFrt.Core
         }
 
 
-        #region tokenizer
+        #region parsing
 
         private Tokenizer _tokenizer;
         public char CurrentChar => _tokenizer.CurrentChar;
@@ -77,27 +78,54 @@ namespace EFrt.Core
         }
 
 
-        public bool IsWhite()
+        public string GetWordName(bool toUpperCase = true)
         {
-            return Tokenizer.IsWhite(_tokenizer.CurrentChar);
+            // Get the name of the new word.
+            var tok = _tokenizer.NextTok();
+            switch (tok.Code)
+            {
+                case TokenType.Eof:
+                    throw new Exception("A name of a word expected.");
+
+                case TokenType.Word:
+                    return tok.SValue.ToUpperInvariant();
+
+                default:
+                    throw new Exception($"Unexpected token type ({tok}) instead of a word name.");
+            }
         }
 
 
-        public bool IsDigit()
+        public string GetTerminatedString(char terminator)
         {
-            return Tokenizer.IsDigit(_tokenizer.CurrentChar);
-        }
+            var sb = new StringBuilder();
 
+            var c = NextChar();
+            while (CurrentChar != 0)
+            {
+                if (CurrentChar == terminator)
+                {
+                    NextChar();
 
-        public void SkipWhite()
-        {
-            _tokenizer.SkipWhite();
-        }
+                    break;
+                }
 
+                sb.Append(CurrentChar);
 
-        public Token NextTok()
-        {
-            return _tokenizer.NextTok();
+                c = NextChar();
+            }
+
+            if (c != terminator)
+            {
+                throw new Exception($"'{terminator}' expected.");
+            }
+
+            if (CurrentChar != 0 && Tokenizer.IsWhite(_tokenizer.CurrentChar) == false)
+            {
+                throw new Exception("The EOF or an white character after a string terminator expected.");
+            }
+
+            return sb.ToString();
         }
 
         #endregion
@@ -157,25 +185,6 @@ namespace EFrt.Core
         #region word compilation
 
         public NonPrimitiveWord WordBeingDefined { get; set; }
-
-
-        public string GetWordName()
-        {
-            // Get the name of the new word.
-            var tok = NextTok();
-            switch (tok.Code)
-            {
-                case TokenType.Eof:
-                    throw new Exception($"A name of a new word expected.");
-
-                // Start the new word definition compilation.
-                case TokenType.Word:
-                    return tok.SValue.ToUpperInvariant();
-
-                default:
-                    throw new Exception($"Unknown token type ({tok}) in a new word definition.");
-            }
-        }
 
 
         public void BeginNewWordCompilation()
