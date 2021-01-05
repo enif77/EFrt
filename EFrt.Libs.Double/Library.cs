@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Libs.Double
 {
@@ -50,90 +50,6 @@ namespace EFrt.Libs.Double
         }
 
 
-        private long DGet(int index)
-        {
-            return new DoubleCellIntegerValue()
-            {
-                A = _interpreter.Pick(index * 2),
-                B = _interpreter.Pick(index * 2 + 2),
-            }.D;
-        }
-
-
-        private long DPeek()
-        {
-            return new DoubleCellIntegerValue()
-            {
-                B = _interpreter.Pick(1),
-                A = _interpreter.Peek(),
-            }.D;
-        }
-
-
-        private long DPop()
-        {
-            return new DoubleCellIntegerValue()
-            {
-                B = _interpreter.Pop(),
-                A = _interpreter.Pop(),
-            }.D;
-        }
-
-
-        private void DPush(long value)
-        {
-            var v = new DoubleCellIntegerValue()
-            {
-                D = value
-            };
-
-            _interpreter.Push(v.A);
-            _interpreter.Push(v.B);
-        }
-
-
-        private void Function(Func<long, int> func)
-        {
-            //var stack = _interpreter.Stack;
-            //var top = stack.Top;
-            //stack.Items[stack.Top] = func(stack.Items[top]);
-
-            _interpreter.Push(func(DPop()));
-        }
-
-
-        private void Function(Func<long, long> func)
-        {
-            //var stack = _interpreter.Stack;
-            //var top = stack.Top;
-            //stack.Items[stack.Top] = func(stack.Items[top]);
-
-            DPush(func(DPop()));
-        }
-
-
-        private void Function(Func<long, long, int> func)
-        {
-            //var stack = _interpreter.Stack;
-            //var top = stack.Top;
-            //stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
-
-            var b = DPop();
-            _interpreter.Push(func(DPop(), b));
-        }
-
-
-        private void Function(Func<long, long, long> func)
-        {
-            //var stack = _interpreter.Stack;
-            //var top = stack.Top;
-            //stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
-
-            var b = DPop();
-            DPush(func(DPop(), b));
-        }
-
-
         // 2CONSTANT word-name
         // (n1 n2 -- )
         private int TwoConstantAction()
@@ -154,7 +70,7 @@ namespace EFrt.Libs.Double
                 throw new Exception("2LITERAL outside a new word definition.");
             }
 
-            _interpreter.WordBeingDefined.AddWord(new DoubleCellIntegerLiteralWord(_interpreter, DPop()));
+            _interpreter.WordBeingDefined.AddWord(new DoubleCellIntegerLiteralWord(_interpreter, _interpreter.DPop()));
 
             return 1;
         }
@@ -173,7 +89,7 @@ namespace EFrt.Libs.Double
         // (d1 d2 -- d3)
         private int DPlusAction()
         {
-            Function((a, b) => a + b);
+            _interpreter.DFunction((a, b) => a + b);
 
             return 1;
         }
@@ -181,7 +97,7 @@ namespace EFrt.Libs.Double
         // (d1 d2 -- d3)
         private int DMinusAction()
         {
-            Function((a, b) => a - b);
+            _interpreter.DFunction((a, b) => a - b);
 
             return 1;
         }
@@ -201,7 +117,7 @@ namespace EFrt.Libs.Double
         // (d -- flag)
         private int DZeroLessAction()
         {
-            Function((a) => (a < 0) ? -1 : 0);
+            _interpreter.DFunction((a) => (a < 0) ? -1 : 0);
 
             return 1;
         }
@@ -209,7 +125,7 @@ namespace EFrt.Libs.Double
         // (d -- flag)
         private int DZeroEqualsAction()
         {
-            Function((a) => (a == 0) ? -1 : 0);
+            _interpreter.DFunction((a) => (a == 0) ? -1L : 0L);
 
             return 1;
         }
@@ -217,7 +133,7 @@ namespace EFrt.Libs.Double
         // (d1 -- d2)
         private int DTwoStarAction()
         {
-            Function((a) => a * 2);
+            _interpreter.DFunction((a) => a * 2L);
 
             return 1;
         }
@@ -225,7 +141,7 @@ namespace EFrt.Libs.Double
         // (d1 -- d2)
         private int DTwoSlashAction()
         {
-            Function((a) => a / 2);
+            _interpreter.DFunction((a) => a / 2L);
 
             return 1;
         }
@@ -233,7 +149,7 @@ namespace EFrt.Libs.Double
         // (d1 d2 -- flag)
         private int DLessThanAction()
         {
-            Function((a, b) => (a < b) ? -1 : 0);
+            _interpreter.DFunction((a, b) => (a < b) ? -1L : 0L);
 
             return 1;
         }
@@ -241,7 +157,7 @@ namespace EFrt.Libs.Double
         // (d1 d2 -- flag)
         private int DEqualsAction()
         {
-            Function((a, b) => (a == b) ? -1 : 0);
+            _interpreter.DFunction((a, b) => (a == b) ? -1L : 0L);
 
             return 1;
         }
@@ -249,7 +165,7 @@ namespace EFrt.Libs.Double
         // (d -- n)
         private int DToSAction()
         {
-            _interpreter.Push((int)DPop());
+            _interpreter.Push((int)_interpreter.DPop());
 
             return 1;
         }
@@ -257,7 +173,7 @@ namespace EFrt.Libs.Double
         // (d1 -- d2)
         private int DAbsAction()
         {
-            Function((a) => a < 0 ? -a : a);
+            _interpreter.DFunction((a) => a < 0L ? -a : a);
 
             return 1;
         }
@@ -265,7 +181,7 @@ namespace EFrt.Libs.Double
         // (d1 d2 -- d3)
         private int DMaxAction()
         {
-            Function((a, b) => (a > b) ? a : b);
+            _interpreter.DFunction((a, b) => (a > b) ? a : b);
 
             return 1;
         }
@@ -273,7 +189,7 @@ namespace EFrt.Libs.Double
         // (d1 d2 -- d3)
         private int DMinAction()
         {
-            Function((a, b) => (a < b) ? a : b);
+            _interpreter.DFunction((a, b) => (a < b) ? a : b);
 
             return 1;
         }
@@ -281,7 +197,7 @@ namespace EFrt.Libs.Double
         // (d1 -- d2)
         private int DNegateAction()
         {
-            Function((a) => -a);
+            _interpreter.DFunction((a) => -a);
 
             return 1;
         }

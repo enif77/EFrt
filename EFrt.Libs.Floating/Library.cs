@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Libs.Floating
 {
@@ -84,71 +84,6 @@ namespace EFrt.Libs.Floating
         }
 
 
-        // Floating point stack.
-
-        private double FGet(int index)
-        {
-            return new FloatingPointValue()
-            {
-                A = _interpreter.Pick(index * 2),
-                B = _interpreter.Pick(index * 2 + 2),
-            }.D;
-        }
-
-
-        private double FPeek()
-        {
-            return new FloatingPointValue()
-            {
-                B = _interpreter.Pick(1),
-                A = _interpreter.Peek(),
-            }.D;
-        }
-
-
-        private double FPop()
-        {
-            return new FloatingPointValue()
-            {
-                B = _interpreter.Pop(),
-                A = _interpreter.Pop(),
-            }.D;
-        }
-
-
-        private void FPush(double value)
-        {
-            var v = new FloatingPointValue()
-            {
-                D = value
-            };
-
-            _interpreter.Push(v.A);
-            _interpreter.Push(v.B);
-        }
-
-
-        private void Function(Func<double, double> func)
-        {
-            //var stack = _interpreter.FloatingPointStack;
-            //var top = stack.Top;
-            //stack.Items[stack.Top] = func(stack.Items[top]);
-
-            FPush(func(FPop()));
-        }
-
-
-        private void Function(Func<double, double, double> func)
-        {
-            //var stack = _interpreter.FloatingPointStack;
-            //var top = stack.Top;
-            //stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
-
-            var b = FPop();
-            FPush(func(FPop(), b));
-        }
-
-
         // (f --)
         private int PrintFloatAction()
         {
@@ -216,7 +151,7 @@ namespace EFrt.Libs.Floating
         // (f1 f2 -- f3)
         private int AddAction()
         {
-            Function((a, b) => a + b);
+            _interpreter.FFunction((a, b) => a + b);
 
             return 1;
         }
@@ -224,7 +159,7 @@ namespace EFrt.Libs.Floating
         // (f1 f2 -- f3)
         private int SubAction()
         {
-            Function((a, b) => a - b);
+            _interpreter.FFunction((a, b) => a - b);
 
             return 1;
         }
@@ -232,7 +167,7 @@ namespace EFrt.Libs.Floating
         // (f1 -- f2)
         private int AddOneAction()
         {
-            Function((a) => a + 1.0);
+            _interpreter.FFunction((a) => a + 1.0);
 
             return 1;
         }
@@ -240,7 +175,7 @@ namespace EFrt.Libs.Floating
         // (f1 -- f2)
         private int SubOneAction()
         {
-            Function((a) => a - 1.0);
+            _interpreter.FFunction((a) => a - 1.0);
 
             return 1;
         }
@@ -248,7 +183,7 @@ namespace EFrt.Libs.Floating
         // (f1 -- f2)
         private int AddTwoAction()
         {
-            Function((a) => a + 2.0);
+            _interpreter.FFunction((a) => a + 2.0);
 
             return 1;
         }
@@ -256,7 +191,7 @@ namespace EFrt.Libs.Floating
         // (f1 -- f2)
         private int SubTwoAction()
         {
-            Function((a) => a - 2.0);
+            _interpreter.FFunction((a) => a - 2.0);
 
             return 1;
         }
@@ -264,7 +199,7 @@ namespace EFrt.Libs.Floating
         // (f1 -- f2)
         private int MulTwoAction()
         {
-            Function((a) => a * 2.0);
+            _interpreter.FFunction((a) => a * 2.0);
 
             return 1;
         }
@@ -272,7 +207,7 @@ namespace EFrt.Libs.Floating
         // (f1 -- f2)
         private int DivTwoAction()
         {
-            Function((a) => a / 2.0);
+            _interpreter.FFunction((a) => a / 2.0);
 
             return 1;
         }
@@ -280,7 +215,7 @@ namespace EFrt.Libs.Floating
         // (f1 f2 -- f3)
         private int MulAction()
         {
-            Function((a, b) => a * b);
+            _interpreter.FFunction((a, b) => a * b);
 
             return 1;
         }
@@ -288,7 +223,7 @@ namespace EFrt.Libs.Floating
         // (f1 f2 -- f3)
         private int DivAction()
         {
-            Function((a, b) => a / b);
+            _interpreter.FFunction((a, b) => a / b);
 
             return 1;
         }
@@ -296,7 +231,7 @@ namespace EFrt.Libs.Floating
         // (f1 f2 -- f3)
         private int MaxAction()
         {
-            Function((a, b) => (a > b) ? a : b);
+            _interpreter.FFunction((a, b) => (a > b) ? a : b);
 
             return 1;
         }
@@ -304,7 +239,7 @@ namespace EFrt.Libs.Floating
         // (f1 f2 -- f3)
         private int MinAction()
         {
-            Function((a, b) => (a < b) ? a : b);
+            _interpreter.FFunction((a, b) => (a < b) ? a : b);
 
             return 1;
         }
@@ -312,7 +247,7 @@ namespace EFrt.Libs.Floating
         // (f1 -- f2)
         private int AbsAction()
         {
-            Function((a) => Math.Abs(a));
+            _interpreter.FFunction((a) => Math.Abs(a));
 
             return 1;
         }
@@ -320,7 +255,7 @@ namespace EFrt.Libs.Floating
         // (f1 -- f2)
         private int NegateAction()
         {
-            Function((a) => -a);
+            _interpreter.FFunction((a) => -a);
 
             return 1;
         }
@@ -328,7 +263,7 @@ namespace EFrt.Libs.Floating
         // (f1 -- f2)
         private int AcosAction()
         {
-            Function((a) => Math.Acos(a));
+            _interpreter.FFunction((a) => Math.Acos(a));
 
             return 1;
         }
@@ -336,7 +271,7 @@ namespace EFrt.Libs.Floating
         // (f1 -- f2)
         private int AsinAction()
         {
-            Function((a) => Math.Asin(a));
+            _interpreter.FFunction((a) => Math.Asin(a));
 
             return 1;
         }
@@ -344,7 +279,7 @@ namespace EFrt.Libs.Floating
         // (f1 -- f2)
         private int AtanAction()
         {
-            Function((a) => Math.Atan(a));
+            _interpreter.FFunction((a) => Math.Atan(a));
 
             return 1;
         }
@@ -352,7 +287,7 @@ namespace EFrt.Libs.Floating
         // (f1 f2 -- f3)
         private int Atan2Action()
         {
-            Function((a, b) => Math.Atan2(a, b));
+            _interpreter.FFunction((a, b) => Math.Atan2(a, b));
 
             return 1;
         }
@@ -360,7 +295,7 @@ namespace EFrt.Libs.Floating
         // (f1 -- f2)
         private int CosAction()
         {
-            Function((a) => Math.Cos(a));
+            _interpreter.FFunction((a) => Math.Cos(a));
 
             return 1;
         }
@@ -368,7 +303,7 @@ namespace EFrt.Libs.Floating
         // (f1 -- f2)
         private int ExpAction()
         {
-            Function((a) => Math.Exp(a));
+            _interpreter.FFunction((a) => Math.Exp(a));
 
             return 1;
         }
@@ -376,7 +311,7 @@ namespace EFrt.Libs.Floating
         // (f1 -- f2)
         private int LogAction()
         {
-            Function((a) => Math.Log(a));
+            _interpreter.FFunction((a) => Math.Log(a));
 
             return 1;
         }
@@ -384,7 +319,7 @@ namespace EFrt.Libs.Floating
         // (f1 -- f2)
         private int SinAction()
         {
-            Function((a) => Math.Sin(a));
+            _interpreter.FFunction((a) => Math.Sin(a));
 
             return 1;
         }
@@ -392,7 +327,7 @@ namespace EFrt.Libs.Floating
         // (f1 -- f2)
         private int SqrtAction()
         {
-            Function((a) => Math.Sqrt(a));
+            _interpreter.FFunction((a) => Math.Sqrt(a));
 
             return 1;
         }
@@ -400,7 +335,7 @@ namespace EFrt.Libs.Floating
         // (f1 -- f2)
         private int TanAction()
         {
-            Function((a) => Math.Tan(a));
+            _interpreter.FFunction((a) => Math.Tan(a));
 
             return 1;
         }
@@ -408,7 +343,7 @@ namespace EFrt.Libs.Floating
         // (f1 -- f2)
         private int FloorAction()
         {
-            Function((a) => Math.Floor(a));
+            _interpreter.FFunction((a) => Math.Floor(a));
 
             return 1;
         }
@@ -416,7 +351,7 @@ namespace EFrt.Libs.Floating
         // (f1 f2 -- f3)
         private int PowAction()
         {
-            Function((a, b) => Math.Pow(a, b));
+            _interpreter.FFunction((a, b) => Math.Pow(a, b));
 
             return 1;
         }
@@ -424,7 +359,7 @@ namespace EFrt.Libs.Floating
         // (f -- n)
         private int FloatToSingleCellIntAction()
         {
-            _interpreter.Push((int)FPop());
+            _interpreter.Push((int)_interpreter.FPop());
 
             return 1;
         }
@@ -432,7 +367,7 @@ namespace EFrt.Libs.Floating
         // (n -- f)
         private int SingleCellIntToFloatAction()
         {
-            FPush(_interpreter.Pop());
+            _interpreter.FPush(_interpreter.Pop());
 
             return 1;
         }
@@ -442,7 +377,7 @@ namespace EFrt.Libs.Floating
         {
             var v = new DoubleCellIntegerValue()
             {
-                D = (long)FPop()
+                D = (long)_interpreter.FPop()
             };
 
             _interpreter.Push(v.A);
@@ -454,7 +389,7 @@ namespace EFrt.Libs.Floating
         // (d -- f)
         private int DoubleCellIntToFloatAction()
         {
-            FPush(new DoubleCellIntegerValue()
+            _interpreter.FPush(new DoubleCellIntegerValue()
             {
                 B = _interpreter.Pop(),
                 A = _interpreter.Pop()
@@ -467,7 +402,7 @@ namespace EFrt.Libs.Floating
         // (f1 f2 -- flag)
         private int IsEqAction()
         {
-            _interpreter.Push((FPop() == FPop()) ? -1 : 0);
+            _interpreter.Push((_interpreter.FPop() == _interpreter.FPop()) ? -1 : 0);
 
             return 1;
         }
@@ -475,7 +410,7 @@ namespace EFrt.Libs.Floating
         // (f1 f2 -- flag)
         private int IsNeqAction()
         {
-            _interpreter.Push((FPop() != FPop()) ? -1 : 0);
+            _interpreter.Push((_interpreter.FPop() != _interpreter.FPop()) ? -1 : 0);
 
             return 1;
         }
@@ -483,8 +418,8 @@ namespace EFrt.Libs.Floating
         // (f1 f2 -- flag)
         private int IsLtAction()
         {
-            var b = FPop();
-            _interpreter.Push((FPop() < b) ? -1 : 0);
+            var b = _interpreter.FPop();
+            _interpreter.Push((_interpreter.FPop() < b) ? -1 : 0);
 
             return 1;
         }
@@ -492,8 +427,8 @@ namespace EFrt.Libs.Floating
         // (f1 f2 -- flag)
         private int IsLtEAction()
         {
-            var b = FPop();
-            _interpreter.Push((FPop() <= b) ? -1 : 0);
+            var b = _interpreter.FPop();
+            _interpreter.Push((_interpreter.FPop() <= b) ? -1 : 0);
 
             return 1;
         }
@@ -501,8 +436,8 @@ namespace EFrt.Libs.Floating
         // (f1 f2 -- flag)
         private int IsGtAction()
         {
-            var b = FPop();
-            _interpreter.Push((FPop() > b) ? -1 : 0);
+            var b = _interpreter.FPop();
+            _interpreter.Push((_interpreter.FPop() > b) ? -1 : 0);
 
             return 1;
         }
@@ -510,8 +445,8 @@ namespace EFrt.Libs.Floating
         // (f1 f2 -- flag)
         private int IsGtEAction()
         {
-            var b = FPop();
-            _interpreter.Push((FPop() >= b) ? -1 : 0);
+            var b = _interpreter.FPop();
+            _interpreter.Push((_interpreter.FPop() >= b) ? -1 : 0);
 
             return 1;
         }
@@ -519,7 +454,7 @@ namespace EFrt.Libs.Floating
         // (f -- flag)
         private int IsZeroAction()
         {
-            _interpreter.Push((FPop() == 0.0) ? -1 : 0);
+            _interpreter.Push((_interpreter.FPop() == 0.0) ? -1 : 0);
 
             return 1;
         }
@@ -527,7 +462,7 @@ namespace EFrt.Libs.Floating
         // (f -- flag)
         private int IsNonZeroAction()
         {
-            _interpreter.Push((FPop() != 0.0) ? -1 : 0);
+            _interpreter.Push((_interpreter.FPop() != 0.0) ? -1 : 0);
 
             return 1;
         }
@@ -535,7 +470,7 @@ namespace EFrt.Libs.Floating
         // (f -- flag)
         private int IsNegAction()
         {
-            _interpreter.Push((FPop() < 0.0) ? -1 : 0);
+            _interpreter.Push((_interpreter.FPop() < 0.0) ? -1 : 0);
 
             return 1;
         }
@@ -543,7 +478,7 @@ namespace EFrt.Libs.Floating
         // (f -- flag)
         private int IsPosAction()
         {
-            _interpreter.Push((FPop() > 0.0) ? -1 : 0);
+            _interpreter.Push((_interpreter.FPop() > 0.0) ? -1 : 0);
 
             return 1;
         }

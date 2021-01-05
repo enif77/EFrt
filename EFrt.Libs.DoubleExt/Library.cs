@@ -1,11 +1,10 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Libs.DoubleExt
 {
     using System;
 
     using EFrt.Core;
-    using EFrt.Core.Values;
     using EFrt.Core.Words;
 
 
@@ -60,70 +59,6 @@ namespace EFrt.Libs.DoubleExt
         }
 
 
-        private long DPop()
-        {
-            return new DoubleCellIntegerValue()
-            {
-                B = _interpreter.Pop(),
-                A = _interpreter.Pop(),
-            }.D;
-        }
-
-
-        private void DPush(long value)
-        {
-            var v = new DoubleCellIntegerValue()
-            {
-                D = value
-            };
-
-            _interpreter.Push(v.A);
-            _interpreter.Push(v.B);
-        }
-
-
-        private void Function(Func<long, int> func)
-        {
-            //var stack = _interpreter.Stack;
-            //var top = stack.Top;
-            //stack.Items[stack.Top] = func(stack.Items[top]);
-
-            _interpreter.Push(func(DPop()));
-        }
-
-
-        private void Function(Func<long, long> func)
-        {
-            //var stack = _interpreter.Stack;
-            //var top = stack.Top;
-            //stack.Items[stack.Top] = func(stack.Items[top]);
-
-            DPush(func(DPop()));
-        }
-
-
-        private void Function(Func<long, long, int> func)
-        {
-            //var stack = _interpreter.Stack;
-            //var top = stack.Top;
-            //stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
-
-            var b = DPop();
-            _interpreter.Push(func(DPop(), b));
-        }
-
-
-        private void Function(Func<long, long, long> func)
-        {
-            //var stack = _interpreter.Stack;
-            //var top = stack.Top;
-            //stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
-
-            var b = DPop();
-            DPush(func(DPop(), b));
-        }
-
-
         // (n1 n2 n3 n4 n5 n6 -- n3 n4 n5 n6 n1 n2)
         private int TwoRotAction()
         {
@@ -150,7 +85,7 @@ namespace EFrt.Libs.DoubleExt
         // (d1 -- d2)
         private int AddOneAction()
         {
-            Function((a) => ++a);
+           _interpreter.DFunction((a) => ++a);
 
             return 1;
         }
@@ -158,7 +93,7 @@ namespace EFrt.Libs.DoubleExt
         // (d1 -- d2)
         private int SubOneAction()
         {
-            Function((a) => --a);
+            _interpreter.DFunction((a) => --a);
 
             return 1;
         }
@@ -166,7 +101,7 @@ namespace EFrt.Libs.DoubleExt
         // (d1 -- d2)
         private int AddTwoAction()
         {
-            Function((a) => a + 2L);
+            _interpreter.DFunction((a) => a + 2L);
 
             return 1;
         }
@@ -174,7 +109,7 @@ namespace EFrt.Libs.DoubleExt
         // (d1 -- d2)
         private int SubTwoAction()
         {
-            Function((a) => a - 2L);
+            _interpreter.DFunction((a) => a - 2L);
 
             return 1;
         }
@@ -182,7 +117,7 @@ namespace EFrt.Libs.DoubleExt
         // (d1 d2 -- d3)
         private int MulAction()
         {
-            Function((a, b) => a * b);
+            _interpreter.DFunction((a, b) => a * b);
 
             return 1;
         }
@@ -190,7 +125,7 @@ namespace EFrt.Libs.DoubleExt
         // (d1 d2 -- d3)
         private int DivAction()
         {
-            Function((a, b) => a / b);
+            _interpreter.DFunction((a, b) => a / b);
 
             return 1;
         }
@@ -198,7 +133,7 @@ namespace EFrt.Libs.DoubleExt
         // (d1 d2 -- d3)
         private int ModAction()
         {
-            Function((a, b) => a % b);
+            _interpreter.DFunction((a, b) => a % b);
 
             return 1;
         }
@@ -206,11 +141,11 @@ namespace EFrt.Libs.DoubleExt
         // (d1 d2 -- d3 d4)
         private int DivModAction()
         {
-            var b = DPop();
-            var a = DPop();
+            var b = _interpreter.DPop();
+            var a = _interpreter.DPop();
 
-            DPush(a / b);
-            DPush(a % b);
+            _interpreter.DPush(a / b);
+            _interpreter.DPush(a % b);
 
             return 1;
         }
@@ -218,7 +153,7 @@ namespace EFrt.Libs.DoubleExt
         // (d1 d2 -- flag)
         private int IsNeqAction()
         {
-            Function((a, b) => (a != b) ? -1 : 0);
+            _interpreter.DFunction((a, b) => (a != b) ? -1 : 0);
 
             return 1;
         }
@@ -226,7 +161,7 @@ namespace EFrt.Libs.DoubleExt
         // (d1 d2 -- flag)
         private int IsLtEAction()
         {
-            Function((a, b) => (a <= b) ? -1 : 0);
+            _interpreter.DFunction((a, b) => (a <= b) ? -1 : 0);
 
             return 1;
         }
@@ -234,7 +169,7 @@ namespace EFrt.Libs.DoubleExt
         // (d1 d2 -- flag)
         private int IsGtAction()
         {
-            Function((a, b) => (a > b) ? -1 : 0);
+            _interpreter.DFunction((a, b) => (a > b) ? -1 : 0);
 
             return 1;
         }
@@ -242,7 +177,7 @@ namespace EFrt.Libs.DoubleExt
         // (d1 d2 -- flag)
         private int IsGtEAction()
         {
-            Function((a, b) => (a >= b) ? -1 : 0);
+            _interpreter.DFunction((a, b) => (a >= b) ? -1 : 0);
 
             return 1;
         }
@@ -250,7 +185,7 @@ namespace EFrt.Libs.DoubleExt
         // (d -- flag)
         private int IsNonZeroAction()
         {
-            Function((a) => (a != 0) ? -1 : 0);
+            _interpreter.DFunction((a) => (a != 0) ? -1 : 0);
 
             return 1;
         }
@@ -258,7 +193,7 @@ namespace EFrt.Libs.DoubleExt
         // (d -- flag)
         private int IsPosAction()
         {
-            Function((a) => (a > 0) ? -1 : 0);
+            _interpreter.DFunction((a) => (a > 0) ? -1 : 0);
 
             return 1;
         }
@@ -266,7 +201,7 @@ namespace EFrt.Libs.DoubleExt
         // (d1 -- d2)
         private int NotAction()
         {
-            Function((a) => ~a);
+            _interpreter.DFunction((a) => ~a);
 
             return 1;
         }
@@ -274,7 +209,7 @@ namespace EFrt.Libs.DoubleExt
         // (d1 d2 -- d3)
         private int AndAction()
         {
-            Function((a, b) => a & b);
+            _interpreter.DFunction((a, b) => a & b);
 
             return 1;
         }
@@ -282,7 +217,7 @@ namespace EFrt.Libs.DoubleExt
         // (d1 d2 -- d3)
         private int OrAction()
         {
-            Function((a, b) => a | b);
+            _interpreter.DFunction((a, b) => a | b);
 
             return 1;
         }
@@ -290,7 +225,7 @@ namespace EFrt.Libs.DoubleExt
         // (d1 d2 -- d3)
         private int XorAction()
         {
-            Function((a, b) => a ^ b);
+            _interpreter.DFunction((a, b) => a ^ b);
 
             return 1;
         }

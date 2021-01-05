@@ -284,6 +284,91 @@ namespace EFrt.Core
             State.Stack.Roll(index);
         }
 
+
+        public long DPick(int index)
+        {
+            return new DoubleCellIntegerValue()
+            {
+                A = Pick(index * 2),
+                B = Pick(index * 2 + 2),
+            }.D;
+        }
+
+
+        public long DPeek()
+        {
+            return new DoubleCellIntegerValue()
+            {
+                B = Pick(1),
+                A = Peek(),
+            }.D;
+        }
+
+
+        public long DPop()
+        {
+            return new DoubleCellIntegerValue()
+            {
+                B = Pop(),
+                A = Pop(),
+            }.D;
+        }
+
+
+        public void DPush(long value)
+        {
+            var v = new DoubleCellIntegerValue()
+            {
+                D = value
+            };
+
+            Push(v.A);
+            Push(v.B);
+        }
+
+
+        public double FPick(int index)
+        {
+            return new FloatingPointValue()
+            {
+                A = Pick(index * 2),
+                B = Pick(index * 2 + 2),
+            }.D;
+        }
+
+
+        public double FPeek()
+        {
+            return new FloatingPointValue()
+            {
+                B = Pick(1),
+                A = Peek(),
+            }.D;
+        }
+
+
+        public double FPop()
+        {
+            return new FloatingPointValue()
+            {
+                B = Pop(),
+                A = Pop(),
+            }.D;
+        }
+
+
+        public void FPush(double value)
+        {
+            var v = new FloatingPointValue()
+            {
+                D = value
+            };
+
+            Push(v.A);
+            Push(v.B);
+        }
+
+
         // Object stack.
 
         public object OPick(int index)
@@ -344,6 +429,7 @@ namespace EFrt.Core
             State.ObjectStack.Roll(index);
         }
 
+
         // Return stack.
 
         public int RPick(int index)
@@ -379,6 +465,105 @@ namespace EFrt.Core
         public void RDup()
         {
             State.ReturnStack.Dup();
+        }
+
+        #endregion
+
+
+        #region stack functions
+
+        public void Function(Func<int, int> func)
+        {
+            var stack = State.Stack;
+            var top = stack.Top;
+            stack.Items[stack.Top] = func(stack.Items[top]);
+        }
+
+
+        public void Function(Func<int, int, int> func)
+        {
+            var stack = State.Stack;
+            var top = stack.Top;
+            stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
+        }
+
+
+        public void DFunction(Func<long, int> func)
+        {
+            //var stack = _interpreter.Stack;
+            //var top = stack.Top;
+            //stack.Items[stack.Top] = func(stack.Items[top]);
+
+            Push(func(DPop()));
+        }
+
+
+        public void DFunction(Func<long, long> func)
+        {
+            //var stack = _interpreter.Stack;
+            //var top = stack.Top;
+            //stack.Items[stack.Top] = func(stack.Items[top]);
+
+            DPush(func(DPop()));
+        }
+
+
+        public void DFunction(Func<long, long, int> func)
+        {
+            //var stack = _interpreter.Stack;
+            //var top = stack.Top;
+            //stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
+
+            var b = DPop();
+            Push(func(DPop(), b));
+        }
+
+
+        public void DFunction(Func<long, long, long> func)
+        {
+            //var stack = _interpreter.Stack;
+            //var top = stack.Top;
+            //stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
+
+            var b = DPop();
+            DPush(func(DPop(), b));
+        }
+
+
+        public void FFunction(Func<double, double> func)
+        {
+            //var stack = _interpreter.FloatingPointStack;
+            //var top = stack.Top;
+            //stack.Items[stack.Top] = func(stack.Items[top]);
+
+            FPush(func(FPop()));
+        }
+
+
+        public void FFunction(Func<double, double, double> func)
+        {
+            //var stack = _interpreter.FloatingPointStack;
+            //var top = stack.Top;
+            //stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
+
+            var b = FPop();
+            FPush(func(FPop(), b));
+        }
+
+
+        public void SFunction(Func<string, string> func)
+        {
+            var stack = State.ObjectStack;
+            var top = stack.Top;
+            stack.Items[stack.Top] = func(stack.Items[top].ToString());
+        }
+
+
+        public void SFunction(Func<string, string, string> func)
+        {
+            var stack = State.ObjectStack;
+            var top = stack.Top;
+            stack.Items[--stack.Top] = func(stack.Items[top - 1].ToString(), stack.Items[top].ToString());
         }
 
         #endregion

@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Libs.Core
 {
@@ -142,44 +142,6 @@ namespace EFrt.Libs.Core
         }
 
 
-        private void Function(Func<int, int> func)
-        {
-            var stack = _interpreter.State.Stack;
-            var top = stack.Top;
-            stack.Items[stack.Top] = func(stack.Items[top]);
-        }
-
-
-        private void Function(Func<int, int, int> func)
-        {
-            var stack = _interpreter.State.Stack;
-            var top = stack.Top;
-            stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
-        }
-
-
-        private long DPop()
-        {
-            return new DoubleCellIntegerValue()
-            {
-                B = _interpreter.Pop(),
-                A = _interpreter.Pop(),
-            }.D;
-        }
-
-
-        private void DPush(long value)
-        {
-            var v = new DoubleCellIntegerValue()
-            {
-                D = value
-            };
-
-            _interpreter.Push(v.A);
-            _interpreter.Push(v.B);
-        }
-
-
         // (n addr -- )
         private int StoreAction()
         {
@@ -225,7 +187,7 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n3)
         private int StarAction()
         {
-            Function((n1, n2) => n1 * n2);
+            _interpreter.Function((n1, n2) => n1 * n2);
 
             return 1;
         }
@@ -253,7 +215,7 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n3)
         private int PlusAction()
         {
-            Function((n1, n2) => n1 + n2);
+            _interpreter.Function((n1, n2) => n1 + n2);
 
             return 1;
         }
@@ -302,7 +264,7 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n3)
         private int MinusAction()
         {
-            Function((n1, n2) => n1 - n2);
+            _interpreter.Function((n1, n2) => n1 - n2);
 
             return 1;
         }
@@ -331,7 +293,7 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n3)
         private int SlashAction()
         {
-            Function((n1, n2) => n1 / n2);
+            _interpreter.Function((n1, n2) => n1 / n2);
 
             return 1;
         }
@@ -351,7 +313,7 @@ namespace EFrt.Libs.Core
         // (n -- flag)
         private int ZeroLessAction()
         {
-            Function((n) => (n < 0) ? -1 : 0);
+            _interpreter.Function((n) => (n < 0) ? -1 : 0);
 
             return 1;
         }
@@ -359,7 +321,7 @@ namespace EFrt.Libs.Core
         // (n -- flag)
         private int ZeroEqualsAction()
         {
-            Function((n) => (n == 0) ? -1 : 0);
+            _interpreter.Function((n) => (n == 0) ? -1 : 0);
 
             return 1;
         }
@@ -367,7 +329,7 @@ namespace EFrt.Libs.Core
         // (n1 -- n2)
         private int OnePlusAction()
         {
-            Function((n) => ++n);
+            _interpreter.Function((n) => ++n);
 
             return 1;
         }
@@ -375,7 +337,7 @@ namespace EFrt.Libs.Core
         // (n1 -- n2)
         private int OneMinusAction()
         {
-            Function((n) => --n);
+            _interpreter.Function((n) => --n);
 
             return 1;
         }
@@ -393,7 +355,7 @@ namespace EFrt.Libs.Core
         // (n1 -- n2)
         private int TwoStarAction()
         {
-            Function((n) => n * 2);
+            _interpreter.Function((n) => n * 2);
 
             return 1;
         }
@@ -401,7 +363,7 @@ namespace EFrt.Libs.Core
         // (n1 -- n2)
         private int TwoSlashAction()
         {
-            Function((n) => n / 2);
+            _interpreter.Function((n) => n / 2);
 
             return 1;
         }
@@ -490,7 +452,7 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- flag)
         private int LessThanAction()
         {
-            Function((n1, n2) => (n1 < n2) ? -1 : 0);
+            _interpreter.Function((n1, n2) => (n1 < n2) ? -1 : 0);
 
             return 1;
         }
@@ -498,7 +460,7 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- flag)
         private int EqualsAction()
         {
-            Function((n1, n2) => (n1 == n2) ? -1 : 0);
+            _interpreter.Function((n1, n2) => (n1 == n2) ? -1 : 0);
 
             return 1;
         }
@@ -506,7 +468,7 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- flag)
         private int GreaterThanAction()
         {
-            Function((n1, n2) => (n1 > n2) ? -1 : 0);
+            _interpreter.Function((n1, n2) => (n1 > n2) ? -1 : 0);
 
             return 1;
         }
@@ -565,7 +527,7 @@ namespace EFrt.Libs.Core
         // (n1 -- n2)
         private int AbsAction()
         {
-            Function((n1) => n1 < 0 ? -n1 : n1);
+            _interpreter.Function((n1) => n1 < 0 ? -n1 : n1);
 
             return 1;
         }
@@ -582,7 +544,7 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n3)
         private int AndAction()
         {
-            Function((n1, n2) => n1 & n2);
+            _interpreter.Function((n1, n2) => n1 & n2);
 
             return 1;
         }
@@ -760,7 +722,7 @@ namespace EFrt.Libs.Core
             // TODO: Fix to produce floored quotient.
 
             var n1 = (long)_interpreter.Pop();
-            var d = DPop();
+            var d = _interpreter.DPop();
             _interpreter.Push((int)(d % n1));  // n2
             _interpreter.Push((int)(d / n1));  // n3
 
@@ -822,7 +784,7 @@ namespace EFrt.Libs.Core
         // (n1 -- n2)
         private int InvertAction()
         {
-            Function((a) => ~a);
+            _interpreter.Function((a) => ~a);
 
             return 1;
         }
@@ -907,7 +869,7 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- d)
         private int MStarAction()
         {
-            DPush((long)_interpreter.Pop() * (long)_interpreter.Pop());
+            _interpreter.DPush((long)_interpreter.Pop() * (long)_interpreter.Pop());
 
             return 1;
         }
@@ -915,7 +877,7 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n3)
         private int MaxAction()
         {
-            Function((n1, n2) => (n1 > n2) ? n1 : n2);
+            _interpreter.Function((n1, n2) => (n1 > n2) ? n1 : n2);
 
             return 1;
         }
@@ -923,7 +885,7 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n3)
         private int MinAction()
         {
-            Function((n1, n2) => (n1 < n2) ? n1 : n2);
+            _interpreter.Function((n1, n2) => (n1 < n2) ? n1 : n2);
 
             return 1;
         }
@@ -931,7 +893,7 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n3)
         private int ModAction()
         {
-            Function((n1, n2) => n1 % n2);
+            _interpreter.Function((n1, n2) => n1 % n2);
 
             return 1;
         }
@@ -939,7 +901,7 @@ namespace EFrt.Libs.Core
         // (n1 -- n2)
         private int NegateAction()
         {
-            Function((n1) => -n1);
+            _interpreter.Function((n1) => -n1);
 
             return 1;
         }
@@ -947,7 +909,7 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n3)
         private int OrAction()
         {
-            Function((n1, n2) => n1 | n2);
+            _interpreter.Function((n1, n2) => n1 | n2);
 
             return 1;
         }
@@ -1084,7 +1046,7 @@ namespace EFrt.Libs.Core
         // (n -- d)
         private int SToDAction()
         {
-            DPush(_interpreter.Pop());
+            _interpreter.DPush(_interpreter.Pop());
 
             return 1;
         }
@@ -1095,7 +1057,7 @@ namespace EFrt.Libs.Core
             // TODO: Fix to produce symmetric quotient.
 
             var n1 = (long)_interpreter.Pop();
-            var d = DPop();
+            var d = _interpreter.DPop();
             _interpreter.Push((int)(d % n1));  // n2
             _interpreter.Push((int)(d / n1));  // n3
 
@@ -1245,7 +1207,7 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n3)
         private int XorAction()
         {
-            Function((n1, n2) => n1 ^ n2);
+            _interpreter.Function((n1, n2) => n1 ^ n2);
 
             return 1;
         }

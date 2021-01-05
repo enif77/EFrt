@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Libs.String
 {
@@ -32,22 +32,6 @@ namespace EFrt.Libs.String
         }
 
 
-        private void Function(Func<string, string> func)
-        {
-            var stack = _interpreter.State.ObjectStack;
-            var top = stack.Top;
-            stack.Items[stack.Top] = func(stack.Items[top].ToString());
-        }
-
-
-        private void Function(Func<string, string, string> func)
-        {
-            var stack = _interpreter.State.ObjectStack;
-            var top = stack.Top;
-            stack.Items[--stack.Top] = func(stack.Items[top - 1].ToString(), stack.Items[top].ToString());
-        }
-
-
         // {o --}
         private int PrintStringAction()
         {
@@ -59,7 +43,7 @@ namespace EFrt.Libs.String
         // {a b -- result}
         private int AddAction()
         {
-            Function((a, b) => a.ToString() + b.ToString());
+            _interpreter.SFunction((a, b) => a.ToString() + b.ToString());
 
             return 1;
         }

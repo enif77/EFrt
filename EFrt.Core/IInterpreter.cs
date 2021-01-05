@@ -2,6 +2,8 @@
 
 namespace EFrt.Core
 {
+    using System;
+
     using EFrt.Core.Words;
 
 /*
@@ -219,6 +221,59 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// <param name="index">A stack item index, where 0 = stack top, 1 = first below top, etc.</param>
         void Roll(int index);
 
+
+        /// <summary>
+        /// Returns a double cell value from the stack at certain index.
+        /// </summary>
+        /// <param name="index">A value index.</param>
+        /// <returns>A double cell value from the stack.</returns>
+        long DPick(int index);
+
+        /// <summary>
+        /// Returns a double cell value from the top of the stack.
+        /// </summary>
+        /// <returns>A double cell value from the top of the stack.</returns>
+        long DPeek();
+
+        /// <summary>
+        /// Removes a double cell value from the top of the stack and returns it.
+        /// </summary>
+        /// <returns>A doble cell value from the top of the stack.</returns>
+        long DPop();
+
+        /// <summary>
+        /// Inserts a double cell value to the stack.
+        /// </summary>
+        /// <param name="value">A double cell value.</param>
+        void DPush(long value);
+
+
+        /// <summary>
+        /// Returns a floating point value from the stack at certain index.
+        /// </summary>
+        /// <param name="index">A value index.</param>
+        /// <returns>A floating point value from the stack.</returns>
+        double FPick(int index);
+
+        /// <summary>
+        /// Returns a floating point value from the top of the stack.
+        /// </summary>
+        /// <returns>A floating point value from the top of the stack.</returns>
+        double FPeek();
+
+        /// <summary>
+        /// Removes a floating point value from the top of the stack and returns it.
+        /// </summary>
+        /// <returns>A floating point value from the top of the stack.</returns>
+        double FPop();
+
+        /// <summary>
+        /// Inserts a floating point value to the stack.
+        /// </summary>
+        /// <param name="value">A floating point value.</param>
+        void FPush(double value);
+
+
         // Object stack
 
         /// <summary>
@@ -318,6 +373,65 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// Duplicates the top value on the return stack.
         /// </summary>
         void RDup();
+
+        #endregion
+
+
+        #region stack functions
+
+        /// <summary>
+        /// stack[top] = func(stack[top])
+        /// </summary>
+        /// <param name="func">A function.</param>
+        void Function(Func<int, int> func);
+
+        /// <summary>
+        /// stack[top] = func(stack[top - 1], stack[top])
+        /// </summary>
+        /// <param name="func">A function.</param>
+        void Function(Func<int, int, int> func);
+
+
+        /// <summary>
+        /// stack[top] = func(stack[top])
+        /// </summary>
+        /// <param name="func">A function.</param>
+        void DFunction(Func<long, int> func);
+
+        /// <summary>
+        /// stack[top] = func(stack[top])
+        /// </summary>
+        /// <param name="func">A function.</param>
+        void DFunction(Func<long, long> func);
+
+        /// <summary>
+        /// stack[top] = func(stack[top - 1], stack[top])
+        /// </summary>
+        /// <param name="func">A function.</param>
+        void DFunction(Func<long, long, int> func);
+
+        /// <summary>
+        /// stack[top] = func(stack[top - 1], stack[top])
+        /// </summary>
+        /// <param name="func">A function.</param>
+        void DFunction(Func<long, long, long> func);
+
+        /// <summary>
+        /// stack[top] = func(stack[top])
+        /// </summary>
+        /// <param name="func">A function.</param>
+        void FFunction(Func<double, double> func);
+
+        void FFunction(Func<double, double, double> func);
+
+
+        /// <summary>
+        /// ostack[top] = func(ostack[top])
+        /// </summary>
+        /// <param name="func">A function.</param>
+        void SFunction(Func<string, string> func);
+
+        void SFunction(Func<string, string, string> func);
 
         #endregion
 

@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Libs.CoreExt
 {
@@ -72,22 +72,6 @@ namespace EFrt.Libs.CoreExt
         }
 
 
-        private void Function(Func<int, int> func)
-        {
-            var stack = _interpreter.State.Stack;
-            var top = stack.Top;
-            stack.Items[stack.Top] = func(stack.Items[top]);
-        }
-
-
-        private void Function(Func<int, int, int> func)
-        {
-            var stack = _interpreter.State.Stack;
-            var top = stack.Top;
-            stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
-        }
-
-
         private int DotParenAction()
         {
             _interpreter.Output.Write(_interpreter.GetTerminatedString(')'));
@@ -98,7 +82,7 @@ namespace EFrt.Libs.CoreExt
         // (n -- flag)
         private int ZeroNotEqualsAction()
         {
-            Function((a) => (a != 0) ? -1 : 0);
+            _interpreter.Function((a) => (a != 0) ? -1 : 0);
 
             return 1;
         }
@@ -106,7 +90,7 @@ namespace EFrt.Libs.CoreExt
         // (n -- flag)
         private int ZeroGreaterAction()
         {
-            Function((a) => (a > 0) ? -1 : 0);
+            _interpreter.Function((a) => (a > 0) ? -1 : 0);
 
             return 1;
         }
@@ -167,7 +151,7 @@ namespace EFrt.Libs.CoreExt
         // (n1 n2 -- flag)
         private int NotEqualsAction()
         {
-            Function((a, b) => (a != b) ? -1 : 0);
+            _interpreter.Function((a, b) => (a != b) ? -1 : 0);
 
             return 1;
         }
@@ -309,7 +293,7 @@ namespace EFrt.Libs.CoreExt
         // (n1 -- n2)
         private int AddTwoAction()
         {
-            Function((a) => a + 2);
+            _interpreter.Function((a) => a + 2);
 
             return 1;
         }
@@ -317,7 +301,7 @@ namespace EFrt.Libs.CoreExt
         // (n1 -- n2)
         private int SubTwoAction()
         {
-            Function((a) => a - 2);
+            _interpreter.Function((a) => a - 2);
 
             return 1;
         }
@@ -354,7 +338,7 @@ namespace EFrt.Libs.CoreExt
         // (n1 n2 -- flag)
         private int IsLtEAction()
         {
-            Function((a, b) => (a <= b) ? -1 : 0);
+            _interpreter.Function((a, b) => (a <= b) ? -1 : 0);
 
             return 1;
         }
@@ -362,7 +346,7 @@ namespace EFrt.Libs.CoreExt
         // (n1 n2 -- flag)
         private int IsGtEAction()
         {
-            Function((a, b) => (a >= b) ? -1 : 0);
+            _interpreter.Function((a, b) => (a >= b) ? -1 : 0);
 
             return 1;
         }

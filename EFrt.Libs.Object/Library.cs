@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Libs.Object
 {
@@ -47,21 +47,6 @@ namespace EFrt.Libs.Object
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "OCLEAR", ClearAction));
         }
 
-
-        private void Function(Func<object, object> func)
-        {
-            var stack = _interpreter.State.ObjectStack;
-            var top = stack.Top;
-            stack.Items[stack.Top] = func(stack.Items[top]);
-        }
-
-
-        private void Function(Func<object, object, object> func)
-        {
-            var stack = _interpreter.State.ObjectStack;
-            var top = stack.Top;
-            stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
-        }
 
         // (n -- addr)
         private int AllotAction()
