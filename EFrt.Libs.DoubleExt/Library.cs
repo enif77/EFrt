@@ -38,6 +38,7 @@ namespace EFrt.Libs.DoubleExt
         {
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "2ROT", TwoRotAction));
 
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ">DOUBLE", ToNumberAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "D1+", AddOneAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "D1-", SubOneAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "D2+", AddTwoAction));
@@ -81,6 +82,23 @@ namespace EFrt.Libs.DoubleExt
 
 
         // Extra
+
+        // ( -- false | d true) {s -- }
+        private int ToNumberAction()
+        {
+            var n = _interpreter.ParseNumber(_interpreter.OPop().ToString(), out var success);
+            if (success)
+            {
+                _interpreter.DPush(n);
+                _interpreter.Push(-1);
+            }
+            else
+            {
+                _interpreter.Push(0);
+            }
+
+            return 1;
+        }
 
         // (d1 -- d2)
         private int AddOneAction()

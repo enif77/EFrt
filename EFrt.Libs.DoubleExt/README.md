@@ -22,6 +22,7 @@ Words definition table columns:
 
 | Name     | Imm. | Mode | Description |
 | ---      | ---  | ---  | --- |
+| >DOUBLE  | no   | IC   | **String to number**<br>( -- d true \| false) {s -- }<br>Parses a string into a double cell integer. Leaves true and the number on the stack, if the conversion was successfull. Leaves just false, if the conversion failed. |
 | D*       | no   | IC   | **d3 = d1 * d2**<br>(d1 d2 -- d3)<br>Multiplies d1 and d2 and leaves the product on the stack. |
 | D/       | no   | IC   | **d3 = d1 / d2**<br>(d1 d2 -- d3)<br>Divides d1 by d2 and leaves the quotient on the stack. |
 | D<=      | no   | IC   | **Less than or equal**<br>(d1 d2 -- flag)<br>Returns -1 if d1 <= d2, 0 otherwise. |
