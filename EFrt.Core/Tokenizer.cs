@@ -92,7 +92,7 @@ namespace EFrt.Core
         /// fractional-part :: digit-sequence .
         /// sign :: '+' | '-' .
         /// </summary>
-        public Token ParseNumber(string word)
+        public Token ParseNumber(string word, bool allowLeadingWhite = false, bool allowTrailingWhite = false, bool allowTrailingChars = false)
         {
             var sourceReader = new StringSourceReader(word);
 
@@ -103,6 +103,12 @@ namespace EFrt.Core
             var isLong = false;
             var iValue = 0L;
             var rValue = 0.0;
+
+            // Skip leading white chars.
+            while (allowLeadingWhite && IsWhite(sourceReader.CurrentChar))
+            {
+                sourceReader.NextChar();
+            }
 
             var sign = 1;
             if (sourceReader.CurrentChar == '-')
@@ -207,8 +213,14 @@ namespace EFrt.Core
                 isLong = false;
             }
 
+            // Skip leading white chars.
+            while (allowTrailingChars && IsWhite(sourceReader.CurrentChar))
+            {
+                sourceReader.NextChar();
+            }
+
             // We expect to eat all chars from a word while parsing a number.
-            if (sourceReader.CurrentChar != EoF)
+            if (sourceReader.CurrentChar != EoF && allowTrailingChars == false)
             {
                 return Token.CreateWordToken(word);
             }

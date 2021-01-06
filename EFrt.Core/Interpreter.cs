@@ -128,6 +128,46 @@ namespace EFrt.Core
             return sb.ToString();
         }
 
+
+        public long ParseNumber(string s, out bool success)
+        {
+            success = true;
+
+            // An unknown word can be a number.
+            var t = _tokenizer.ParseNumber(s, true, true, true);
+            switch (t.Code)
+            {
+                case TokenType.SingleCellInteger: return t.IValue;
+                case TokenType.DoubleCellInteger: return t.LValue;
+                case TokenType.Float: return (long)t.FValue;
+
+                // No, it is something else.
+                default:
+                    success = false;
+                    return 0;
+            }
+        }
+
+
+        public double ParseFloatingPointNumber(string s, out bool success)
+        {
+            success = true;
+
+            // An unknown word can be a number.
+            var t = _tokenizer.ParseNumber(s, true, true, true);
+            switch (t.Code)
+            {
+                case TokenType.SingleCellInteger: return t.IValue;
+                case TokenType.DoubleCellInteger: return t.LValue;
+                case TokenType.Float: return t.FValue;
+
+                // No, it is something else.
+                default:
+                    success = false;
+                    return 0.0;
+            }
+        }
+
         #endregion
 
 

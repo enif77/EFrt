@@ -46,6 +46,7 @@ Words definition table columns:
 | <        | no   | IC   | **Less than**<br>(n1 n2 -- flag)<br>Returns -1 if n1 < n2, 0 otherwise. |
 | =        | no   | IC   | **Equal**<br>(n1 n2 -- flag)<br>Returns -1 if n1 is equal to n2, 0 otherwise. |
 | >        | no   | IC   | **Greater than**<br>(n1 n2 -- flag)<br>Returns -1 if n1 > n2, 0 otherwise. |
+| >NUMBER  | no   | IC   | **String to number**<br>( -- n true \| false) {s -- }<br>Parses a string into a single cell integer. Leaves true and the number on the stack, if the conversion was successfull. Leaves just false, if the conversion failed. |
 | >R       | no   | IC   | **To return stack**<br>(n -- ) [ - n]<br>Removes the top item from the stack and pushes it onto the return stack. |
 | ?DUP     | no   | IC   | **Conditional duplicate**<br>(n -- 0 / n n)<br>If top of stack is nonzero, duplicate it. Otherwise leave zero on top of stack. |
 | @        | no   | IC   | **Fetch**<br>(addr -- n)<br>Loads the value at addr (a variables stack index) and leaves it at the top of the stack. |
@@ -119,7 +120,7 @@ Note: The `."` word works like `S" str" S.` words together.
 
 ## TODO
 
-Words: `>NUMBER ACCEPT ALIGNALIGNED CELL+ COUNT DECIMAL 
+Words: `ACCEPT ALIGNALIGNED CELL+ COUNT DECIMAL 
   ENVIRONMENT? EVALUATE FILL FIND MOVE
   U. U< UM* UM/MOD WORD`
 

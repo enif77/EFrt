@@ -80,6 +80,22 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// <returns>A string.</returns>
         string GetTerminatedString(char terminator);
 
+        /// <summary>
+        /// Parses an integer number from a string.
+        /// </summary>
+        /// <param name="s">A string containing a number.</param>
+        /// <param name="success">True, if parsing succeeded.</param>
+        /// <returns>A parsed number.</returns>
+        long ParseNumber(string s, out bool success);
+
+        /// <summary>
+        /// Parses a floating point number from a string.
+        /// </summary>
+        /// <param name="s">A string containing a number.</param>
+        /// <param name="success">True, if parsing succeeded.</param>
+        /// <returns>A parsed number.</returns>
+        double ParseFloatingPointNumber(string s, out bool success);
+
         #endregion
 
 

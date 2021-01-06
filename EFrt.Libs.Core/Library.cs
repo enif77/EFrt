@@ -74,6 +74,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "<", LessThanAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "=", EqualsAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ">", GreaterThanAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ">NUMBER", ToNumberAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ">R", ToRAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "?DUP", QuestionDupeAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "@", FetchAction));
@@ -471,6 +472,23 @@ namespace EFrt.Libs.Core
         private int GreaterThanAction()
         {
             _interpreter.Function((n1, n2) => (n1 > n2) ? -1 : 0);
+
+            return 1;
+        }
+
+        // ( -- false | n true) {s -- }
+        private int ToNumberAction()
+        {
+            var n = _interpreter.ParseNumber(_interpreter.OPop().ToString(), out var success);
+            if (success)
+            {
+                _interpreter.Push((int)n);
+                _interpreter.Push(-1);
+            }
+            else
+            {
+                _interpreter.Push(0);
+            }
 
             return 1;
         }
