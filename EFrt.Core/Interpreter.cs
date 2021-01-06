@@ -370,7 +370,7 @@ namespace EFrt.Core
                                     }
                                     else
                                     {
-                                        var v = new FloatingPointValue() { D = t.FValue };
+                                        var v = new FloatingPointValue() { F = t.FValue };
 
                                         this.Push(v.A);
                                         this.Push(v.B);

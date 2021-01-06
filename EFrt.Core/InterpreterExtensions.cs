@@ -175,7 +175,7 @@ namespace EFrt.Core
             {
                 A = Pick(interpreter, index * 2),
                 B = Pick(interpreter, index * 2 + 2),
-            }.D;
+            }.F;
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace EFrt.Core
             {
                 B = Pick(interpreter, 1),
                 A = Peek(interpreter),
-            }.D;
+            }.F;
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace EFrt.Core
             {
                 B = Pop(interpreter),
                 A = Pop(interpreter),
-            }.D;
+            }.F;
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace EFrt.Core
         {
             var v = new FloatingPointValue()
             {
-                D = value
+                F = value
             };
 
             Push(interpreter, v.A);

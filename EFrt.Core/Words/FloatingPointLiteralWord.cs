@@ -29,7 +29,7 @@ namespace EFrt.Core.Words
 
             _value = new FloatingPointValue()
             {
-                D = value
+                F = value
             };
         }
 

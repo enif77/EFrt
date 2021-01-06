@@ -6,10 +6,9 @@ namespace EFrt.Core.Values
 
 
     [StructLayout(LayoutKind.Explicit)]
-    public struct FloatingPointValue
+    public struct UnsignedSingleCellIntegerValue
     {
-        [FieldOffset(0)] public double F;
-        [FieldOffset(0)] public int A;
-        [FieldOffset(4)] public int B;
+        [FieldOffset(0)] public uint U;
+        [FieldOffset(0)] public int V;
     }
 }

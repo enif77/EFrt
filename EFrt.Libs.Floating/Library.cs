@@ -109,7 +109,7 @@ namespace EFrt.Libs.Floating
             {
                 B = _interpreter.Pop(),
                 A = _interpreter.Pop(),
-            }.D.ToString(CultureInfo.InvariantCulture));
+            }.F.ToString(CultureInfo.InvariantCulture));
 
             return 1;
         }
