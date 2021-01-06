@@ -31,6 +31,7 @@ namespace EFrt.Libs.Floating
 
         public void DefineWords()
         {
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ">FLOAT", ToNumberAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F.", PrintFloatAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "FCONSTANT", ConstantCompilationAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "FVARIABLE", VariableCompilationAction));
@@ -83,6 +84,23 @@ namespace EFrt.Libs.Floating
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "F0>", IsPosAction));
         }
 
+
+        // ( -- false | f true) {s -- }
+        private int ToNumberAction()
+        {
+            var f = _interpreter.ParseFloatingPointNumber(_interpreter.OPop().ToString(), out var success);
+            if (success)
+            {
+                _interpreter.FPush(f);
+                _interpreter.Push(-1);
+            }
+            else
+            {
+                _interpreter.Push(0);
+            }
+
+            return 1;
+        }
 
         // (f --)
         private int PrintFloatAction()

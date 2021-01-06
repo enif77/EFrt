@@ -6,12 +6,9 @@ namespace EFrt.Libs.Core
     using System.Text;
 
     using EFrt.Core;
-    using EFrt.Core.Values;
     using EFrt.Core.Words;
 
     using EFrt.Libs.Core.Words;
-
-    using static EFrt.Core.Token;
 
 
     /// <summary>
