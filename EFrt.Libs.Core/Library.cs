@@ -6,6 +6,7 @@ namespace EFrt.Libs.Core
     using System.Text;
 
     using EFrt.Core;
+    using EFrt.Core.Values;
     using EFrt.Core.Words;
 
     using EFrt.Libs.Core.Words;
@@ -130,6 +131,10 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "SWAP", SwapAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "THEN", ThenAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "TYPE", TypeAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "U.", UDotAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "U<", ULessThanAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "UM*", UMStarAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, "UM/MOD", UMSlashModAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "UNLOOP", UnloopAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "UNTIL", UntilAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "VARIABLE", VariableAction));
@@ -1150,6 +1155,46 @@ namespace EFrt.Libs.Core
         private int TypeAction()
         {
             _interpreter.Output.Write(_interpreter.OPop().ToString());
+
+            return 1;
+        }
+
+        // (u --)
+        private int UDotAction()
+        {
+            //_interpreter.Output.Write("{0} ", new UnsignedSingleCellIntegerValue()
+            //{
+            //    V = _interpreter.Pop()
+            //}.U);
+
+            _interpreter.Output.Write("{0}", (uint)_interpreter.Pop());
+
+            return 1;
+        }
+
+        // (u1 u2 -- flag)
+        private int ULessThanAction()
+        {
+            _interpreter.UFunction((u1, u2) => (u1 < u2) ? -1 : 0);
+
+            return 1;
+        }
+
+        // (u1 u2 -- ud)
+        private int UMStarAction()
+        {
+            _interpreter.UDPush((ulong)_interpreter.Pop() * (ulong)_interpreter.Pop());
+
+            return 1;
+        }
+
+        // (ud u1 -- u2 u3)
+        private int UMSlashModAction()
+        {
+            var u1 = (ulong)_interpreter.Pop();
+            var ud = (ulong)_interpreter.DPop();
+            _interpreter.Push((int)(ud % u1));  // u2
+            _interpreter.Push((int)(ud / u1));  // u3
 
             return 1;
         }

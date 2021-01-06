@@ -165,6 +165,22 @@ namespace EFrt.Core
 
 
         /// <summary>
+        /// Inserts a double cell value to the stack.
+        /// </summary>
+        /// <param name="value">A double cell value.</param>
+        public static void UDPush(this IInterpreter interpreter, ulong value)
+        {
+            var v = new UnsignedDoubleCellIntegerValue()
+            {
+                UD = value
+            };
+
+            Push(interpreter, v.A);
+            Push(interpreter, v.B);
+        }
+
+
+        /// <summary>
         /// Returns a floating point value from the stack at certain index.
         /// </summary>
         /// <param name="index">A value index.</param>
@@ -394,6 +410,18 @@ namespace EFrt.Core
             var stack = interpreter.State.Stack;
             var top = stack.Top;
             stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
+        }
+
+
+        /// <summary>
+        /// stack[top] = func(stack[top - 1], stack[top])
+        /// </summary>
+        /// <param name="func">A function.</param>
+        public static void UFunction(this IInterpreter interpreter, Func<uint, uint, int> func)
+        {
+            var stack = interpreter.State.Stack;
+            var top = stack.Top;
+            stack.Items[--stack.Top] = func((uint)stack.Items[top - 1], (uint)stack.Items[top]);
         }
 
 
