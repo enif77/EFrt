@@ -133,9 +133,6 @@ namespace EFrt.Core
 
         #region words list
 
-        public IWord CurrentWord { get; private set; }
-
-
         public bool IsWordDefined(string wordName)
         {
             return State.WordsList.IsWordDefined(wordName.ToUpperInvariant());
@@ -199,6 +196,30 @@ namespace EFrt.Core
         }
 
 
+        public void SuspendNewWordCompilation()
+        {
+            // Cannot suspend a compilation, when not compiling.
+            if (IsCompiling == false)
+            {
+                throw new Exception("Not in a new word compilation.");
+            }
+
+            InterpreterState = InterpreterStateCode.SuspendingCompilation;
+        }
+
+
+        public void ResumeNewWordCompilation()
+        {
+            // Cannot resume a compilation, when not suspended.
+            if (InterpreterState != InterpreterStateCode.SuspendingCompilation)
+            {
+                throw new Exception("The new word compilation is not suspended.");
+            }
+
+            InterpreterState = InterpreterStateCode.Compiling;
+        }
+
+
         public void EndNewWordCompilation()
         {
             // Cannot end a new word compilation, if not compiling.
@@ -222,6 +243,9 @@ namespace EFrt.Core
 
 
         #region execution
+
+        private IWord CurrentWord { get; set; }
+
 
         public void Reset()
         {

@@ -18,6 +18,11 @@ namespace EFrt.Core
         Compiling,
 
         /// <summary>
+        /// State after the [ word. Interpreter can return to Compiling state by the ] word.
+        /// </summary>
+        SuspendingCompilation,
+
+        /// <summary>
         /// The interpreter just executed the QUIT word. The current interpretation is terminated and can be resumed.
         /// </summary>
         Breaking,

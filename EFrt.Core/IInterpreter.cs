@@ -147,6 +147,17 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         void BeginNewWordCompilation();
 
         /// <summary>
+        /// Suspends a new word compilation.
+        /// Call the ResumeNewWordCompilation() method to return to the Compiling state.
+        /// </summary>
+        void SuspendNewWordCompilation();
+
+        /// <summary>
+        /// Resumes a new word compilation.
+        /// </summary>
+        void ResumeNewWordCompilation();
+
+        /// <summary>
         /// End a new word compilation and adds it into the known words list.
         /// </summary>
         void EndNewWordCompilation();

@@ -9,7 +9,7 @@ Words definition table columns:
 - Name: A name of a word with optional parameters.
 - Imm.: Immediate - if a word is executed even if we are in the compilation mode.
 - Mode: I = interpretation mode only (not available during compilation), C = compilation mode only
-  (not available during implementation), IC = vailable in both modes.
+  (not available during implementation), IC = vailable in both modes, S = suspended compilation only (not available in I, C or IC).
 - Description: A word name, followed by the stack diagram - () = data stack, [] = return stack, {} = object stack - and description of the word itself.
 
 | Name     | Imm. | Mode | Description |
@@ -109,8 +109,10 @@ Words definition table columns:
 | VARIABLE x | no   | I    | **Declare variable**<br>A variable named x is declared and its value is set to zero. When x is executed, its address will be placed on the stack. Four bytes are reserved on the heap for the variable's value. |
 | WHILE    | yes  | C    | **Decide BEGIN—WHILE—REPEAT loop**<br>(flag -- )<br>If flag is nonzero, execution continues after the WHILE. If flag is zero, the loop is exited and execution resumed after the REPEAT that marks the end of the loop. |
 | XOR      | no   | IC   | **Bitwise exclusive or**<br>(n1 n2 -- n3)<br>Stores the bitwise exclusive or of n1 and n2 on the stack. |
+| [        | yes  | C    | **Suspend compilation**<br>Within a compilation, returns to the interpretive state. |
 | [']      | yes  | C    | **Obtain execution token**<br>Places the execution token of the following word to the currently compiled word as a literal. |
 | [CHAR] ccc | yes  | C    | **Bracket char**<br>( -- c)<br>Compilation: Skip leading spaces. Parse the string ccc. Run-time: Return c, the display code representing the first character of ccc. Interpretation semantics for this word are undefined. |
+| ]        | no   | S    | **Resume compilation**<br>Resumes a new word compilation. |
 
 Note: The `."` word works like `S" str" S.` words together.
 
@@ -119,7 +121,7 @@ Note: The `."` word works like `S" str" S.` words together.
 
 Words: `>NUMBER ACCEPT ALIGNALIGNED CELL+ COUNT DECIMAL 
   ENVIRONMENT? EVALUATE FILL FIND MOVE
-  U. U< UM* UM/MOD WORD [ x ]`
+  U. U< UM* UM/MOD WORD`
 
 Words (?): `>BODY`
 

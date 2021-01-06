@@ -137,8 +137,10 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "VARIABLE", VariableAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "WHILE", WhileAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "XOR", XorAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "[", LeftBracketAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "[']", BracketTickAction));
             _interpreter.AddWord(new ImmediateWord(_interpreter, "[CHAR]", BracketCharAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "]", RightBracketAction));
         }
 
 
@@ -1029,16 +1031,12 @@ namespace EFrt.Libs.Core
         // { -- s}
         private int SQuoteAction()
         {
-            var s = _interpreter.GetTerminatedString('"');
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("S\" outside a new word definition.");
+            }
 
-            if (_interpreter.IsCompiling)
-            {
-                _interpreter.WordBeingDefined.AddWord(new StringLiteralWord(_interpreter, s));
-            }
-            else
-            {
-                _interpreter.OPush(s);
-            }
+            _interpreter.WordBeingDefined.AddWord(new StringLiteralWord(_interpreter, _interpreter.GetTerminatedString('"')));
 
             return 1;
         }
@@ -1212,6 +1210,14 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
+        // ( -- )
+        private int LeftBracketAction()
+        {
+            _interpreter.SuspendNewWordCompilation();
+
+            return 1;
+        }
+
         // ['] word-name
         // ( -- xt)
         private int BracketTickAction()
@@ -1235,6 +1241,14 @@ namespace EFrt.Libs.Core
             }
 
              _interpreter.WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(_interpreter, _interpreter.GetWordName()[0]));
+
+            return 1;
+        }
+
+        // ( -- )
+        private int RightBracketAction()
+        {
+            _interpreter.ResumeNewWordCompilation();
 
             return 1;
         }
