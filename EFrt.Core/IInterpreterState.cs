@@ -26,6 +26,11 @@ namespace EFrt.Core
         ReturnStack ReturnStack { get; }
 
         /// <summary>
+        /// Exception stack.
+        /// </summary>
+        ExceptionStack ExceptionStack { get; }
+
+        /// <summary>
         /// Heap - variables etc.
         /// </summary>
         Heap Heap { get; }

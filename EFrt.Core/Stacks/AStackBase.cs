@@ -10,7 +10,7 @@ namespace EFrt.Core.Stacks
 
         public int Count => Top + 1;
         
-        public bool IsEmpty => Count > 0;
+        public bool IsEmpty => Count <= 0;
 
 
         protected AStackBase(int capacity = 32)

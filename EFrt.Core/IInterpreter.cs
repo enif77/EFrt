@@ -189,6 +189,23 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         void Reset();
 
         /// <summary>
+        /// Clears the stack and the object stack and calls the Quit() method.
+        /// </summary>
+        void Abort();
+
+        /// <summary>
+        /// The return stack is cleared and control is returned to the interpreter. The stack and the object stack are not disturbed.
+        /// </summary>
+        void Quit();
+
+        /// <summary>
+        /// Throws an system exception based on the exception code.
+        /// </summary>
+        /// <param name="exceptionCode">An exception code.</param>
+        /// <param name="message">An optional exception message.</param>
+        void Throw(int exceptionCode, string message = null);
+
+        /// <summary>
         /// Executes a string as a FORTH program.
         /// </summary>
         /// <param name="src">A FORTH program source.</param>

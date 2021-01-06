@@ -295,6 +295,62 @@ namespace EFrt.Core
         }
 
 
+        public void Abort()
+        {
+            State.Stack.Clear();
+            State.ObjectStack.Clear();
+
+            // TODO: Clear the heap?
+
+            Quit();
+        }
+
+
+        public void Quit()
+        {
+            State.ReturnStack.Clear();
+            BreakExecution();
+        }
+
+
+        public void Throw(int exceptionCode, string message = null)
+        {
+            if (exceptionCode == 0)
+            {
+                return;
+            }
+
+            if (State.ExceptionStack.IsEmpty)
+            {
+                if (exceptionCode == -2)
+                {
+                    Output.WriteLine(message ?? "Execution aborted!");
+                }
+                else
+                {
+                    Output.WriteLine($"Execution aborted with exception code {exceptionCode}!");  // TODO: Přeložit ex. code na řetězec dle standardu.
+                }
+
+                // Also for ex. code -1.
+                Abort();
+
+                return;
+            }
+
+            // Restore the previous execution state.
+            var exceptionFrame = State.ExceptionStack.Pop();
+
+            State.Stack.Top = exceptionFrame.StackTop;
+            State.ObjectStack.Top = exceptionFrame.ObjectStackTop;
+            State.ReturnStack.Top = exceptionFrame.ReturnStackTop;
+
+            this.Push(exceptionCode);
+
+            // Will be catched by the CATCH word.
+            throw new Exception($"[{exceptionCode}] {message ?? string.Empty}");
+        }
+
+
         public void Execute(string src)
         {
             Execute(new StringSourceReader(src));

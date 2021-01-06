@@ -22,6 +22,7 @@ namespace EFrtApp
 
             interpreter.AddWords(new EFrt.Libs.Core.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.CoreExt.Library(interpreter));
+            interpreter.AddWords(new EFrt.Libs.Exception.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.Double.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.DoubleExt.Library(interpreter));
             interpreter.AddWords(new EFrt.Libs.Floating.Library(interpreter));
@@ -137,6 +138,7 @@ namespace EFrtApp
                 new Stack(32),
                 new ObjectStack(32),
                 new ReturnStack(32),
+                new ExceptionStack(32),
                 new Heap(1024),
                 new ObjectHeap(1024),
                 new WordsList()));

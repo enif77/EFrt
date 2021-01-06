@@ -137,6 +137,9 @@ namespace EFrt.Libs.CoreExt
         // :NONAME body ;
         private int SemicolonAction()
         {
+            // Each user defined word exits with the EXIT word.
+            _interpreter.WordBeingDefined.AddWord(new ExitControlWord(_interpreter, _interpreter.WordBeingDefined));
+
             _interpreter.EndNewWordCompilation();
 
             // Compilation of NONAME words leaves their execution token on the stack.

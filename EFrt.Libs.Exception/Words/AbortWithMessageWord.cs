@@ -1,6 +1,6 @@
 ﻿/* EFrt - (C) 2020 Premysl Fara  */
 
-namespace EFrt.Libs.Core.Words
+namespace EFrt.Libs.Exception.Words
 {
     using EFrt.Core;
     using EFrt.Core.Words;
@@ -18,23 +18,15 @@ namespace EFrt.Libs.Core.Words
         public AbortWithMessageWord(IInterpreter interpreter, string message)
             : base(interpreter)
         {
-            Name = "ABORT";
+            Name = "ABORTEXT";
             IsControlWord = true;
             Action = () => 
             {
                 if (Interpreter.Pop() != 0)
                 {
-                    Interpreter.Output.WriteLine(_message);
-
-                    // Abort
-                    Interpreter.State.Stack.Clear();
-                    Interpreter.State.ObjectStack.Clear();
-
-                    // Quit
-                    Interpreter.State.ReturnStack.Clear();
-                    Interpreter.BreakExecution();
+                    Interpreter.Throw(-2, _message);
                 }
-
+                
                 return 1;
             };
 

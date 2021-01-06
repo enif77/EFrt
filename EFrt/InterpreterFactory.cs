@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt
 {
@@ -18,6 +18,7 @@ namespace EFrt
                 new Stack(32),
                 new ObjectStack(32),
                 new ReturnStack(32),
+                new ExceptionStack(32),
                 new Heap(1024),
                 new ObjectHeap(1024),
                 new WordsList()));

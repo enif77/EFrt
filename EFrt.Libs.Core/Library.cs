@@ -6,7 +6,6 @@ namespace EFrt.Libs.Core
     using System.Text;
 
     using EFrt.Core;
-    using EFrt.Core.Values;
     using EFrt.Core.Words;
 
     using EFrt.Libs.Core.Words;
@@ -449,6 +448,9 @@ namespace EFrt.Libs.Core
         // : word-name body ;
         private int SemicolonAction()
         {
+            // Each user defined word exits with the EXIT word.
+            _interpreter.WordBeingDefined.AddWord(new ExitControlWord(_interpreter, _interpreter.WordBeingDefined));
+
             _interpreter.EndNewWordCompilation();
 
             return 1;
@@ -525,15 +527,12 @@ namespace EFrt.Libs.Core
         // ( -- )
         public int AbortAction()
         {
-            _interpreter.State.Stack.Clear();
-            _interpreter.State.ObjectStack.Clear();
+            _interpreter.Abort();
 
-            // TODO: Clear the heap?
-
-            return QuitAction();
+            return 1;
         }
 
-        // ( -- )
+        // (flag -- )
         private int AbortWithMessageAction()
         {
             if (_interpreter.IsCompiling == false)
@@ -961,8 +960,7 @@ namespace EFrt.Libs.Core
         // ( -- )
         private int QuitAction()
         {
-            _interpreter.State.ReturnStack.Clear();
-            _interpreter.BreakExecution();
+            _interpreter.Quit();
 
             return 1;
         }

@@ -50,8 +50,8 @@ Words definition table columns:
 | >R       | no   | IC   | **To return stack**<br>(n -- ) [ - n]<br>Removes the top item from the stack and pushes it onto the return stack. |
 | ?DUP     | no   | IC   | **Conditional duplicate**<br>(n -- 0 / n n)<br>If top of stack is nonzero, duplicate it. Otherwise leave zero on top of stack. |
 | @        | no   | IC   | **Fetch**<br>(addr -- n)<br>Loads the value at addr (a variables stack index) and leaves it at the top of the stack. |
-| ABORT    | no   | IC   | **Abort**<br>Clears the stack and the object and performs a QUIT. |
-| ABORT" str | yes  | C    | **Abort with message**<br>Prints the string literal that follows in line, then aborts, clearing all execution state to return to the interpreter. |
+| ABORT    | no   | IC   | **Abort**<br>Clears the stack and the object stack and performs a QUIT. |
+| ABORT" str | yes  | C    | **Abort with message**<br>(flag -- )<br>Prints the string literal that follows in line, then aborts, clearing all execution state to return to the interpreter. |
 | ABS      | no   | IC   | **n2 = Abs(n1)**<br>(n1 -- n2)<br>Replaces the top of stack with its absolute value. |
 | ALLOT    | no   | IC   | **Allocate heap**<br>(n -- )<br>Allocates n cells of heap space. |
 | AND      | no   | IC   | **Bitwise and**<br>(n1 n2 -- n3)<br>Stores the bitwise AND of n1 and n2 on the stack. |
