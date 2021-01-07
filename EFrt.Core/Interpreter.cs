@@ -436,15 +436,11 @@ namespace EFrt.Core
                                     break;
 
                                 case TokenType.DoubleCellInteger:
-                                    var v = new DoubleCellIntegerValue() { D = t.LValue };
-                                    this.Push(v.A);
-                                    this.Push(v.B);
+                                    this.DPush(t.LValue);
                                     break;
 
                                 case TokenType.Float:
-                                    var f = new FloatingPointValue() { F = t.FValue };
-                                    this.Push(f.A);
-                                    this.Push(f.B);
+                                    this.FPush(t.FValue);
                                     break;
 
                                 // No, it is some unknown word.
