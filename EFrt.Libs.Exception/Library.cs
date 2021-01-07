@@ -42,7 +42,7 @@ namespace EFrt.Libs.Exception
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "THROW", ThrowAction));
 
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "ABORT", AbortAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ABORT\"", AbortWithMessageAction));
+            _interpreter.AddWord(new ImmediateWord(_interpreter, "ABORT\"", AbortWithMessageAction));
         }
 
         

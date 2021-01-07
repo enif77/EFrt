@@ -325,17 +325,15 @@ namespace EFrt.Core
 
             if (State.ExceptionStack.IsEmpty)
             {
-                if (exceptionCode == -2)
+                switch (exceptionCode)
                 {
-                    Output.WriteLine(message ?? "Execution aborted!");
-                }
-                else
-                {
-                    //Output.WriteLine($"Execution aborted with exception code {exceptionCode}!");  // TODO: Přeložit ex. code na řetězec dle standardu.
-                    Output.WriteLine($"Execution aborted: [{exceptionCode}] {message ?? string.Empty}");
+                    case -1: break;
+                    case -2: Output.WriteLine(message ?? "Execution aborted!"); break;
+                    default:
+                        Output.WriteLine($"Execution aborted: [{exceptionCode}] {message ?? string.Empty}");
+                        break;
                 }
 
-                // Also for ex. code -1.
                 Abort();
 
                 return;

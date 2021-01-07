@@ -42,15 +42,14 @@ namespace EFrt.Libs.Exception.Words
 
                     return index;
                 }
-                catch (System.Exception ex)
+                catch (System.Exception)
                 {
                     if (Interpreter.State.ExceptionStack.IsEmpty == false && Interpreter.State.ExceptionStack.Peek() == exceptionFrame)
                     {
                         Interpreter.State.ExceptionStack.Pop();
                     }
 
-                    // TODO: What to do with ex?
-                    Interpreter.Output.WriteLine(ex.Message);
+                    // TODO: What to do with the exception?
 
                     // Go to the word behind us.
                     return 1;
