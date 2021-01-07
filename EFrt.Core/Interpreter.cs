@@ -284,6 +284,9 @@ namespace EFrt.Core
 
         #region execution
 
+        /// <summary>
+        /// The currently running word.
+        /// </summary>
         private IWord CurrentWord { get; set; }
 
 
@@ -328,7 +331,8 @@ namespace EFrt.Core
                 }
                 else
                 {
-                    Output.WriteLine($"Execution aborted with exception code {exceptionCode}!");  // TODO: Přeložit ex. code na řetězec dle standardu.
+                    //Output.WriteLine($"Execution aborted with exception code {exceptionCode}!");  // TODO: Přeložit ex. code na řetězec dle standardu.
+                    Output.WriteLine($"Execution aborted: [{exceptionCode}] {message ?? string.Empty}");
                 }
 
                 // Also for ex. code -1.
@@ -343,6 +347,7 @@ namespace EFrt.Core
             State.Stack.Top = exceptionFrame.StackTop;
             State.ObjectStack.Top = exceptionFrame.ObjectStackTop;
             State.ReturnStack.Top = exceptionFrame.ReturnStackTop;
+            CurrentWord = exceptionFrame.ExecutingWord;
 
             this.Push(exceptionCode);
 
@@ -365,25 +370,27 @@ namespace EFrt.Core
             var tok = _tokenizer.NextTok();
             while (tok.Code >= 0)
             {
-                switch (tok.Code)
+                if (tok.Code == TokenType.Word)
                 {
-                    // A word can be known or a number.
-                    case TokenType.Word:
-                        var wordName = tok.SValue.ToUpperInvariant();
+                    var wordName = tok.SValue.ToUpperInvariant();
+
+                    if (IsCompiling)
+                    {
                         if (State.WordsList.IsWordDefined(wordName))
                         {
-                            CurrentWord = State.WordsList.GetWord(wordName);
-
-                            if (IsCompiling && CurrentWord.IsImmediate == false)
+                            var word = State.WordsList.GetWord(wordName);
+                            if (word.IsImmediate)
                             {
-                                WordBeingDefined.AddWord(new RuntimeWord(this, wordName));
+                                // We are executing the current latest version of the foung word.
+                                word.Action();
                             }
                             else
                             {
-                                CurrentWord.Action();
+                                // We are adding the RuntimeWord here, because we want to use the latest word definition at runtime.
+                                WordBeingDefined.AddWord(new RuntimeWord(this, wordName));
                             }
                         }
-                        else if (IsCompiling && string.Compare(WordBeingDefined.Name, wordName, true) == 0)
+                        else if (string.Compare(WordBeingDefined.Name, wordName, true) == 0)
                         {
                             // Recursive call of the currently compiled word.
                             WordBeingDefined.AddWord(new RuntimeWord(this, wordName));
@@ -395,62 +402,78 @@ namespace EFrt.Core
                             switch (t.Code)
                             {
                                 case TokenType.SingleCellInteger:
-                                    if (IsCompiling)
-                                    {
-                                        WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(this, t.IValue));
-                                    }
-                                    else
-                                    {
-                                        this.Push(t.IValue);
-                                    }
+                                    WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(this, t.IValue));
                                     break;
 
                                 case TokenType.DoubleCellInteger:
-                                    if (IsCompiling)
-                                    {
-                                        WordBeingDefined.AddWord(new DoubleCellIntegerLiteralWord(this, t.LValue));
-                                    }
-                                    else
-                                    {
-                                        var v = new DoubleCellIntegerValue() { D = t.LValue };
-
-                                        this.Push(v.A);
-                                        this.Push(v.B);
-                                    }
+                                    WordBeingDefined.AddWord(new DoubleCellIntegerLiteralWord(this, t.LValue));
                                     break;
 
                                 case TokenType.Float:
-                                    if (IsCompiling)
-                                    {
-                                        WordBeingDefined.AddWord(new FloatingPointLiteralWord(this, t.FValue));
-                                    }
-                                    else
-                                    {
-                                        var v = new FloatingPointValue() { F = t.FValue };
-
-                                        this.Push(v.A);
-                                        this.Push(v.B);
-                                    }
+                                    WordBeingDefined.AddWord(new FloatingPointLiteralWord(this, t.FValue));
                                     break;
 
                                 // No, it is some unknown word.
                                 default:
-                                    // End this word compiling.
-                                    InterpreterState = InterpreterStateCode.Interpreting;   // TODO: Just break here.
-
-                                    throw new Exception($"Unknown word '{tok.SValue}' canot be executed.");
+                                    Throw(-13, $"The '{tok.SValue}' word is undefined.");
+                                    break;
                             }
                         }
-                        break;
+                    }
+                    else
+                    {
+                        if (State.WordsList.IsWordDefined(wordName))
+                        {
+                            CurrentWord = State.WordsList.GetWord(wordName);
+                            CurrentWord.Action();
+                        }
+                        else
+                        {
+                            // An unknown word can be a number.
+                            var t = _tokenizer.ParseNumber(tok.SValue);
+                            switch (t.Code)
+                            {
+                                case TokenType.SingleCellInteger:
+                                    this.Push(t.IValue);
+                                    break;
 
-                    default:
-                        throw new Exception($"Unknown token in a word execution.");
+                                case TokenType.DoubleCellInteger:
+                                    var v = new DoubleCellIntegerValue() { D = t.LValue };
+                                    this.Push(v.A);
+                                    this.Push(v.B);
+                                    break;
+
+                                case TokenType.Float:
+                                    var f = new FloatingPointValue() { F = t.FValue };
+                                    this.Push(f.A);
+                                    this.Push(f.B);
+                                    break;
+
+                                // No, it is some unknown word.
+                                default:
+                                    Throw(-13, $"The '{tok.SValue}' word is undefined.");
+                                    break;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    //throw new Exception("Unknown token in a word execution.");
+                    Throw(-100, $"Unknown token {tok.Code}.");
                 }
 
                 // Finish program execution, when requested.
                 if (IsExecutionTerminated) break;
 
+                // Extract the next token.
                 tok = _tokenizer.NextTok();
+            }
+
+            // Execution breaked. Return to interpreting mode.
+            if (InterpreterState == InterpreterStateCode.Breaking)
+            {
+                InterpreterState = InterpreterStateCode.Interpreting;
             }
         }
 
