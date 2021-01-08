@@ -206,12 +206,6 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         void Throw(int exceptionCode, string message = null);
 
         /// <summary>
-        /// Executes a string as a FORTH program.
-        /// </summary>
-        /// <param name="src">A FORTH program source.</param>
-        void Execute(string src);
-
-        /// <summary>
         /// Executes a FORTH program using a source reader.
         /// </summary>
         /// <param name="sourceReader">A FORTH program source reader.</param>

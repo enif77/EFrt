@@ -5,7 +5,6 @@ namespace EFrt.Core
     using System;
     using System.Text;
 
-    using EFrt.Core.Values;
     using EFrt.Core.Words;
 
     using static EFrt.Core.Token;
@@ -354,14 +353,10 @@ namespace EFrt.Core
         }
 
 
-        public void Execute(string src)
-        {
-            Execute(new StringSourceReader(src));
-        }
-
-
         public void Execute(ISourceReader sourceReader)
         {
+            if (sourceReader == null) throw new ArgumentNullException(nameof(sourceReader));
+
             _tokenizer = new Tokenizer(sourceReader);
             _tokenizer.NextChar();
 
