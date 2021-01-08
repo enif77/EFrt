@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Libs.Core.Words
 {
@@ -21,25 +21,25 @@ namespace EFrt.Libs.Core.Words
         {
             Name = "UntilControlWord";
             IsControlWord = true;
-            Action = Execute;
+            Action = () =>
+            {
+                Interpreter.StackExpect(1);
+
+                // (flag -- )
+                if (Interpreter.Pop() == 0)
+                {
+                    // The flag is FALSE - repeat the loop.
+                    return _increment;
+                }
+
+                // The flag is TRUE, end the loop.
+                return 1;
+            };
 
             _increment = increment;
         }
 
 
         private int _increment;
-
-        private int Execute()
-        {
-            // (flag -- )
-            if (Interpreter.Pop() == 0)
-            {
-                // The flag is FALSE - repeat the loop.
-                return _increment;
-            }
-
-            // The flag is TRUE, end the loop.
-            return 1;
-        }
     }
 }

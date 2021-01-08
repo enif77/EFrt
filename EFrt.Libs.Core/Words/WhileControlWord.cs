@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Libs.Core.Words
 {
@@ -21,7 +21,21 @@ namespace EFrt.Libs.Core.Words
         {
             Name = "WhileControlWord";
             IsControlWord = true;
-            Action = Execute;
+            Action = () =>
+            {
+                Interpreter.StackExpect(1);
+
+                if (Interpreter.Pop() != 0)
+                {
+                    // The flag is true, advance instruction index by one to loop body.
+                    return 1;
+                }
+                else
+                {
+                    // The flag is false, advance to a word behind the REPEAT word.
+                    return _repeatIndexIncrement + 1;
+                }
+            };
 
             _thisIndex = currentIndex;
             _repeatIndexIncrement = 0;
@@ -38,20 +52,5 @@ namespace EFrt.Libs.Core.Words
 
         private int _thisIndex;
         private int _repeatIndexIncrement;
-
-
-        private int Execute()
-        {
-            if (Interpreter.Pop() != 0)
-            {
-                // The flag is true, advance instruction index by one to loop body.
-                return 1;
-            }
-            else
-            {
-                // The flag is false, advance to a word behind the REPEAT word.
-                return _repeatIndexIncrement + 1;
-            }
-        }
     }
 }

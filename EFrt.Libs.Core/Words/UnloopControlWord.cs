@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Libs.Core.Words
 {
@@ -22,6 +22,8 @@ namespace EFrt.Libs.Core.Words
             IsControlWord = true;
             Action = () => 
             {
+                Interpreter.ReturnStackExpect(2);
+
                 // Remove the limit and the index.
                 Interpreter.RDrop(2);
 

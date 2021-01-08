@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Libs.Core.Words
 {
@@ -22,6 +22,8 @@ namespace EFrt.Libs.Core.Words
             IsControlWord = true;
             Action = () =>
             {
+                Interpreter.ObjectStackFree(1);
+
                 Interpreter.OPush(_value);
 
                 return 1;

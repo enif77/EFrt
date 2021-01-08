@@ -42,6 +42,9 @@ namespace EFrt.Libs.CoreEx.Words
 
         private int Execute()
         {
+            Interpreter.StackExpect(2);
+            Interpreter.ReturnStackFree(2);
+
             var index = Interpreter.Pop();
             var limit = Interpreter.Pop();
 

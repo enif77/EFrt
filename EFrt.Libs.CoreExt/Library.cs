@@ -72,6 +72,7 @@ namespace EFrt.Libs.CoreExt
         }
 
 
+        // ( -- )
         private int DotParenAction()
         {
             _interpreter.Output.Write(_interpreter.GetTerminatedString(')'));
@@ -82,6 +83,8 @@ namespace EFrt.Libs.CoreExt
         // (n -- flag)
         private int ZeroNotEqualsAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.Function((a) => (a != 0) ? -1 : 0);
 
             return 1;
@@ -90,6 +93,8 @@ namespace EFrt.Libs.CoreExt
         // (n -- flag)
         private int ZeroGreaterAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.Function((a) => (a > 0) ? -1 : 0);
 
             return 1;
@@ -98,6 +103,9 @@ namespace EFrt.Libs.CoreExt
         // (n1 n2 -- ) [ -- n1 n2]
         private int TwoToRAction()
         {
+            _interpreter.StackExpect(2);
+            _interpreter.ReturnStackFree(2);
+
             var n2 = _interpreter.Pop();
             _interpreter.RPush(_interpreter.Pop());
             _interpreter.RPush(n2);
@@ -108,6 +116,9 @@ namespace EFrt.Libs.CoreExt
         // ( -- n1 n2) [n1 n2 -- ]
         private int TwoRFromAction()
         {
+            _interpreter.ReturnStackExpect(2);
+            _interpreter.StackFree(2);
+
             var n2 = _interpreter.RPop();
             _interpreter.Push(_interpreter.RPop());
             _interpreter.Push(n2);
@@ -118,6 +129,9 @@ namespace EFrt.Libs.CoreExt
         // ( -- n1 n2) [n1 n2 -- ]
         private int TwoRFetchAction()
         {
+            _interpreter.StackFree(2);
+            _interpreter.ReturnStackExpect(2);
+
             _interpreter.Push(_interpreter.RPick(1));  // n1
             _interpreter.Push(_interpreter.RPick(0));  // n2
 
@@ -145,6 +159,8 @@ namespace EFrt.Libs.CoreExt
             // Compilation of NONAME words leaves their execution token on the stack.
             if (_interpreter.WordBeingDefined is NonameWord)
             {
+                _interpreter.StackFree(1);
+
                 _interpreter.Push(_interpreter.WordBeingDefined.ExecutionToken);
             }
 
@@ -154,6 +170,8 @@ namespace EFrt.Libs.CoreExt
         // (n1 n2 -- flag)
         private int NotEqualsAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.Function((a, b) => (a != b) ? -1 : 0);
 
             return 1;
@@ -166,6 +184,8 @@ namespace EFrt.Libs.CoreExt
             {
                 throw new Exception("?DO outside a new word definition.");
             }
+
+            _interpreter.ReturnStackFree(1);
 
             _interpreter.RPush(
                 _interpreter.WordBeingDefined.AddWord(
@@ -182,6 +202,8 @@ namespace EFrt.Libs.CoreExt
                 throw new Exception("AGAIN outside a new word definition.");
             }
 
+            _interpreter.ReturnStackExpect(1);
+
             // AGAIN word doesn't have a runtime behavior.
 
             _interpreter.WordBeingDefined.AddWord(
@@ -195,6 +217,8 @@ namespace EFrt.Libs.CoreExt
         // (n1 n2 -- n2)
         private int NipAction()
         {
+            _interpreter.StackExpect(2);
+
             var n2 = _interpreter.Pop();
             _interpreter.Drop();     // n1
             _interpreter.Push(n2);
@@ -205,6 +229,10 @@ namespace EFrt.Libs.CoreExt
         // (index -- n)
         private int PickAction()
         {
+            _interpreter.StackExpect(1);
+
+            // TODO: Check for the index.
+
             _interpreter.Push(_interpreter.Pick(_interpreter.Pop()));
 
             return 1;
@@ -213,6 +241,10 @@ namespace EFrt.Libs.CoreExt
         // (index -- )
         private int RollAction()
         {
+            _interpreter.StackExpect(1);
+
+            // TODO: Check for the index.
+
             _interpreter.Roll(_interpreter.Pop());
 
             return 1;
@@ -221,6 +253,8 @@ namespace EFrt.Libs.CoreExt
         // (n -- )
         private int ToAction()
         {
+            _interpreter.StackExpect(1);
+
             var valueWord = _interpreter.GetWord(_interpreter.GetWordName());
             if (valueWord is ValueWord)
             {
@@ -235,6 +269,9 @@ namespace EFrt.Libs.CoreExt
         // (n1 n2 -- n2 n1 n2)
         private int TuckAction()
         {
+            _interpreter.StackExpect(2);
+            _interpreter.StackFree(1);
+
             var n2 = _interpreter.Peek();
             _interpreter.Swap();    // n2 n1
             _interpreter.Push(n2);  // n2 n1 n2
@@ -246,6 +283,8 @@ namespace EFrt.Libs.CoreExt
         // (n -- )
         private int ValueAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.BeginNewWordCompilation();
             _interpreter.AddWord(new ValueWord(_interpreter, _interpreter.GetWordName(), _interpreter.Pop()));
             _interpreter.EndNewWordCompilation();
@@ -278,6 +317,10 @@ namespace EFrt.Libs.CoreExt
         // (index -- n)
         private int MinusRollAction()
         {
+            _interpreter.StackExpect(1);
+
+            // TODO: Check for the index.
+
             var index = _interpreter.Pop();
             var items = _interpreter.State.Stack.Items;
             var top = _interpreter.State.Stack.Top;
@@ -296,6 +339,8 @@ namespace EFrt.Libs.CoreExt
         // (n1 -- n2)
         private int AddTwoAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.Function((a) => a + 2);
 
             return 1;
@@ -304,6 +349,8 @@ namespace EFrt.Libs.CoreExt
         // (n1 -- n2)
         private int SubTwoAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.Function((a) => a - 2);
 
             return 1;
@@ -312,6 +359,8 @@ namespace EFrt.Libs.CoreExt
         // (n1 n2 n3 n4 -- n3 n4)
         private int TwoNipAction()
         {
+            _interpreter.StackExpect(4);
+
             var n4 = _interpreter.Pop();
             var n3 = _interpreter.Pop();
             _interpreter.Drop(2);
@@ -324,6 +373,9 @@ namespace EFrt.Libs.CoreExt
         // (n1 n2 n3 n4 -- n3 n4 n1 n2 n3 n4)
         private int TwoTuckAction()
         {
+            _interpreter.StackExpect(4);
+            _interpreter.StackFree(2);
+
             var n4 = _interpreter.Pop();
             var n3 = _interpreter.Pop();
             var n2 = _interpreter.Pop();
@@ -341,6 +393,8 @@ namespace EFrt.Libs.CoreExt
         // (n1 n2 -- flag)
         private int IsLtEAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.Function((a, b) => (a <= b) ? -1 : 0);
 
             return 1;
@@ -349,14 +403,18 @@ namespace EFrt.Libs.CoreExt
         // (n1 n2 -- flag)
         private int IsGtEAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.Function((a, b) => (a >= b) ? -1 : 0);
 
             return 1;
         }
 
-        // (a b c -- c a b)
+        // (n1 n2 n3 -- n3 n1 n2)
         private int MinusRotAction()
         {
+            _interpreter.StackExpect(3);
+
             var v3 = _interpreter.Pop();
             var v2 = _interpreter.Pop();
             var v1 = _interpreter.Pop();

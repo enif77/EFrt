@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Libs.Core.Words
 {
@@ -51,6 +51,8 @@ namespace EFrt.Libs.Core.Words
 
         private int Execute()
         {
+            Interpreter.StackExpect(1);
+
             if (Interpreter.Pop() != 0)
             {
                 // The flag is true, advance instruction index by one to true portion of IF.

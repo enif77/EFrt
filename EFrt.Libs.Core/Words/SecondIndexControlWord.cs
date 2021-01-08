@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Libs.Core.Words
 {
@@ -26,6 +26,9 @@ namespace EFrt.Libs.Core.Words
 
         private int Execute()
         {
+            Interpreter.ReturnStackExpect(1);
+            Interpreter.StackFree(1);
+
             // ( -- outer-index)  [ outer-limit outer-index inner-limit inner-index -- outer-limit outer-index inner-limit inner-index ]
 
             Interpreter.Push(Interpreter.RPick(2));

@@ -29,6 +29,8 @@ namespace EFrt.Libs.CoreEx.Words
             IsControlWord = true;
             Action = () => 
             {
+                Interpreter.StackFree(1);
+
                 Interpreter.Push(Value);
 
                 return 1;

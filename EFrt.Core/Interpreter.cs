@@ -281,6 +281,76 @@ namespace EFrt.Core
         #endregion
 
 
+        #region stack checks
+
+        public void StackExpect(int expectedItemsCount)
+        {
+            if (expectedItemsCount < 0) throw new ArgumentOutOfRangeException(nameof(expectedItemsCount));
+
+            if (State.Stack.Count < expectedItemsCount)
+            {
+                throw new InterpreterException(-4, "stack underflow");
+            }
+        }
+
+
+        public void StackFree(int expectedFreeItemsCount)
+        {
+            if (expectedFreeItemsCount < 0) throw new ArgumentOutOfRangeException(nameof(expectedFreeItemsCount));
+
+            if ((State.Stack.Count + expectedFreeItemsCount) >= State.Stack.Items.Length)
+            {
+                throw new InterpreterException(-3, "stack overflow");
+            }
+        }
+
+
+        public void ObjectStackExpect(int expectedItemsCount)
+        {
+            if (expectedItemsCount < 0) throw new ArgumentOutOfRangeException(nameof(expectedItemsCount));
+
+            if (State.ObjectStack.Count < expectedItemsCount)
+            {
+                throw new InterpreterException(-4, "object stack underflow");
+            }
+        }
+
+
+        public void ObjectStackFree(int expectedFreeItemsCount)
+        {
+            if (expectedFreeItemsCount < 0) throw new ArgumentOutOfRangeException(nameof(expectedFreeItemsCount));
+
+            if ((State.ObjectStack.Count + expectedFreeItemsCount) >= State.ObjectStack.Items.Length)
+            {
+                throw new InterpreterException(-3, "object stack overflow");
+            }
+        }
+
+
+        public void ReturnStackExpect(int expectedItemsCount)
+        {
+            if (expectedItemsCount < 0) throw new ArgumentOutOfRangeException(nameof(expectedItemsCount));
+
+            if (State.ReturnStack.Count < expectedItemsCount)
+            {
+                throw new InterpreterException(-4, "return stack underflow");
+            }
+        }
+
+
+        public void ReturnStackFree(int expectedFreeItemsCount)
+        {
+            if (expectedFreeItemsCount < 0) throw new ArgumentOutOfRangeException(nameof(expectedFreeItemsCount));
+
+            if ((State.ReturnStack.Count + expectedFreeItemsCount) >= State.ReturnStack.Items.Length)
+            {
+                throw new InterpreterException(-3, "return stack overflow");
+            }
+        }
+
+        #endregion
+
+
         #region execution
 
         /// <summary>
@@ -349,7 +419,7 @@ namespace EFrt.Core
             this.Push(exceptionCode);
 
             // Will be catched by the CATCH word.
-            throw new Exception($"[{exceptionCode}] {message ?? string.Empty}");
+            throw new InterpreterException(exceptionCode, message);
         }
 
 
@@ -374,8 +444,15 @@ namespace EFrt.Core
                             var word = State.WordsList.GetWord(wordName);
                             if (word.IsImmediate)
                             {
-                                // We are executing the current latest version of the foung word.
-                                word.Action();
+                                try
+                                {
+                                    // We are executing the current latest version of the foung word.
+                                    word.Action();
+                                }
+                                catch (InterpreterException ex)
+                                {
+                                    Throw(ex.ExceptionCode, ex.Message);
+                                }
                             }
                             else
                             {
@@ -418,7 +495,16 @@ namespace EFrt.Core
                         if (State.WordsList.IsWordDefined(wordName))
                         {
                             CurrentWord = State.WordsList.GetWord(wordName);
-                            CurrentWord.Action();
+
+                            try
+                            {
+                                // We are executing the current latest version of the foung word.
+                                CurrentWord.Action();
+                            }
+                            catch (InterpreterException ex)
+                            {
+                                Throw(ex.ExceptionCode, ex.Message);
+                            }
                         }
                         else
                         {

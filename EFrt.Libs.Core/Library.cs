@@ -149,6 +149,8 @@ namespace EFrt.Libs.Core
         // (n addr -- )
         private int StoreAction()
         {
+            _interpreter.StackExpect(2);
+
             var addr = _interpreter.Pop();
             _interpreter.State.Heap.Items[addr] = _interpreter.Pop();
 
@@ -159,6 +161,8 @@ namespace EFrt.Libs.Core
         // ( -- xt)
         private int TickAction()
         {
+            _interpreter.StackFree(1);
+
             _interpreter.Push(_interpreter.GetWord(_interpreter.GetWordName()).ExecutionToken);
 
             return 1;
@@ -191,6 +195,9 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n3)
         private int StarAction()
         {
+            _interpreter.StackExpect(2);
+            // StackFree() is not necessary here - we will pop 2 items, before we push one.
+
             _interpreter.Function((n1, n2) => n1 * n2);
 
             return 1;
@@ -199,6 +206,8 @@ namespace EFrt.Libs.Core
         // (n1 n2 n3 -- n4)
         private int StarSlashAction()
         {
+            _interpreter.StackExpect(3);
+
             var n3 = (long)_interpreter.Pop();
             _interpreter.Push((int)((long)_interpreter.Pop() * (long)_interpreter.Pop() / n3));  // n2 * n1 / n3 
 
@@ -208,6 +217,8 @@ namespace EFrt.Libs.Core
         // (n1 n2 n3 -- n4 n5)
         private int StarSlashModAction()
         {
+            _interpreter.StackExpect(3);
+
             var n3 = (long)_interpreter.Pop();
             var d = (long)_interpreter.Pop() * (long)_interpreter.Pop();
             _interpreter.Push((int)(d % n3));  // n4 = d % n3
@@ -219,6 +230,8 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n3)
         private int PlusAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.Function((n1, n2) => n1 + n2);
 
             return 1;
@@ -227,6 +240,8 @@ namespace EFrt.Libs.Core
         // (n addr -- )
         private int PlusStoreAction()
         {
+            _interpreter.StackExpect(2);
+
             var addr = _interpreter.Pop();
             _interpreter.State.Heap.Items[addr] += _interpreter.Pop();
 
@@ -240,6 +255,8 @@ namespace EFrt.Libs.Core
             {
                 throw new Exception("+LOOP outside a new word definition.");
             }
+
+            _interpreter.ReturnStackExpect(1);
 
             var cWordIndex = _interpreter.RPop();
 
@@ -260,6 +277,8 @@ namespace EFrt.Libs.Core
         // (n -- )
         private int CommaAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.State.Heap.Items[_interpreter.State.Heap.Alloc(1)] = _interpreter.Pop();
 
             return 1;
@@ -268,6 +287,8 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n3)
         private int MinusAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.Function((n1, n2) => n1 - n2);
 
             return 1;
@@ -276,6 +297,8 @@ namespace EFrt.Libs.Core
         // (n --)
         private int DotAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.Output.Write("{0} ", _interpreter.Pop());
 
             return 1;
@@ -297,14 +320,18 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n3)
         private int SlashAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.Function((n1, n2) => n1 / n2);
 
             return 1;
         }
 
-        // (n1 n2b -- n3 n4)
+        // (n1 n2 -- n3 n4)
         private int SlashModAction()
         {
+            _interpreter.StackExpect(2);
+
             var n2 = _interpreter.Pop();
             var n1 = _interpreter.Pop();
 
@@ -317,6 +344,8 @@ namespace EFrt.Libs.Core
         // (n -- flag)
         private int ZeroLessAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.Function((n) => (n < 0) ? -1 : 0);
 
             return 1;
@@ -325,6 +354,8 @@ namespace EFrt.Libs.Core
         // (n -- flag)
         private int ZeroEqualsAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.Function((n) => (n == 0) ? -1 : 0);
 
             return 1;
@@ -333,6 +364,8 @@ namespace EFrt.Libs.Core
         // (n1 -- n2)
         private int OnePlusAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.Function((n) => ++n);
 
             return 1;
@@ -341,6 +374,8 @@ namespace EFrt.Libs.Core
         // (n1 -- n2)
         private int OneMinusAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.Function((n) => --n);
 
             return 1;
@@ -349,6 +384,8 @@ namespace EFrt.Libs.Core
         // (n1 n2 addr -- )
         private int TwoStoreAction()
         {
+            _interpreter.StackExpect(3);
+
             var addr = _interpreter.Pop();
             _interpreter.State.Heap.Items[addr + 1] = _interpreter.Pop();  // n2
             _interpreter.State.Heap.Items[addr] = _interpreter.Pop();      // n1
@@ -359,6 +396,8 @@ namespace EFrt.Libs.Core
         // (n1 -- n2)
         private int TwoStarAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.Function((n) => n * 2);
 
             return 1;
@@ -367,6 +406,8 @@ namespace EFrt.Libs.Core
         // (n1 -- n2)
         private int TwoSlashAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.Function((n) => n / 2);
 
             return 1;
@@ -375,6 +416,9 @@ namespace EFrt.Libs.Core
         // (addr -- n1 n2)
         private int TwoFetchAction()
         {
+            _interpreter.StackExpect(1);
+            _interpreter.StackFree(1);  // We will remove one and add two, so we need just one extra to be free.
+
             var addr = _interpreter.Pop();
             _interpreter.Push(_interpreter.State.Heap.Items[addr]);      // n1
             _interpreter.Push(_interpreter.State.Heap.Items[addr + 1]);  // n2
@@ -385,6 +429,8 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- )
         private int TwoDropAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.Drop(2);
 
             return 1;
@@ -393,6 +439,9 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n1 n2 n1 n2)
         private int TwoDupAction()
         {
+            _interpreter.StackExpect(2);
+            _interpreter.StackFree(2);  // Two new will be added.
+
             var n2 = _interpreter.Pop();
             var n1 = _interpreter.Peek();
 
@@ -406,6 +455,9 @@ namespace EFrt.Libs.Core
         // (n1 n2 n3 n4 -- n1 n2 n3 n4 n1 n2)
         private int TwoOverAction()
         {
+            _interpreter.StackExpect(4);
+            _interpreter.StackExpect(2);
+
             var n4 = _interpreter.Pop();
             var n3 = _interpreter.Pop();
             var n2 = _interpreter.Pop();
@@ -423,6 +475,8 @@ namespace EFrt.Libs.Core
         // (n1 n2 n3 n4 -- n3 n4 n1 n2)
         private int TwoSwapAction()
         {
+            _interpreter.StackExpect(4);
+
             var n4 = _interpreter.Pop();
             var n3 = _interpreter.Pop();
             var n2 = _interpreter.Pop();
@@ -459,6 +513,8 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- flag)
         private int LessThanAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.Function((n1, n2) => (n1 < n2) ? -1 : 0);
 
             return 1;
@@ -467,6 +523,8 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- flag)
         private int EqualsAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.Function((n1, n2) => (n1 == n2) ? -1 : 0);
 
             return 1;
@@ -475,6 +533,8 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- flag)
         private int GreaterThanAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.Function((n1, n2) => (n1 > n2) ? -1 : 0);
 
             return 1;
@@ -483,9 +543,13 @@ namespace EFrt.Libs.Core
         // ( -- false | n true) {s -- }
         private int ToNumberAction()
         {
+            _interpreter.StackFree(1);
+
             var n = _interpreter.ParseNumber(_interpreter.OPop().ToString(), out var success);
             if (success)
             {
+                _interpreter.StackFree(2);
+
                 _interpreter.Push((int)n);
                 _interpreter.Push(-1);
             }
@@ -500,6 +564,9 @@ namespace EFrt.Libs.Core
         // (a -- ) [ - a ]
         private int ToRAction()
         {
+            _interpreter.StackExpect(1);
+            _interpreter.ReturnStackFree(1);
+
             _interpreter.RPush(_interpreter.Pop());
 
             return 1;
@@ -508,8 +575,12 @@ namespace EFrt.Libs.Core
         // (n -- n n) or ( -- )
         private int QuestionDupeAction()
         {
+            _interpreter.StackExpect(1);
+
             if (_interpreter.Peek() != 0)
             {
+                _interpreter.StackFree(1);
+
                 _interpreter.Dup();
             }
 
@@ -519,6 +590,8 @@ namespace EFrt.Libs.Core
         // (addr -- n)
         private int FetchAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.Push(_interpreter.State.Heap.Items[_interpreter.Pop()]);
 
             return 1;
@@ -532,7 +605,7 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // (flag -- )
+        // ( -- )
         private int AbortWithMessageAction()
         {
             if (_interpreter.IsCompiling == false)
@@ -548,6 +621,8 @@ namespace EFrt.Libs.Core
         // (n1 -- n2)
         private int AbsAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.Function((n1) => n1 < 0 ? -n1 : n1);
 
             return 1;
@@ -556,6 +631,8 @@ namespace EFrt.Libs.Core
         // (n -- )
         private int AllotAction()
         {
+            _interpreter.StackExpect(1);
+
             // We do not return the "address" returned by the Alloc() method.
             _ = _interpreter.State.Heap.Alloc(_interpreter.Pop());
 
@@ -565,6 +642,8 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n3)
         private int AndAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.Function((n1, n2) => n1 & n2);
 
             return 1;
@@ -578,6 +657,8 @@ namespace EFrt.Libs.Core
                 throw new Exception("BEGIN outside a new word definition.");
             }
 
+            _interpreter.ReturnStackFree(1);
+
             // BEGIN word doesn't have a runtime behavior.
 
             _interpreter.RPush(_interpreter.WordBeingDefined.NextWordIndex);
@@ -588,6 +669,8 @@ namespace EFrt.Libs.Core
         // ( -- n)
         private int CharAction()
         {
+            _interpreter.StackFree(1);
+
             _interpreter.Push(_interpreter.GetWordName(false)[0]);
 
             return 1;
@@ -597,6 +680,8 @@ namespace EFrt.Libs.Core
         // (n -- )
         private int ConstantAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.BeginNewWordCompilation();
             _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.GetWordName(), _interpreter.Pop()));
             _interpreter.EndNewWordCompilation();
@@ -627,6 +712,8 @@ namespace EFrt.Libs.Core
         // ( -- n)
         private int DepthAction()
         {
+            _interpreter.StackFree(1);
+
             _interpreter.Push(_interpreter.State.Stack.Count);
 
             return 1;
@@ -639,6 +726,8 @@ namespace EFrt.Libs.Core
             {
                 throw new Exception("DO outside a new word definition.");
             }
+
+            _interpreter.ReturnStackFree(1);
 
             _interpreter.RPush(
                 _interpreter.WordBeingDefined.AddWord(
@@ -664,6 +753,8 @@ namespace EFrt.Libs.Core
         // (n --)
         private int DropAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.Drop();
 
             return 1;
@@ -672,6 +763,9 @@ namespace EFrt.Libs.Core
         // (n -- n n)
         private int DupAction()
         {
+            _interpreter.StackExpect(1);
+            _interpreter.StackFree(1);
+
             _interpreter.Dup();
 
             return 1;
@@ -688,6 +782,8 @@ namespace EFrt.Libs.Core
             var ifControlWord = _interpreter.WordBeingDefined.GetWord(_interpreter.RPeek());
             if (ifControlWord is IfControlWord)
             {
+                _interpreter.ReturnStackFree(1);
+
                 // Get the index past where ELSE will be.
                 var indexFolowingElse = _interpreter.WordBeingDefined.NextWordIndex + 1;
 
@@ -711,6 +807,8 @@ namespace EFrt.Libs.Core
         // (n --)
         private int EmitAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.Output.Write("{0}", (char)_interpreter.Pop());
 
             return 1;
@@ -719,6 +817,8 @@ namespace EFrt.Libs.Core
         // (xt --)
         private int ExecuteAction()
         {
+            _interpreter.StackExpect(1);
+
             return _interpreter.State.WordsList.GetWord(_interpreter.Pop()).Action();
         }
 
@@ -740,6 +840,8 @@ namespace EFrt.Libs.Core
         // (d n1 -- n2 n3)
         private int FMSlashModAction()
         {
+            _interpreter.StackExpect(3);
+
             // TODO: Fix to produce floored quotient.
 
             var n1 = (long)_interpreter.Pop();
@@ -753,12 +855,14 @@ namespace EFrt.Libs.Core
         // ( -- addr)
         private int HereAction()
         {
+            _interpreter.StackFree(1);
+
             _interpreter.Push(_interpreter.State.Heap.Top);
 
             return 1;
         }
 
-        // ( -- n)
+        // ( -- )
         private int GetInnerIndexAction()
         {
             if (_interpreter.IsCompiling == false)
@@ -781,6 +885,8 @@ namespace EFrt.Libs.Core
             {
                 throw new Exception("IF outside a new word definition.");
             }
+
+            _interpreter.ReturnStackFree(1);
 
             _interpreter.RPush(
                 _interpreter.WordBeingDefined.AddWord(
@@ -805,12 +911,14 @@ namespace EFrt.Libs.Core
         // (n1 -- n2)
         private int InvertAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.Function((a) => ~a);
 
             return 1;
         }
 
-        // ( -- n)
+        // ( -- )
         private int GetOuterIndexAction()
         {
             if (_interpreter.IsCompiling == false)
@@ -848,6 +956,8 @@ namespace EFrt.Libs.Core
                 throw new Exception("LITERAL outside a new word definition.");
             }
 
+            _interpreter.StackExpect(1);
+
             _interpreter.WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(_interpreter, _interpreter.Pop()));
 
             return 1;
@@ -881,6 +991,8 @@ namespace EFrt.Libs.Core
         // (n1 u -- n2)
         private int LShiftAction()
         {
+            _interpreter.StackExpect(2);
+
             var bits = _interpreter.Pop();
             _interpreter.Push(_interpreter.Pop() << bits);
 
@@ -890,6 +1002,8 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- d)
         private int MStarAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.DPush((long)_interpreter.Pop() * (long)_interpreter.Pop());
 
             return 1;
@@ -898,6 +1012,8 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n3)
         private int MaxAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.Function((n1, n2) => (n1 > n2) ? n1 : n2);
 
             return 1;
@@ -906,6 +1022,8 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n3)
         private int MinAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.Function((n1, n2) => (n1 < n2) ? n1 : n2);
 
             return 1;
@@ -914,6 +1032,8 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n3)
         private int ModAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.Function((n1, n2) => n1 % n2);
 
             return 1;
@@ -922,6 +1042,8 @@ namespace EFrt.Libs.Core
         // (n1 -- n2)
         private int NegateAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.Function((n1) => -n1);
 
             return 1;
@@ -930,6 +1052,8 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n3)
         private int OrAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.Function((n1, n2) => n1 | n2);
 
             return 1;
@@ -938,6 +1062,9 @@ namespace EFrt.Libs.Core
         // (a b -- a b a)
         private int OverAction()
         {
+            _interpreter.StackExpect(2);
+            _interpreter.StackFree(1);
+
             _interpreter.Over();
 
             return 1;
@@ -968,6 +1095,9 @@ namespace EFrt.Libs.Core
         // ( -- a) [a - ]
         private int RFromAction()
         {
+            _interpreter.StackFree(1);
+            _interpreter.ReturnStackExpect(1);
+
             _interpreter.Push(_interpreter.RPop());
 
             return 1;
@@ -976,6 +1106,9 @@ namespace EFrt.Libs.Core
         // ( -- a) [a - a]
         private int RFetchAction()
         {
+            _interpreter.StackFree(1);
+            _interpreter.ReturnStackExpect(1);
+
             _interpreter.Push(_interpreter.RPeek());
 
             return 1;
@@ -1006,6 +1139,8 @@ namespace EFrt.Libs.Core
 
             // REPEAT word doesn't have a runtime behavior.
 
+            _interpreter.ReturnStackExpect(2);
+
             // Get the index of the next free slot in the non-primitive word being defined.
             var repeatIndex = _interpreter.WordBeingDefined.NextWordIndex;
 
@@ -1032,6 +1167,8 @@ namespace EFrt.Libs.Core
         // (n1 n2 n3 -- n2 n3 n1)
         private int RoteAction()
         {
+            _interpreter.StackExpect(3);
+
             _interpreter.Rot();
 
             return 1;
@@ -1040,13 +1177,15 @@ namespace EFrt.Libs.Core
         // (n1 u -- n2)
         private int RShiftAction()
         {
+            _interpreter.StackExpect(2);
+
             var bits = _interpreter.Pop();
             _interpreter.Push(_interpreter.Pop() >> bits);
 
             return 1;
         }
 
-        // { -- s}
+        // { -- }
         private int SQuoteAction()
         {
             if (_interpreter.IsCompiling == false)
@@ -1062,6 +1201,9 @@ namespace EFrt.Libs.Core
         // (n -- d)
         private int SToDAction()
         {
+            _interpreter.StackExpect(1);
+            _interpreter.StackFree(1);
+
             _interpreter.DPush(_interpreter.Pop());
 
             return 1;
@@ -1070,6 +1212,8 @@ namespace EFrt.Libs.Core
         // (d n1 -- n2 n3)
         private int SMSlashRemAction()
         {
+            _interpreter.StackExpect(3);
+
             // TODO: Fix to produce symmetric quotient.
 
             var n1 = (long)_interpreter.Pop();
@@ -1091,6 +1235,8 @@ namespace EFrt.Libs.Core
         // (n -- )
         private int SpacesAction()
         {
+            _interpreter.StackExpect(1);
+
             var count = _interpreter.Pop();
             if (count > 0)
             {
@@ -1109,6 +1255,8 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n2 n1)
         private int SwapAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.Swap();
 
             return 1;
@@ -1122,6 +1270,8 @@ namespace EFrt.Libs.Core
                 throw new Exception("THEN outside a new word definition.");
             }
 
+            _interpreter.ReturnStackExpect(1);
+
             // Get the index of the next free slot in the non-primitive word being defined.
             var thenIndex = _interpreter.WordBeingDefined.NextWordIndex;
 
@@ -1130,6 +1280,8 @@ namespace EFrt.Libs.Core
             {
                 // We had a previous else 
                 ((ElseControlWord)controlWord).SetThenIndexIncrement(thenIndex);
+
+                _interpreter.ReturnStackExpect(1);
 
                 // Pop control stack again to find IF.
                 controlWord = _interpreter.WordBeingDefined.GetWord(_interpreter.RPop());
@@ -1152,6 +1304,8 @@ namespace EFrt.Libs.Core
         // {s -- }
         private int TypeAction()
         {
+            _interpreter.ObjectStackExpect(1);
+
             _interpreter.Output.Write(_interpreter.OPop().ToString());
 
             return 1;
@@ -1160,6 +1314,8 @@ namespace EFrt.Libs.Core
         // (u --)
         private int UDotAction()
         {
+            _interpreter.StackExpect(1);
+
             //_interpreter.Output.Write("{0} ", new UnsignedSingleCellIntegerValue()
             //{
             //    V = _interpreter.Pop()
@@ -1173,6 +1329,8 @@ namespace EFrt.Libs.Core
         // (u1 u2 -- flag)
         private int ULessThanAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.UFunction((u1, u2) => (u1 < u2) ? -1 : 0);
 
             return 1;
@@ -1181,6 +1339,8 @@ namespace EFrt.Libs.Core
         // (u1 u2 -- ud)
         private int UMStarAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.UDPush((ulong)_interpreter.Pop() * (ulong)_interpreter.Pop());
 
             return 1;
@@ -1189,6 +1349,8 @@ namespace EFrt.Libs.Core
         // (ud u1 -- u2 u3)
         private int UMSlashModAction()
         {
+            _interpreter.StackExpect(3);
+
             var u1 = (ulong)_interpreter.Pop();
             var ud = (ulong)_interpreter.DPop();
             _interpreter.Push((int)(ud % u1));  // u2
@@ -1217,6 +1379,8 @@ namespace EFrt.Libs.Core
             {
                 throw new Exception("UNTIL outside a new word definition.");
             }
+
+            _interpreter.ReturnStackExpect(1);
 
             // UNTIL word doesn't have a runtime behavior.
 
@@ -1253,6 +1417,8 @@ namespace EFrt.Libs.Core
                 throw new Exception("WHILE outside a new word definition.");
             }
 
+            _interpreter.ReturnStackExpect(1);
+
             _interpreter.RPush(
                 _interpreter.WordBeingDefined.AddWord(
                     new WhileControlWord(_interpreter, _interpreter.WordBeingDefined.NextWordIndex)));
@@ -1263,6 +1429,8 @@ namespace EFrt.Libs.Core
         // (n1 n2 -- n3)
         private int XorAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.Function((n1, n2) => n1 ^ n2);
 
             return 1;

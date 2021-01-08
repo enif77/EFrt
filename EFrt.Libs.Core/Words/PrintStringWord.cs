@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Libs.Core.Words
 {
@@ -20,17 +20,14 @@ namespace EFrt.Libs.Core.Words
         {
             Name = "string";
             IsControlWord = true;
-            Action = Execute;
+            Action = () => 
+            {
+                Interpreter.Output.Write(_value);
+
+                return 1;
+            };
 
             _value = value;
-        }
-
-
-        private int Execute()
-        {
-            Interpreter.Output.Write(_value);
-
-            return 1;
         }
 
 
