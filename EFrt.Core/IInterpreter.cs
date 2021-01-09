@@ -181,53 +181,6 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         #endregion
 
 
-        #region stack checks
-
-        /// <summary>
-        /// Expects N items on the stack.
-        /// Wont return (throws an InterpreterException), if not enough items are on the stack.
-        /// </summary>
-        /// <param name="expectedItemsCount">The number of stack items expected on the stack.</param>
-        void StackExpect(int expectedItemsCount);
-
-        /// <summary>
-        /// Expects N free items on the stack, so N items can be pushed to the stack.
-        /// Wont return (throws an InterpreterException), if there is not enough free items on the stack.
-        /// </summary>
-        /// <param name="expectedFreeItemsCount">The number of free stack items expected.</param>
-        void StackFree(int expectedFreeItemsCount);
-
-        /// <summary>
-        /// Expects N items on the object stack.
-        /// Wont return (throws an InterpreterException), if not enough items are on the object stack.
-        /// </summary>
-        /// <param name="expectedItemsCount">The number of stack items expected on the object stack.</param>
-        void ObjectStackExpect(int expectedItemsCount);
-
-        /// <summary>
-        /// Expects N free items on the object stack, so N items can be pushed to the object stack.
-        /// Wont return (throws an InterpreterException), if there is not enough free items on the object stack.
-        /// </summary>
-        /// <param name="expectedFreeItemsCount">The number of free object stack items expected.</param>
-        void ObjectStackFree(int expectedFreeItemsCount);
-
-        /// <summary>
-        /// Expects N items on the return stack.
-        /// Wont return (throws an InterpreterException), if not enough items are on the return stack.
-        /// </summary>
-        /// <param name="expectedItemsCount">The number of stack items expected on the return stack.</param>
-        void ReturnStackExpect(int expectedItemsCount);
-
-        /// <summary>
-        /// Expects N free items on the return stack, so N items can be pushed to the return stack.
-        /// Wont return (throws an InterpreterException), if there is not enough free items on the return stack.
-        /// </summary>
-        /// <param name="expectedFreeItemsCount">The number of free return stack items expected.</param>
-        void ReturnStackFree(int expectedFreeItemsCount);
-
-        #endregion
-
-
         #region execution
 
         /// <summary>
