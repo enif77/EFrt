@@ -453,6 +453,10 @@ namespace EFrt.Core
                                 {
                                     Throw(ex.ExceptionCode, ex.Message);
                                 }
+                                catch (Exception ex)
+                                {
+                                    Throw(-100, ex.Message);
+                                }
                             }
                             else
                             {
@@ -505,6 +509,10 @@ namespace EFrt.Core
                             {
                                 Throw(ex.ExceptionCode, ex.Message);
                             }
+                            catch (Exception ex)
+                            {
+                                Throw(-100, ex.Message);
+                            }
                         }
                         else
                         {
@@ -535,7 +543,7 @@ namespace EFrt.Core
                 else
                 {
                     //throw new Exception("Unknown token in a word execution.");
-                    Throw(-100, $"Unknown token {tok.Code}.");
+                    Throw(-200, $"Unknown token {tok.Code}.");
                 }
 
                 // Finish program execution, when requested.

@@ -231,9 +231,11 @@ namespace EFrt.Libs.CoreExt
         {
             _interpreter.StackExpect(1);
 
-            // TODO: Check for the index.
+            var index = _interpreter.Pop();
 
-            _interpreter.Push(_interpreter.Pick(_interpreter.Pop()));
+            _interpreter.StackExpect(index);
+
+            _interpreter.Push(_interpreter.Pick(index));
 
             return 1;
         }
@@ -243,7 +245,9 @@ namespace EFrt.Libs.CoreExt
         {
             _interpreter.StackExpect(1);
 
-            // TODO: Check for the index.
+            var index = _interpreter.Pop();
+
+            _interpreter.StackExpect(index);
 
             _interpreter.Roll(_interpreter.Pop());
 
