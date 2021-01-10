@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Libs.Exception.Words
 {
@@ -22,6 +22,8 @@ namespace EFrt.Libs.Exception.Words
             IsControlWord = true;
             Action = () => 
             {
+                Interpreter.StackExpect(1);
+
                 if (Interpreter.Pop() != 0)
                 {
                     Interpreter.Throw(-2, _message);

@@ -1,11 +1,10 @@
-﻿/* EFrt - (C) 2021 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Libs.Exception
 {
     using System;
 
     using EFrt.Core;
-    using EFrt.Core.Words;
 
     using EFrt.Libs.Exception.Words;
 
@@ -38,11 +37,11 @@ namespace EFrt.Libs.Exception
         /// </summary>
         public void DefineWords()
         {
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "CATCH", CatchAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "THROW", ThrowAction));
+            _interpreter.AddImmediateWord("CATCH", CatchAction);
+            _interpreter.AddPrimitiveWord("THROW", ThrowAction);
 
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ABORT", AbortAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "ABORT\"", AbortWithMessageAction));
+            _interpreter.AddPrimitiveWord("ABORT", AbortAction);
+            _interpreter.AddImmediateWord("ABORT\"", AbortWithMessageAction);
         }
 
         
@@ -62,6 +61,8 @@ namespace EFrt.Libs.Exception
         // (n -- )
         private int ThrowAction()
         {
+            _interpreter.StackExpect(1);
+
             // Wont return (throws an exception) when n is not zero and the CATCH word was executed.
             _interpreter.Throw(_interpreter.Pop());
 

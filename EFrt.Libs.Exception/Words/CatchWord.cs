@@ -23,6 +23,14 @@ namespace EFrt.Libs.Exception.Words
             IsControlWord = true;
             Action = () => 
             {
+                // Exception stack free.
+                if ((interpreter.State.ExceptionStack.Count + 1) >= Interpreter.State.ExceptionStack.Items.Length)
+                {
+                    throw new InterpreterException(-3, "exception stack overflow");
+                }
+
+                Interpreter.StackExpect(1);
+
                 var exceptionFrame = new ExceptionFrame()
                 {
                     StackTop = Interpreter.State.Stack.Top,
@@ -36,14 +44,20 @@ namespace EFrt.Libs.Exception.Words
 
                 try
                 {
+                    // Execute the word.
                     var index = Interpreter.State.WordsList.GetWord(Interpreter.Pop()).Action();
+
+                    // Remove the unused exception frame (nothing failed here).
                     Interpreter.State.ExceptionStack.Pop();
+
+                    // Return the OK status.
                     Interpreter.Push(0);
 
                     return index;
                 }
                 catch (System.Exception)
                 {
+                    // Clean up the mess, if needed.
                     if (Interpreter.State.ExceptionStack.IsEmpty == false && Interpreter.State.ExceptionStack.Peek() == exceptionFrame)
                     {
                         Interpreter.State.ExceptionStack.Pop();
