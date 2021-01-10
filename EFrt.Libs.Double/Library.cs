@@ -28,25 +28,23 @@ namespace EFrt.Libs.Double
 
         public void DefineWords()
         {
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2CONSTANT", TwoConstantAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "2LITERAL", TwoLiteralAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2VARIABLE", TwoVariableAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D+", DPlusAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D-", DMinusAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D.", DDotAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D0<", DZeroLessAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D0=", DZeroEqualsAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D2*", DTwoStarAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D2/", DTwoSlashAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D<", DLessThanAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D=", DEqualsAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D>S", DToSAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DABS", DAbsAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DMAX", DMaxAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DMIN", DMinAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DNEGATE", DNegateAction));
-
-            
+            _interpreter.AddPrimitiveWord("2CONSTANT", TwoConstantAction);
+            _interpreter.AddImmediateWord("2LITERAL", TwoLiteralAction);
+            _interpreter.AddPrimitiveWord("2VARIABLE", TwoVariableAction);
+            _interpreter.AddPrimitiveWord("D+", DPlusAction);
+            _interpreter.AddPrimitiveWord("D-", DMinusAction);
+            _interpreter.AddPrimitiveWord("D.", DDotAction);
+            _interpreter.AddPrimitiveWord("D0<", DZeroLessAction);
+            _interpreter.AddPrimitiveWord("D0=", DZeroEqualsAction);
+            _interpreter.AddPrimitiveWord("D2*", DTwoStarAction);
+            _interpreter.AddPrimitiveWord("D2/", DTwoSlashAction);
+            _interpreter.AddPrimitiveWord("D<", DLessThanAction);
+            _interpreter.AddPrimitiveWord("D=", DEqualsAction);
+            _interpreter.AddPrimitiveWord("D>S", DToSAction);
+            _interpreter.AddPrimitiveWord("DABS", DAbsAction);
+            _interpreter.AddPrimitiveWord("DMAX", DMaxAction);
+            _interpreter.AddPrimitiveWord("DMIN", DMinAction);
+            _interpreter.AddPrimitiveWord("DNEGATE", DNegateAction);
         }
 
 
@@ -54,8 +52,10 @@ namespace EFrt.Libs.Double
         // (n1 n2 -- )
         private int TwoConstantAction()
         {
-            var n2 = _interpreter.Pop();
+            _interpreter.StackExpect(2);
+                        
             _interpreter.BeginNewWordCompilation();
+            var n2 = _interpreter.Pop();
             _interpreter.AddWord(new DoubleCellConstantWord(_interpreter, _interpreter.GetWordName(), _interpreter.Pop(), n2));
             _interpreter.EndNewWordCompilation();
 
@@ -69,6 +69,8 @@ namespace EFrt.Libs.Double
             {
                 throw new Exception("2LITERAL outside a new word definition.");
             }
+
+            _interpreter.StackExpect(2);
 
             _interpreter.WordBeingDefined.AddWord(new DoubleCellIntegerLiteralWord(_interpreter, _interpreter.DPop()));
 
@@ -89,6 +91,8 @@ namespace EFrt.Libs.Double
         // (d1 d2 -- d3)
         private int DPlusAction()
         {
+            _interpreter.StackExpect(4);
+
             _interpreter.DFunction((a, b) => a + b);
 
             return 1;
@@ -97,6 +101,8 @@ namespace EFrt.Libs.Double
         // (d1 d2 -- d3)
         private int DMinusAction()
         {
+            _interpreter.StackExpect(4);
+
             _interpreter.DFunction((a, b) => a - b);
 
             return 1;
@@ -105,6 +111,8 @@ namespace EFrt.Libs.Double
         // (d --)
         private int DDotAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.Output.Write("{0} ", new DoubleCellIntegerValue()
             {
                 B = _interpreter.Pop(),
@@ -117,6 +125,8 @@ namespace EFrt.Libs.Double
         // (d -- flag)
         private int DZeroLessAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.DFunction((a) => (a < 0) ? -1 : 0);
 
             return 1;
@@ -125,6 +135,8 @@ namespace EFrt.Libs.Double
         // (d -- flag)
         private int DZeroEqualsAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.DFunction((a) => (a == 0) ? -1L : 0L);
 
             return 1;
@@ -133,6 +145,8 @@ namespace EFrt.Libs.Double
         // (d1 -- d2)
         private int DTwoStarAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.DFunction((a) => a * 2L);
 
             return 1;
@@ -141,6 +155,8 @@ namespace EFrt.Libs.Double
         // (d1 -- d2)
         private int DTwoSlashAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.DFunction((a) => a / 2L);
 
             return 1;
@@ -149,6 +165,8 @@ namespace EFrt.Libs.Double
         // (d1 d2 -- flag)
         private int DLessThanAction()
         {
+            _interpreter.StackExpect(4);
+
             _interpreter.DFunction((a, b) => (a < b) ? -1L : 0L);
 
             return 1;
@@ -157,6 +175,8 @@ namespace EFrt.Libs.Double
         // (d1 d2 -- flag)
         private int DEqualsAction()
         {
+            _interpreter.StackExpect(4);
+
             _interpreter.DFunction((a, b) => (a == b) ? -1L : 0L);
 
             return 1;
@@ -165,6 +185,8 @@ namespace EFrt.Libs.Double
         // (d -- n)
         private int DToSAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.Push((int)_interpreter.DPop());
 
             return 1;
@@ -173,6 +195,8 @@ namespace EFrt.Libs.Double
         // (d1 -- d2)
         private int DAbsAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.DFunction((a) => a < 0L ? -a : a);
 
             return 1;
@@ -181,6 +205,8 @@ namespace EFrt.Libs.Double
         // (d1 d2 -- d3)
         private int DMaxAction()
         {
+            _interpreter.StackExpect(4);
+
             _interpreter.DFunction((a, b) => (a > b) ? a : b);
 
             return 1;
@@ -189,6 +215,8 @@ namespace EFrt.Libs.Double
         // (d1 d2 -- d3)
         private int DMinAction()
         {
+            _interpreter.StackExpect(4);
+
             _interpreter.DFunction((a, b) => (a < b) ? a : b);
 
             return 1;
@@ -197,6 +225,8 @@ namespace EFrt.Libs.Double
         // (d1 -- d2)
         private int DNegateAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.DFunction((a) => -a);
 
             return 1;
