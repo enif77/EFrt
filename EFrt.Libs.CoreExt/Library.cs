@@ -38,37 +38,37 @@ namespace EFrt.Libs.CoreExt
         /// </summary>
         public void DefineWords()
         {
-            _interpreter.AddWord(new ImmediateWord(_interpreter, ".(", DotParenAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "0<>", ZeroNotEqualsAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "0>", ZeroGreaterAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2>R", TwoToRAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2R>", TwoRFromAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2R@", TwoRFetchAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, ":NONAME", NonameAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, ";", SemicolonAction));  // Extended version.
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "<>", NotEqualsAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "?DO", QuestionDoAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "AGAIN", AgainAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "NIP", NipAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "PICK", PickAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "ROLL", RollAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "TO", ToAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "TUCK", TuckAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "VALUE", ValueAction));
-            _interpreter.AddWord(new ImmediateWord(_interpreter, "\\", BackslashAction));
+            _interpreter.AddImmediateWord(".(", DotParenAction);
+            _interpreter.AddPrimitiveWord("0<>", ZeroNotEqualsAction);
+            _interpreter.AddPrimitiveWord("0>", ZeroGreaterAction);
+            _interpreter.AddPrimitiveWord("2>R", TwoToRAction);
+            _interpreter.AddPrimitiveWord("2R>", TwoRFromAction);
+            _interpreter.AddPrimitiveWord("2R@", TwoRFetchAction);
+            _interpreter.AddPrimitiveWord(":NONAME", NonameAction);
+            _interpreter.AddImmediateWord(";", SemicolonAction);  // Extended version.
+            _interpreter.AddPrimitiveWord("<>", NotEqualsAction);
+            _interpreter.AddImmediateWord("?DO", QuestionDoAction);
+            _interpreter.AddImmediateWord("AGAIN", AgainAction);
+            _interpreter.AddPrimitiveWord("NIP", NipAction);
+            _interpreter.AddPrimitiveWord("PICK", PickAction);
+            _interpreter.AddPrimitiveWord("ROLL", RollAction);
+            _interpreter.AddPrimitiveWord("TO", ToAction);
+            _interpreter.AddPrimitiveWord("TUCK", TuckAction);
+            _interpreter.AddPrimitiveWord("VALUE", ValueAction);
+            _interpreter.AddImmediateWord("\\", BackslashAction);
 
-            _interpreter.AddWord(new ConstantWord(_interpreter, "FALSE", 0));
-            _interpreter.AddWord(new ConstantWord(_interpreter, "TRUE", -1));
+            _interpreter.AddConstantWord("FALSE", 0);
+            _interpreter.AddConstantWord("TRUE", -1);
 
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "-ROLL", MinusRollAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "-ROT", MinusRotAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2+", AddTwoAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2-", SubTwoAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2NIP", TwoNipAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2TUCK", TwoTuckAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "<=", IsLtEAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, ">=", IsGtEAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "CLEAR", ClearAction));
+            _interpreter.AddPrimitiveWord("-ROLL", MinusRollAction);
+            _interpreter.AddPrimitiveWord("-ROT", MinusRotAction);
+            _interpreter.AddPrimitiveWord("2+", AddTwoAction);
+            _interpreter.AddPrimitiveWord("2-", SubTwoAction);
+            _interpreter.AddPrimitiveWord("2NIP", TwoNipAction);
+            _interpreter.AddPrimitiveWord("2TUCK", TwoTuckAction);
+            _interpreter.AddPrimitiveWord("<=", IsLtEAction);
+            _interpreter.AddPrimitiveWord(">=", IsGtEAction);
+            _interpreter.AddPrimitiveWord("CLEAR", ClearAction);
         }
 
 
