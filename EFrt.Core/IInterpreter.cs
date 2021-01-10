@@ -123,12 +123,6 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         void AddWord(IWord word);
 
         /// <summary>
-        /// Addss words from a words library.
-        /// </summary>
-        /// <param name="library">A library of words.</param>
-        void AddWords(IWordsLIbrary library);
-
-        /// <summary>
         /// Forgets a word and all word defined after it.
         /// </summary>
         /// <param name="wordName">A word name.</param>

@@ -19,17 +19,17 @@ namespace EFrtApp
             var interpreter = InterpreterFactory.CreateWithDefaults();
 
             interpreter.Output = new ConsoleWriter();
-
-            interpreter.AddWords(new EFrt.Libs.Core.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.CoreExt.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.Exception.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.Double.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.DoubleExt.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.Floating.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.Object.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.String.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.Tools.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.ToolsExt.Library(interpreter));
+            interpreter
+                .AddCoreLibrary()
+                .AddCoreExtLibrary()
+                .AddExceptionLibrary()
+                .AddDoubleLibrary()
+                .AddDoubleExtLibrary()
+                .AddFloatingLibrary()
+                .AddObjectLibrary()
+                .AddStringLibrary()
+                .AddToolsLibrary()
+                .AddToolsExtLibrary();
             
             while (true)
             {
@@ -80,16 +80,17 @@ namespace EFrtApp
             var interpreter = InterpreterFactory.CreateWithDefaults();
 
             interpreter.Output = new ConsoleWriter();
-
-            interpreter.AddWords(new EFrt.Libs.Core.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.CoreExt.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.Double.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.DoubleExt.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.Floating.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.String.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.Tools.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.ToolsExt.Library(interpreter));
-            interpreter.AddWords(new EFrt.Libs.Object.Library(interpreter));
+            interpreter
+                .AddCoreLibrary()
+                .AddCoreExtLibrary()
+                .AddExceptionLibrary()
+                .AddDoubleLibrary()
+                .AddDoubleExtLibrary()
+                .AddFloatingLibrary()
+                .AddObjectLibrary()
+                .AddStringLibrary()
+                .AddToolsLibrary()
+                .AddToolsExtLibrary();
 
             //efrt.Execute(_src);
             //efrt.Execute("CR .( ---)");

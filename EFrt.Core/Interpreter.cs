@@ -190,14 +190,6 @@ namespace EFrt.Core
         }
 
 
-        public void AddWords(IWordsLIbrary library)
-        {
-            if (library == null) throw new ArgumentNullException(nameof(library));
-
-            library.DefineWords();
-        }
-
-
         public void ForgetWord(string wordName)
         {
             State.WordsList.Forget(wordName.ToUpperInvariant());
