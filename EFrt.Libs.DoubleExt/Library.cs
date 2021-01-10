@@ -2,10 +2,7 @@
 
 namespace EFrt.Libs.DoubleExt
 {
-    using System;
-
     using EFrt.Core;
-    using EFrt.Core.Words;
 
 
     /// <summary>
@@ -36,33 +33,35 @@ namespace EFrt.Libs.DoubleExt
         /// </summary>
         public void DefineWords()
         {
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "2ROT", TwoRotAction));
+            _interpreter.AddPrimitiveWord("2ROT", TwoRotAction);
 
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, ">DOUBLE", ToNumberAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D1+", AddOneAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D1-", SubOneAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D2+", AddTwoAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D2-", SubTwoAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D*", MulAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D/", DivAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DMOD", ModAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D/MOD", DivModAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DNOT", NotAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DAND", AndAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DOR", OrAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "DXOR", XorAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D<>", IsNeqAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D<=", IsLtEAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D>", IsGtAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D>=", IsGtEAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D0<>", IsNonZeroAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, "D0>", IsPosAction));
+            _interpreter.AddPrimitiveWord(">DOUBLE", ToNumberAction);
+            _interpreter.AddPrimitiveWord("D1+", DOnePlusAction);
+            _interpreter.AddPrimitiveWord("D1-", DOneMinusAction);
+            _interpreter.AddPrimitiveWord("D2+", AddTwoAction);
+            _interpreter.AddPrimitiveWord("D2-", DTwoMinusAction);
+            _interpreter.AddPrimitiveWord("D*", DStarAction);
+            _interpreter.AddPrimitiveWord("D/", DSlashAction);
+            _interpreter.AddPrimitiveWord("DMOD", DModAction);
+            _interpreter.AddPrimitiveWord("D/MOD", DSlashModAction);
+            _interpreter.AddPrimitiveWord("DNOT", DNotAction);
+            _interpreter.AddPrimitiveWord("DAND", DAndAction);
+            _interpreter.AddPrimitiveWord("DOR", DOrAction);
+            _interpreter.AddPrimitiveWord("DXOR", DXorAction);
+            _interpreter.AddPrimitiveWord("D<>", DNotNequalsAction);
+            _interpreter.AddPrimitiveWord("D<=", DLessThanOrEqualAction);
+            _interpreter.AddPrimitiveWord("D>", DGreaterThanAction);
+            _interpreter.AddPrimitiveWord("D>=", DGreaterThanOrEqualAction);
+            _interpreter.AddPrimitiveWord("D0<>", DZeroNotEqualsAction);
+            _interpreter.AddPrimitiveWord("D0>", DZeroGreaterAction);
         }
 
 
         // (n1 n2 n3 n4 n5 n6 -- n3 n4 n5 n6 n1 n2)
         private int TwoRotAction()
         {
+            _interpreter.StackExpect(6);
+
             var n6 = _interpreter.Pop();
             var n5 = _interpreter.Pop();
             var n4 = _interpreter.Pop();
@@ -86,14 +85,20 @@ namespace EFrt.Libs.DoubleExt
         // ( -- false | d true) {s -- }
         private int ToNumberAction()
         {
+            _interpreter.ObjectStackExpect(1);
+
             var n = _interpreter.ParseNumber(_interpreter.OPop().ToString(), out var success);
             if (success)
             {
+                _interpreter.StackFree(3);
+
                 _interpreter.DPush(n);
                 _interpreter.Push(-1);
             }
             else
             {
+                _interpreter.StackFree(1);
+
                 _interpreter.Push(0);
             }
 
@@ -101,16 +106,20 @@ namespace EFrt.Libs.DoubleExt
         }
 
         // (d1 -- d2)
-        private int AddOneAction()
+        private int DOnePlusAction()
         {
-           _interpreter.DFunction((a) => ++a);
+            _interpreter.StackExpect(2);
+
+            _interpreter.DFunction((a) => ++a);
 
             return 1;
         }
 
         // (d1 -- d2)
-        private int SubOneAction()
+        private int DOneMinusAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.DFunction((a) => --a);
 
             return 1;
@@ -119,46 +128,58 @@ namespace EFrt.Libs.DoubleExt
         // (d1 -- d2)
         private int AddTwoAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.DFunction((a) => a + 2L);
 
             return 1;
         }
 
         // (d1 -- d2)
-        private int SubTwoAction()
+        private int DTwoMinusAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.DFunction((a) => a - 2L);
 
             return 1;
         }
 
         // (d1 d2 -- d3)
-        private int MulAction()
+        private int DStarAction()
         {
+            _interpreter.StackExpect(4);
+
             _interpreter.DFunction((a, b) => a * b);
 
             return 1;
         }
 
         // (d1 d2 -- d3)
-        private int DivAction()
+        private int DSlashAction()
         {
+            _interpreter.StackExpect(4);
+
             _interpreter.DFunction((a, b) => a / b);
 
             return 1;
         }
 
         // (d1 d2 -- d3)
-        private int ModAction()
+        private int DModAction()
         {
+            _interpreter.StackExpect(4);
+
             _interpreter.DFunction((a, b) => a % b);
 
             return 1;
         }
 
         // (d1 d2 -- d3 d4)
-        private int DivModAction()
+        private int DSlashModAction()
         {
+            _interpreter.StackExpect(4);
+
             var b = _interpreter.DPop();
             var a = _interpreter.DPop();
 
@@ -169,80 +190,100 @@ namespace EFrt.Libs.DoubleExt
         }
 
         // (d1 d2 -- flag)
-        private int IsNeqAction()
+        private int DNotNequalsAction()
         {
+            _interpreter.StackExpect(4);
+
             _interpreter.DFunction((a, b) => (a != b) ? -1 : 0);
 
             return 1;
         }
 
         // (d1 d2 -- flag)
-        private int IsLtEAction()
+        private int DLessThanOrEqualAction()
         {
+            _interpreter.StackExpect(4);
+
             _interpreter.DFunction((a, b) => (a <= b) ? -1 : 0);
 
             return 1;
         }
 
         // (d1 d2 -- flag)
-        private int IsGtAction()
+        private int DGreaterThanAction()
         {
+            _interpreter.StackExpect(4);
+
             _interpreter.DFunction((a, b) => (a > b) ? -1 : 0);
 
             return 1;
         }
 
         // (d1 d2 -- flag)
-        private int IsGtEAction()
+        private int DGreaterThanOrEqualAction()
         {
+            _interpreter.StackExpect(4);
+
             _interpreter.DFunction((a, b) => (a >= b) ? -1 : 0);
 
             return 1;
         }
 
         // (d -- flag)
-        private int IsNonZeroAction()
+        private int DZeroNotEqualsAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.DFunction((a) => (a != 0) ? -1 : 0);
 
             return 1;
         }
 
         // (d -- flag)
-        private int IsPosAction()
+        private int DZeroGreaterAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.DFunction((a) => (a > 0) ? -1 : 0);
 
             return 1;
         }
 
         // (d1 -- d2)
-        private int NotAction()
+        private int DNotAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.DFunction((a) => ~a);
 
             return 1;
         }
 
         // (d1 d2 -- d3)
-        private int AndAction()
+        private int DAndAction()
         {
+            _interpreter.StackExpect(4);
+
             _interpreter.DFunction((a, b) => a & b);
 
             return 1;
         }
 
         // (d1 d2 -- d3)
-        private int OrAction()
+        private int DOrAction()
         {
+            _interpreter.StackExpect(4);
+
             _interpreter.DFunction((a, b) => a | b);
 
             return 1;
         }
 
         // (d1 d2 -- d3)
-        private int XorAction()
+        private int DXorAction()
         {
+            _interpreter.StackExpect(4);
+
             _interpreter.DFunction((a, b) => a ^ b);
 
             return 1;

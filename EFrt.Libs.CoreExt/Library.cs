@@ -62,12 +62,12 @@ namespace EFrt.Libs.CoreExt
 
             _interpreter.AddPrimitiveWord("-ROLL", MinusRollAction);
             _interpreter.AddPrimitiveWord("-ROT", MinusRotAction);
-            _interpreter.AddPrimitiveWord("2+", AddTwoAction);
-            _interpreter.AddPrimitiveWord("2-", SubTwoAction);
+            _interpreter.AddPrimitiveWord("2+", TwoPlusAction);
+            _interpreter.AddPrimitiveWord("2-", TwoMinusAction);
             _interpreter.AddPrimitiveWord("2NIP", TwoNipAction);
             _interpreter.AddPrimitiveWord("2TUCK", TwoTuckAction);
-            _interpreter.AddPrimitiveWord("<=", IsLtEAction);
-            _interpreter.AddPrimitiveWord(">=", IsGtEAction);
+            _interpreter.AddPrimitiveWord("<=", LessOrEqualsAction);
+            _interpreter.AddPrimitiveWord(">=", GreaterOrEqualsAction);
             _interpreter.AddPrimitiveWord("CLEAR", ClearAction);
         }
 
@@ -341,7 +341,7 @@ namespace EFrt.Libs.CoreExt
         }
 
         // (n1 -- n2)
-        private int AddTwoAction()
+        private int TwoPlusAction()
         {
             _interpreter.StackExpect(1);
 
@@ -351,7 +351,7 @@ namespace EFrt.Libs.CoreExt
         }
 
         // (n1 -- n2)
-        private int SubTwoAction()
+        private int TwoMinusAction()
         {
             _interpreter.StackExpect(1);
 
@@ -395,7 +395,7 @@ namespace EFrt.Libs.CoreExt
         }
 
         // (n1 n2 -- flag)
-        private int IsLtEAction()
+        private int LessOrEqualsAction()
         {
             _interpreter.StackExpect(2);
 
@@ -405,7 +405,7 @@ namespace EFrt.Libs.CoreExt
         }
 
         // (n1 n2 -- flag)
-        private int IsGtEAction()
+        private int GreaterOrEqualsAction()
         {
             _interpreter.StackExpect(2);
 
