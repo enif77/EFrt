@@ -32,6 +32,7 @@ EFrt is a embeddable FORTH language implementation.
  * [DOUBLE](EFrt.Libs.Double/README.md)
  * [DOUBLE-EXT](EFrt.Libs.DoubleExt/README.md)
  * [FLOATING](EFrt.Libs.Floating/README.md)
+ * [FLOATING-EXT](EFrt.Libs.FloatingExt/README.md)
  * [OBJECT](EFrt.Libs.Object/README.md)
  * [STRING](EFrt.Libs.String/README.md)
  * [TOOLS](EFrt.Libs.Tools/README.md)
@@ -176,6 +177,14 @@ TO (step2)                  \ Sets the body of the word step2 (using the value o
 
 ( Abort with a message )
 : abort-with-message 10 1 DO I DUP . CR 5 > IF ABORT" Too big!" THEN LOOP ." Never printer out..." ;
+
+( Exceptions )
+: th THROW ." Thrown" CR ;
+: ca ." pre-t" CR ['] th CATCH ." post-t" CR ;
+0 ca   \ No exception thrown.
+-1 ca  \ Like ABORT.
+-2 ca  \ Like ABORT" mesg".
+1 ca   \ User exception.
 
 ```
 

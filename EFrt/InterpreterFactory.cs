@@ -118,6 +118,16 @@ namespace EFrt
         }
 
         /// <summary>
+        /// Extension method, that adds all words from the FLOATING-EXT library to an interpreter words list.
+        /// </summary>
+        /// <param name="interpreter">An interpreter instance.</param>
+        /// <returns>The interpreter.</returns>
+        public static IInterpreter AddFloatingExtLibrary(this IInterpreter interpreter)
+        {
+            return AddLibrary(interpreter, new EFrt.Libs.FloatingExt.Library(interpreter));
+        }
+
+        /// <summary>
         /// Extension method, that adds all words from the OBJECT library to an interpreter words list.
         /// </summary>
         /// <param name="interpreter">An interpreter instance.</param>

@@ -36,6 +36,7 @@
 		<None Include="..\EFrt.Libs.DoubleExt\README.md" Pack="true" PackagePath="docs\DOUBLE-EXT.md" />
 		<None Include="..\EFrt.Libs.Exception\README.md" Pack="true" PackagePath="docs\EXCEPTION.md" />
 		<None Include="..\EFrt.Libs.Floating\README.md" Pack="true" PackagePath="docs\FLOATING.md" />
+		<None Include="..\EFrt.Libs.FloatingExt\README.md" Pack="true" PackagePath="docs\FLOATING-EXT.md" />
 		<None Include="..\EFrt.Libs.Object\README.md" Pack="true" PackagePath="docs\OBJECT.md" />
 		<None Include="..\EFrt.Libs.String\README.md" Pack="true" PackagePath="docs\STRING.md" />
 		<None Include="..\EFrt.Libs.Tools\README.md" Pack="true" PackagePath="docs\TOOLS.md" />
@@ -55,6 +56,7 @@
 		<PackageReference Include="EFrt.Libs.Double" Version="0.1.0" />
 		<PackageReference Include="EFrt.Libs.DoubleExt" Version="0.1.0" />
 		<PackageReference Include="EFrt.Libs.Floating" Version="0.1.0" />
+		<PackageReference Include="EFrt.Libs.FloatingExt" Version="0.1.0" />
 		<PackageReference Include="EFrt.Libs.Object" Version="0.5.1" />
 		<PackageReference Include="EFrt.Libs.String" Version="0.5.2" />
 		<PackageReference Include="EFrt.Libs.Tools" Version="0.1.0" />
@@ -69,6 +71,7 @@
 		<ProjectReference Include="..\EFrt.Libs.Double\EFrt.Libs.Double.csproj" />
 		<ProjectReference Include="..\EFrt.Libs.DoubleExt\EFrt.Libs.DoubleExt.csproj" />
 		<ProjectReference Include="..\EFrt.Libs.Floating\EFrt.Libs.Floating.csproj" />
+		<ProjectReference Include="..\EFrt.Libs.FloatingExt\EFrt.Libs.FloatingExt.csproj" />
 		<ProjectReference Include="..\EFrt.Libs.Object\EFrt.Libs.Object.csproj" />
 		<ProjectReference Include="..\EFrt.Libs.String\EFrt.Libs.String.csproj" />
 		<ProjectReference Include="..\EFrt.Libs.Tools\EFrt.Libs.Tools.csproj" />
