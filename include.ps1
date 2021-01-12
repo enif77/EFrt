@@ -24,6 +24,7 @@ function Clean() {
 	mkdir $outDir | Out-Null
 }
 
+
 function Build() {
 	dotnet clean "$baseDir\EFrt.sln" --configuration $Configuration
 	Check-ExitCode
@@ -31,6 +32,20 @@ function Build() {
 	dotnet build "$baseDir\EFrt.sln" --configuration $Configuration --configfile "$baseDir\NuGet.Config" --force --no-cache --verbosity minimal
 	Check-ExitCode
 }
+
+
+function BuildProject($projectName) {
+    cd $projectName
+
+	dotnet clean --configuration $Configuration
+	Check-ExitCode
+
+	dotnet build --configuration $Configuration --configfile "$baseDir\NuGet.Config" --force --no-cache --verbosity minimal
+	Check-ExitCode
+
+	cd $baseDir
+}
+
 
 # Note: Call the Build function before this!
 function PackProject($projectName, $cleanUp=$True) {

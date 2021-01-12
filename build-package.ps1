@@ -3,7 +3,7 @@
 # License: MIT
 # Authors: Premysl Fara 
 # (C) 2020 - 2021
-# Run as "powershell.exe -ExecutionPolicy Unrestricted .\build.ps1 -Configuration Release -ProjectName <project-name>" in the solution folder.
+# Run as "powershell.exe -ExecutionPolicy Unrestricted .\build-package.ps1 -Configuration Release -ProjectName <project-name>" in the solution folder.
 
 param(
 	[Parameter(Mandatory=$True)]$Configuration,
@@ -20,5 +20,5 @@ $toolsPath = "D:\Devel\bin"
 . "$baseDir\include.ps1"
 
 Clean
-Build
+BuildProject($ProjectName)
 PackProject $ProjectName
