@@ -11,7 +11,7 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' == 'Release'">
-		<PackageReference Include="EFrt" Version="0.5.9" />
+		<PackageReference Include="EFrt" Version="0.6.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' == 'Debug'">

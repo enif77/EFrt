@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
@@ -14,7 +14,7 @@
 
 	<PropertyGroup>
 		<PackageId>EFrt.Core</PackageId>
-		<Version>0.6.0</Version>
+		<Version>0.5.0</Version>
 		<Authors>Premysl Fara</Authors>
 		<Title>EFrt.Core - Embeddable FORTH core functions</Title>
 		<Description>

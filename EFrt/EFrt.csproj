@@ -14,7 +14,7 @@
 
 	<PropertyGroup>
 		<PackageId>EFrt</PackageId>
-		<Version>0.5.9</Version>
+		<Version>0.6.0</Version>
 		<Authors>Premysl Fara</Authors>
 		<Title>EFrt - Embeddable FORTH</Title>
 		<Description>
@@ -46,19 +46,16 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' == 'Release'">
-		<!-- For some reason, I can not use the package reference here! (Nuget freaks out...) -->
-		<!-- <PackageReference Include="EFrt.Core" Version="0.5.0" /> -->
-		<ProjectReference Include="..\EFrt.Core\EFrt.Core.csproj" />
-		
-		<PackageReference Include="EFrt.Libs.Core" Version="0.5.2" />
-		<PackageReference Include="EFrt.Libs.CoreExt" Version="0.2.1" />
+		<PackageReference Include="EFrt.Core" Version="0.5.0" /> 
+		<PackageReference Include="EFrt.Libs.Core" Version="0.1.0" />
+		<PackageReference Include="EFrt.Libs.CoreExt" Version="0.1.0" />
 		<PackageReference Include="EFrt.Libs.Exception" Version="0.1.0" />
 		<PackageReference Include="EFrt.Libs.Double" Version="0.1.0" />
 		<PackageReference Include="EFrt.Libs.DoubleExt" Version="0.1.0" />
 		<PackageReference Include="EFrt.Libs.Floating" Version="0.1.0" />
 		<PackageReference Include="EFrt.Libs.FloatingExt" Version="0.1.0" />
-		<PackageReference Include="EFrt.Libs.Object" Version="0.5.1" />
-		<PackageReference Include="EFrt.Libs.String" Version="0.5.2" />
+		<PackageReference Include="EFrt.Libs.Object" Version="0.1.0" />
+		<PackageReference Include="EFrt.Libs.String" Version="0.1.0" />
 		<PackageReference Include="EFrt.Libs.Tools" Version="0.1.0" />
 		<PackageReference Include="EFrt.Libs.ToolsExt" Version="0.1.0" />
 	</ItemGroup>

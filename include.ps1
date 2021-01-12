@@ -34,13 +34,17 @@ function Build() {
 }
 
 
-function BuildProject($projectName) {
+function BuildProject($projectName, $cleanUp=$False) {
     cd $projectName
 
-	dotnet clean --configuration $Configuration
-	Check-ExitCode
+	if ($cleanUp) {
+		Write-Host "Cleaning..."
 
-	dotnet build --configuration $Configuration --configfile "$baseDir\NuGet.Config" --force --no-cache --verbosity minimal
+	    dotnet clean --configuration $Configuration --verbosity normal
+	    Check-ExitCode
+	}
+
+	dotnet build --configuration $Configuration --configfile "$baseDir\NuGet.Config" --force --no-cache --verbosity normal
 	Check-ExitCode
 
 	cd $baseDir
