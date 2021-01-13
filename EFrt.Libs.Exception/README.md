@@ -14,12 +14,12 @@ Words definition table columns:
 
 | Name     | Imm. | Mode | Description |
 | ---      | ---  | ---  | --- |
-| CATCH    | no   | C    | **Catch an exception**<br>(xt -- n)<br>Pushes the current execution state to the exception stack, executes xt, and returns 0 for no-error execution (dropping the exception frame) and non-zero, if a THROW was executed. |
+| CATCH    | yes  | C    | **Catch an exception**<br>(xt -- n)<br>Pushes the current execution state to the exception stack, executes xt, and returns 0 for no-error execution (dropping the exception frame) and non-zero, if a THROW was executed. |
+| THROW    | no   | C    | **Throw an exception**<br>(n -- )<br>If n is zero, does nothing. Otherwise throws an error, terminating the current execution, returning to the CATCH, if a exception frame was found on the exception stack. |
 
-#### TODO
+## Words (EXT)
 
-Words: `THROW`
-
-Words (EXT): `ABORT ABORT"`
-
-Variables: `...`
+| Name       | Imm. | Mode | Description |
+| ---        | ---  | ---  | --- |
+| ABORT      | no   | IC   | **Abort**<br>Clears the stack and the object stack and performs a QUIT. Extended versions. |
+| ABORT" str | yes  | C    | **Abort with message**<br>(flag -- )<br>Prints the string literal that follows in line, then aborts, clearing all execution state to return to the interpreter. Extended version. |

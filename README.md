@@ -31,6 +31,7 @@ EFrt is a embeddable FORTH language implementation.
  * [CORE-EXT](EFrt.Libs.CoreExt/README.md)
  * [DOUBLE](EFrt.Libs.Double/README.md)
  * [DOUBLE-EXT](EFrt.Libs.DoubleExt/README.md)
+ * [EXCEPTION](EFrt.Libs.Exception/README.md)
  * [FLOATING](EFrt.Libs.Floating/README.md)
  * [FLOATING-EXT](EFrt.Libs.FloatingExt/README.md)
  * [OBJECT](EFrt.Libs.Object/README.md)
@@ -185,6 +186,12 @@ TO (step2)                  \ Sets the body of the word step2 (using the value o
 -1 ca  \ Like ABORT.
 -2 ca  \ Like ABORT" mesg".
 1 ca   \ User exception.
+
+( Is a word defined? )
+: is-word-defined? ['] ' CATCH 0= IF ." Defined" ELSE ." Undefined" THEN  DROP ( Drop the product of the ' word.) ;
+: w? is-word-defined? CR ;  \ Just a shortcut for the is-word-defined? word.
+w? bla  \ Undefined
+w? IF   \ Defined
 
 ```
 

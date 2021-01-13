@@ -163,7 +163,15 @@ namespace EFrt.Libs.Core
         {
             _interpreter.StackFree(1);
 
-            _interpreter.Push(_interpreter.GetWord(_interpreter.GetWordName()).ExecutionToken);
+            var wordName = _interpreter.GetWordName();
+            if (_interpreter.State.WordsList.IsWordDefined(wordName))
+            {
+                _interpreter.Push(_interpreter.State.WordsList.GetWord(wordName).ExecutionToken);
+            }
+            else
+            {
+                _interpreter.Throw(-2, $"The '{wordName}' word is not defined.");
+            }
 
             return 1;
         }

@@ -124,7 +124,7 @@ Note: The `."` word works like `S" str" S.` words together.
 
 ## TODO
 
-Words: `ACCEPT ALIGNALIGNED CELL+ COUNT DECIMAL 
+Words: `ACCEPT ALIGN ALIGNED CELL+ COUNT DECIMAL 
   ENVIRONMENT? EVALUATE FILL FIND MOVE WORD`
 
 Words (?): `>BODY`
