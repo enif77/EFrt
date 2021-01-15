@@ -272,7 +272,7 @@ namespace EFrt.Core
         /// <returns>True, if a character is a white character.</returns>
         public static bool IsWhite(char c)
         {
-            return (c == ' ' || c == '\t' || c == '\r' || c == '\n');
+            return char.IsWhiteSpace(c);
         }
 
 
