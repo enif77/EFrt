@@ -258,9 +258,14 @@ namespace EFrt.Core
             {
                 iValue *= sign;
 
-                return (iValue < int.MinValue || iValue > int.MaxValue)
-                    ? Token.CreateDoubleCellIntegerToken(iValue)
-                    : Token.CreateSingleCellIntegerToken((int)iValue);
+                if (iValue < int.MinValue || iValue > int.MaxValue)
+                {
+                    // A double cell integer must be marked as such type with the L suffix.
+                    return Token.CreateWordToken(word);
+                }
+
+                // A single cell integer found.
+                Token.CreateSingleCellIntegerToken((int)iValue);
             }
         }
 
