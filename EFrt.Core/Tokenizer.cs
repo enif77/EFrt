@@ -121,8 +121,10 @@ namespace EFrt.Core
                 sourceReader.NextChar();
             }
 
+            var haveDigit = false;
             while (IsDigit(sourceReader.CurrentChar))
             {
+                haveDigit = true;
                 iValue = (iValue * 10) + (sourceReader.CurrentChar - '0');
 
                 // An integer number (long) overflow.
@@ -135,8 +137,14 @@ namespace EFrt.Core
                 sourceReader.NextChar();
             }
 
-            // TODO: Check, that we have atleast one digit here.
+            // Check, that we have atleast one digit here.
+            if (haveDigit == false)
+            {
+                // No digit yet = badly formatted number.
+                return Token.CreateWordToken(word);
+            }
 
+            // A double cell integer?
             if (sourceReader.CurrentChar == 'L' || sourceReader.CurrentChar == 'l')
             {
                 isLong = true;
@@ -193,6 +201,18 @@ namespace EFrt.Core
                 // Eat 'e'.
                 sourceReader.NextChar();
 
+                // scale-factor :: [ sign ] digit-sequence .
+                var scaleFactorSign = 1.0;
+                if (sourceReader.CurrentChar == '-')
+                {
+                    scaleFactorSign = -1.0;
+                    sourceReader.NextChar();
+                }
+                else if (sourceReader.CurrentChar == '+')
+                {
+                    sourceReader.NextChar();
+                }
+                
                 if (IsDigit(sourceReader.CurrentChar) == false)
                 {
                     //throw new Exception("A scale factor of a real number expected.");
@@ -207,14 +227,14 @@ namespace EFrt.Core
                     sourceReader.NextChar();
                 }
 
-                rValue *= Math.Pow(10, fact);
+                rValue *= Math.Pow(10, fact * scaleFactorSign);
 
                 isReal = true;
                 isLong = false;
             }
 
             // Skip leading white chars.
-            while (allowTrailingChars && IsWhite(sourceReader.CurrentChar))
+            while (allowTrailingWhite && IsWhite(sourceReader.CurrentChar))
             {
                 sourceReader.NextChar();
             }
