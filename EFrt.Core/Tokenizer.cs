@@ -99,10 +99,10 @@ namespace EFrt.Core
             // Read the first char of the word.
             sourceReader.NextChar();
 
-            var isReal = false;
-            var isLong = false;
-            var iValue = 0L;
-            var rValue = 0.0;
+            var isFloatingPoint = false;
+            var isDoubleCellInteger = false;
+            var integerValue = 0L;
+            var floatingPointValue = 0.0;
 
             // Skip leading white chars.
             while (allowLeadingWhite && IsWhite(sourceReader.CurrentChar))
@@ -125,10 +125,10 @@ namespace EFrt.Core
             while (IsDigit(sourceReader.CurrentChar))
             {
                 haveDigit = true;
-                iValue = (iValue * 10) + (sourceReader.CurrentChar - '0');
+                integerValue = (integerValue * 10) + (sourceReader.CurrentChar - '0');
 
                 // An integer number (long) overflow.
-                if (iValue < 0)
+                if (integerValue < 0)
                 {
                     //throw new Exception("An integer constant overflow: " + word);
                     return Token.CreateWordToken(word);
@@ -147,21 +147,40 @@ namespace EFrt.Core
             // A double cell integer?
             if (sourceReader.CurrentChar == 'L' || sourceReader.CurrentChar == 'l')
             {
-                isLong = true;
+                isDoubleCellInteger = true;
+                sourceReader.NextChar();
+            }
+
+            // A floating point number?
+            if (sourceReader.CurrentChar == 'D' || sourceReader.CurrentChar == 'd')
+            {
+                if (isDoubleCellInteger)
+                {
+                    // LD = bad number suffix.
+                    return Token.CreateWordToken(word);
+                }
+
+                floatingPointValue = integerValue;
+                isFloatingPoint = true;
                 sourceReader.NextChar();
             }
 
             // digit-sequence '.' fractional-part
             if (sourceReader.CurrentChar == '.')
             {
-                if (isLong)
+                // 123L. is not allowed.
+                if (isDoubleCellInteger)
                 {
                     //throw new Exception("Unexpected character in double cell constant: " + word);
                     return Token.CreateWordToken(word);
                 }
 
-                rValue = iValue;
-
+                if (isFloatingPoint == false)
+                {
+                    floatingPointValue = integerValue;
+                    isFloatingPoint = true;
+                }
+                
                 // Eat '.'.
                 sourceReader.NextChar();
 
@@ -181,22 +200,24 @@ namespace EFrt.Core
                     sourceReader.NextChar();
                 }
 
-                rValue += frac / scale;
-
-                isReal = true;
-                isLong = false;
+                floatingPointValue += frac / scale;
             }
 
             // digit-sequence [ '.' fractional-part ] 'e' scale-factor
             if (sourceReader.CurrentChar == 'e' || sourceReader.CurrentChar == 'E')
             {
-                if (isLong)
+                // 123Le is not allowed.
+                if (isDoubleCellInteger)
                 {
                     //throw new Exception("Unexpected character in double cell constant: " + word);
                     return Token.CreateWordToken(word);
                 }
 
-                rValue = isReal ? rValue : iValue;
+                if (isFloatingPoint == false)
+                {
+                    floatingPointValue = integerValue;
+                    isFloatingPoint = true;
+                }
 
                 // Eat 'e'.
                 sourceReader.NextChar();
@@ -227,10 +248,7 @@ namespace EFrt.Core
                     sourceReader.NextChar();
                 }
 
-                rValue *= Math.Pow(10, fact * scaleFactorSign);
-
-                isReal = true;
-                isLong = false;
+                floatingPointValue *= Math.Pow(10, fact * scaleFactorSign);
             }
 
             // Skip leading white chars.
@@ -246,26 +264,26 @@ namespace EFrt.Core
             }
 
             // We eat all chars, its a number.
-            if (isReal)
+            if (isFloatingPoint)
             {
-                return Token.CreateFloatToken((float)(rValue * sign));
+                return Token.CreateFloatToken((float)(floatingPointValue * sign));
             }
-            else if (isLong)
+            else if (isDoubleCellInteger)
             {
-                return Token.CreateDoubleCellIntegerToken(iValue * sign);
+                return Token.CreateDoubleCellIntegerToken(integerValue * sign);
             }
             else
             {
-                iValue *= sign;
+                integerValue *= sign;
 
-                if (iValue < int.MinValue || iValue > int.MaxValue)
+                if (integerValue < int.MinValue || integerValue > int.MaxValue)
                 {
                     // A double cell integer must be marked as such type with the L suffix.
                     return Token.CreateWordToken(word);
                 }
 
                 // A single cell integer found.
-                return Token.CreateSingleCellIntegerToken((int)iValue);
+                return Token.CreateSingleCellIntegerToken((int)integerValue);
             }
         }
 
