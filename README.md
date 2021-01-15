@@ -7,7 +7,7 @@ EFrt is a embeddable FORTH language implementation.
   - cell: A 32 bit data unit (int).
   - single cell integer: 32 bit signed integer number (int, 1 cell). Ex.: 123
   - double cell integer: 64 bit signed integer number (long, 2 cells). Ex.: 123L
-  - floating point: 64 bit float number (double, 2 cells). Ex.: 123.0
+  - floating point: 64 bit float number (double, 2 cells). Ex.: 123.0 123D
   - string: A double quote terminated strings, stored on the objects stack. Ex.: S" Hello!"
   - object: Any user data reference (object).
 
@@ -17,6 +17,7 @@ EFrt is a embeddable FORTH language implementation.
   - Data stack: Main stack for user data. Holds all 32bit and 64bit integers and 64 bit floats (as two 32 bit cells).
   - Return stack: Stack for interpreter internal use. Holds 32 bit signed integers.
   - Object stack: Can hold any object and strings.
+  - Exception stack: Not accessible for users. Its used internally by THROW and CATCH words.
 
 
 ## Heaps
@@ -38,6 +39,32 @@ EFrt is a embeddable FORTH language implementation.
  * [STRING](EFrt.Libs.String/README.md)
  * [TOOLS](EFrt.Libs.Tools/README.md)
  * [TOOLS-EXT](EFrt.Libs.ToolsExt/README.md)
+
+
+## Numbers
+
+Unknown words are parsed as numbers, followning C/C# conventions. Double cell integer must have the `L` or the `l` suffix to be recognized
+as a double cell integer. Any problem with parsing a number makes the parser to return a word, which is unknown, and it leads to an error.
+
+```
+unsigned-single-cell-integer :: digit-sequence .
+unsigned-double-cell-integer :: digit-sequence ( 'L' | 'l' ) .
+unsigned-floating-point-number :: digit-sequence ( 'D' | 'd' ) .
+unsigned-number :: unsigned-single-cell-integer | unsigned-double-cell-integer | unsigned-floating-point-number .
+unsigned-floating-point-number :: ( digit-sequence '.' fractional-part [ 'e' scale-factor ] ) | ( digit-sequence 'e' scale-factor ) .
+scale-factor :: [ sign ] digit-sequence .
+fractional-part :: digit-sequence .
+sign :: '+' | '-' .
+```
+
+Note: Forth style numbers parsing using the BASE variable will be implemented later.
+
+
+## Strings
+
+Words like S" or ABORT" expect a series of characters following in the input stream terminated by the `"` (double quote) character.
+
+Note: Forth standard 2012 specifies escape characters for certain character. Those will be supported later.
 
 
 ## Examples

@@ -86,8 +86,9 @@ namespace EFrt.Core
         /// before it is parsed as a number.
         /// unsigned-single-cell-integer :: digit-sequence .
         /// unsigned-double-cell-integer :: digit-sequence ( 'L' | 'l' ) .
-        /// unsigned-number :: unsigned-single-cell-integer | unsigned-double-cell-integer | unsigned-real .
-        /// unsigned-real :: ( digit-sequence '.' fractional-part [ 'e' scale-factor ] ) | ( digit-sequence 'e' scale-factor ) .
+        /// unsigned-floating-point-number :: digit-sequence ( 'D' | 'd' ) .
+        /// unsigned-number :: unsigned-single-cell-integer | unsigned-double-cell-integer | unsigned-floating-point-number .
+        /// unsigned-floating-point-number :: ( digit-sequence '.' fractional-part [ 'e' scale-factor ] ) | ( digit-sequence 'e' scale-factor ) .
         /// scale-factor :: [ sign ] digit-sequence .
         /// fractional-part :: digit-sequence .
         /// sign :: '+' | '-' .
