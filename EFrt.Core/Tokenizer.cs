@@ -265,7 +265,7 @@ namespace EFrt.Core
                 }
 
                 // A single cell integer found.
-                Token.CreateSingleCellIntegerToken((int)iValue);
+                return Token.CreateSingleCellIntegerToken((int)iValue);
             }
         }
 
