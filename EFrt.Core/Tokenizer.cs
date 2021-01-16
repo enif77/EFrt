@@ -267,7 +267,7 @@ namespace EFrt.Core
             // We eat all chars, its a number.
             if (isFloatingPoint)
             {
-                return Token.CreateFloatToken((float)(floatingPointValue * sign));
+                return Token.CreateFloatingPointToken((float)(floatingPointValue * sign));
             }
             else if (isDoubleCellInteger)
             {

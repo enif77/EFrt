@@ -90,7 +90,7 @@ namespace EFrt.Core
         /// </summary>
         /// <param name="f">A float constant.</param>
         /// <returns>A token representing a float constant.</returns>
-        public static Token CreateFloatToken(float f)
+        public static Token CreateFloatingPointToken(float f)
         {
             return new Token() { Code = TokenType.Float, FValue = f };
         }
