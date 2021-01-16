@@ -62,15 +62,38 @@ Note: Forth style numbers parsing using the BASE variable will be implemented la
 
 ## Strings
 
-Words like S" or ABORT" expect a series of characters following in the input stream terminated by the `"` (double quote) character.
+Words like `S"` or `ABORT"` expect a series of characters following in the input stream terminated by the `"` (double quote) character.
 
-Note: Forth standard 2012 specifies escape characters for certain character. Those will be supported later.
+### Special characters escaping
+
+Special chars escaping is supported by the `S\"` word. It uses the Forth 2012 standard and is extended by the C# conventions.
+
+```
+\a BEL (alert, ASCII 7)
+\b BS (backspace, ASCII 8)
+\e ESC (escape, ASCII 27)
+\f FF (form feed, ASCII 12)
+\l LF (line feed, ASCII 10)
+\m CR/LF pair (ASCII 13, 10)
+\n newline (implementation dependent, e.g., CR/LF, CR, LF, LF/CR)
+\q double-quote(ASCII 34)
+\" double-quote (ASCII 34)
+\r CR (carriage return, ASCII 13)
+\t HT (horizontal tab, ASCII 9)
+\v VT (vertical tab, ASCII 11)
+\z NUL (no character, ASCII 0)
+\0 NUL (no character, ASCII 0)
+\\ backslash itself (ASCII 92)
+\uxxxx UTF16 (A sequence of 4 hex characters.)
+\x or \X UTF16 (A sequence of 1 to 4 hex characters.)
+```
+
+NOTE: The `\U` escape sequence will be added later.
 
 
 ## Examples
 
 ```
-
 ( Hello world! )
 : hello S" Hello, world!" S. CR ;
 
@@ -219,6 +242,4 @@ TO (step2)                  \ Sets the body of the word step2 (using the value o
 : w? is-word-defined? CR ;  \ Just a shortcut for the is-word-defined? word.
 w? bla  \ Undefined
 w? IF   \ Defined
-
 ```
-

@@ -95,7 +95,7 @@ namespace EFrt.Core
         }
 
 
-        public string GetTerminatedString(char terminator)
+        public string GetTerminatedString(char terminator, bool allowSpecialChars = false)
         {
             var sb = new StringBuilder();
 
@@ -109,8 +109,17 @@ namespace EFrt.Core
                     break;
                 }
 
-                sb.Append(CurrentChar);
+                if (allowSpecialChars && CurrentChar == '\\')
+                {
+                    sb.Append(_tokenizer.ParseStringSpecialChar());
 
+                    continue;  // The CurrentChar contains the character folowing the escaped special char.
+                }
+                else
+                {
+                    sb.Append(CurrentChar);
+                }
+                
                 c = NextChar();
             }
 

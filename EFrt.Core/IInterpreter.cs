@@ -77,8 +77,9 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// Gets a string terminated by a terminator char.
         /// </summary>
         /// <param name="terminator">A character terminating the string.</param>
+        /// <param name="allowSpecialChars">If true, '\' escaped special chars are supported.</param>
         /// <returns>A string.</returns>
-        string GetTerminatedString(char terminator);
+        string GetTerminatedString(char terminator, bool allowSpecialChars = false);
 
         /// <summary>
         /// Parses an integer number from a string.

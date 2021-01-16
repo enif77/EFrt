@@ -1193,7 +1193,7 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // { -- }
+        // { -- s}
         private int SQuoteAction()
         {
             if (_interpreter.IsCompiling == false)

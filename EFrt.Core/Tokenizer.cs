@@ -288,6 +288,124 @@ namespace EFrt.Core
             }
         }
 
+
+        /** Converts an ASCII character to it's upper-case representation.
+         *
+         * @param c The ASCII representation of the character to be converted.
+         *
+         * @return Returns upper-case version of the character.
+         *
+         *  */
+        private int UpCase(int c)
+        {
+            return (c >= 'a' && c <= 'z') ? (c - 32) : c;
+        }
+
+        /// <summary>
+        /// Parses a special (or escape) characters defined for double-quoted string literals.
+        /// When finishes, the CurrentChar contains the character behind the escaped character.
+        /// </summary>
+        /// <returns>A string containing the parsed special character.</returns>
+        public string ParseStringSpecialChar()
+        {
+            NextChar();  // eat '\'
+
+            switch (CurrentChar)
+            {
+                case 'a': NextChar(); return "\a";         // \a BEL (alert, ASCII 7)
+                case 'b': NextChar(); return "\b";         // \b BS (backspace, ASCII 8)
+                case 'e': NextChar(); return "\u001B";     // \e ESC (escape, ASCII 27)
+                case 'f': NextChar(); return "\f";         // \f FF (form feed, ASCII 12)
+                case 'l': NextChar(); return "\n";         // \l LF (line feed, ASCII 10)
+                case 'm': NextChar(); return "\r\n";       // \m CR/LF pair (ASCII 13, 10)
+                case 'n': NextChar(); return "\n";         // newline (implementation dependent , e.g., CR/LF, CR, LF, LF/CR)
+                case 'q':                                  // \q double-quote(ASCII 34)
+                case '\"': NextChar(); return "\"";        // \" double-quote (ASCII 34)
+                case 'r': NextChar(); return "\r";         // \r CR (carriage return, ASCII 13)
+                case 't': NextChar(); return "\t";         // \t HT (horizontal tab, ASCII 9)
+                case 'v': NextChar(); return "\v";         // \v VT (vertical tab, ASCII 11)
+                case 'z':                                  // \z NUL (no character, ASCII 0)
+                case '0': NextChar(); return "\0";         // \0 NUL (no character, ASCII 0)
+                case '\\': NextChar(); return "\\";        // \\ backslash itself (ASCII 92)
+                case '\'': NextChar(); return "\'";
+
+                case 'u':                                  // A sequence of 4 hex characters.
+                    {
+                        NextChar();
+                        var c = 0;
+                        for (var i = 0; i < 4; i++)
+                        {
+                            if (IsDigit(CurrentChar))
+                            {
+                                c = (c * 16) + (CurrentChar - '0');
+                            }
+                            else if (CurrentChar >= 'a' && CurrentChar <= 'f')
+                            {
+                                c = (c * 16) + (CurrentChar - 'a' + 10);
+                            }
+                            else if (CurrentChar >= 'A' && CurrentChar <= 'F')
+                            {
+                                c = (c * 16) + (CurrentChar - 'A' + 10);
+                            }
+                            else
+                            {
+                                throw new Exception("A hex digit expected in \\u string escape character.");
+                            }
+
+                            NextChar();
+                        }
+
+                        return string.Empty + (char)c;
+                    }
+
+                case 'x':                                  // A hex sequence of 1 to 4 hex characters.
+                case 'X':
+                    {
+                        NextChar();
+                        var c = 0;
+                        for (var i = 0; i < 4; i++)
+                        {
+                            if (IsDigit(CurrentChar))
+                            {
+                                c = (c * 16) + (CurrentChar - '0');
+                            }
+                            else if (CurrentChar >= 'a' && CurrentChar <= 'f')
+                            {
+                                c = (c * 16) + (CurrentChar - 'a' + 10);
+                            }
+                            else if (CurrentChar >= 'A' && CurrentChar <= 'F')
+                            {
+                                c = (c * 16) + (CurrentChar - 'A' + 10);
+                            }
+                            else
+                            {
+                                if (i == 0) throw new Exception("A hex digit expected in \\x string escape character.");
+
+                                break;
+                            }
+
+                            NextChar();
+                        }
+
+                        return string.Empty + (char)c;
+                    }
+
+                default:
+                    throw new Exception($"Unexpected character with code {(int)CurrentChar} in string escape definition.");
+            }
+        }
+
+        /// <summary>
+        /// Skips all white characters in the input stream.
+        /// </summary>
+        public void SkipWhite()
+        {
+            while (IsWhite(CurrentChar))
+            {
+                NextChar();
+            }
+        }
+
         /// <summary>
         /// Checks, if a character is a white character.
         /// white-char :: SPACE | TAB | CR | LF .
@@ -298,7 +416,6 @@ namespace EFrt.Core
         {
             return char.IsWhiteSpace(c);
         }
-
 
         /// <summary>
         /// Checks, if an character is a digit.
@@ -311,13 +428,21 @@ namespace EFrt.Core
             return c >= '0' && c <= '9';
         }
 
-
-        public void SkipWhite()
+        /// <summary>
+        ///  Defines hexadecimal-digit characters recognized by the language.
+        /// 
+        /// <pre>
+        /// hexadecimal-digit ::
+        ///   digit |
+        ///   'a' | 'b' | 'c' | 'd' | 'e' | 'f' |
+        ///   'A' | 'B' | 'C' | 'D' | 'E' | 'F' .
+        /// </pre>
+        /// </summary>
+        /// <param name="c">A character.</param>
+        /// <returns>Returns true, if the given character is a hexadecimal-digit.</returns>
+        public static bool IsHexDigit(int c)
         {
-            while (IsWhite(CurrentChar))
-            {
-                NextChar();
-            }
+            return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
         }
     }
 }

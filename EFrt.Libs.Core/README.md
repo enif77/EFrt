@@ -97,7 +97,7 @@ Words definition table columns:
 | REPEAT   | yes  | C    | **Close BEGIN—WHILE—REPEAT loop**<br>( -- n)<br>Another iteration of the current BEGIN—WHILE—REPEAT loop having been completed, execution continues after the matching BEGIN. |
 | ROT      | no   | IC   | **Rotate 3 items**<br>(n1 n2 n3 -- n2 n3 n1)<br>The third item on the stack is placed on the top of the stack and the second and first items are moved down. |
 | RSHIFT   | no   | IC   | **n2 = n1 >> u**<br>(n1 u -- n2)<br>Perform a logical right shift of u bit-places on x1, giving x2. |
-| S" str   | no   | IC   | **String literal**<br>{ -- s}<br>Consume all source characters till the closing " character, creating a string from them and storing the result on the top of the object stack. |
+| S" str   | yes  | IC   | **String literal**<br>{ -- s}<br>Consume all source characters till the closing " character, creating a string from them and storing the result on the top of the object stack. |
 | S>D      | no   | IC   | **Single cell number to double cell number**<br>(n -- d)<br>Converts a single cell number (32bit, int) to a double cell number (64bit, long). |
 | SM/REM   | no   | IC   | **n2 = d % n1, n3 = d / n1**<br>(d n1 -- n2 n3)<br>Divide d by n1, giving the symmetric quotient n3 and the remainder n2. |
 | SPACE    | no   | IC   | **Print SPACE**<br>Prints out the SPACE character. |

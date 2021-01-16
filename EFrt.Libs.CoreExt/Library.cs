@@ -52,6 +52,7 @@ namespace EFrt.Libs.CoreExt
             _interpreter.AddPrimitiveWord("NIP", NipAction);
             _interpreter.AddPrimitiveWord("PICK", PickAction);
             _interpreter.AddPrimitiveWord("ROLL", RollAction);
+            _interpreter.AddImmediateWord("S\\\"", SBackslashQuotection);  // S\" ..."
             _interpreter.AddPrimitiveWord("TO", ToAction);
             _interpreter.AddPrimitiveWord("TUCK", TuckAction);
             _interpreter.AddPrimitiveWord("VALUE", ValueAction);
@@ -250,6 +251,19 @@ namespace EFrt.Libs.CoreExt
             _interpreter.StackExpect(index);
 
             _interpreter.Roll(_interpreter.Pop());
+
+            return 1;
+        }
+
+        // { -- s}
+        private int SBackslashQuotection()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("S\\\" outside a new word definition.");
+            }
+
+            _interpreter.WordBeingDefined.AddWord(new StringLiteralWord(_interpreter, _interpreter.GetTerminatedString('"', true)));
 
             return 1;
         }
