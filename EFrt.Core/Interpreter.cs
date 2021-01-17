@@ -97,44 +97,7 @@ namespace EFrt.Core
 
         public string GetTerminatedString(char terminator, bool allowSpecialChars = false)
         {
-            var sb = new StringBuilder();
-
-            var c = NextChar();
-            while (CurrentChar != 0)
-            {
-                if (CurrentChar == terminator)
-                {
-                    NextChar();
-
-                    break;
-                }
-
-                if (allowSpecialChars && CurrentChar == '\\')
-                {
-                    sb.Append(_tokenizer.ParseStringSpecialChar());
-                    c = CurrentChar;  // The CurrentChar contains the character folowing the escaped special char.
-
-                    continue;  
-                }
-                else
-                {
-                    sb.Append(CurrentChar);
-                }
-                
-                c = NextChar();
-            }
-
-            if (c != terminator)
-            {
-                throw new Exception($"'{terminator}' expected.");
-            }
-
-            if (CurrentChar != 0 && Tokenizer.IsWhite(_tokenizer.CurrentChar) == false)
-            {
-                throw new Exception("The EOF or an white character after a string terminator expected.");
-            }
-
-            return sb.ToString();
+            return _tokenizer.ParseTerminatedString(terminator, allowSpecialChars);
         }
 
 

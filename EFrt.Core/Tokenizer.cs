@@ -81,7 +81,7 @@ namespace EFrt.Core
         }
 
         /// <summary>
-        /// Parses a single or double cell integer or a real number.
+        /// Parses a single or double cell integer or a floating point number.
         /// It is called by the interpreter directly, because a word must be checked, if it is defined/known, 
         /// before it is parsed as a number.
         /// unsigned-single-cell-integer :: digit-sequence .
@@ -288,25 +288,60 @@ namespace EFrt.Core
             }
         }
 
-
-        /** Converts an ASCII character to it's upper-case representation.
-         *
-         * @param c The ASCII representation of the character to be converted.
-         *
-         * @return Returns upper-case version of the character.
-         *
-         *  */
-        private int UpCase(int c)
+        /// <summary>
+        /// Parses a terminated string literal.
+        /// </summary>
+        /// <param name="terminator">A character, that terminates the parsed string literal.</param>
+        /// <param name="allowSpecialChars">If special (escape) characters are supported in the persed string literal.</param>
+        /// <returns></returns>
+        public string ParseTerminatedString(char terminator, bool allowSpecialChars = false)
         {
-            return (c >= 'a' && c <= 'z') ? (c - 32) : c;
+            var sb = new StringBuilder();
+
+            var c = NextChar();
+            while (CurrentChar != 0)
+            {
+                if (CurrentChar == terminator)
+                {
+                    NextChar();
+
+                    break;
+                }
+
+                if (allowSpecialChars && CurrentChar == '\\')
+                {
+                    sb.Append(ParseStringSpecialChar());
+                    c = CurrentChar;  // The CurrentChar contains the character folowing the escaped special char.
+
+                    continue;
+                }
+                else
+                {
+                    sb.Append(CurrentChar);
+                }
+
+                c = NextChar();
+            }
+
+            if (c != terminator)
+            {
+                throw new Exception($"'{terminator}' expected.");
+            }
+
+            if (CurrentChar != 0 && Tokenizer.IsWhite(CurrentChar) == false)
+            {
+                throw new Exception("The EOF or an white character after a string terminator expected.");
+            }
+
+            return sb.ToString();
         }
 
         /// <summary>
-        /// Parses a special (or escape) characters defined for double-quoted string literals.
+        /// Parses a special (or escape) characters defined for string literals.
         /// When finishes, the CurrentChar contains the character behind the escaped character.
         /// </summary>
         /// <returns>A string containing the parsed special character.</returns>
-        public string ParseStringSpecialChar()
+        private string ParseStringSpecialChar()
         {
             NextChar();  // eat '\'
 
