@@ -112,8 +112,9 @@ namespace EFrt.Core
                 if (allowSpecialChars && CurrentChar == '\\')
                 {
                     sb.Append(_tokenizer.ParseStringSpecialChar());
+                    c = CurrentChar;  // The CurrentChar contains the character folowing the escaped special char.
 
-                    continue;  // The CurrentChar contains the character folowing the escaped special char.
+                    continue;  
                 }
                 else
                 {
