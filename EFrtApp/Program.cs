@@ -32,6 +32,10 @@ namespace EFrtApp
             {
                 try
                 {
+                    // Show a prompt.
+                    Console.Write(interpreter.IsCompiling ? ":> " : "-> ");
+
+                    // Execute.
                     interpreter.Execute(Console.ReadLine());
                 }
                 catch (Exception ex)
@@ -48,21 +52,6 @@ namespace EFrtApp
                     Console.WriteLine("Bye!");
 
                     break;
-                }
-
-                // Show a prompt.
-                if (interpreter.IsCompiling)
-                {
-                    Console.Write("-> ");
-                }
-                else
-                {
-                    Console.Write("ok ");
-
-                    if (interpreter.State.Stack.Count > 0)
-                    {
-                        Console.Write("{0} ", interpreter.Peek());
-                    }
                 }
             }
 
