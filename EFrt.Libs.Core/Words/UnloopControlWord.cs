@@ -18,7 +18,7 @@ namespace EFrt.Libs.Core.Words
         public UnloopControlWord(IInterpreter interpreter)
             : base(interpreter)
         {
-            Name = "UnloopControlWord";
+            Name = "UNLOOP";
             IsControlWord = true;
             Action = () => 
             {

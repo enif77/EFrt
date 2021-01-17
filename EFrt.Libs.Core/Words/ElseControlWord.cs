@@ -19,7 +19,7 @@ namespace EFrt.Libs.Core.Words
         public ElseControlWord(IInterpreter interpreter, int indexFollowingElse)
             : base(interpreter)
         {
-            Name = "ElseControlWord";
+            Name = "ELSE";
             IsControlWord = true;
             Action = () => _thenIndexIncrement - _indexFollowingElse + 1;  // Skip words inside of the ELSE block.
 

@@ -19,7 +19,7 @@ namespace EFrt.Libs.Core.Words
         public LoopControlWord(IInterpreter interpreter, int indexIncrement)
             : base(interpreter)
         {
-            Name = "LoopControlWord";
+            Name = "LOOP";
             IsControlWord = true;
             Action = Execute;
 

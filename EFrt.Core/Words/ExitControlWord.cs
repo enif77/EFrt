@@ -18,7 +18,7 @@ namespace EFrt.Core.Words
         public ExitControlWord(IInterpreter interpreter, NonPrimitiveWord definitionWord)
             : base(interpreter)
         {
-            Name = "ExitControlWord";
+            Name = "EXIT";
             IsControlWord = true;
             Action = () => 
             {

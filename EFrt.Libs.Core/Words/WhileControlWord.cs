@@ -19,7 +19,7 @@ namespace EFrt.Libs.Core.Words
         public WhileControlWord(IInterpreter interpreter, int currentIndex)
             : base(interpreter)
         {
-            Name = "WhileControlWord";
+            Name = "WHILE";
             IsControlWord = true;
             Action = () =>
             {

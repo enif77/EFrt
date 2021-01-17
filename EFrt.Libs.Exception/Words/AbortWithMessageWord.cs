@@ -18,7 +18,7 @@ namespace EFrt.Libs.Exception.Words
         public AbortWithMessageWord(IInterpreter interpreter, string message)
             : base(interpreter)
         {
-            Name = "ABORTEXT";
+            Name = "ABORT";
             IsControlWord = true;
             Action = () => 
             {

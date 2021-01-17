@@ -18,21 +18,18 @@ namespace EFrt.Libs.Core.Words
         public IndexControlWord(IInterpreter interpreter)
             : base(interpreter)
         {
-            Name = "IndexControlWord";
+            Name = "I";
             IsControlWord = true;
-            Action = Execute;
-        }
+            Action = () => 
+            {
+                Interpreter.StackFree(1);
+                Interpreter.ReturnStackExpect(1);
 
+                // ( -- inner-index)  [ ... inner-limit inner-index -- ... inner-limit inner-index ]
+                Interpreter.Push(Interpreter.RPeek());
 
-        private int Execute()
-        {
-            Interpreter.StackFree(1);
-            Interpreter.ReturnStackExpect(1);
-
-            // ( -- inner-index)  [ ... inner-limit inner-index -- ... inner-limit inner-index ]
-            Interpreter.Push(Interpreter.RPeek());
-
-            return 1;
+                return 1;
+            };
         }
     }
 }

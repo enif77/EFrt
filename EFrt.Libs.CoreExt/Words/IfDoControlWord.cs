@@ -19,17 +19,34 @@ namespace EFrt.Libs.CoreEx.Words
         public IfDoControlWord(IInterpreter interpreter, int currentIndex)
             : base(interpreter)
         {
-            Name = "IfDoControlWord";
+            Name = "?DO";
             IsControlWord = true;
-            Action = Execute;
+            Action = () => 
+            {
+                Interpreter.StackExpect(2);
+                Interpreter.ReturnStackFree(2);
+
+                var index = Interpreter.Pop();
+                var limit = Interpreter.Pop();
+
+                Interpreter.RPush(limit);
+                Interpreter.RPush(index);
+
+                if (limit == index)
+                {
+                    return _loopIndexIncrement;
+                }
+                else
+                {
+                    return 1;
+                }
+            };
 
             _thisIndex = currentIndex;
             _loopIndexIncrement = 0;
         }
 
-
-        /** Volá slovo LOOP or +LOOP. Vloží sem svůj index v rámci definovaného slova,
-	     *  do kterého patří. */
+        
         public void SetBranchTargetIndex(int branchIndex)
         {
             _loopIndexIncrement = branchIndex - _thisIndex;
@@ -38,27 +55,5 @@ namespace EFrt.Libs.CoreEx.Words
 
         private int _thisIndex;
         private int _loopIndexIncrement;
-
-
-        private int Execute()
-        {
-            Interpreter.StackExpect(2);
-            Interpreter.ReturnStackFree(2);
-
-            var index = Interpreter.Pop();
-            var limit = Interpreter.Pop();
-
-            Interpreter.RPush(limit);
-            Interpreter.RPush(index);
-
-            if (limit == index)
-            {
-                return _loopIndexIncrement;
-            }
-            else
-            {
-                return 1;
-            }
-        }
     }
 }

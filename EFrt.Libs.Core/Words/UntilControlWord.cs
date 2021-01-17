@@ -19,7 +19,7 @@ namespace EFrt.Libs.Core.Words
         public UntilControlWord(IInterpreter interpreter, int increment)
             : base(interpreter)
         {
-            Name = "UntilControlWord";
+            Name = "UNTIL";
             IsControlWord = true;
             Action = () =>
             {

@@ -18,7 +18,7 @@ namespace EFrt.Libs.Core.Words
         public DoControlWord(IInterpreter interpreter)
             : base(interpreter)
         {
-            Name = "DoControlWord";
+            Name = "DO";
             IsControlWord = true;
             Action = () => 
             {

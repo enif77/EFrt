@@ -18,7 +18,7 @@ namespace EFrt.Libs.Core.Words
         public PrintStringWord(IInterpreter interpreter, string value)
             : base(interpreter)
         {
-            Name = "string";
+            Name = "S.";
             IsControlWord = true;
             Action = () => 
             {

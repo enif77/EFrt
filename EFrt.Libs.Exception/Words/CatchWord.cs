@@ -19,7 +19,7 @@ namespace EFrt.Libs.Exception.Words
         public CatchWord(IInterpreter interpreter, IWord parentWord, int nextWordIndex)
             : base(interpreter)
         {
-            Name = "catch";
+            Name = "CATCH";
             IsControlWord = true;
             Action = () => 
             {

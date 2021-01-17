@@ -19,7 +19,7 @@ namespace EFrt.Libs.Core.Words
         public IfControlWord(IInterpreter interpreter, int currentIndex)
             : base(interpreter)
         {
-            Name = "IfControlWord";
+            Name = "IF";
             IsControlWord = true;
             Action = Execute;
 

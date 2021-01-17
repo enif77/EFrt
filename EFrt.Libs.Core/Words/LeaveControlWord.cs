@@ -18,23 +18,20 @@ namespace EFrt.Libs.Core.Words
         public LeaveControlWord(IInterpreter interpreter)
             : base(interpreter)
         {
-            Name = "LeaveControlWord";
+            Name = "LEAVE";
             IsControlWord = true;
-            Action = Execute;
-        }
+            Action = () => 
+            {
+                Interpreter.ReturnStackExpect(2);
 
+                // Remove the current index...
+                _ = Interpreter.RPop();
 
-        private int Execute()
-        {
-            Interpreter.ReturnStackExpect(2);
+                // and replace it with the limit, which effectively marks the end of the loop.
+                Interpreter.RDup();
 
-            // Remove the current index...
-            _ = Interpreter.RPop();
-
-            // and replace it with the limit, which effectively marks the end of the loop.
-            Interpreter.RDup();
-
-            return 1;
+                return 1;
+            };
         }
     }
 }

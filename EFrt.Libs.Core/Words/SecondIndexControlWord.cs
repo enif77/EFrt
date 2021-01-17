@@ -18,30 +18,18 @@ namespace EFrt.Libs.Core.Words
         public SecondIndexControlWord(IInterpreter interpreter)
             : base(interpreter)
         {
-            Name = "SecondIndexControlWord";
+            Name = "J";
             IsControlWord = true;
-            Action = Execute;
-        }
+            Action = () =>
+            {
+                Interpreter.ReturnStackExpect(1);
+                Interpreter.StackFree(1);
 
+                // ( -- outer-index)  [ outer-limit outer-index inner-limit inner-index -- outer-limit outer-index inner-limit inner-index ]
+                Interpreter.Push(Interpreter.RPick(2));
 
-        private int Execute()
-        {
-            Interpreter.ReturnStackExpect(1);
-            Interpreter.StackFree(1);
-
-            // ( -- outer-index)  [ outer-limit outer-index inner-limit inner-index -- outer-limit outer-index inner-limit inner-index ]
-
-            Interpreter.Push(Interpreter.RPick(2));
-
-            //var innerIndex = Interpreter.RPop();
-            //var innerLimit = Interpreter.RPop();
-
-            //Interpreter.Pushi(Interpreter.RPeek());
-
-            //Interpreter.RPush(innerLimit);
-            //Interpreter.RPush(innerIndex);
-
-            return 1;
+                return 1;
+            };
         }
     }
 }

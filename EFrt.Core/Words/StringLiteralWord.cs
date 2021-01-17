@@ -17,7 +17,7 @@ namespace EFrt.Core.Words
         public StringLiteralWord(IInterpreter interpreter, string value)
             : base(interpreter)
         {
-            Name = "string";
+            Name = "SLITERAL";
             IsControlWord = true;
             Action = () =>
             {

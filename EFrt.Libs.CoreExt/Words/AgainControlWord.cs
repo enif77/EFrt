@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Libs.CoreEx.Words
 {
@@ -19,7 +19,7 @@ namespace EFrt.Libs.CoreEx.Words
         public AgainControlWord(IInterpreter interpreter, int increment)
             : base(interpreter)
         {
-            Name = "AgainControlWord";
+            Name = "AGAIN";
             IsControlWord = true;
             Action = () => _increment;
 

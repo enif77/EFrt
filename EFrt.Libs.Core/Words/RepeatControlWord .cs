@@ -19,7 +19,7 @@ namespace EFrt.Libs.Core.Words
         public RepeatControlWord(IInterpreter interpreter, int increment)
             : base(interpreter)
         {
-            Name = "RepeatControlWord";
+            Name = "REPEAT";
             IsControlWord = true;
             Action = () => _increment;
 
