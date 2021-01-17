@@ -2,6 +2,8 @@
 
 namespace EFrt.Core
 {
+    using System;
+
     using EFrt.Core.Words;
 
 /*
@@ -45,7 +47,17 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// The state, in which is this interpreter.
         /// </summary>
         InterpreterStateCode InterpreterState { get; }
-        
+
+        /// <summary>
+        /// An event fired, when a word is being executed.
+        /// </summary>
+        event EventHandler<InterpreterEventArgs> ExecutingWord;
+
+        /// <summary>
+        /// An event fired, when a word was executed.
+        /// </summary>
+        event EventHandler<InterpreterEventArgs> WordExecuted;
+
 
         #region parsing
 
@@ -205,6 +217,14 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// </summary>
         /// <param name="sourceReader">A FORTH program source reader.</param>
         void Execute(ISourceReader sourceReader);
+
+        /// <summary>
+        /// Executes a word. 
+        /// Call this for a each word execution.
+        /// </summary>
+        /// <param name="word">A word to be executed.</param>
+        /// <returns>A next word index.</returns>
+        int Execute(IWord word);
 
         /// <summary>
         /// Asks the interpreter to break the current script execution.

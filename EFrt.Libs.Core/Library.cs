@@ -1130,9 +1130,9 @@ namespace EFrt.Libs.Core
                 throw new Exception("RECURSE outside a new word definition.");
             }
 
-            // LEAVE word doesn't have a runtime behavior.
+            // RECURSE word doesn't have a runtime behavior.
 
-            _interpreter.WordBeingDefined.AddWord(new RuntimeWord(_interpreter, _interpreter.WordBeingDefined.Name));
+            _interpreter.WordBeingDefined.AddWord(_interpreter.WordBeingDefined);
 
             return 1;
         }

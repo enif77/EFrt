@@ -91,6 +91,32 @@ Special chars escaping is supported by the `S\"` word. It uses the Forth 2012 st
 NOTE: The `\U` escape sequence will be added later.
 
 
+## Debugging
+
+Simple debugging is possible - word `TRACE` can turn listing of executed words on/off.
+
+```
+
+1 TRACE  \ Turns executed words listing on.
+0 TRACE  \ Turns executed words listing on.
+
+: a 123 . CR ;
+1 TRACE
+a
+
+Trace: A
+Trace: LITERAL
+Trace: .
+123 Trace: CR
+
+Trace: ExitControlWord
+
+```
+
+Interpreter has two public events - `ExecutingWord` and `WordExecuted` - to notify a caller that a word is going to be executed and
+that a word was executed. 
+
+
 ## Examples
 
 ```

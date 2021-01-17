@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Core.Words
 {
@@ -92,12 +92,15 @@ namespace EFrt.Core.Words
 
                 var word = _words[index];
                 index += word.IsControlWord 
-                    ? word.Action()                                      // Control and value words are defined by themselves.
-                    : Interpreter.GetWord(_words[index].Name).Action();  // Get the actual word implementation and execute it.
+                    ? Interpreter.Execute(word)                                      // Control and value words are defined by themselves.
+                    : Interpreter.Execute(Interpreter.GetWord(_words[index].Name));  // Get the actual word implementation and execute it.
 
                 // Used by the DoesWord.
                 if (_executionBreaked)
                 {
+                    // Recursive words calls need this "kill switch" to be used just once.
+                    _executionBreaked = false;
+
                     break;
                 }
             }

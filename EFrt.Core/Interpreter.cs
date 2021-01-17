@@ -3,7 +3,6 @@
 namespace EFrt.Core
 {
     using System;
-    using System.Text;
 
     using EFrt.Core.Words;
 
@@ -26,11 +25,8 @@ namespace EFrt.Core
     public class Interpreter : IInterpreter
     {
         public InterpreterStateCode InterpreterState { get; private set; }
-
         public IInterpreterState State { get; }
-
         private IOutputWriter _outputWriter;
-
         public IOutputWriter Output
         {
             get
@@ -43,10 +39,11 @@ namespace EFrt.Core
                 _outputWriter = value ?? new NullWriter();
             }
         }
-
         public bool IsCompiling => InterpreterState == InterpreterStateCode.Compiling;
-
         public bool IsExecutionTerminated => InterpreterState == InterpreterStateCode.Breaking || InterpreterState == InterpreterStateCode.Terminating;
+
+        public event EventHandler<InterpreterEventArgs> ExecutingWord;
+        public event EventHandler<InterpreterEventArgs> WordExecuted;
 
 
         /// <summary>
@@ -341,8 +338,8 @@ namespace EFrt.Core
                             {
                                 try
                                 {
-                                    // We are executing the current latest version of the foung word.
-                                    word.Action();
+                                    // We are executing the current latest version of the found word.
+                                    Execute(word);
                                 }
                                 catch (InterpreterException ex)
                                 {
@@ -356,13 +353,13 @@ namespace EFrt.Core
                             else
                             {
                                 // We are adding the RuntimeWord here, because we want to use the latest word definition at runtime.
-                                WordBeingDefined.AddWord(new RuntimeWord(this, wordName));
+                                WordBeingDefined.AddWord(word);
                             }
                         }
                         else if (string.Compare(WordBeingDefined.Name, wordName, true) == 0)
                         {
                             // Recursive call of the currently compiled word.
-                            WordBeingDefined.AddWord(new RuntimeWord(this, wordName));
+                            WordBeingDefined.AddWord(WordBeingDefined);
                         }
                         else
                         {
@@ -397,8 +394,8 @@ namespace EFrt.Core
 
                             try
                             {
-                                // We are executing the current latest version of the foung word.
-                                CurrentWord.Action();
+                                // We are executing the current latest version of the found word.
+                                Execute(CurrentWord);
                             }
                             catch (InterpreterException ex)
                             {
@@ -453,6 +450,20 @@ namespace EFrt.Core
             {
                 InterpreterState = InterpreterStateCode.Interpreting;
             }
+        }
+
+
+        public int Execute(IWord word)
+        {
+            if (word == null) throw new ArgumentNullException(nameof(word));
+
+            ExecutingWord?.Invoke(this, new InterpreterEventArgs() { Word = word });
+
+            var nextWordIndex = word.Action();
+
+            WordExecuted?.Invoke(this, new InterpreterEventArgs() { Word = word });
+
+            return nextWordIndex;
         }
 
 
