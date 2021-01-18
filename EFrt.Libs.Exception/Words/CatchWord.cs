@@ -26,7 +26,7 @@ namespace EFrt.Libs.Exception.Words
                 // Exception stack free.
                 if ((interpreter.State.ExceptionStack.Count + 1) >= Interpreter.State.ExceptionStack.Items.Length)
                 {
-                    throw new InterpreterException(-3, "exception stack overflow");
+                    throw new InterpreterException(-3, "Exception stack overflow.");
                 }
 
                 Interpreter.StackExpect(1);
@@ -45,7 +45,7 @@ namespace EFrt.Libs.Exception.Words
                 try
                 {
                     // Execute the word.
-                    var index = Interpreter.State.WordsList.GetWord(Interpreter.Pop()).Action();
+                    var index = Interpreter.Execute(Interpreter.State.WordsList.GetWord(Interpreter.Pop()));
 
                     // Remove the unused exception frame (nothing failed here).
                     Interpreter.State.ExceptionStack.Pop();
