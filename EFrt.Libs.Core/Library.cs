@@ -827,7 +827,7 @@ namespace EFrt.Libs.Core
         {
             _interpreter.StackExpect(1);
 
-            return _interpreter.State.WordsList.GetWord(_interpreter.Pop()).Action();
+            return _interpreter.Execute(_interpreter.State.WordsList.GetWord(_interpreter.Pop()));
         }
 
         // ( - )
