@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Core.Words
 {
@@ -49,7 +49,12 @@ namespace EFrt.Core.Words
         /// The body of this word.
         /// </summary>
         public Func<int> Action { get; protected set; }
-               
+
+        /// <summary>
+        /// At runtime, this points to the next word to be executed.
+        /// </summary>
+        public IWord Next { get; set; }
+
 
         /// <summary>
         /// An interpreter executing this word.

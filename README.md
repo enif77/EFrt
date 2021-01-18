@@ -138,7 +138,7 @@ that a word was executed.
 : doit 5 0 DO ." hello" CR LOOP ;
 
 ( do-loop, that runs 5 times and shows the current I value ) 
-: doit 5 0 DO ." hello" 1 SPACES I . CR LOOP 
+: doit 5 0 DO ." hello" 1 SPACES I . CR LOOP ;
 
 ( do-loop, that breaks after I > 4 ) 
 : doit 10 0 DO ." hello" 1 SPACES I DUP . CR 4 > IF LEAVE THEN LOOP ;

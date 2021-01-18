@@ -2,14 +2,15 @@
 
 namespace EFrt.Core.Words
 {
+    using System.Collections.Generic;
+
+
     /// <summary>
     /// A compound word.
     /// </summary>
     public class NonPrimitiveWord : AWordBase
     {
-        private const int WordsListChunkSize = 4;
-
-        /// <summary>
+            /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name">A  words name.</param>
@@ -19,7 +20,7 @@ namespace EFrt.Core.Words
             Name = name;
             Action = Execute;
 
-            _words = new IWord[WordsListChunkSize];
+            _words = new List<IWord>();
             _lastWordIndex = -1;
         }
 
@@ -27,7 +28,7 @@ namespace EFrt.Core.Words
         /// <summary>
         /// Returns the index of the next word, that will be inserted into this word.
         /// </summary>
-        public int NextWordIndex => _lastWordIndex + 1;
+        public int NextWordIndex => _words.Count;
 
         /// <summary>
         /// Marks this word as immediate.
@@ -40,7 +41,7 @@ namespace EFrt.Core.Words
         /// <summary>
         /// Gets the number of words defined in this word.
         /// </summary>
-        public int WordsCount => _lastWordIndex + 1;
+        public int WordsCount => _words.Count;
 
         /// <summary>
         /// Returns a word defined at index.
@@ -59,19 +60,17 @@ namespace EFrt.Core.Words
         /// <returns>Index of the added word.</returns>
         public int AddWord(IWord word)
         {
+            _words.Add(word);
             _lastWordIndex++;
-            if (_lastWordIndex >= _words.Length)
-            {
-                var oldWords = _words;
-                _words = new IWord[oldWords.Length + WordsListChunkSize];
 
-                for (var i = 0; i < oldWords.Length; i++)
-                {
-                    _words[i] = oldWords[i];
-                }
+            if (_lastAddedWord != null)
+            {
+                // Link the previous word with this one.
+                _lastAddedWord.Next = word;
             }
 
-            _words[_lastWordIndex] = word;
+            // Next time, we will be linking the current word.
+            _lastAddedWord = word;
 
             return _lastWordIndex;
         }
@@ -120,7 +119,7 @@ namespace EFrt.Core.Words
         /// <summary>
         /// A list of words defining this word.
         /// </summary>
-        private IWord[] _words;
+        private IList<IWord> _words;
 
         /// <summary>
         /// The index of the last word inserted to this word definition.
@@ -131,5 +130,10 @@ namespace EFrt.Core.Words
         /// If true, no more words are executed.
         /// </summary>
         private bool _executionBreaked;
+
+        /// <summary>
+        /// The previously added word.
+        /// </summary>
+        private IWord _lastAddedWord;
     }
 }
