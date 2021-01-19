@@ -35,11 +35,5 @@ namespace EFrt.Core.Words
         /// The action this word is doing.
         /// </summary>
         Func<int> Action { get; }
-
-        /// <summary>
-        /// At runtime, this points to the next word to be executed.
-        /// Set and used by the NonPrimitiveWord class.
-        /// </summary>
-        IWord Next { get; set; }
     }
 }

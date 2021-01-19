@@ -51,12 +51,6 @@ namespace EFrt.Core.Words
         public Func<int> Action { get; protected set; }
 
         /// <summary>
-        /// At runtime, this points to the next word to be executed.
-        /// </summary>
-        public IWord Next { get; set; }
-
-
-        /// <summary>
         /// An interpreter executing this word.
         /// </summary>
         protected IInterpreter Interpreter { get; }

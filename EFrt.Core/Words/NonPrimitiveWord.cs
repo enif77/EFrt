@@ -4,6 +4,8 @@ namespace EFrt.Core.Words
 {
     using System.Collections.Generic;
 
+    using EFrt.Core.Stacks;
+
 
     /// <summary>
     /// A compound word.
@@ -22,6 +24,7 @@ namespace EFrt.Core.Words
 
             _words = new List<IWord>();
             _lastWordIndex = -1;
+            _controlWordsStack = new WordsStack();
         }
 
 
@@ -63,16 +66,25 @@ namespace EFrt.Core.Words
             _words.Add(word);
             _lastWordIndex++;
 
-            if (_lastAddedWord != null)
-            {
-                // Link the previous word with this one.
-                _lastAddedWord.Next = word;
-            }
-
-            // Next time, we will be linking the current word.
-            _lastAddedWord = word;
-
             return _lastWordIndex;
+        }
+
+        /// <summary>
+        /// Pushes a control word to the internal control words stack.
+        /// </summary>
+        /// <param name="word">A control word.</param>
+        public void PushControlWord(IWord word)
+        {
+            _controlWordsStack.Push(word);
+        }
+
+        /// <summary>
+        /// Removes a control word from the control words stack and returns it.
+        /// </summary>
+        /// <returns>A control word.</returns>
+        public IWord PopControlWord()
+        {
+            return _controlWordsStack.Pop();
         }
 
         /// <summary>
@@ -80,6 +92,11 @@ namespace EFrt.Core.Words
         /// </summary>
         protected int Execute()
         {
+            if (_controlWordsStack.IsEmpty == false)
+            {
+                throw new InterpreterException($"Executing of word '{Name}' with unfinished compilation is prohobited.");
+            }
+
             _executionBreaked = false;
             var index = 0;
             while (index <= _lastWordIndex)
@@ -90,9 +107,9 @@ namespace EFrt.Core.Words
                 }
 
                 var word = _words[index];
-                index += word.IsControlWord 
-                    ? Interpreter.Execute(word)                                      // Control and value words are defined by themselves.
-                    : Interpreter.Execute(Interpreter.GetWord(_words[index].Name));  // Get the actual word implementation and execute it.
+                index += Interpreter.Execute(word.IsControlWord 
+                    ? word                                       // Control and value words are defined by themselves.
+                    : Interpreter.GetWord(_words[index].Name));  // Get the actual word implementation and execute it.
 
                 // Used by the DoesWord.
                 if (_executionBreaked)
@@ -132,8 +149,8 @@ namespace EFrt.Core.Words
         private bool _executionBreaked;
 
         /// <summary>
-        /// The previously added word.
+        /// Stack for storing control words.
         /// </summary>
-        private IWord _lastAddedWord;
+        private IStack<IWord> _controlWordsStack;
     }
 }
