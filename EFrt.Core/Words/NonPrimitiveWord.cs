@@ -23,7 +23,6 @@ namespace EFrt.Core.Words
             Action = Execute;
 
             _words = new List<IWord>();
-            _lastWordIndex = -1;
             _controlWordsStack = new WordsStack();
         }
 
@@ -64,9 +63,8 @@ namespace EFrt.Core.Words
         public int AddWord(IWord word)
         {
             _words.Add(word);
-            _lastWordIndex++;
 
-            return _lastWordIndex;
+            return _words.Count - 1;
         }
 
         /// <summary>
@@ -99,7 +97,7 @@ namespace EFrt.Core.Words
 
             _executionBreaked = false;
             var index = 0;
-            while (index <= _lastWordIndex)
+            while (index <= _words.Count)
             {
                 if (Interpreter.IsExecutionTerminated)
                 {
@@ -137,11 +135,6 @@ namespace EFrt.Core.Words
         /// A list of words defining this word.
         /// </summary>
         private IList<IWord> _words;
-
-        /// <summary>
-        /// The index of the last word inserted to this word definition.
-        /// </summary>
-        private int _lastWordIndex;
 
         /// <summary>
         /// If true, no more words are executed.
