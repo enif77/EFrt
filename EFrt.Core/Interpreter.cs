@@ -459,11 +459,14 @@ namespace EFrt.Core
 
             ExecutingWord?.Invoke(this, new InterpreterEventArgs() { Word = word });
 
-            var nextWordIndex = word.Action();
-
-            WordExecuted?.Invoke(this, new InterpreterEventArgs() { Word = word });
-
-            return nextWordIndex;
+            try
+            {
+                return word.Action();
+            }
+            finally
+            {
+                WordExecuted?.Invoke(this, new InterpreterEventArgs() { Word = word });
+            }
         }
 
 
