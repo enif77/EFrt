@@ -71,6 +71,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddPrimitiveWord("<", LessThanAction);
             _interpreter.AddPrimitiveWord("=", EqualsAction);
             _interpreter.AddPrimitiveWord(">", GreaterThanAction);
+            _interpreter.AddPrimitiveWord(">BODY", ToBodyAction);
             _interpreter.AddPrimitiveWord(">NUMBER", ToNumberAction);
             _interpreter.AddPrimitiveWord(">R", ToRAction);
             _interpreter.AddPrimitiveWord("?DUP", QuestionDupeAction);
@@ -544,6 +545,24 @@ namespace EFrt.Libs.Core
             _interpreter.StackExpect(2);
 
             _interpreter.Function((n1, n2) => (n1 > n2) ? -1 : 0);
+
+            return 1;
+        }
+
+        // (xt -- addr)
+        private int ToBodyAction()
+        {
+            _interpreter.StackExpect(1);
+
+            var word = _interpreter.State.WordsList.GetWord(_interpreter.Pop());
+            if (word is CreatedWord == false)
+            {
+                _interpreter.Throw(-31, ">BODY used on non-CREATEd definition.");
+            }
+            else
+            {
+                _interpreter.Push(((CreatedWord)word).DataFieldIndex);
+            }
 
             return 1;
         }

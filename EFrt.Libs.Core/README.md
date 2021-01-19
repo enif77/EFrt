@@ -46,6 +46,7 @@ Words definition table columns:
 | <        | no   | IC   | **Less than**<br>(n1 n2 -- flag)<br>Returns -1 if n1 < n2, 0 otherwise. |
 | =        | no   | IC   | **Equal**<br>(n1 n2 -- flag)<br>Returns -1 if n1 is equal to n2, 0 otherwise. |
 | >        | no   | IC   | **Greater than**<br>(n1 n2 -- flag)<br>Returns -1 if n1 > n2, 0 otherwise. |
+| >BODY    | no   | IC   | **To body**<br>(xt -- addr)<br>Gets the data-field address of a CREATEd word. |
 | >NUMBER  | no   | IC   | **String to number**<br>( -- n true \| false) {s -- }<br>Parses a string into a single cell integer. Leaves true and the number on the stack, if the conversion was successfull. Leaves just false, if the conversion failed. |
 | >R       | no   | IC   | **To return stack**<br>(n -- ) [ - n]<br>Removes the top item from the stack and pushes it onto the return stack. |
 | ?DUP     | no   | IC   | **Conditional duplicate**<br>(n -- 0 / n n)<br>If top of stack is nonzero, duplicate it. Otherwise leave zero on top of stack. |
@@ -124,14 +125,8 @@ Note: The `."` word works like `S" str" S.` words together.
 
 ## TODO
 
-Words: `ACCEPT ALIGN ALIGNED CELL+ COUNT DECIMAL 
+Words: `>BODY ACCEPT ALIGN ALIGNED CELL+ COUNT DECIMAL 
   ENVIRONMENT? EVALUATE FILL FIND MOVE WORD`
-
-Words (?): `>BODY`
-
-Words (opt): `SYSTEM INCLUDE ARRAY x TRACE
-  (XDO) (X?DO) (XLOOP) (+XLOOP) WORDSD  INT STRING 
-  S! BRANCH x ?BRANCH x SHIFT`
 
 Variables: `BASE STATE`
 
