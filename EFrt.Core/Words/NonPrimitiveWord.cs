@@ -4,15 +4,13 @@ namespace EFrt.Core.Words
 {
     using System.Collections.Generic;
 
-    using EFrt.Core.Stacks;
-
 
     /// <summary>
     /// A compound word.
     /// </summary>
     public class NonPrimitiveWord : AWordBase
     {
-            /// <summary>
+        /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name">A  words name.</param>
@@ -23,7 +21,6 @@ namespace EFrt.Core.Words
             Action = Execute;
 
             _words = new List<IWord>();
-            _controlWordsStack = new WordsStack();
         }
 
 
@@ -68,33 +65,10 @@ namespace EFrt.Core.Words
         }
 
         /// <summary>
-        /// Pushes a control word to the internal control words stack.
-        /// </summary>
-        /// <param name="word">A control word.</param>
-        public void PushControlWord(IWord word)
-        {
-            _controlWordsStack.Push(word);
-        }
-
-        /// <summary>
-        /// Removes a control word from the control words stack and returns it.
-        /// </summary>
-        /// <returns>A control word.</returns>
-        public IWord PopControlWord()
-        {
-            return _controlWordsStack.Pop();
-        }
-
-        /// <summary>
         /// Executes this words body.
         /// </summary>
         protected int Execute()
         {
-            if (_controlWordsStack.IsEmpty == false)
-            {
-                throw new InterpreterException($"Executing of word '{Name}' with unfinished compilation is prohobited.");
-            }
-
             _executionBreaked = false;
             var index = 0;
             while (index <= _words.Count)
@@ -140,10 +114,5 @@ namespace EFrt.Core.Words
         /// If true, no more words are executed.
         /// </summary>
         private bool _executionBreaked;
-
-        /// <summary>
-        /// Stack for storing control words.
-        /// </summary>
-        private IStack<IWord> _controlWordsStack;
     }
 }
