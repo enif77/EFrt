@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Core
 {
@@ -10,6 +10,8 @@ namespace EFrt.Core
     public class InterpreterState : IInterpreterState
     {
         public Stack Stack { get; }
+
+        public FloatingPointStack FloatingPointStack { get; }
 
         public ObjectStack ObjectStack { get; }
 
@@ -24,9 +26,10 @@ namespace EFrt.Core
         public IWordsList WordsList { get; }
 
 
-        public InterpreterState(Stack stack, ObjectStack objectStack, ReturnStack returnStack, ExceptionStack exceptionStack, Heap heap, ObjectHeap objectHeap, IWordsList wordsList)
+        public InterpreterState(Stack stack, FloatingPointStack floatingPointStack, ObjectStack objectStack, ReturnStack returnStack, ExceptionStack exceptionStack, Heap heap, ObjectHeap objectHeap, IWordsList wordsList)
         {
             Stack = stack ?? throw new ArgumentNullException(nameof(stack));
+            FloatingPointStack = floatingPointStack ?? throw new ArgumentNullException(nameof(floatingPointStack));
             ObjectStack = objectStack ?? throw new ArgumentNullException(nameof(objectStack));
             ReturnStack = returnStack ?? throw new ArgumentNullException(nameof(returnStack));
             ExceptionStack = exceptionStack ?? throw new ArgumentNullException(nameof(exceptionStack));
@@ -39,6 +42,7 @@ namespace EFrt.Core
         public void Reset()
         {
             Stack.Clear();
+            FloatingPointStack.Clear();
             ObjectStack.Clear();
             ReturnStack.Clear();
             ExceptionStack.Clear();

@@ -34,6 +34,7 @@ namespace EFrt
 
             return new Interpreter(new InterpreterState(
                 new Stack(configuration.StackSize),
+                new FloatingPointStack(configuration.FloatingPointStackSize),
                 new ObjectStack(configuration.ObjectStackSize),
                 new ReturnStack(configuration.ObjectStackSize),
                 new ExceptionStack(configuration.ExceptionStackSize),

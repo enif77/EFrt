@@ -16,6 +16,11 @@ namespace EFrt
         public const int DefaultStackSize = 32;
 
         /// <summary>
+        /// The default floating point stack size in cells.
+        /// </summary>
+        public const int DefaultFloatingPointStackSize = 32;
+
+        /// <summary>
         /// The default object stack size in cells.
         /// </summary>
         public const int DefaultObjectStackSize = 32;
@@ -45,6 +50,11 @@ namespace EFrt
         /// The requested stack size in cells.
         /// </summary>
         public int StackSize { get; set; } = DefaultStackSize;
+
+        /// <summary>
+        /// The requested floating point stack size in cells.
+        /// </summary>
+        public int FloatingPointStackSize { get; set; } = DefaultFloatingPointStackSize;
 
         /// <summary>
         /// The requested object stack size in cells.
@@ -78,6 +88,7 @@ namespace EFrt
         public void Validate()
         {
             if (StackSize < 0) throw new Exception(nameof(StackSize) + " out of the <0 .. Int32.Max> range: " + StackSize);
+            if (FloatingPointStackSize < 0) throw new Exception(nameof(FloatingPointStackSize) + " out of the <0 .. Int32.Max> range: " + FloatingPointStackSize);
             if (ObjectStackSize < 0) throw new Exception(nameof(ObjectStackSize) + " out of the <0 .. Int32.Max> range: " + ObjectStackSize);
             if (ReturnStackSize < 0) throw new Exception(nameof(ReturnStackSize) + " out of the <0 .. Int32.Max> range: " + ReturnStackSize);
             if (ExceptionStackSize < 0) throw new Exception(nameof(ExceptionStackSize) + " out of the <0 .. Int32.Max> range: " + ExceptionStackSize);
