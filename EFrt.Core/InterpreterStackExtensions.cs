@@ -177,62 +177,6 @@ namespace EFrt.Core
             Push(interpreter, v.B);
         }
 
-
-        /// <summary>
-        /// Returns a floating point value from the stack at certain index.
-        /// </summary>
-        /// <param name="index">A value index.</param>
-        /// <returns>A floating point value from the stack.</returns>
-        public static double FPick(this IInterpreter interpreter, int index)
-        {
-            return new FloatingPointValue()
-            {
-                A = Pick(interpreter, index * 2),
-                B = Pick(interpreter, index * 2 + 2),
-            }.F;
-        }
-
-        /// <summary>
-        /// Returns a floating point value from the top of the stack.
-        /// </summary>
-        /// <returns>A floating point value from the top of the stack.</returns>
-        public static double FPeek(this IInterpreter interpreter)
-        {
-            return new FloatingPointValue()
-            {
-                B = Pick(interpreter, 1),
-                A = Peek(interpreter),
-            }.F;
-        }
-
-        /// <summary>
-        /// Removes a floating point value from the top of the stack and returns it.
-        /// </summary>
-        /// <returns>A floating point value from the top of the stack.</returns>
-        public static double FPop(this IInterpreter interpreter)
-        {
-            return new FloatingPointValue()
-            {
-                B = Pop(interpreter),
-                A = Pop(interpreter),
-            }.F;
-        }
-
-        /// <summary>
-        /// Inserts a floating point value to the stack.
-        /// </summary>
-        /// <param name="value">A floating point value.</param>
-        public static void FPush(this IInterpreter interpreter, double value)
-        {
-            var v = new FloatingPointValue()
-            {
-                F = value
-            };
-
-            Push(interpreter, v.A);
-            Push(interpreter, v.B);
-        }
-
         #endregion
 
 
@@ -325,34 +269,6 @@ namespace EFrt.Core
 
             var b = DPop(interpreter);
             DPush(interpreter, func(DPop(interpreter), b));
-        }
-
-
-        /// <summary>
-        /// stack[top] = func(stack[top])
-        /// </summary>
-        /// <param name="func">A function.</param>
-        public static void FFunction(this IInterpreter interpreter, Func<double, double> func)
-        {
-            //var stack = _interpreter.FloatingPointStack;
-            //var top = stack.Top;
-            //stack.Items[stack.Top] = func(stack.Items[top]);
-
-            FPush(interpreter, func(FPop(interpreter)));
-        }
-
-        /// <summary>
-        /// stack[top] = func(stack[top - 1], stack[top])
-        /// </summary>
-        /// <param name="func">A function.</param>
-        public static void FFunction(this IInterpreter interpreter, Func<double, double, double> func)
-        {
-            //var stack = _interpreter.FloatingPointStack;
-            //var top = stack.Top;
-            //stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
-
-            var b = FPop(interpreter);
-            FPush(interpreter, func(FPop(interpreter), b));
         }
 
         #endregion

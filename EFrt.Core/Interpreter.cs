@@ -262,6 +262,7 @@ namespace EFrt.Core
         public void Abort()
         {
             State.Stack.Clear();
+            State.FloatingPointStack.Clear();
             State.ObjectStack.Clear();
 
             // TODO: Clear the heap?
@@ -273,6 +274,7 @@ namespace EFrt.Core
         public void Quit()
         {
             State.ReturnStack.Clear();
+
             BreakExecution();
         }
 
