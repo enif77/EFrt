@@ -7,14 +7,15 @@ EFrt is a embeddable FORTH language implementation.
   - cell: A 32 bit data unit (int).
   - single cell integer: 32 bit signed integer number (int, 1 cell). Ex.: 123
   - double cell integer: 64 bit signed integer number (long, 2 cells). Ex.: 123L
-  - floating point: 64 bit float number (double, 2 cells). Ex.: 123.0 123D
+  - floating point: 64 bit float number (double, 1 cell). Ex.: 123.0 123D
   - string: A double quote terminated strings, stored on the objects stack. Ex.: S" Hello!"
   - object: Any user data reference (object).
 
 
 ## Stacks
 
-  - Data stack: Main stack for user data. Holds all 32bit and 64bit integers and 64 bit floats (as two 32 bit cells).
+  - Data stack: Main stack for user data. Holds all 32bit and 64bit integers.
+  - Floating point stack: Stack for 64 bit floats.
   - Return stack: Stack for interpreter internal use. Holds 32 bit signed integers.
   - Object stack: Can hold any object and strings.
   - Exception stack: Not accessible for users. Its used internally by THROW and CATCH words.

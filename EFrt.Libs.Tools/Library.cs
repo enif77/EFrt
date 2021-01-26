@@ -27,6 +27,7 @@ namespace EFrt.Libs.Tools
         public void DefineWords()
         {
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "?", PrintIndirectAction));
+            _interpreter.AddWord(new PrimitiveWord(_interpreter, ".F", PrintFloatingPointStackAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ".O", PrintObjectStackAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ".S", PrintStackAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "WORDS", WordsAction));
@@ -52,6 +53,20 @@ namespace EFrt.Libs.Tools
                 _interpreter.Output.Write(" ");
             }
             
+            return 1;
+        }
+
+        // ( -- )
+        private int PrintFloatingPointStackAction()
+        {
+            _interpreter.Output.Write("Floating point stack: ");
+            var stackItems = _interpreter.State.FloatingPointStack.Items;
+            for (var i = 0; i <= _interpreter.State.FloatingPointStack.Top; i++)
+            {
+                _interpreter.Output.Write(stackItems[i].ToString(CultureInfo.InvariantCulture));
+                _interpreter.Output.Write(" ");
+            }
+
             return 1;
         }
 

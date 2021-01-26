@@ -1,10 +1,7 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Core.Words
 {
-    using EFrt.Core.Values;
-
-
     /// <summary>
     /// A word keeping an floating point value.
     /// </summary>
@@ -21,19 +18,17 @@ namespace EFrt.Core.Words
             IsControlWord = true;
             Action = () =>
             {
-                Interpreter.Push(_value.A);
-                Interpreter.Push(_value.B);
+                Interpreter.FStackFree(1);
+
+                Interpreter.FPush(_value);
 
                 return 1;
             };
 
-            _value = new FloatingPointValue()
-            {
-                F = value
-            };
+            _value = value;
         }
 
 
-        private FloatingPointValue _value;
+        private double _value;
     }
 }

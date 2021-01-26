@@ -1,11 +1,11 @@
-﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
+﻿/* EFrt - (C) 2021 Premysl Fara  */
 
 namespace EFrt.Core.Words
 {
     /// <summary>
-    /// A word keeping two integer values.
+    /// A word keeping a floating point value.
     /// </summary>
-    public class DoubleCellConstantWord : AWordBase
+    public class FloatingPointConstantWord : AWordBase
     {
         /// <summary>
         /// Constructor.
@@ -13,27 +13,24 @@ namespace EFrt.Core.Words
         /// <param name="name">A name of this constant.</param>
         /// <param name="n1">The first value.</param>
         /// <param name="n2">The second value.</param>
-        public DoubleCellConstantWord(IInterpreter interpreter, string name, int n1, int n2)
+        public FloatingPointConstantWord(IInterpreter interpreter, string name, double f)
             : base(interpreter)
         {
             Name = name;
             IsControlWord = true;
             Action = () =>
             {
-                Interpreter.StackFree(2);
+                Interpreter.FStackFree(1);
 
-                Interpreter.Push(_n1);
-                Interpreter.Push(_n2);
+                Interpreter.FPush(_f);
 
                 return 1;
             };
 
-            _n1 = n1;
-            _n2 = n2;
+            _f = f;
         }
 
 
-        private int _n1;
-        private int _n2;
+        private double _f;
     }
 }

@@ -6,7 +6,6 @@ namespace EFrt.Libs.FloatingExt
     using System.Globalization;
 
     using EFrt.Core;
-    using EFrt.Core.Values;
 
 
     /// <summary>
@@ -67,7 +66,7 @@ namespace EFrt.Libs.FloatingExt
         // (f1 f2 -- f3)
         private int FStarStarAction()
         {
-            _interpreter.StackExpect(4);
+            _interpreter.FStackExpect(2);
 
             _interpreter.FFunction((a, b) => Math.Pow(a, b));
 
@@ -77,13 +76,9 @@ namespace EFrt.Libs.FloatingExt
         // (f --)
         private int FdotAction()
         {
-            _interpreter.StackExpect(2);
+            _interpreter.FStackExpect(1);
 
-            _interpreter.Output.Write("{0} ", new FloatingPointValue()
-            {
-                B = _interpreter.Pop(),
-                A = _interpreter.Pop(),
-            }.F.ToString(CultureInfo.InvariantCulture));
+            _interpreter.Output.Write("{0} ", _interpreter.FPop().ToString(CultureInfo.InvariantCulture));
 
             return 1;
         }
@@ -91,7 +86,7 @@ namespace EFrt.Libs.FloatingExt
         // (f1 -- f2)
         private int FAbsAction()
         {
-            _interpreter.StackExpect(2);
+            _interpreter.FStackExpect(1);
 
             _interpreter.FFunction((a) => Math.Abs(a));
 
@@ -101,7 +96,7 @@ namespace EFrt.Libs.FloatingExt
         // (f1 -- f2)
         private int FAcosAction()
         {
-            _interpreter.StackExpect(2);
+            _interpreter.FStackExpect(1);
 
             _interpreter.FFunction((a) => Math.Acos(a));
 
@@ -111,7 +106,7 @@ namespace EFrt.Libs.FloatingExt
         // (f1 -- f2)
         private int FAsinAction()
         {
-            _interpreter.StackExpect(2);
+            _interpreter.FStackExpect(1);
 
             _interpreter.FFunction((a) => Math.Asin(a));
 
@@ -121,7 +116,7 @@ namespace EFrt.Libs.FloatingExt
         // (f1 -- f2)
         private int FAtanAction()
         {
-            _interpreter.StackExpect(2);
+            _interpreter.FStackExpect(1);
 
             _interpreter.FFunction((a) => Math.Atan(a));
 
@@ -131,7 +126,7 @@ namespace EFrt.Libs.FloatingExt
         // (f1 f2 -- f3)
         private int FAtan2Action()
         {
-            _interpreter.StackExpect(4);
+            _interpreter.FStackExpect(2);
 
             _interpreter.FFunction((a, b) => Math.Atan2(a, b));
 
@@ -141,7 +136,7 @@ namespace EFrt.Libs.FloatingExt
         // (f1 -- f2)
         private int FCosAction()
         {
-            _interpreter.StackExpect(2);
+            _interpreter.FStackExpect(1);
 
             _interpreter.FFunction((a) => Math.Cos(a));
 
@@ -151,7 +146,7 @@ namespace EFrt.Libs.FloatingExt
         // (f1 -- f2)
         private int FExpAction()
         {
-            _interpreter.StackExpect(2);
+            _interpreter.FStackExpect(1);
 
             _interpreter.FFunction((a) => Math.Exp(a));
 
@@ -161,7 +156,7 @@ namespace EFrt.Libs.FloatingExt
         // (f1 -- f2)
         private int FLogAction()
         {
-            _interpreter.StackExpect(2);
+            _interpreter.FStackExpect(1);
 
             _interpreter.FFunction((a) => Math.Log(a));
 
@@ -171,7 +166,7 @@ namespace EFrt.Libs.FloatingExt
         // (f1 -- f2)
         private int FSinAction()
         {
-            _interpreter.StackExpect(2);
+            _interpreter.FStackExpect(1);
 
             _interpreter.FFunction((a) => Math.Sin(a));
 
@@ -181,7 +176,7 @@ namespace EFrt.Libs.FloatingExt
         // (f1 -- f2)
         private int FSqrtAction()
         {
-            _interpreter.StackExpect(2);
+            _interpreter.FStackExpect(1);
 
             _interpreter.FFunction((a) => Math.Sqrt(a));
 
@@ -191,7 +186,7 @@ namespace EFrt.Libs.FloatingExt
         // (f1 -- f2)
         private int FTanAction()
         {
-            _interpreter.StackExpect(2);
+            _interpreter.FStackExpect(1);
 
             _interpreter.FFunction((a) => Math.Tan(a));
 
@@ -204,7 +199,8 @@ namespace EFrt.Libs.FloatingExt
         // (f -- n)
         private int FToSAction()
         {
-            _interpreter.StackExpect(2);
+            _interpreter.FStackExpect(1);
+            _interpreter.StackFree(1);
 
             _interpreter.Push((int)_interpreter.FPop());
 
@@ -215,7 +211,7 @@ namespace EFrt.Libs.FloatingExt
         private int SToFAction()
         {
             _interpreter.StackExpect(1);
-            _interpreter.StackFree(1);
+            _interpreter.FStackFree(1);
 
             _interpreter.FPush(_interpreter.Pop());
 
@@ -225,7 +221,8 @@ namespace EFrt.Libs.FloatingExt
         // (f -- flag)
         private int FZeroNotEqualsAction()
         {
-            _interpreter.StackExpect(2);
+            _interpreter.FStackExpect(1);
+            _interpreter.StackFree(1);
 
             _interpreter.Push((_interpreter.FPop() != 0.0) ? -1 : 0);
 
@@ -235,7 +232,8 @@ namespace EFrt.Libs.FloatingExt
         // (f -- flag)
         private int FZeroGreaterThanAction()
         {
-            _interpreter.StackExpect(2);
+            _interpreter.FStackExpect(1);
+            _interpreter.StackFree(1);
 
             _interpreter.Push((_interpreter.FPop() > 0.0) ? -1 : 0);
 
@@ -245,7 +243,7 @@ namespace EFrt.Libs.FloatingExt
         // (f1 -- f2)
         private int FOnePlusAction()
         {
-            _interpreter.StackExpect(2);
+            _interpreter.FStackExpect(1);
 
             _interpreter.FFunction((a) => a + 1.0);
 
@@ -255,7 +253,7 @@ namespace EFrt.Libs.FloatingExt
         // (f1 -- f2)
         private int FOneMinusAction()
         {
-            _interpreter.StackExpect(2);
+            _interpreter.FStackExpect(1);
 
             _interpreter.FFunction((a) => a - 1.0);
 
@@ -265,7 +263,7 @@ namespace EFrt.Libs.FloatingExt
         // (f1 -- f2)
         private int FTwoPlusAction()
         {
-            _interpreter.StackExpect(2);
+            _interpreter.FStackExpect(1);
 
             _interpreter.FFunction((a) => a + 2.0);
 
@@ -275,7 +273,7 @@ namespace EFrt.Libs.FloatingExt
         // (f1 -- f2)
         private int FTwoMinusAction()
         {
-            _interpreter.StackExpect(2);
+            _interpreter.FStackExpect(1);
 
             _interpreter.FFunction((a) => a - 2.0);
 
@@ -285,7 +283,7 @@ namespace EFrt.Libs.FloatingExt
         // (f1 -- f2)
         private int FTwoStarAction()
         {
-            _interpreter.StackExpect(2);
+            _interpreter.FStackExpect(1);
 
             _interpreter.FFunction((a) => a * 2.0);
 
@@ -295,7 +293,7 @@ namespace EFrt.Libs.FloatingExt
         // (f1 -- f2)
         private int FTwoSlashAction()
         {
-            _interpreter.StackExpect(2);
+            _interpreter.FStackExpect(1);
 
             _interpreter.FFunction((a) => a / 2.0);
 
@@ -305,7 +303,8 @@ namespace EFrt.Libs.FloatingExt
         // (f1 f2 -- flag)
         private int FEqualsAction()
         {
-            _interpreter.StackExpect(4);
+            _interpreter.FStackExpect(2);
+            _interpreter.StackFree(1);
 
             _interpreter.Push((_interpreter.FPop() == _interpreter.FPop()) ? -1 : 0);
 
@@ -315,7 +314,8 @@ namespace EFrt.Libs.FloatingExt
         // (f1 f2 -- flag)
         private int FNotEqualsAction()
         {
-            _interpreter.StackExpect(4);
+            _interpreter.FStackExpect(2);
+            _interpreter.StackFree(1);
 
             _interpreter.Push((_interpreter.FPop() != _interpreter.FPop()) ? -1 : 0);
 
@@ -325,7 +325,8 @@ namespace EFrt.Libs.FloatingExt
         // (f1 f2 -- flag)
         private int FLessThanOrEqualsAction()
         {
-            _interpreter.StackExpect(4);
+            _interpreter.FStackExpect(2);
+            _interpreter.StackFree(1);
 
             var b = _interpreter.FPop();
             _interpreter.Push((_interpreter.FPop() <= b) ? -1 : 0);
@@ -336,7 +337,8 @@ namespace EFrt.Libs.FloatingExt
         // (f1 f2 -- flag)
         private int FGreaterThanAction()
         {
-            _interpreter.StackExpect(4);
+            _interpreter.FStackExpect(2);
+            _interpreter.StackFree(1);
 
             var b = _interpreter.FPop();
             _interpreter.Push((_interpreter.FPop() > b) ? -1 : 0);
@@ -347,7 +349,8 @@ namespace EFrt.Libs.FloatingExt
         // (f1 f2 -- flag)
         private int FGreaterThanOrEqualsAction()
         {
-            _interpreter.StackExpect(4);
+            _interpreter.FStackExpect(2);
+            _interpreter.StackFree(1);
 
             var b = _interpreter.FPop();
             _interpreter.Push((_interpreter.FPop() >= b) ? -1 : 0);
