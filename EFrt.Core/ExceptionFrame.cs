@@ -16,11 +16,6 @@ namespace EFrt.Core
         public int StackTop { get; set; }
 
         /// <summary>
-        /// An object stack Top value.
-        /// </summary>
-        public int ObjectStackTop { get; set; }
-
-        /// <summary>
         /// A return stack Top value.
         /// </summary>
         public int ReturnStackTop { get; set; }

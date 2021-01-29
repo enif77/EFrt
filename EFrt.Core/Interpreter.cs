@@ -262,8 +262,6 @@ namespace EFrt.Core
         public void Abort()
         {
             State.Stack.Clear();
-            State.FloatingPointStack.Clear();
-            State.ObjectStack.Clear();
 
             // TODO: Clear the heap?
 
@@ -306,8 +304,6 @@ namespace EFrt.Core
             var exceptionFrame = State.ExceptionStack.Pop();
 
             State.Stack.Top = exceptionFrame.StackTop;
-            State.ObjectStack.Top = exceptionFrame.ObjectStackTop;
-            State.ReturnStack.Top = exceptionFrame.ReturnStackTop;
             CurrentWord = exceptionFrame.ExecutingWord;
 
             this.Push(exceptionCode);

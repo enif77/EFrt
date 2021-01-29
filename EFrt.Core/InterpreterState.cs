@@ -10,27 +10,16 @@ namespace EFrt.Core
     public class InterpreterState : IInterpreterState
     {
         public Stack Stack { get; }
-
-        public FloatingPointStack FloatingPointStack { get; }
-
-        public ObjectStack ObjectStack { get; }
-
         public ReturnStack ReturnStack { get; }
-
         public ExceptionStack ExceptionStack { get; }
-
         public Heap Heap { get; }
-
         public ObjectHeap ObjectHeap { get; }
-
         public IWordsList WordsList { get; }
 
 
-        public InterpreterState(Stack stack, FloatingPointStack floatingPointStack, ObjectStack objectStack, ReturnStack returnStack, ExceptionStack exceptionStack, Heap heap, ObjectHeap objectHeap, IWordsList wordsList)
+        public InterpreterState(Stack stack, ReturnStack returnStack, ExceptionStack exceptionStack, Heap heap, ObjectHeap objectHeap, IWordsList wordsList)
         {
             Stack = stack ?? throw new ArgumentNullException(nameof(stack));
-            FloatingPointStack = floatingPointStack ?? throw new ArgumentNullException(nameof(floatingPointStack));
-            ObjectStack = objectStack ?? throw new ArgumentNullException(nameof(objectStack));
             ReturnStack = returnStack ?? throw new ArgumentNullException(nameof(returnStack));
             ExceptionStack = exceptionStack ?? throw new ArgumentNullException(nameof(exceptionStack));
             Heap = heap ?? throw new ArgumentNullException(nameof(heap));
@@ -42,8 +31,6 @@ namespace EFrt.Core
         public void Reset()
         {
             Stack.Clear();
-            FloatingPointStack.Clear();
-            ObjectStack.Clear();
             ReturnStack.Clear();
             ExceptionStack.Clear();
             Heap.Clear();

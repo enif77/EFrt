@@ -2,9 +2,7 @@
 
 namespace EFrt.Libs.Object
 {
-    using System;
-
-    using EFrt.Core;
+     using EFrt.Core;
     using EFrt.Core.Words;
     
 
@@ -51,6 +49,8 @@ namespace EFrt.Libs.Object
         // (n -- addr)
         private int AllotAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.Push(_interpreter.State.ObjectHeap.Alloc(_interpreter.Pop()));
 
             return 1;
@@ -59,6 +59,8 @@ namespace EFrt.Libs.Object
         // ( -- addr)
         private int HereAction()
         {
+            _interpreter.StackFree(1);
+
             _interpreter.Push(_interpreter.State.ObjectHeap.Top);
 
             return 1;
@@ -75,34 +77,43 @@ namespace EFrt.Libs.Object
             return 1;
         }
 
-        // (addr -- ) {o -- }
+        // (o addr -- )
         private int StoreToVariableAction()
         {
+            _interpreter.StackExpect(1);
+
             var addr = _interpreter.Pop();
             _interpreter.State.ObjectHeap.Items[addr] = _interpreter.OPop();
 
             return 1;
         }
 
-        // (addr -- ) { -- o}
+        // (addr -- o)
         private int FetchFromVariableAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.OPush(_interpreter.State.ObjectHeap.Items[_interpreter.Pop()]);
 
             return 1;
         }
 
-        // {o -- o o}
+        // (o -- o o)
         private int DupAction()
         {
+            _interpreter.StackExpect(1);
+            _interpreter.StackFree(1);
+
             _interpreter.ODup();
 
             return 1;
         }
 
-        // {o --}
+        // (o -- )
         private int DropAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.ODrop();
 
             return 1;
@@ -111,6 +122,8 @@ namespace EFrt.Libs.Object
         // (a b -- b a)
         private int SwapAction()
         {
+            _interpreter.StackExpect(2);
+
             _interpreter.OSwap();
 
             return 1;
@@ -119,14 +132,19 @@ namespace EFrt.Libs.Object
         // (a b -- a b a)
         private int OverAction()
         {
+            _interpreter.StackExpect(2);
+            _interpreter.StackFree(1);
+
             _interpreter.OOver();
 
             return 1;
         }
 
-        // (index -- ) { -- o}
+        // (index -- o)
         private int PickAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.OPush(_interpreter.OPick(_interpreter.Pop()));
 
             return 1;
@@ -135,6 +153,8 @@ namespace EFrt.Libs.Object
         // (index -- )
         private int RollAction()
         {
+            _interpreter.StackExpect(1);
+
             _interpreter.ORoll(_interpreter.Pop());
 
             return 1;
@@ -143,6 +163,8 @@ namespace EFrt.Libs.Object
         // (a b c -- b c a)
         private int RotAction()
         {
+            _interpreter.StackExpect(3);
+
             _interpreter.ORot();
 
             return 1;
@@ -151,6 +173,8 @@ namespace EFrt.Libs.Object
         // (a b c -- c a b)
         private int RotBackAction()
         {
+            _interpreter.StackExpect(3);
+
             var v3 = _interpreter.OPop();
             var v2 = _interpreter.OPop();
             var v1 = _interpreter.OPop();
@@ -165,7 +189,9 @@ namespace EFrt.Libs.Object
         // ( -- a)
         private int DepthAction()
         {
-            _interpreter.Push(_interpreter.State.ObjectStack.Count);
+            _interpreter.StackFree(1);
+
+            _interpreter.Push(_interpreter.State.Stack.Count);
 
             return 1;
         }
@@ -173,7 +199,7 @@ namespace EFrt.Libs.Object
         // ( -- )
         private int ClearAction()
         {
-            _interpreter.State.ObjectStack.Clear();
+            _interpreter.State.Stack.Clear();
 
             return 1;
         }

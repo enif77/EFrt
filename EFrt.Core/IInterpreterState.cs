@@ -16,16 +16,6 @@ namespace EFrt.Core
         Stack Stack { get; }
 
         /// <summary>
-        /// Stack for floating point numbers.
-        /// </summary>
-        FloatingPointStack FloatingPointStack { get; }
-
-        /// <summary>
-        /// Optional stack for user data.
-        /// </summary>
-        ObjectStack ObjectStack { get; }
-
-        /// <summary>
         /// Return stack.
         /// </summary>
         ReturnStack ReturnStack { get; }

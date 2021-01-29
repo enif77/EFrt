@@ -79,13 +79,9 @@ namespace EFrt.Libs.Floating
         // (d -- f)
         private int DToFAction()
         {
-            _interpreter.StackExpect(2);
+            _interpreter.StackExpect(1);
 
-            _interpreter.FPush(new DoubleCellIntegerValue()
-            {
-                B = _interpreter.Pop(),
-                A = _interpreter.Pop()
-            }.D);
+            _interpreter.FPush(_interpreter.DPop());
 
             return 1;
         }
@@ -93,8 +89,7 @@ namespace EFrt.Libs.Floating
         // (f addr -- )
         private int FStoreAction()
         {
-            _interpreter.StackExpect(1);
-            _interpreter.FStackExpect(1);
+            _interpreter.StackExpect(2);
 
             var addr = _interpreter.Pop();
             var f = new FloatingPointValue() { F = _interpreter.FPop() };
@@ -148,8 +143,7 @@ namespace EFrt.Libs.Floating
         // (f -- flag)
         private int FZeroLessThanAction()
         {
-            _interpreter.FStackExpect(1);
-            _interpreter.StackFree(1);
+            _interpreter.StackExpect(1);
 
             _interpreter.Push((_interpreter.FPop() < 0.0) ? -1 : 0);
 
@@ -159,8 +153,7 @@ namespace EFrt.Libs.Floating
         // (f -- flag)
         private int FZeroEqualsAction()
         {
-            _interpreter.FStackExpect(1);
-            _interpreter.StackFree(1);
+            _interpreter.StackExpect(1);
 
             _interpreter.Push((_interpreter.FPop() == 0.0) ? -1 : 0);
 
@@ -171,7 +164,6 @@ namespace EFrt.Libs.Floating
         private int FLessThanAction()
         {
             _interpreter.FStackExpect(2);
-            _interpreter.StackFree(1);
 
             var b = _interpreter.FPop();
             _interpreter.Push((_interpreter.FPop() < b) ? -1 : 0);
@@ -183,7 +175,6 @@ namespace EFrt.Libs.Floating
         private int FToDAction()
         {
             _interpreter.FStackExpect(1);
-            _interpreter.StackFree(2);
 
             _interpreter.DPush((long)_interpreter.FPop());
 
@@ -194,7 +185,6 @@ namespace EFrt.Libs.Floating
         private int FFetchAction()
         {
             _interpreter.StackExpect(1);
-            _interpreter.FStackFree(1);
 
             var addr = _interpreter.Pop();
 
@@ -225,7 +215,7 @@ namespace EFrt.Libs.Floating
         {
             _interpreter.StackFree(1);
 
-            _interpreter.Push(_interpreter.State.FloatingPointStack.Count);
+            _interpreter.Push(_interpreter.State.Stack.Count);
 
             return 1;
         }

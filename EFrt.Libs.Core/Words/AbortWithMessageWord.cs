@@ -30,7 +30,6 @@ namespace EFrt.Libs.Core.Words
 
                     // Abort
                     Interpreter.State.Stack.Clear();
-                    Interpreter.State.ObjectStack.Clear();
 
                     // Quit
                     Interpreter.State.ReturnStack.Clear();

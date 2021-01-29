@@ -19,7 +19,7 @@ namespace EFrt.Core
         /// <returns>A value from the object stack.</returns>
         public static object OPick(this IInterpreter interpreter, int index)
         {
-            return interpreter.State.ObjectStack.Pick(index);
+            return interpreter.State.Stack.Pick(index).ObjectValue;
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace EFrt.Core
         /// <returns>A value from the top of the object stack.</returns>
         public static object OPeek(this IInterpreter interpreter)
         {
-            return interpreter.State.ObjectStack.Peek();
+            return interpreter.State.Stack.Peek().ObjectValue;
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace EFrt.Core
         /// <returns>A value from the top of the object stack.</returns>
         public static object OPop(this IInterpreter interpreter)
         {
-            return interpreter.State.ObjectStack.Pop();
+            return interpreter.State.Stack.Pop().ObjectValue;
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace EFrt.Core
         /// <param name="value">A value.</param>
         public static void OPush(this IInterpreter interpreter, object value)
         {
-            interpreter.State.ObjectStack.Push(value);
+            interpreter.State.Stack.Push(value);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace EFrt.Core
         /// <param name="count">The number of values to be dropped from the top of the object stack.</param>
         public static void ODrop(this IInterpreter interpreter, int count = 1)
         {
-            interpreter.State.ObjectStack.Drop();
+            interpreter.State.Stack.Drop();
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace EFrt.Core
         /// </summary>
         public static void ODup(this IInterpreter interpreter)
         {
-            interpreter.State.ObjectStack.Dup();
+            interpreter.State.Stack.Dup();
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace EFrt.Core
         /// </summary>
         public static void OSwap(this IInterpreter interpreter)
         {
-            interpreter.State.ObjectStack.Swap();
+            interpreter.State.Stack.Swap();
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace EFrt.Core
         /// </summary>
         public static void OOver(this IInterpreter interpreter)
         {
-            interpreter.State.ObjectStack.Over();
+            interpreter.State.Stack.Over();
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace EFrt.Core
         /// </summary>
         public static void ORot(this IInterpreter interpreter)
         {
-            interpreter.State.ObjectStack.Rot();
+            interpreter.State.Stack.Rot();
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace EFrt.Core
         /// <param name="index">A stack item index, where 0 = stack top, 1 = first below top, etc.</param>
         public static void ORoll(this IInterpreter interpreter, int index)
         {
-            interpreter.State.ObjectStack.Roll(index);
+            interpreter.State.Stack.Roll(index);
         }
 
         #endregion
@@ -113,9 +113,8 @@ namespace EFrt.Core
         /// <param name="func">A function.</param>
         public static void SFunction(this IInterpreter interpreter, Func<string, string> func)
         {
-            var stack = interpreter.State.ObjectStack;
-            var top = stack.Top;
-            stack.Items[stack.Top] = func(stack.Items[top].ToString());
+            var stack = interpreter.State.Stack;
+            stack.Items[stack.Top].StringValue = func(stack.Items[stack.Top].StringValue);
         }
 
         /// <summary>
@@ -124,9 +123,9 @@ namespace EFrt.Core
         /// <param name="func">A function.</param>
         public static void SFunction(this IInterpreter interpreter, Func<string, string, string> func)
         {
-            var stack = interpreter.State.ObjectStack;
+            var stack = interpreter.State.Stack;
             var top = stack.Top;
-            stack.Items[--stack.Top] = func(stack.Items[top - 1].ToString(), stack.Items[top].ToString());
+            stack.Items[--stack.Top].StringValue = func(stack.Items[top - 1].StringValue, stack.Items[top].StringValue);
         }
 
         #endregion
@@ -143,10 +142,12 @@ namespace EFrt.Core
         {
             if (expectedItemsCount < 0) throw new ArgumentOutOfRangeException(nameof(expectedItemsCount));
 
-            if (interpreter.State.ObjectStack.Count < expectedItemsCount)
+            if (interpreter.State.Stack.Count < expectedItemsCount)
             {
-                throw new InterpreterException(-4, "object stack underflow");
+                throw new InterpreterException(-4, "stack underflow");
             }
+
+            // TODO: Stack values type check?
         }
 
         /// <summary>
@@ -158,9 +159,9 @@ namespace EFrt.Core
         {
             if (expectedFreeItemsCount < 0) throw new ArgumentOutOfRangeException(nameof(expectedFreeItemsCount));
 
-            if ((interpreter.State.ObjectStack.Count + expectedFreeItemsCount) >= interpreter.State.ObjectStack.Items.Length)
+            if ((interpreter.State.Stack.Count + expectedFreeItemsCount) >= interpreter.State.Stack.Items.Length)
             {
-                throw new InterpreterException(-3, "object stack overflow");
+                throw new InterpreterException(-3, "stack overflow");
             }
         }
 

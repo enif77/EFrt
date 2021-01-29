@@ -570,8 +570,9 @@ namespace EFrt.Libs.Core
         // ( -- false | n true) {s -- }
         private int ToNumberAction()
         {
+            _interpreter.ObjectStackExpect(1);
             _interpreter.StackFree(1);
-
+            
             var n = _interpreter.ParseNumber(_interpreter.OPop().ToString(), out var success);
             if (success)
             {
@@ -1376,7 +1377,7 @@ namespace EFrt.Libs.Core
         // (ud u1 -- u2 u3)
         private int UMSlashModAction()
         {
-            _interpreter.StackExpect(3);
+            _interpreter.StackExpect(2);
 
             var u1 = (ulong)_interpreter.Pop();
             var ud = (ulong)_interpreter.DPop();

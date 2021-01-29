@@ -4,8 +4,6 @@ namespace EFrt.Core
 {
     using System;
 
-    using EFrt.Core.Values;
-
 
     /// <summary>
     /// Extensions method for the stack manipulations.
@@ -21,7 +19,7 @@ namespace EFrt.Core
         /// <returns>A value from the stack.</returns>
         public static int Pick(this IInterpreter interpreter, int index)
         {
-            return interpreter.State.Stack.Pick(index);
+            return interpreter.State.Stack.Pick(index).IntegerValue;
         }
 
         /// <summary>
@@ -30,7 +28,7 @@ namespace EFrt.Core
         /// <returns>A value from the top of the stack.</returns>
         public static int Peek(this IInterpreter interpreter)
         {
-            return interpreter.State.Stack.Peek();
+            return interpreter.State.Stack.Peek().IntegerValue;
         }
 
         /// <summary>
@@ -39,7 +37,7 @@ namespace EFrt.Core
         /// <returns>A value from the top of the stack.</returns>
         public static int Pop(this IInterpreter interpreter)
         {
-            return interpreter.State.Stack.Pop();
+            return interpreter.State.Stack.Pop().IntegerValue;
         }
 
         /// <summary>
@@ -113,11 +111,7 @@ namespace EFrt.Core
         /// <returns>A double cell value from the stack.</returns>
         public static long DPick(this IInterpreter interpreter, int index)
         {
-            return new DoubleCellIntegerValue()
-            {
-                A = Pick(interpreter, index * 2),
-                B = Pick(interpreter, index * 2 + 2),
-            }.D;
+            return interpreter.State.Stack.Pick(index).DoubleIntegerValue;
         }
 
         /// <summary>
@@ -126,11 +120,7 @@ namespace EFrt.Core
         /// <returns>A double cell value from the top of the stack.</returns>
         public static long DPeek(this IInterpreter interpreter)
         {
-            return new DoubleCellIntegerValue()
-            {
-                B = Pick(interpreter, 1),
-                A = Peek(interpreter),
-            }.D;
+            return interpreter.State.Stack.Peek().DoubleIntegerValue;
         }
 
         /// <summary>
@@ -139,11 +129,7 @@ namespace EFrt.Core
         /// <returns>A doble cell value from the top of the stack.</returns>
         public static long DPop(this IInterpreter interpreter)
         {
-            return new DoubleCellIntegerValue()
-            {
-                B = Pop(interpreter),
-                A = Pop(interpreter),
-            }.D;
+            return interpreter.State.Stack.Pop().DoubleIntegerValue;
         }
 
         /// <summary>
@@ -152,13 +138,7 @@ namespace EFrt.Core
         /// <param name="value">A double cell value.</param>
         public static void DPush(this IInterpreter interpreter, long value)
         {
-            var v = new DoubleCellIntegerValue()
-            {
-                D = value
-            };
-
-            Push(interpreter, v.A);
-            Push(interpreter, v.B);
+            interpreter.State.Stack.Push(value);
         }
 
 
@@ -168,13 +148,7 @@ namespace EFrt.Core
         /// <param name="value">A double cell value.</param>
         public static void UDPush(this IInterpreter interpreter, ulong value)
         {
-            var v = new UnsignedDoubleCellIntegerValue()
-            {
-                UD = value
-            };
-
-            Push(interpreter, v.A);
-            Push(interpreter, v.B);
+            interpreter.State.Stack.Push((long)value);
         }
 
         #endregion
@@ -189,8 +163,7 @@ namespace EFrt.Core
         public static void Function(this IInterpreter interpreter, Func<int, int> func)
         {
             var stack = interpreter.State.Stack;
-            var top = stack.Top;
-            stack.Items[stack.Top] = func(stack.Items[top]);
+            stack.Items[stack.Top].IntegerValue = func(stack.Items[stack.Top].IntegerValue);
         }
 
         /// <summary>
@@ -201,7 +174,7 @@ namespace EFrt.Core
         {
             var stack = interpreter.State.Stack;
             var top = stack.Top;
-            stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
+            stack.Items[--stack.Top].IntegerValue = func(stack.Items[top - 1].IntegerValue, stack.Items[top].IntegerValue);
         }
 
 
@@ -213,7 +186,7 @@ namespace EFrt.Core
         {
             var stack = interpreter.State.Stack;
             var top = stack.Top;
-            stack.Items[--stack.Top] = func((uint)stack.Items[top - 1], (uint)stack.Items[top]);
+            stack.Items[--stack.Top].IntegerValue = func((uint)stack.Items[top - 1].IntegerValue, (uint)stack.Items[top].IntegerValue);
         }
 
 
@@ -223,11 +196,8 @@ namespace EFrt.Core
         /// <param name="func">A function.</param>
         public static void DFunction(this IInterpreter interpreter, Func<long, int> func)
         {
-            //var stack = _interpreter.Stack;
-            //var top = stack.Top;
-            //stack.Items[stack.Top] = func(stack.Items[top]);
-
-            Push(interpreter, func(DPop(interpreter)));
+            var stack = interpreter.State.Stack;
+            stack.Items[stack.Top].IntegerValue = func(stack.Items[stack.Top].DoubleIntegerValue);
         }
 
         /// <summary>
@@ -236,11 +206,8 @@ namespace EFrt.Core
         /// <param name="func">A function.</param>
         public static void DFunction(this IInterpreter interpreter, Func<long, long> func)
         {
-            //var stack = _interpreter.Stack;
-            //var top = stack.Top;
-            //stack.Items[stack.Top] = func(stack.Items[top]);
-
-            DPush(interpreter, func(DPop(interpreter)));
+            var stack = interpreter.State.Stack;
+            stack.Items[stack.Top].DoubleIntegerValue = func(stack.Items[stack.Top].DoubleIntegerValue);
         }
 
         /// <summary>
@@ -249,12 +216,9 @@ namespace EFrt.Core
         /// <param name="func">A function.</param>
         public static void DFunction(this IInterpreter interpreter, Func<long, long, int> func)
         {
-            //var stack = _interpreter.Stack;
-            //var top = stack.Top;
-            //stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
-
-            var b = DPop(interpreter);
-            Push(interpreter, func(DPop(interpreter), b));
+            var stack = interpreter.State.Stack;
+            var top = stack.Top;
+            stack.Items[--stack.Top].IntegerValue = func(stack.Items[top - 1].DoubleIntegerValue, stack.Items[top].DoubleIntegerValue);
         }
 
         /// <summary>
@@ -263,12 +227,9 @@ namespace EFrt.Core
         /// <param name="func">A function.</param>
         public static void DFunction(this IInterpreter interpreter, Func<long, long, long> func)
         {
-            //var stack = _interpreter.Stack;
-            //var top = stack.Top;
-            //stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
-
-            var b = DPop(interpreter);
-            DPush(interpreter, func(DPop(interpreter), b));
+            var stack = interpreter.State.Stack;
+            var top = stack.Top;
+            stack.Items[--stack.Top].DoubleIntegerValue = func(stack.Items[top - 1].DoubleIntegerValue, stack.Items[top].DoubleIntegerValue);
         }
 
         #endregion
@@ -289,6 +250,8 @@ namespace EFrt.Core
             {
                 throw new InterpreterException(-4, "stack underflow");
             }
+
+            // TODO: Stack values type check?
         }
 
         /// <summary>

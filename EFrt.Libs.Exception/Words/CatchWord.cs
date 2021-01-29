@@ -34,7 +34,6 @@ namespace EFrt.Libs.Exception.Words
                 var exceptionFrame = new ExceptionFrame()
                 {
                     StackTop = Interpreter.State.Stack.Top,
-                    ObjectStackTop = Interpreter.State.ObjectStack.Top,
                     ReturnStackTop = Interpreter.State.ReturnStack.Top,
                     ExecutingWord = _parentWord,
                     NextWordIndex = _nextWordIndex

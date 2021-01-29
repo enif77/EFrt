@@ -1,4 +1,4 @@
-/* EFrt - (C) 2020 Premysl Fara  */
+/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Core.Stacks
 {
@@ -17,11 +17,11 @@ namespace EFrt.Core.Stacks
         {
             Items = new T[capacity];
 
-            Init(default(T));
+            Clear();
         }
 
 
-        public void Init(T defaultValue)
+        public virtual void Init(T defaultValue)
         {
             Top = -1;
             for (var i = 0; i < Items.Length; i++)
@@ -31,50 +31,50 @@ namespace EFrt.Core.Stacks
         }
 
 
-        public void Clear()
+        public virtual void Clear()
         {
             Init(default(T));
         }
 
 
-        public T Peek()
+        public virtual T Peek()
         {
             return Items[Top];
         }
 
 
-        public T Pick(int index)
+        public virtual T Pick(int index)
         {
             return Items[Top - index];
         }
 
         // (a -- )
-        public T Pop()
+        public virtual T Pop()
         {
             return Items[Top--];
         }
 
         // (-- a)
-        public void Push(T a)
+        public virtual void Push(T a)
         {
             Items[++Top] = a;
         }
 
         // (a -- a a)
-        public void Dup()
+        public virtual void Dup()
         {
             Items[Top + 1] = Items[Top];
             Top++;
         }
 
         // (a --)
-        public void Drop(int n = 1)
+        public virtual void Drop(int n = 1)
         {
             Top -= n;
         }
 
         // (a b -- b a)
-        public void Swap()
+        public virtual void Swap()
         {
             // t = b
             var t = Items[Top];
@@ -87,14 +87,14 @@ namespace EFrt.Core.Stacks
         }
 
         // (a b -- a b a)
-        public void Over()
+        public virtual void Over()
         {
             Items[Top + 1] = Items[Top - 1];
             Top++;
         }
 
         // (a b c -- b c a)
-        public void Rot()
+        public virtual void Rot()
         {
             // t = a
             var t = Items[Top - 2];
@@ -110,7 +110,7 @@ namespace EFrt.Core.Stacks
         }
 
         // ( -- )
-        public void Roll(int index)
+        public virtual void Roll(int index)
         {
             var item = Items[Top - index];
             for (var i = (Top - index) + 1; i <= Top; i++)

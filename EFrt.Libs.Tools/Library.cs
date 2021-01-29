@@ -27,8 +27,6 @@ namespace EFrt.Libs.Tools
         public void DefineWords()
         {
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "?", PrintIndirectAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, ".F", PrintFloatingPointStackAction));
-            _interpreter.AddWord(new PrimitiveWord(_interpreter, ".O", PrintObjectStackAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, ".S", PrintStackAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "WORDS", WordsAction));
         }
@@ -49,37 +47,24 @@ namespace EFrt.Libs.Tools
             var stackItems = _interpreter.State.Stack.Items;
             for (var i = 0; i <= _interpreter.State.Stack.Top; i++)
             {
-                _interpreter.Output.Write(stackItems[i].ToString(CultureInfo.InvariantCulture));
+                switch (stackItems[i].ValueType)
+                {
+                    case StackCellValueType.FloatingPoint:
+                        _interpreter.Output.Write(stackItems[i].FloatingPointValue.ToString(CultureInfo.InvariantCulture));
+                        break;
+
+                    case StackCellValueType.Object:
+                        _interpreter.Output.Write(stackItems[i].StringValue);
+                        break;
+
+                    default:
+                        _interpreter.Output.Write(stackItems[i].IntegerValue.ToString(CultureInfo.InvariantCulture));
+                        break;
+                }
+
                 _interpreter.Output.Write(" ");
             }
             
-            return 1;
-        }
-
-        // ( -- )
-        private int PrintFloatingPointStackAction()
-        {
-            _interpreter.Output.Write("Floating point stack: ");
-            var stackItems = _interpreter.State.FloatingPointStack.Items;
-            for (var i = 0; i <= _interpreter.State.FloatingPointStack.Top; i++)
-            {
-                _interpreter.Output.Write(stackItems[i].ToString(CultureInfo.InvariantCulture));
-                _interpreter.Output.Write(" ");
-            }
-
-            return 1;
-        }
-
-        // { -- }
-        private int PrintObjectStackAction()
-        {
-            _interpreter.Output.WriteLine("Object stack: ");
-            var stackItems = _interpreter.State.ObjectStack.Items;
-            for (var i = _interpreter.State.ObjectStack.Top; i >= 0; i--)
-            {
-                _interpreter.Output.WriteLine($"  { stackItems[i] }");
-            }
-
             return 1;
         }
 

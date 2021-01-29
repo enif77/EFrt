@@ -19,7 +19,7 @@ namespace EFrt.Core
         /// <returns>A floating point value from the stack.</returns>
         public static double FPick(this IInterpreter interpreter, int index)
         {
-            return interpreter.State.FloatingPointStack.Pick(index);
+            return interpreter.State.Stack.Pick(index).FloatingPointValue;
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace EFrt.Core
         /// <returns>A floating point value from the top of the stack.</returns>
         public static double FPeek(this IInterpreter interpreter)
         {
-            return interpreter.State.FloatingPointStack.Peek();
+            return interpreter.State.Stack.Peek().FloatingPointValue;
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace EFrt.Core
         /// <returns>A floating point value from the top of the stack.</returns>
         public static double FPop(this IInterpreter interpreter)
         {
-            return interpreter.State.FloatingPointStack.Pop();
+            return interpreter.State.Stack.Pop().FloatingPointValue;
         }
 
         /// <summary>
@@ -46,10 +46,8 @@ namespace EFrt.Core
         /// <param name="value">A floating point value.</param>
         public static void FPush(this IInterpreter interpreter, double value)
         {
-            interpreter.State.FloatingPointStack.Push(value);
+            interpreter.State.Stack.Push(value);
         }
-
-
 
         /// <summary>
         /// Drops N values from the stack.
@@ -57,7 +55,7 @@ namespace EFrt.Core
         /// <param name="count">The number of values to be dropped from the stack.</param>
         public static void FDrop(this IInterpreter interpreter, int count = 1)
         {
-            interpreter.State.FloatingPointStack.Drop(count);
+            interpreter.State.Stack.Drop(count);
         }
 
         /// <summary>
@@ -66,7 +64,7 @@ namespace EFrt.Core
         /// </summary>
         public static void FDup(this IInterpreter interpreter)
         {
-            interpreter.State.FloatingPointStack.Dup();
+            interpreter.State.Stack.Dup();
         }
 
         /// <summary>
@@ -75,7 +73,7 @@ namespace EFrt.Core
         /// </summary>
         public static void FSwap(this IInterpreter interpreter)
         {
-            interpreter.State.FloatingPointStack.Swap();
+            interpreter.State.Stack.Swap();
         }
 
         /// <summary>
@@ -84,7 +82,7 @@ namespace EFrt.Core
         /// </summary>
         public static void FOver(this IInterpreter interpreter)
         {
-            interpreter.State.FloatingPointStack.Over();
+            interpreter.State.Stack.Over();
         }
 
         /// <summary>
@@ -93,7 +91,7 @@ namespace EFrt.Core
         /// </summary>
         public static void FRot(this IInterpreter interpreter)
         {
-            interpreter.State.FloatingPointStack.Rot();
+            interpreter.State.Stack.Rot();
         }
 
         /// <summary>
@@ -102,7 +100,7 @@ namespace EFrt.Core
         /// <param name="index">A stack item index, where 0 = stack top, 1 = first below top, etc.</param>
         public static void FRoll(this IInterpreter interpreter, int index)
         {
-            interpreter.State.FloatingPointStack.Roll(index);
+            interpreter.State.Stack.Roll(index);
         }
 
         #endregion
@@ -116,11 +114,8 @@ namespace EFrt.Core
         /// <param name="func">A function.</param>
         public static void FFunction(this IInterpreter interpreter, Func<double, double> func)
         {
-            //var stack = _interpreter.FloatingPointStack;
-            //var top = stack.Top;
-            //stack.Items[stack.Top] = func(stack.Items[top]);
-
-            FPush(interpreter, func(FPop(interpreter)));
+            var stack = interpreter.State.Stack;
+            stack.Items[stack.Top].FloatingPointValue = func(stack.Items[stack.Top].FloatingPointValue);
         }
 
         /// <summary>
@@ -129,12 +124,9 @@ namespace EFrt.Core
         /// <param name="func">A function.</param>
         public static void FFunction(this IInterpreter interpreter, Func<double, double, double> func)
         {
-            //var stack = _interpreter.FloatingPointStack;
-            //var top = stack.Top;
-            //stack.Items[--stack.Top] = func(stack.Items[top - 1], stack.Items[top]);
-
-            var b = FPop(interpreter);
-            FPush(interpreter, func(FPop(interpreter), b));
+            var stack = interpreter.State.Stack;
+            var top = stack.Top;
+            stack.Items[--stack.Top].FloatingPointValue = func(stack.Items[top - 1].FloatingPointValue, stack.Items[top].FloatingPointValue);
         }
 
         #endregion
@@ -151,10 +143,12 @@ namespace EFrt.Core
         {
             if (expectedItemsCount < 0) throw new ArgumentOutOfRangeException(nameof(expectedItemsCount));
 
-            if (interpreter.State.FloatingPointStack.Count < expectedItemsCount)
+            if (interpreter.State.Stack.Count < expectedItemsCount)
             {
                 throw new InterpreterException(-4, "floating point stack underflow");
             }
+
+            // TODO: Stack values type check?
         }
 
         /// <summary>
@@ -166,7 +160,7 @@ namespace EFrt.Core
         {
             if (expectedFreeItemsCount < 0) throw new ArgumentOutOfRangeException(nameof(expectedFreeItemsCount));
 
-            if ((interpreter.State.FloatingPointStack.Count + expectedFreeItemsCount) >= interpreter.State.FloatingPointStack.Items.Length)
+            if ((interpreter.State.Stack.Count + expectedFreeItemsCount) >= interpreter.State.Stack.Items.Length)
             {
                 throw new InterpreterException(-3, "floating point stack overflow");
             }
