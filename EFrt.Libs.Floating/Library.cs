@@ -42,12 +42,24 @@ namespace EFrt.Libs.Floating
             _interpreter.AddPrimitiveWord("F<", FLessThanAction);
             _interpreter.AddPrimitiveWord("F>D", FToDAction);
             _interpreter.AddPrimitiveWord("F@", FFetchAction);
+            _interpreter.AddPrimitiveWord("FALIGN", () => 1);  // Does nothing.
+            _interpreter.AddPrimitiveWord("FALIGNED", FAlignedAction); 
             _interpreter.AddPrimitiveWord("FCONSTANT", FConstantAction);
             _interpreter.AddPrimitiveWord("FDEPTH", FDepthAction);
+            _interpreter.AddPrimitiveWord("FDROP", FDropAction);
+            _interpreter.AddPrimitiveWord("FDUP", FDupAction);
+            _interpreter.AddPrimitiveWord("FDUP", FDupAction);
+            _interpreter.AddImmediateWord("FLITERAL", FLiteralAction);
+            _interpreter.AddPrimitiveWord("FLOAT+", FloatPlusAction);
+            _interpreter.AddPrimitiveWord("FLOATS", FloatsAction);
             _interpreter.AddPrimitiveWord("FLOOR", FloorAction);
             _interpreter.AddPrimitiveWord("FMAX", FMaxAction);
             _interpreter.AddPrimitiveWord("FMIN", FMinAction);
             _interpreter.AddPrimitiveWord("FNEGATE", FNegateAction);
+            _interpreter.AddPrimitiveWord("FOVER", FOverAction);
+            _interpreter.AddPrimitiveWord("FROT", FRoteAction);
+            _interpreter.AddPrimitiveWord("FROUND", FRoundAction);
+            _interpreter.AddPrimitiveWord("FSWAP", FSwapAction);
             _interpreter.AddPrimitiveWord("FVARIABLE", FVariableAction);
         }
 
@@ -207,6 +219,16 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
+        // (addr -- addr)
+        private int FAlignedAction()
+        {
+            _interpreter.StackExpect(1);
+
+            // Does nothing. Just checks its parameters.
+
+            return 1;
+        }
+
         // FCONSTANT word-name
         // (f -- )
         private int FConstantAction()
@@ -226,6 +248,62 @@ namespace EFrt.Libs.Floating
             _interpreter.StackFree(1);
 
             _interpreter.Push(_interpreter.State.FloatingPointStack.Count);
+
+            return 1;
+        }
+
+        // (f -- )
+        private int FDropAction()
+        {
+            _interpreter.FStackExpect(1);
+
+            _interpreter.FDrop();
+
+            return 1;
+        }
+
+        // (f -- f f)
+        private int FDupAction()
+        {
+            _interpreter.FStackExpect(1);
+            _interpreter.FStackFree(1);
+
+            _interpreter.FDup();
+
+            return 1;
+        }
+
+        // (f -- )
+        private int FLiteralAction()
+        {
+            if (_interpreter.IsCompiling == false)
+            {
+                throw new Exception("FLITERAL outside a new word definition.");
+            }
+
+            _interpreter.FStackExpect(1);
+
+            _interpreter.WordBeingDefined.AddWord(new FloatingPointLiteralWord(_interpreter, _interpreter.FPop()));
+
+            return 1;
+        }
+
+        // (addr -- addr)
+        private int FloatPlusAction()
+        {
+            _interpreter.StackExpect(1);
+
+            _interpreter.Push(_interpreter.Pop() + 2);  // Floating point value uses two heap cells.
+
+            return 1;
+        }
+
+        // (n1 -- n2)
+        private int FloatsAction()
+        {
+            _interpreter.StackExpect(1);
+
+            _interpreter.Push(_interpreter.Pop() * 2);  // Floating point value uses two heap cells.
 
             return 1;
         }
@@ -266,6 +344,47 @@ namespace EFrt.Libs.Floating
             _interpreter.FStackExpect(1);
 
             _interpreter.FFunction((a) => -a);
+
+            return 1;
+        }
+
+        // (f1 f2 -- f1 f2 f1)
+        private int FOverAction()
+        {
+            _interpreter.FStackExpect(2);
+            _interpreter.FStackFree(1);
+
+            _interpreter.FOver();
+
+            return 1;
+        }
+
+        // (f1 f2 f3 -- f2 f3 f1)
+        private int FRoteAction()
+        {
+            _interpreter.StackExpect(3);
+
+            _interpreter.FRot();
+
+            return 1;
+        }
+
+        // (f1 -- f2)
+        private int FRoundAction()
+        {
+            _interpreter.StackExpect(1);
+
+            _interpreter.FPush(Math.Round(_interpreter.FPop()));
+
+            return 1;
+        }
+
+        // (f1 f2 -- f2 f1)
+        private int FSwapAction()
+        {
+            _interpreter.FStackExpect(2);
+
+            _interpreter.FSwap();
 
             return 1;
         }
