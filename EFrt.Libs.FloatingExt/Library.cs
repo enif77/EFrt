@@ -6,6 +6,7 @@ namespace EFrt.Libs.FloatingExt
     using System.Globalization;
 
     using EFrt.Core;
+    using EFrt.Core.Values;
 
 
     /// <summary>
@@ -29,19 +30,36 @@ namespace EFrt.Libs.FloatingExt
 
         public void DefineWords()
         {
+            _interpreter.AddPrimitiveWord("DF!", DFStoreAction);          // Does the same as the word F!.
+            _interpreter.AddPrimitiveWord("DF@", DFFetchAction);          // Does the same as the word F@.
+            _interpreter.AddPrimitiveWord("DFALIGN", () => 1);            // Does nothing.
+            _interpreter.AddPrimitiveWord("DFALIGNED", DFAlignedAction);  // Does the same as the word FALIGNED.
+            _interpreter.AddPrimitiveWord("DFLOAT+", DFloatPlusAction);   // Does the same as the word FLOAT+.
+            _interpreter.AddPrimitiveWord("DFLOATS", DFloatsAction);      // Does the same as the word FLOATS.
             _interpreter.AddPrimitiveWord("F**", FStarStarAction);
             _interpreter.AddPrimitiveWord("F.", FdotAction);
             _interpreter.AddPrimitiveWord("FABS", FAbsAction);
             _interpreter.AddPrimitiveWord("FACOS", FAcosAction);
+            _interpreter.AddPrimitiveWord("FACOSH", FAcoshAction);
+            _interpreter.AddPrimitiveWord("FALOG", FAlogAction);
             _interpreter.AddPrimitiveWord("FASIN", FAsinAction);
+            _interpreter.AddPrimitiveWord("FASINH", FAsinhAction);
             _interpreter.AddPrimitiveWord("FATAN", FAtanAction);
             _interpreter.AddPrimitiveWord("FATAN2", FAtan2Action);
+            _interpreter.AddPrimitiveWord("FATANH", FAtanhAction);
             _interpreter.AddPrimitiveWord("FCOS", FCosAction);
+            _interpreter.AddPrimitiveWord("FCOSH", FCoshAction);
             _interpreter.AddPrimitiveWord("FEXP", FExpAction);
+            _interpreter.AddPrimitiveWord("FEXPM1", FExpM1Action);
+            _interpreter.AddPrimitiveWord("FLN", FLnAction);
+            _interpreter.AddPrimitiveWord("FLNP1", FLnP1Action);
             _interpreter.AddPrimitiveWord("FLOG", FLogAction);
             _interpreter.AddPrimitiveWord("FSIN", FSinAction);
+            _interpreter.AddPrimitiveWord("FSINCOS", FSinCosAction);
+            _interpreter.AddPrimitiveWord("FSINH", FSinhAction);
             _interpreter.AddPrimitiveWord("FSQRT", FSqrtAction);
             _interpreter.AddPrimitiveWord("FTAN", FTanAction);
+            _interpreter.AddPrimitiveWord("FTANH", FTanhAction);
 
             // Extra
 
@@ -63,7 +81,69 @@ namespace EFrt.Libs.FloatingExt
             
         }
 
-        // (f1 f2 -- f3)
+        // (addr -- ) (F: f -- )
+        private int DFStoreAction()
+        {
+            _interpreter.StackExpect(1);
+            _interpreter.FStackExpect(1);
+
+            var addr = _interpreter.Pop();
+            var f = new FloatingPointValue() { F = _interpreter.FPop() };
+
+            _interpreter.State.Heap.Items[addr] = f.A;
+            _interpreter.State.Heap.Items[addr + 1] = f.B;
+
+            return 1;
+        }
+
+        // (addr -- ) (F: -- f)
+        private int DFFetchAction()
+        {
+            _interpreter.StackExpect(1);
+            _interpreter.FStackFree(1);
+
+            var addr = _interpreter.Pop();
+
+            _interpreter.FPush(new FloatingPointValue()
+            {
+                A = _interpreter.State.Heap.Items[addr],
+                B = _interpreter.State.Heap.Items[addr + 1]
+            }.F);
+
+            return 1;
+        }
+
+        // (addr -- addr)
+        private int DFAlignedAction()
+        {
+            _interpreter.StackExpect(1);
+
+            // Does nothing. Just checks its parameters.
+
+            return 1;
+        }
+
+        // (addr -- addr)
+        private int DFloatPlusAction()
+        {
+            _interpreter.StackExpect(1);
+
+            _interpreter.Push(_interpreter.Pop() + 2);  // Floating point value uses two heap cells.
+
+            return 1;
+        }
+
+        // (n1 -- n2)
+        private int DFloatsAction()
+        {
+            _interpreter.StackExpect(1);
+
+            _interpreter.Push(_interpreter.Pop() * 2);  // Floating point value uses two heap cells.
+
+            return 1;
+        }
+
+        // (F: f1 f2 -- f3)
         private int FStarStarAction()
         {
             _interpreter.FStackExpect(2);
@@ -73,7 +153,7 @@ namespace EFrt.Libs.FloatingExt
             return 1;
         }
 
-        // (f --)
+        // (F: f --)
         private int FdotAction()
         {
             _interpreter.FStackExpect(1);
@@ -83,7 +163,7 @@ namespace EFrt.Libs.FloatingExt
             return 1;
         }
 
-        // (f1 -- f2)
+        // (F: f1 -- f2)
         private int FAbsAction()
         {
             _interpreter.FStackExpect(1);
@@ -93,7 +173,7 @@ namespace EFrt.Libs.FloatingExt
             return 1;
         }
 
-        // (f1 -- f2)
+        // (F: f1 -- f2)
         private int FAcosAction()
         {
             _interpreter.FStackExpect(1);
@@ -103,7 +183,27 @@ namespace EFrt.Libs.FloatingExt
             return 1;
         }
 
-        // (f1 -- f2)
+        // (F: f1 -- f2)
+        private int FAcoshAction()
+        {
+            _interpreter.FStackExpect(1);
+
+            _interpreter.FFunction((a) => Math.Acosh(a));
+
+            return 1;
+        }
+
+        // (F: f1 -- f2)
+        private int FAlogAction()
+        {
+            _interpreter.FStackExpect(1);
+
+            _interpreter.FFunction((a) => Math.Pow(10.0, a));
+
+            return 1;
+        }
+
+        // (F: f1 -- f2)
         private int FAsinAction()
         {
             _interpreter.FStackExpect(1);
@@ -113,7 +213,17 @@ namespace EFrt.Libs.FloatingExt
             return 1;
         }
 
-        // (f1 -- f2)
+        // (F: f1 -- f2)
+        private int FAsinhAction()
+        {
+            _interpreter.FStackExpect(1);
+
+            _interpreter.FFunction((a) => Math.Asinh(a));
+
+            return 1;
+        }
+
+        // (F: f1 -- f2)
         private int FAtanAction()
         {
             _interpreter.FStackExpect(1);
@@ -123,7 +233,7 @@ namespace EFrt.Libs.FloatingExt
             return 1;
         }
 
-        // (f1 f2 -- f3)
+        // (F: f1 f2 -- f3)
         private int FAtan2Action()
         {
             _interpreter.FStackExpect(2);
@@ -133,7 +243,17 @@ namespace EFrt.Libs.FloatingExt
             return 1;
         }
 
-        // (f1 -- f2)
+        // (F: f1 -- f2)
+        private int FAtanhAction()
+        {
+            _interpreter.FStackExpect(1);
+
+            _interpreter.FFunction((a) => Math.Atanh(a));
+
+            return 1;
+        }
+
+        // (F: f1 -- f2)
         private int FCosAction()
         {
             _interpreter.FStackExpect(1);
@@ -143,7 +263,17 @@ namespace EFrt.Libs.FloatingExt
             return 1;
         }
 
-        // (f1 -- f2)
+        // (F: f1 -- f2)
+        private int FCoshAction()
+        {
+            _interpreter.FStackExpect(1);
+
+            _interpreter.FFunction((a) => Math.Cosh(a));
+
+            return 1;
+        }
+
+        // (F: f1 -- f2)
         private int FExpAction()
         {
             _interpreter.FStackExpect(1);
@@ -153,8 +283,18 @@ namespace EFrt.Libs.FloatingExt
             return 1;
         }
 
-        // (f1 -- f2)
-        private int FLogAction()
+        // (F: f1 -- f2)
+        private int FExpM1Action()
+        {
+            _interpreter.FStackExpect(1);
+
+            _interpreter.FFunction((a) => Math.Exp(a) - 1.0);
+
+            return 1;
+        }
+
+        // (F: f1 -- f2)
+        private int FLnAction()
         {
             _interpreter.FStackExpect(1);
 
@@ -163,7 +303,27 @@ namespace EFrt.Libs.FloatingExt
             return 1;
         }
 
-        // (f1 -- f2)
+        // (F: f1 -- f2)
+        private int FLnP1Action()
+        {
+            _interpreter.FStackExpect(1);
+
+            _interpreter.FFunction((a) => Math.Log(a) + 1.0);
+
+            return 1;
+        }
+
+        // (F: f1 -- f2)
+        private int FLogAction()
+        {
+            _interpreter.FStackExpect(1);
+
+            _interpreter.FFunction((a) => Math.Log10(a));
+
+            return 1;
+        }
+
+        // (F: f1 -- f2)
         private int FSinAction()
         {
             _interpreter.FStackExpect(1);
@@ -173,7 +333,30 @@ namespace EFrt.Libs.FloatingExt
             return 1;
         }
 
-        // (f1 -- f2)
+        // (F: f1 -- f2 f3)
+        private int FSinCosAction()
+        {
+            _interpreter.FStackExpect(1);
+            _interpreter.FStackFree(1);
+
+            var f = _interpreter.FPop();
+            _interpreter.FPush(Math.Sin(f));
+            _interpreter.FPush(Math.Cos(f));
+
+            return 1;
+        }
+
+        // (F: f1 -- f2)
+        private int FSinhAction()
+        {
+            _interpreter.FStackExpect(1);
+
+            _interpreter.FFunction((a) => Math.Sinh(a));
+
+            return 1;
+        }
+
+        // (F: f1 -- f2)
         private int FSqrtAction()
         {
             _interpreter.FStackExpect(1);
@@ -183,7 +366,7 @@ namespace EFrt.Libs.FloatingExt
             return 1;
         }
 
-        // (f1 -- f2)
+        // (F: f1 -- f2)
         private int FTanAction()
         {
             _interpreter.FStackExpect(1);
@@ -193,10 +376,20 @@ namespace EFrt.Libs.FloatingExt
             return 1;
         }
 
+        // (F: f1 -- f2)
+        private int FTanhAction()
+        {
+            _interpreter.FStackExpect(1);
+
+            _interpreter.FFunction((a) => Math.Tanh(a));
+
+            return 1;
+        }
+
 
         // Extra
 
-        // (f -- n)
+        // ( -- n) (F: f -- )
         private int FToSAction()
         {
             _interpreter.FStackExpect(1);
@@ -207,7 +400,7 @@ namespace EFrt.Libs.FloatingExt
             return 1;
         }
 
-        // (n -- f)
+        // (n -- ) (F: -- f)
         private int SToFAction()
         {
             _interpreter.StackExpect(1);

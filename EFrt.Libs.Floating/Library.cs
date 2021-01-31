@@ -64,7 +64,7 @@ namespace EFrt.Libs.Floating
         }
 
 
-        // ( -- false | f true) {s -- }
+        // ( -- false | true) (F: | f -- ) {s -- }
         private int ToNumberAction()
         {
             _interpreter.ObjectStackExpect(1);
@@ -88,7 +88,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (d -- f)
+        // (d -- ) (F: -- f)
         private int DToFAction()
         {
             _interpreter.StackExpect(2);
@@ -102,7 +102,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (f addr -- )
+        // (addr -- ) (F: f -- )
         private int FStoreAction()
         {
             _interpreter.StackExpect(1);
@@ -117,7 +117,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (f1 f2 -- f3)
+        // (F: f1 f2 -- f3)
         private int FStarAction()
         {
             _interpreter.FStackExpect(2);
@@ -127,7 +127,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (f1 f2 -- f3)
+        // (F: f1 f2 -- f3)
         private int FPlusAction()
         {
             _interpreter.FStackExpect(2);
@@ -137,7 +137,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (f1 f2 -- f3)
+        // (F: f1 f2 -- f3)
         private int FMinusAction()
         {
             _interpreter.FStackExpect(2);
@@ -147,7 +147,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (f1 f2 -- f3)
+        // (F: f1 f2 -- f3)
         private int FSlashAction()
         {
             _interpreter.FStackExpect(2);
@@ -157,7 +157,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (f -- flag)
+        // ( -- flag) (F: f -- )
         private int FZeroLessThanAction()
         {
             _interpreter.FStackExpect(1);
@@ -168,7 +168,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (f -- flag)
+        // ( -- flag) (F: f -- )
         private int FZeroEqualsAction()
         {
             _interpreter.FStackExpect(1);
@@ -179,7 +179,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
         
-        // (f1 f2 -- flag)
+        // ( -- flag) (F: f1 f2 -- )
         private int FLessThanAction()
         {
             _interpreter.FStackExpect(2);
@@ -191,7 +191,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (f -- d)
+        // ( -- d) (F: f -- )
         private int FToDAction()
         {
             _interpreter.FStackExpect(1);
@@ -202,7 +202,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (addr -- f)
+        // (addr -- ) (F: -- f)
         private int FFetchAction()
         {
             _interpreter.StackExpect(1);
@@ -230,7 +230,7 @@ namespace EFrt.Libs.Floating
         }
 
         // FCONSTANT word-name
-        // (f -- )
+        // (F: f -- )
         private int FConstantAction()
         {
             _interpreter.FStackExpect(1);
@@ -252,7 +252,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (f -- )
+        // (F: f -- )
         private int FDropAction()
         {
             _interpreter.FStackExpect(1);
@@ -262,7 +262,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (f -- f f)
+        // (F: f -- f f)
         private int FDupAction()
         {
             _interpreter.FStackExpect(1);
@@ -273,7 +273,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (f -- )
+        // (F: f -- ), at runtime: (F: -- f)
         private int FLiteralAction()
         {
             if (_interpreter.IsCompiling == false)
@@ -308,7 +308,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (f1 -- f2)
+        // (F: f1 -- f2)
         private int FloorAction()
         {
             _interpreter.FStackExpect(1);
@@ -318,7 +318,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (f1 f2 -- f3)
+        // (F: f1 f2 -- f3)
         private int FMaxAction()
         {
             _interpreter.FStackExpect(2);
@@ -328,7 +328,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (f1 f2 -- f3)
+        // (F: f1 f2 -- f3)
         private int FMinAction()
         {
             _interpreter.FStackExpect(2);
@@ -338,7 +338,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (f1 -- f2)
+        // (F: f1 -- f2)
         private int FNegateAction()
         {
             _interpreter.FStackExpect(1);
@@ -348,7 +348,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (f1 f2 -- f1 f2 f1)
+        // (F: f1 f2 -- f1 f2 f1)
         private int FOverAction()
         {
             _interpreter.FStackExpect(2);
@@ -359,7 +359,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (f1 f2 f3 -- f2 f3 f1)
+        // (F: f1 f2 f3 -- f2 f3 f1)
         private int FRoteAction()
         {
             _interpreter.StackExpect(3);
@@ -369,7 +369,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (f1 -- f2)
+        // (F: f1 -- f2)
         private int FRoundAction()
         {
             _interpreter.StackExpect(1);
@@ -379,7 +379,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (f1 f2 -- f2 f1)
+        // (F: f1 f2 -- f2 f1)
         private int FSwapAction()
         {
             _interpreter.FStackExpect(2);
@@ -390,7 +390,7 @@ namespace EFrt.Libs.Floating
         }
 
         // FVARIABLE word-name
-        // ( -- )
+        // ( -- ) (F: -- )
         private int FVariableAction()
         {
             _interpreter.BeginNewWordCompilation();
