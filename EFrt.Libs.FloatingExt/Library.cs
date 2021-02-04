@@ -38,6 +38,7 @@ namespace EFrt.Libs.FloatingExt
             _interpreter.AddPrimitiveWord("DFLOATS", DFloatsAction);      // Does the same as the word FLOATS.
             _interpreter.AddPrimitiveWord("F**", FStarStarAction);
             _interpreter.AddPrimitiveWord("F.", FdotAction);
+            _interpreter.AddPrimitiveWord("F>S", FToSAction);
             _interpreter.AddPrimitiveWord("FABS", FAbsAction);
             _interpreter.AddPrimitiveWord("FACOS", FAcosAction);
             _interpreter.AddPrimitiveWord("FACOSH", FAcoshAction);
@@ -60,6 +61,7 @@ namespace EFrt.Libs.FloatingExt
             _interpreter.AddPrimitiveWord("FSQRT", FSqrtAction);
             _interpreter.AddPrimitiveWord("FTAN", FTanAction);
             _interpreter.AddPrimitiveWord("FTANH", FTanhAction);
+            _interpreter.AddPrimitiveWord("S>F", SToFAction);
 
             // Extra
 
@@ -68,7 +70,6 @@ namespace EFrt.Libs.FloatingExt
             _interpreter.AddPrimitiveWord("F<=", FLessThanOrEqualsAction);
             _interpreter.AddPrimitiveWord("F>", FGreaterThanAction);
             _interpreter.AddPrimitiveWord("F>=", FGreaterThanOrEqualsAction);
-            _interpreter.AddPrimitiveWord("F>N", FToNAction);
             _interpreter.AddPrimitiveWord("F0<>", FZeroNotEqualsAction);
             _interpreter.AddPrimitiveWord("F0>", FZeroGreaterThanAction);
             _interpreter.AddPrimitiveWord("F1+", FOnePlusAction);
@@ -77,7 +78,6 @@ namespace EFrt.Libs.FloatingExt
             _interpreter.AddPrimitiveWord("F2-", FTwoMinusAction);
             _interpreter.AddPrimitiveWord("F2*", FTwoStarAction);
             _interpreter.AddPrimitiveWord("F2/", FTwoSlashAction);
-            _interpreter.AddPrimitiveWord("N>F", NToFAction);
         }
 
         // (addr -- ) (F: f -- )
@@ -158,6 +158,17 @@ namespace EFrt.Libs.FloatingExt
             _interpreter.FStackExpect(1);
 
             _interpreter.Output.Write("{0} ", _interpreter.FPop().ToString(CultureInfo.InvariantCulture));
+
+            return 1;
+        }
+
+        // ( -- n) (F: f -- )
+        private int FToSAction()
+        {
+            _interpreter.FStackExpect(1);
+            _interpreter.StackFree(1);
+
+            _interpreter.Push((int)_interpreter.FPop());
 
             return 1;
         }
@@ -385,6 +396,17 @@ namespace EFrt.Libs.FloatingExt
             return 1;
         }
 
+        // (n -- ) (F: -- f)
+        private int SToFAction()
+        {
+            _interpreter.StackExpect(1);
+            _interpreter.FStackFree(1);
+
+            _interpreter.FPush(_interpreter.Pop());
+
+            return 1;
+        }
+
         // Extra
 
         // ( -- flag) (F: f1 f2 -- )
@@ -441,17 +463,6 @@ namespace EFrt.Libs.FloatingExt
 
             var b = _interpreter.FPop();
             _interpreter.Push((_interpreter.FPop() >= b) ? -1 : 0);
-
-            return 1;
-        }
-
-        // ( -- n) (F: f -- )
-        private int FToNAction()
-        {
-            _interpreter.FStackExpect(1);
-            _interpreter.StackFree(1);
-
-            _interpreter.Push((int)_interpreter.FPop());
 
             return 1;
         }
@@ -534,17 +545,6 @@ namespace EFrt.Libs.FloatingExt
             _interpreter.FStackExpect(1);
 
             _interpreter.FFunction((a) => a / 2.0);
-
-            return 1;
-        }
-
-        // (n -- ) (F: -- f)
-        private int NToFAction()
-        {
-            _interpreter.StackExpect(1);
-            _interpreter.FStackFree(1);
-
-            _interpreter.FPush(_interpreter.Pop());
 
             return 1;
         }

@@ -22,6 +22,7 @@ Words definition table columns:
 | DFLOATS   | no   | IC   | **Get floating point size**<br>(n1 -- n2)<br>n2 is the size in address units of n1 floating point numbers. |
 | F**       | no   | IC   | **f3 = Pow(f1, f2)**<br>(F: f1 f2 -- f3)<br>The second floating point value on the stack is taken to the power of the top floating point stack value and the result is left on the top of the stack. |
 | F.        | no   | IC   | **Print floating point**<br>(F: f -- )<br>A floating point value on the top of the stack is printed. |
+| F>S       | no   | IC   | **Floating to single cell integer**<br>( -- n) (F: f -- )<br>Converts a floating point number on the top of the floating point stack to a single cell integer and stores it on the top of the stack. |
 | FABS      | no   | IC   | **f2 = Abs(f1)**<br>(F: f1 -- f2)<br>Absolute value of f1. |
 | FACOS     | no   | IC   | **f2 = Acos(f1)**<br>(F: f1 -- f2)<br>Replaces floating point top of stack with its arc cosine. |
 | FACOSH    | no   | IC   | **f2 = Acosh(f1)**<br>(F: f1 -- f2)<br>Replaces floating point top of stack with its hyperbolic arc cosine. |
@@ -44,6 +45,7 @@ Words definition table columns:
 | FSQRT     | no   | IC   | **f2 = Sqrt(f1)**<br>(F: f1 -- f2)<br>f2 is the square root of f1. |
 | FTAN      | no   | IC   | **f2 = Tan(f1)**<br>(F: f1 -- f2)<br>f2 is the tangent of the radian angle f1. | 
 | FTANH     | no   | IC   | **f2 = Tanh(f1)**<br>(F: f1 -- f2)<br>f2 is the hyperbolic tangent of f1. | 
+| S>F       | no   | IC   | **Single cell integer to floating**<br>(n -- ) (F: -- f)<br>Converts a single cell integer on the top of the stack to a floationg point number and stores it on the top of the floating point stack. |
 
 ## Words (Extra)
 
@@ -54,7 +56,6 @@ Words definition table columns:
 | F<=   | no   | IC   | **Floating less than or equal**<br>( -- flag) (F: f1 f2 -- )<br>Returns -1 if f1 <= f2, 0 otherwise. |
 | F>    | no   | IC   | **Floating greater than**<br>( -- flag) (F: f1 f2 -- )<br>Returns -1 if f1 > f2, 0 otherwise. |
 | F>=   | no   | IC   | **Floating greater than or equal**<br>( -- flag) (F: f1 f2 -- )<br>Returns -1 if f1 >= f2, 0 otherwise. |
-| F>N   | no   | IC   | **Floating to single cell integer**<br>( -- n) (F: f -- )<br>Converts a floating point number on the top of the floating point stack to a single cell integer and stores it on the top of the stack. |
 | F0<>  | no   | IC   | **Nonzero**<br>( -- flag) (F: f -- )<br>Returns -1 if f is not equal to 0, 0 otherwise. |
 | F0>   | no   | IC   | **Greater than zero**<br>( -- flag) (F: f -- )<br>Returns -1 if f is greater than 0, 0 otherwise. |
 | F1+   | no   | IC   | **Add one**<br>(F: f1 -- f2)<br>Adds one to the top of the stack. |
@@ -63,7 +64,6 @@ Words definition table columns:
 | F2-   | no   | IC   | **Subtract two**<br>(F: f1 -- f2)<br>Substracts two from the top of the stack. |
 | F2*   | no   | IC   | **Times two**<br>(F: f1 -- f2)<br>Substracts two from the top of the stack. |
 | F2/   | no   | IC   | **Divide by two**<br>(F: f1 -- f2)<br>Divides the top of the stack by two. |
-| N>F   | no   | IC   | **Single cell integer to floating**<br>(n -- ) (F: -- f)<br>Converts a single cell integer on the top of the stack to a floationg point number and stores it on the top of the floating point stack. |
 
 ## TODO
 
