@@ -63,8 +63,12 @@ namespace EFrt.Libs.FloatingExt
 
             // Extra
 
-            _interpreter.AddPrimitiveWord("F>S", FToSAction);
-            _interpreter.AddPrimitiveWord("S>F", SToFAction);
+            _interpreter.AddPrimitiveWord("F=", FEqualsAction);
+            _interpreter.AddPrimitiveWord("F<>", FNotEqualsAction);
+            _interpreter.AddPrimitiveWord("F<=", FLessThanOrEqualsAction);
+            _interpreter.AddPrimitiveWord("F>", FGreaterThanAction);
+            _interpreter.AddPrimitiveWord("F>=", FGreaterThanOrEqualsAction);
+            _interpreter.AddPrimitiveWord("F>N", FToNAction);
             _interpreter.AddPrimitiveWord("F0<>", FZeroNotEqualsAction);
             _interpreter.AddPrimitiveWord("F0>", FZeroGreaterThanAction);
             _interpreter.AddPrimitiveWord("F1+", FOnePlusAction);
@@ -73,12 +77,7 @@ namespace EFrt.Libs.FloatingExt
             _interpreter.AddPrimitiveWord("F2-", FTwoMinusAction);
             _interpreter.AddPrimitiveWord("F2*", FTwoStarAction);
             _interpreter.AddPrimitiveWord("F2/", FTwoSlashAction);
-            _interpreter.AddPrimitiveWord("F=", FEqualsAction);
-            _interpreter.AddPrimitiveWord("F<>", FNotEqualsAction);
-            _interpreter.AddPrimitiveWord("F<=", FLessThanOrEqualsAction);
-            _interpreter.AddPrimitiveWord("F>", FGreaterThanAction);
-            _interpreter.AddPrimitiveWord("F>=", FGreaterThanOrEqualsAction);
-            
+            _interpreter.AddPrimitiveWord("N>F", NToFAction);
         }
 
         // (addr -- ) (F: f -- )
@@ -386,114 +385,9 @@ namespace EFrt.Libs.FloatingExt
             return 1;
         }
 
-
         // Extra
 
-        // ( -- n) (F: f -- )
-        private int FToSAction()
-        {
-            _interpreter.FStackExpect(1);
-            _interpreter.StackFree(1);
-
-            _interpreter.Push((int)_interpreter.FPop());
-
-            return 1;
-        }
-
-        // (n -- ) (F: -- f)
-        private int SToFAction()
-        {
-            _interpreter.StackExpect(1);
-            _interpreter.FStackFree(1);
-
-            _interpreter.FPush(_interpreter.Pop());
-
-            return 1;
-        }
-
-        // (f -- flag)
-        private int FZeroNotEqualsAction()
-        {
-            _interpreter.FStackExpect(1);
-            _interpreter.StackFree(1);
-
-            _interpreter.Push((_interpreter.FPop() != 0.0) ? -1 : 0);
-
-            return 1;
-        }
-
-        // (f -- flag)
-        private int FZeroGreaterThanAction()
-        {
-            _interpreter.FStackExpect(1);
-            _interpreter.StackFree(1);
-
-            _interpreter.Push((_interpreter.FPop() > 0.0) ? -1 : 0);
-
-            return 1;
-        }
-
-        // (f1 -- f2)
-        private int FOnePlusAction()
-        {
-            _interpreter.FStackExpect(1);
-
-            _interpreter.FFunction((a) => a + 1.0);
-
-            return 1;
-        }
-
-        // (f1 -- f2)
-        private int FOneMinusAction()
-        {
-            _interpreter.FStackExpect(1);
-
-            _interpreter.FFunction((a) => a - 1.0);
-
-            return 1;
-        }
-
-        // (f1 -- f2)
-        private int FTwoPlusAction()
-        {
-            _interpreter.FStackExpect(1);
-
-            _interpreter.FFunction((a) => a + 2.0);
-
-            return 1;
-        }
-
-        // (f1 -- f2)
-        private int FTwoMinusAction()
-        {
-            _interpreter.FStackExpect(1);
-
-            _interpreter.FFunction((a) => a - 2.0);
-
-            return 1;
-        }
-
-        // (f1 -- f2)
-        private int FTwoStarAction()
-        {
-            _interpreter.FStackExpect(1);
-
-            _interpreter.FFunction((a) => a * 2.0);
-
-            return 1;
-        }
-
-        // (f1 -- f2)
-        private int FTwoSlashAction()
-        {
-            _interpreter.FStackExpect(1);
-
-            _interpreter.FFunction((a) => a / 2.0);
-
-            return 1;
-        }
-                
-        // (f1 f2 -- flag)
+        // ( -- flag) (F: f1 f2 -- )
         private int FEqualsAction()
         {
             _interpreter.FStackExpect(2);
@@ -504,7 +398,7 @@ namespace EFrt.Libs.FloatingExt
             return 1;
         }
 
-        // (f1 f2 -- flag)
+        // ( -- flag) (F: f1 f2 -- )
         private int FNotEqualsAction()
         {
             _interpreter.FStackExpect(2);
@@ -514,8 +408,8 @@ namespace EFrt.Libs.FloatingExt
 
             return 1;
         }
-        
-        // (f1 f2 -- flag)
+
+        // ( -- flag) (F: f1 f2 -- )
         private int FLessThanOrEqualsAction()
         {
             _interpreter.FStackExpect(2);
@@ -527,7 +421,7 @@ namespace EFrt.Libs.FloatingExt
             return 1;
         }
 
-        // (f1 f2 -- flag)
+        // ( -- flag) (F: f1 f2 -- )
         private int FGreaterThanAction()
         {
             _interpreter.FStackExpect(2);
@@ -539,7 +433,7 @@ namespace EFrt.Libs.FloatingExt
             return 1;
         }
 
-        // (f1 f2 -- flag)
+        // ( -- flag) (F: f1 f2 -- )
         private int FGreaterThanOrEqualsAction()
         {
             _interpreter.FStackExpect(2);
@@ -547,6 +441,110 @@ namespace EFrt.Libs.FloatingExt
 
             var b = _interpreter.FPop();
             _interpreter.Push((_interpreter.FPop() >= b) ? -1 : 0);
+
+            return 1;
+        }
+
+        // ( -- n) (F: f -- )
+        private int FToNAction()
+        {
+            _interpreter.FStackExpect(1);
+            _interpreter.StackFree(1);
+
+            _interpreter.Push((int)_interpreter.FPop());
+
+            return 1;
+        }
+
+        // ( -- flag) (F: f -- )
+        private int FZeroNotEqualsAction()
+        {
+            _interpreter.FStackExpect(1);
+            _interpreter.StackFree(1);
+
+            _interpreter.Push((_interpreter.FPop() != 0.0) ? -1 : 0);
+
+            return 1;
+        }
+
+        // ( -- flag) (F: f -- )
+        private int FZeroGreaterThanAction()
+        {
+            _interpreter.FStackExpect(1);
+            _interpreter.StackFree(1);
+
+            _interpreter.Push((_interpreter.FPop() > 0.0) ? -1 : 0);
+
+            return 1;
+        }
+
+        // (F: f1 -- f2)
+        private int FOnePlusAction()
+        {
+            _interpreter.FStackExpect(1);
+
+            _interpreter.FFunction((a) => a + 1.0);
+
+            return 1;
+        }
+
+        // (F: f1 -- f2)
+        private int FOneMinusAction()
+        {
+            _interpreter.FStackExpect(1);
+
+            _interpreter.FFunction((a) => a - 1.0);
+
+            return 1;
+        }
+
+        // (F: f1 -- f2)
+        private int FTwoPlusAction()
+        {
+            _interpreter.FStackExpect(1);
+
+            _interpreter.FFunction((a) => a + 2.0);
+
+            return 1;
+        }
+
+        // (F: f1 -- f2)
+        private int FTwoMinusAction()
+        {
+            _interpreter.FStackExpect(1);
+
+            _interpreter.FFunction((a) => a - 2.0);
+
+            return 1;
+        }
+
+        // (F: f1 -- f2)
+        private int FTwoStarAction()
+        {
+            _interpreter.FStackExpect(1);
+
+            _interpreter.FFunction((a) => a * 2.0);
+
+            return 1;
+        }
+
+        // (F: f1 -- f2)
+        private int FTwoSlashAction()
+        {
+            _interpreter.FStackExpect(1);
+
+            _interpreter.FFunction((a) => a / 2.0);
+
+            return 1;
+        }
+
+        // (n -- ) (F: -- f)
+        private int NToFAction()
+        {
+            _interpreter.StackExpect(1);
+            _interpreter.FStackFree(1);
+
+            _interpreter.FPush(_interpreter.Pop());
 
             return 1;
         }

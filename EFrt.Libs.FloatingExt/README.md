@@ -49,21 +49,21 @@ Words definition table columns:
 
 | Name  | Imm. | Mode | Stack op. | Description |
 | ---   | ---  | ---  | ---       | --- |
-| F=    | no   | IC   | **Floating equal**<br>(f1 f2 -- flag)<br>Returns -1 if f1 is equal to f2, 0 otherwise. |
-| F<>   | no   | IC   | **Floating not equal**<br>(f1 f2 -- flag)<br>Returns -1 if f1 is not equal to f2, 0 otherwise. |
-| F<=   | no   | IC   | **Floating less than or equal**<br>(f1 f2 -- flag)<br>Returns -1 if f1 <= f2, 0 otherwise. |
-| F>    | no   | IC   | **Floating greater than**<br>(f1 f2 -- flag)<br>Returns -1 if f1 > f2, 0 otherwise. |
-| F>=   | no   | IC   | **Floating greater than or equal**<br>(f1 f2 -- flag)<br>Returns -1 if f1 >= f2, 0 otherwise. |
-| F>S   | no   | IC   | **Floating to single cell integer**<br>(f -- n)<br>Converts a float number on the top of the stack to a single cell integer and stores it on the top of the stack. |
-| F0<>  | no   | IC   | **Nonzero**<br>(f -- flag)<br>Returns -1 if f is not equal to 0, 0 otherwise. |
-| F0>   | no   | IC   | **Greater than zero**<br>(f -- flag)<br>Returns -1 if f is greater than 0, 0 otherwise. |
-| F1+   | no   | IC   | **Add one**<br>(f1 -- f2)<br>Adds one to the top of the stack. |
-| F1-   | no   | IC   | **Subtract one**<br>(f1 -- f2)<br>Substracts one from the top of the stack. |
-| F2+   | no   | IC   | **Add two**<br>(f1 -- f2)<br>Adds two to the top of the stack. |
-| F2-   | no   | IC   | **Subtract two**<br>(f1 -- f2)<br>Substracts two from the top of the stack. |
-| F2*   | no   | IC   | **Times two**<br>(f1 -- f2)<br>Substracts two from the top of the stack. |
-| F2/   | no   | IC   | **Divide by two**<br>(f1 -- f2)<br>Divides the top of the stack by two. |
-| S>F   | no   | IC   | **Single cell integer to floating**<br>(n -- f)<br>Converts a single cell integer on the top of the stack to a floationg point number and stores it on the top of the stack. |
+| F=    | no   | IC   | **Floating equal**<br>( -- flag) (F: f1 f2 -- )<br>Returns -1 if f1 is equal to f2, 0 otherwise. |
+| F<>   | no   | IC   | **Floating not equal**<br>( -- flag) (F: f1 f2 -- )<br>Returns -1 if f1 is not equal to f2, 0 otherwise. |
+| F<=   | no   | IC   | **Floating less than or equal**<br>( -- flag) (F: f1 f2 -- )<br>Returns -1 if f1 <= f2, 0 otherwise. |
+| F>    | no   | IC   | **Floating greater than**<br>( -- flag) (F: f1 f2 -- )<br>Returns -1 if f1 > f2, 0 otherwise. |
+| F>=   | no   | IC   | **Floating greater than or equal**<br>( -- flag) (F: f1 f2 -- )<br>Returns -1 if f1 >= f2, 0 otherwise. |
+| F>N   | no   | IC   | **Floating to single cell integer**<br>( -- n) (F: f -- )<br>Converts a floating point number on the top of the floating point stack to a single cell integer and stores it on the top of the stack. |
+| F0<>  | no   | IC   | **Nonzero**<br>( -- flag) (F: f -- )<br>Returns -1 if f is not equal to 0, 0 otherwise. |
+| F0>   | no   | IC   | **Greater than zero**<br>( -- flag) (F: f -- )<br>Returns -1 if f is greater than 0, 0 otherwise. |
+| F1+   | no   | IC   | **Add one**<br>(F: f1 -- f2)<br>Adds one to the top of the stack. |
+| F1-   | no   | IC   | **Subtract one**<br>(F: f1 -- f2)<br>Substracts one from the top of the stack. |
+| F2+   | no   | IC   | **Add two**<br>(F: f1 -- f2)<br>Adds two to the top of the stack. |
+| F2-   | no   | IC   | **Subtract two**<br>(F: f1 -- f2)<br>Substracts two from the top of the stack. |
+| F2*   | no   | IC   | **Times two**<br>(F: f1 -- f2)<br>Substracts two from the top of the stack. |
+| F2/   | no   | IC   | **Divide by two**<br>(F: f1 -- f2)<br>Divides the top of the stack by two. |
+| N>F   | no   | IC   | **Single cell integer to floating**<br>(n -- ) (F: -- f)<br>Converts a single cell integer on the top of the stack to a floationg point number and stores it on the top of the floating point stack. |
 
 ## TODO
 
