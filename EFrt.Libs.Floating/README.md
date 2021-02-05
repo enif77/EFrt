@@ -25,7 +25,7 @@ Words definition table columns:
 | F0=      | no   | IC   | **Equal to zero**<br>( -- flag) (F: f -- )<br>Returns -1 if f is equal to 0, 0 otherwise. |
 | F<       | no   | IC   | **Floating less than**<br>( -- flag) (F: f1 f2 -- )<br>Returns -1 if f1 < f2, 0 otherwise. |
 | F>D      | no   | IC   | **Floating to double cell integer**<br>( -- d) (F: f -- )<br>Converts a float number on the top of the stack to a double cell integer and stores it on the top of the stack. |
-| F@       | no   | IC   | **Fetch**<br>(addr -- ) (F: -- f)<br>Loads the floating point number at addr a heap array index) and leaves it at the top of the stack. |
+| F@       | no   | IC   | **Fetch**<br>(addr -- ) (F: -- f)<br>Loads the floating point number at addr a heap array index) and leaves it at the top of the floating point stack. |
 | FALIGN   | no   | IC   | **Align data pointer**<br>( -- )<br> If the data-space pointer is not float aligned, reserve enough data space to make it so. |
 | FALIGNED | no   | IC   | **Get aligned address**<br>(addr1 -- addr2)<br> The addr2 address is the first float-aligned address greater than or equal to addr1. |
 | FCONSTANT x | no   | I    | **Declare constant**<br>(F: f --), at runtime (F: -- f)<br>Declares a constant named x. When x is executed, the value f will be left on the stack. |

@@ -48,6 +48,13 @@ Words definition table columns:
 | FTRUNC    | no   | IC   | **f2 = Truncate(f1)**<br>(F: f1 -- f2)<br>Round r1 to an integral value using the “round towards zero” rule, giving r2. | 
 | FVALUE x  | no   | IC   | **Named value**<br>(n -- )<br>Like a CONSTANT, but the value can be changed using the word TO. |
 | S>F       | no   | IC   | **Single cell integer to floating**<br>(n -- ) (F: -- f)<br>Converts a single cell integer on the top of the stack to a floationg point number and stores it on the top of the floating point stack. |
+| SF!       | no   | IC   | **Store into address**<br>(addr -- ) (F: f -- )<br>Stores the floating point number f as a 32 bit (single cell) into the address addr (a heap array index). |
+| SF@       | no   | IC   | **Fetch**<br>(addr -- ) (F: -- f)<br>Loads the single cell (32 bit) floating point number at addr a heap array index) and leaves it at the top of the floating point stack. |
+| SFALIGN   | no   | IC   | **Align data pointer**<br>( -- )<br> If the data-space pointer is not single cell float aligned, reserve enough data space to make it so. |
+| SFALIGNED | no   | IC   | **Get aligned address**<br>(addr1 -- addr2)<br> The addr2 address is the first single cell float-aligned address greater than or equal to addr1. |
+| SFLOAT+   | no   | IC   | **Add floating point size**<br>(addr1 -- addr2)<br>Add the size in address units of a single cell floating-point number to addr1, giving addr2. |
+| SFLOATS   | no   | IC   | **Get floating point size**<br>(n1 -- n2)<br>n2 is the size in address units of n1 single cell floating point numbers. |
+
 
 ## Words (Extra)
 
@@ -69,4 +76,4 @@ Words definition table columns:
 
 ## TODO
 
-Words: `DFFIELD: FE. FFIELD: FS. F~ PRECISION SET-PRECISION SF! SF@ SFALIGN SFALIGNED SFFIELD: SFLOAT+ SFLOATS`
+Words: `DFFIELD: FE. FFIELD: FS. F~ PRECISION SET-PRECISION SFFIELD:`

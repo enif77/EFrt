@@ -65,6 +65,12 @@ namespace EFrt.Libs.FloatingExt
             _interpreter.AddPrimitiveWord("FTRUNC", FTruncAction);
             _interpreter.AddPrimitiveWord("FVALUE", FValueAction);
             _interpreter.AddPrimitiveWord("S>F", SToFAction);
+            _interpreter.AddPrimitiveWord("SF!", SFStoreAction);
+            _interpreter.AddPrimitiveWord("SF@", SFFetchAction);
+            _interpreter.AddPrimitiveWord("SFALIGN", () => 1);            // Does nothing.
+            _interpreter.AddPrimitiveWord("SFALIGNED", SFAlignedAction);  // Does the same as the word DFALIGNED.
+            _interpreter.AddPrimitiveWord("SFLOAT+", SFloatPlusAction);   // Does the same as the word CELL+.
+            _interpreter.AddPrimitiveWord("SFLOATS", SFloatsAction);      // Does the same as the word CELLS.
 
             // Extra
 
@@ -429,6 +435,66 @@ namespace EFrt.Libs.FloatingExt
             _interpreter.FStackFree(1);
 
             _interpreter.FPush(_interpreter.Pop());
+
+            return 1;
+        }
+
+        // (addr -- ) (F: f -- )
+        private int SFStoreAction()
+        {
+            _interpreter.StackExpect(1);
+            _interpreter.FStackExpect(1);
+
+            var addr = _interpreter.Pop();
+            var f = new SingleCellFloatingPointValue() { F = (float)_interpreter.FPop() };
+
+            _interpreter.State.Heap.Items[addr] = f.A;
+
+            return 1;
+        }
+
+        // (addr -- ) (F: -- f)
+        private int SFFetchAction()
+        {
+            _interpreter.StackExpect(1);
+            _interpreter.FStackFree(1);
+
+            var addr = _interpreter.Pop();
+
+            _interpreter.FPush(new SingleCellFloatingPointValue()
+            {
+                A = _interpreter.State.Heap.Items[addr]
+            }.F);
+
+            return 1;
+        }
+
+        // (addr -- addr)
+        private int SFAlignedAction()
+        {
+            _interpreter.StackExpect(1);
+
+            // Does nothing. Just checks its parameters.
+
+            return 1;
+        }
+
+        // (addr -- addr)
+        private int SFloatPlusAction()
+        {
+            _interpreter.StackExpect(1);
+
+            _interpreter.Push(_interpreter.Pop() + 1);  // Single cell floating point value uses one heap cell.
+
+            return 1;
+        }
+
+        // (n1 -- n2)
+        private int SFloatsAction()
+        {
+            _interpreter.StackExpect(1);
+
+            // Single cell floating point value uses one heap cell.
 
             return 1;
         }
