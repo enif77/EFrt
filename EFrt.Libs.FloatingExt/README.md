@@ -45,6 +45,8 @@ Words definition table columns:
 | FSQRT     | no   | IC   | **f2 = Sqrt(f1)**<br>(F: f1 -- f2)<br>f2 is the square root of f1. |
 | FTAN      | no   | IC   | **f2 = Tan(f1)**<br>(F: f1 -- f2)<br>f2 is the tangent of the radian angle f1. | 
 | FTANH     | no   | IC   | **f2 = Tanh(f1)**<br>(F: f1 -- f2)<br>f2 is the hyperbolic tangent of f1. | 
+| FTRUNC    | no   | IC   | **f2 = Truncate(f1)**<br>(F: f1 -- f2)<br>Round r1 to an integral value using the “round towards zero” rule, giving r2. | 
+| FVALUE x  | no   | IC   | **Named value**<br>(n -- )<br>Like a CONSTANT, but the value can be changed using the word TO. |
 | S>F       | no   | IC   | **Single cell integer to floating**<br>(n -- ) (F: -- f)<br>Converts a single cell integer on the top of the stack to a floationg point number and stores it on the top of the floating point stack. |
 
 ## Words (Extra)
@@ -67,4 +69,4 @@ Words definition table columns:
 
 ## TODO
 
-Words: `FE. FS. F~ PRECISION SET-PRECISION SF! SF@ SFALIGN SFALIGNED SFLOAT+ SFLOATS`
+Words: `DFFIELD: FE. FFIELD: FS. F~ PRECISION SET-PRECISION SF! SF@ SFALIGN SFALIGNED SFFIELD: SFLOAT+ SFLOATS`

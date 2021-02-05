@@ -7,6 +7,7 @@ namespace EFrt.Libs.FloatingExt
 
     using EFrt.Core;
     using EFrt.Core.Values;
+    using EFrt.Core.Words;
 
 
     /// <summary>
@@ -61,6 +62,8 @@ namespace EFrt.Libs.FloatingExt
             _interpreter.AddPrimitiveWord("FSQRT", FSqrtAction);
             _interpreter.AddPrimitiveWord("FTAN", FTanAction);
             _interpreter.AddPrimitiveWord("FTANH", FTanhAction);
+            _interpreter.AddPrimitiveWord("FTRUNC", FTruncAction);
+            _interpreter.AddPrimitiveWord("FVALUE", FValueAction);
             _interpreter.AddPrimitiveWord("S>F", SToFAction);
 
             // Extra
@@ -392,6 +395,29 @@ namespace EFrt.Libs.FloatingExt
             _interpreter.FStackExpect(1);
 
             _interpreter.FFunction((a) => Math.Tanh(a));
+
+            return 1;
+        }
+
+        // (F: f1 -- f2)
+        private int FTruncAction()
+        {
+            _interpreter.FStackExpect(1);
+
+            _interpreter.FFunction((a) => Math.Truncate(a));
+
+            return 1;
+        }
+
+        // FVALUE word-name
+        // (F: f -- )
+        private int FValueAction()
+        {
+            _interpreter.FStackExpect(1);
+
+            _interpreter.BeginNewWordCompilation();
+            _interpreter.AddWord(new FloatingPointValueWord(_interpreter, _interpreter.GetWordName(), _interpreter.FPop()));
+            _interpreter.EndNewWordCompilation();
 
             return 1;
         }

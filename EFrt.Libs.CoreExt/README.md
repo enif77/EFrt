@@ -29,7 +29,7 @@ Words definition table columns:
 | PICK     | no   | IC   | **Pick item from stack**<br>(index -- n)<br>The index is removed from the stack and then the indexth stack item is copied to the top of the stack. The top of stack has index 0, the second item index 1, and so on. |
 | ROLL     | no   | IC   | **Rotate indexth item to top**<br>(index -- n)<br>The index is removed from the stack and then the stack item selected by index, with 0 designating the top of stack, 1 the second item, and so on, is moved to the top of the stack. The intervening stack items are moved down one item. |
 | S\" str  | yes  | IC   | **String literal**<br>{ -- s}<br>Consume all source characters till the closing " character, creating a string from them and storing the result on the top of the object stack. Supports `\` escaped special characters. |
-| TO       | no   | IC   | **Set value**<br>(n -- )<br>Sets a value of a by VALUE created word. |
+| TO       | no   | IC   | **Set value**<br>(n -- )<br>Sets a value of a by VALUE or FVALUE created word. |
 | TRUE     | no   | IC   | **True**<br>( -- flag)<br>Constant that leaves the -1 (true) on the top of the stack. |
 | TUCK     | no   | IC   | **Dup stack top**<br>(n1 n2 -- n2 n1 n2)<br>Copy the first (top) stack item below the second stack item. |
 | VALUE x  | no   | IC   | **Named value**<br>(n -- )<br>Like a CONSTANT, but the value can be changed using the word TO. |

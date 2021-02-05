@@ -1,28 +1,27 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2021 Premysl Fara  */
 
-namespace EFrt.Libs.CoreEx.Words
+namespace EFrt.Core.Words
 {
     using EFrt.Core;
-    using EFrt.Core.Words;
 
 
     /// <summary>
     /// A word keeping an integer value.
     /// </summary>
-    public class ValueWord : AWordBase
+    public class FloatingPointValueWord : AWordBase
     {
         /// <summary>
         /// A value. Can be updated by the TO word.
         /// </summary>
-        public int Value { get; set; }
+        public double Value { get; set; }
 
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name">A name of this value.</param>
-        /// <param name="n">A value or an address.</param>
-        public ValueWord(IInterpreter interpreter, string name, int n)
+        /// <param name="f">A floating point value.</param>
+        public FloatingPointValueWord(IInterpreter interpreter, string name, double f)
             : base(interpreter)
         {
             Name = name;
@@ -31,12 +30,12 @@ namespace EFrt.Libs.CoreEx.Words
             {
                 Interpreter.StackFree(1);
 
-                Interpreter.Push(Value);
+                Interpreter.FPush(Value);
 
                 return 1;
             };
 
-            Value = n;
+            Value = f;
         }
     }
 }

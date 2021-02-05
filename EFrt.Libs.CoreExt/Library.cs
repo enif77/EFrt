@@ -268,20 +268,26 @@ namespace EFrt.Libs.CoreExt
             return 1;
         }
 
-        // (n -- )
+        // (n -- ) or (F: f -- )
         private int ToAction()
         {
             _interpreter.StackExpect(1);
 
             var valueWord = _interpreter.GetWord(_interpreter.GetWordName());
-            if (valueWord is ValueWord)
+            if (valueWord is SingleCellValueWord)
             {
-                ((ValueWord)valueWord).Value = _interpreter.Pop();
+                ((SingleCellValueWord)valueWord).Value = _interpreter.Pop();
+
+                return 1;
+            }
+            else if (valueWord is FloatingPointValueWord)
+            {
+                ((FloatingPointValueWord)valueWord).Value = _interpreter.FPop();
 
                 return 1;
             }
 
-            throw new Exception("A VALUE created word expected.");            
+            throw new Exception("A VALUE or FVALUE created word expected.");            
         }
 
         // (n1 n2 -- n2 n1 n2)
@@ -304,7 +310,7 @@ namespace EFrt.Libs.CoreExt
             _interpreter.StackExpect(1);
 
             _interpreter.BeginNewWordCompilation();
-            _interpreter.AddWord(new ValueWord(_interpreter, _interpreter.GetWordName(), _interpreter.Pop()));
+            _interpreter.AddWord(new SingleCellValueWord(_interpreter, _interpreter.GetWordName(), _interpreter.Pop()));
             _interpreter.EndNewWordCompilation();
 
             return 1;
