@@ -52,7 +52,7 @@ namespace EFrt.Libs.CoreExt
             _interpreter.AddPrimitiveWord("NIP", NipAction);
             _interpreter.AddPrimitiveWord("PICK", PickAction);
             _interpreter.AddPrimitiveWord("ROLL", RollAction);
-            _interpreter.AddImmediateWord("S\\\"", SBackslashQuotection);  // S\" ..."
+            _interpreter.AddImmediateWord("S\\\"", SBackslashQuoteAction);  // S\" ..."
             _interpreter.AddPrimitiveWord("TO", ToAction);
             _interpreter.AddPrimitiveWord("TUCK", TuckAction);
             _interpreter.AddPrimitiveWord("VALUE", ValueAction);
@@ -256,7 +256,7 @@ namespace EFrt.Libs.CoreExt
         }
 
         // { -- s}
-        private int SBackslashQuotection()
+        private int SBackslashQuoteAction()
         {
             if (_interpreter.IsCompiling == false)
             {
