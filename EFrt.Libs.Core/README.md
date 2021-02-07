@@ -109,12 +109,12 @@ Words definition table columns:
 | SWAP     | no   | IC   | **Swap top two items**<br>(n1 n2 -- n2 n1)<br>The top two stack items are interchanged. |
 | THEN     | yes  | C    | **End if**<br>( -- flag)<br>Used in an IF—ELSE—THEN sequence, marks the end of the conditional statement. |
 | TYPE     | no   | IC   | **Print string**<br>{s -- }<br>Prints out a string on the top of the object stack. |
-| UNTIL    | yes  | C    | **End BEGIN—UNTIL loop**<br>(flag -- )<br>If flag is zero, the loop continues execution at the word following the matching BEGIN. If flag is nonzero, the loop is exited and the word following the UNTIL is executed. |
 | U.       | no   | IC   | **Print top of stack**<br>(u -- )<br>Prints the unsigned integer number on the top of the stack. |
 | U<       | no   | IC   | **Less than**<br>(u1 u2 -- flag)<br>Returns -1 if u1 < u2, 0 otherwise. |
 | UM*      | no   | IC   | **ud = u1 * u2**<br>(u1 u2 -- ud)<br>ud is the unsigned product of u1 times u2. |
 | UM/MOD   | no   | IC   | **u2 = ud % u1, u3 = ud / u1**<br>(ud u1 -- u2 u3)<br>Divide ud by u1, giving the quotient u3 and the remainder u2. |
 | UNLOOP   | no   | C    | **Discard DO—LOOP control parameters**<br>[limit index -- ]<br>Loop control parameters are removed from the return stack. Use this before the EXITing a loop. |
+| UNTIL    | yes  | C    | **End BEGIN—UNTIL loop**<br>(flag -- )<br>If flag is zero, the loop continues execution at the word following the matching BEGIN. If flag is nonzero, the loop is exited and the word following the UNTIL is executed. |
 | VARIABLE x | no   | I    | **Declare variable**<br>A variable named x is declared and its value is set to zero. When x is executed, its address will be placed on the stack. Four bytes are reserved on the heap for the variable's value. |
 | WHILE    | yes  | C    | **Decide BEGIN—WHILE—REPEAT loop**<br>(flag -- )<br>If flag is nonzero, execution continues after the WHILE. If flag is zero, the loop is exited and execution resumed after the REPEAT that marks the end of the loop. |
 | XOR      | no   | IC   | **Bitwise exclusive or**<br>(n1 n2 -- n3)<br>Stores the bitwise exclusive or of n1 and n2 on the stack. |
@@ -128,9 +128,17 @@ Note: The `."` word works like `S" str" S.` words together.
 
 ## TODO
 
-Words: `ACCEPT COUNT DECIMAL ENVIRONMENT? EVALUATE FILL FIND MOVE WORD`
+Words: `COUNT DECIMAL ENVIRONMENT? EVALUATE FILL FIND MOVE WORD`
 
 Variables: `BASE STATE`
+
+
+## Skipped words
+
+```
+# #> #S <# >IN ACCEPT C! C, C@ CHAR+ CHARS HOLD KEY SIGN SOURCE
+```
+
 
 ## CREATE or BUILDS?
 

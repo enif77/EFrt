@@ -50,7 +50,14 @@ Words definition table columns:
 | CLEAR    | no   | IC   | **Clear stack**<b<br><br>r>All items on the data stack are discarded. |
 
 
-#### TODO
+## TODO
 
-Words: `.R CASE COMPILE, CONVERT ENDCASE ENDOF ERASE HEX MARKER OF PARSE
-  U.R U> UNUSED WITHIN [COMPILE]`
+Words: `.R ACTION-OF BUFFER: C" CASE COMPILE, DEFER DEFER! DEFER@ ENDCASE ENDOF ERASE HEX
+  IS OF MARKER OF PARSE PARSE-NAME U.R U> UNUSED WITHIN`
+
+
+## Skipped words
+
+```
+HOLDS PAD REFILL RESTORE-INPUT SAVE-INPUT SOURCE-ID [COMPILE]
+```
