@@ -79,11 +79,14 @@ namespace EFrt.Libs.Core
             _interpreter.AddPrimitiveWord("ABORT", AbortAction);
             _interpreter.AddImmediateWord("ABORT\"", AbortWithMessageAction);
             _interpreter.AddPrimitiveWord("ABS", AbsAction);
+            _interpreter.AddPrimitiveWord("ALIGN", () => 1);            // Does nothing.
+            _interpreter.AddPrimitiveWord("ALIGNED", AlignedAction);
             _interpreter.AddPrimitiveWord("ALLOT", AllotAction);
             _interpreter.AddPrimitiveWord("AND", AndAction);
             _interpreter.AddImmediateWord("BEGIN", BeginAction);
             _interpreter.AddConstantWord("BL", ' ');
-            _interpreter.AddPrimitiveWord("CELLS", () => 1);  // Does nothing, because the cell size is 1.
+            _interpreter.AddPrimitiveWord("CELL+", CellPlusAction); 
+            _interpreter.AddPrimitiveWord("CELLS", () => 1);         // Does nothing, because the cell size is 1.
             _interpreter.AddPrimitiveWord("CHAR", CharAction);
             _interpreter.AddPrimitiveWord("CONSTANT", ConstantAction);
             _interpreter.AddPrimitiveWord("CR", CrAction);
@@ -655,6 +658,16 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
+        // (addr -- addr)
+        private int AlignedAction()
+        {
+            _interpreter.StackExpect(1);
+
+            // Does nothing. Just checks its parameters.
+
+            return 1;
+        }
+
         // (n -- )
         private int AllotAction()
         {
@@ -689,6 +702,16 @@ namespace EFrt.Libs.Core
             // BEGIN word doesn't have a runtime behavior.
 
             _interpreter.RPush(_interpreter.WordBeingDefined.NextWordIndex);
+
+            return 1;
+        }
+
+        // (addr -- addr)
+        private int CellPlusAction()
+        {
+            _interpreter.StackExpect(1);
+
+            _interpreter.Push(_interpreter.Pop() + 1);  // Single cell integer point value uses one heap cell.
 
             return 1;
         }

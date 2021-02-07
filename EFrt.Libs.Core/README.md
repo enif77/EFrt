@@ -14,7 +14,7 @@ Words definition table columns:
 
 | Name     | Imm. | Mode | Description |
 | ---      | ---  | ---  | --- |
-| !        | no   | IC   | **Store into address**<br>(n addr -- )<br>Stores the value n into the address addr (a variables stack index). |
+| !        | no   | IC   | **Store into address**<br>(n addr -- )<br>Stores the value n into the address addr (a heap array index). |
 | ' x      | no   | IC   | **Obtain execution token**<br>( -- xt)<br>Places the execution token of the following word on the stack. |
 | (        | yes  | IC   | **Comment**<br>Skips all source characters till the closing ) character. |
 | *        | no   | IC   | **n3 = n1 * n2**<br>(n1 n2 -- n3)<br>Multiplies n1 and n2 and leaves the product on the stack. |
@@ -54,10 +54,13 @@ Words definition table columns:
 | ABORT    | no   | IC   | **Abort**<br>Clears the stack and the object stack and performs a QUIT. |
 | ABORT" str | yes  | C    | **Abort with message**<br>(flag -- )<br>Prints the string literal that follows in line, then aborts, clearing all execution state to return to the interpreter. |
 | ABS      | no   | IC   | **n2 = Abs(n1)**<br>(n1 -- n2)<br>Replaces the top of stack with its absolute value. |
+| ALIGN    | no   | IC   | **Align data pointer**<br>( -- )<br> If the data-space pointer is not single cell integer aligned, reserve enough data space to make it so. |
+| ALIGNED  | no   | IC   | **Get aligned address**<br>(addr1 -- addr2)<br> The addr2 address is the first single cell integer-aligned address greater than or equal to addr1. |
 | ALLOT    | no   | IC   | **Allocate heap**<br>(n -- )<br>Allocates n cells of heap space. |
 | AND      | no   | IC   | **Bitwise and**<br>(n1 n2 -- n3)<br>Stores the bitwise AND of n1 and n2 on the stack. |
 | BEGIN    | yes  | C    | **Begin loop**<br><br>Begins a loop. The end of the loop is marked by the matching AGAIN, REPEAT, or UNTIL. |
 | BL       | no   | IC   | **Blank**<br>( -- n)<br>Constant that leaves 32 (the ASCII code of the SPACE char) on the top of the stack. |
+| CELL+    | no   | IC   | **Add single cell integer size**<br>(addr1 -- addr2)<br>Add the size in address units of a single cell integer number to addr1, giving addr2. |
 | CELLS    | no   | IC   | **Cells to bytes**<br>(n1 -- n2)<br>Converts n1 cells to n2 memory address units (bytes). Does actually nothing, since the heap is addressed in cells and not in bytes. |
 | CHAR ccc | no   | IC   | **Char**<br>( -- c)<br>Skip leading spaces. Parse the string ccc and return c, the display code representing the first character of ccc. |
 | CONSTANT x | no   | I    | **Declare constant**<br>(n -- )<br>Declares a constant named x. When x is executed, the value n will be left on the stack. |
@@ -125,8 +128,7 @@ Note: The `."` word works like `S" str" S.` words together.
 
 ## TODO
 
-Words: `ACCEPT ALIGN ALIGNED CELL+ COUNT DECIMAL 
-  ENVIRONMENT? EVALUATE FILL FIND MOVE WORD`
+Words: `ACCEPT COUNT DECIMAL ENVIRONMENT? EVALUATE FILL FIND MOVE WORD`
 
 Variables: `BASE STATE`
 
