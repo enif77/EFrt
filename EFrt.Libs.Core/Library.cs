@@ -89,6 +89,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddPrimitiveWord("CELLS", () => 1);         // Does nothing, because the cell size is 1.
             _interpreter.AddPrimitiveWord("CHAR", CharAction);
             _interpreter.AddPrimitiveWord("CONSTANT", ConstantAction);
+            _interpreter.AddPrimitiveWord("COUNT", CountAction);
             _interpreter.AddPrimitiveWord("CR", CrAction);
             _interpreter.AddPrimitiveWord("CREATE", CreateAction);
             _interpreter.AddPrimitiveWord("DEPTH", DepthAction);
@@ -735,6 +736,19 @@ namespace EFrt.Libs.Core
             _interpreter.BeginNewWordCompilation();
             _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.GetWordName(), _interpreter.Pop()));
             _interpreter.EndNewWordCompilation();
+
+            return 1;
+        }
+
+        // ( -- n) {s -- s}
+        private int CountAction()
+        {
+            _interpreter.ObjectStackExpect(1);
+            _interpreter.StackFree(1);
+
+            var s = _interpreter.OPop().ToString();
+            _interpreter.Push(s.Length);
+            _interpreter.OPush(s);
 
             return 1;
         }

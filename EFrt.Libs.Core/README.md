@@ -64,7 +64,8 @@ Words definition table columns:
 | CELLS    | no   | IC   | **Cells to bytes**<br>(n1 -- n2)<br>Converts n1 cells to n2 memory address units (bytes). Does actually nothing, since the heap is addressed in cells and not in bytes. |
 | CHAR ccc | no   | IC   | **Char**<br>( -- c)<br>Skip leading spaces. Parse the string ccc and return c, the display code representing the first character of ccc. |
 | CONSTANT x | no   | I    | **Declare constant**<br>(n -- )<br>Declares a constant named x. When x is executed, the value n will be left on the stack. |
-| CR       | no   | IC   | **Carriage return**<br>The folowing output will start at the new line. |
+| COUNT    | no   | IC   | **String length**<br>( -- n) {o -- s} <br>Converts an object on the top of the object stack to a string and returns the number of characters (string.Length) in it. Leaves the string on the top of the object stack. |
+| CR       | no   | IC   | **Carriage return**<br>( -- )<br>The folowing output will start at the new line. |
 | CREATE   | no   | IC   | **Create object**<br>Create an object, given the name which appears next in the input stream, with a default action of pushing the parameter field address of the object when executed. No storage is allocated; normally the parameter field will be allocated and initialised by the defining word code that follows the CREATE. |
 | DEPTH    | no   | IC   | **Stack depth**<br>( -- n)<br>Returns the number of items on the stack before DEPTH was executed. |
 | DO       | yes  | C    | **Definite loop**<br>(limit index -- ) [ - limit index ]<br>Executes the loop from the following word to the matching LOOP or +LOOP until n increments past the boundary between limit−1 and limit. Note that the loop is always executed at least once (see ?DO for an alternative to this). |
@@ -128,7 +129,7 @@ Note: The `."` word works like `S" str" S.` words together.
 
 ## TODO
 
-Words: `COUNT DECIMAL ENVIRONMENT? EVALUATE FILL FIND MOVE WORD`
+Words: `DECIMAL ENVIRONMENT? EVALUATE FILL FIND MOVE WORD`
 
 Variables: `BASE STATE`
 
