@@ -101,6 +101,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddPrimitiveWord("EMIT", EmitAction);
             _interpreter.AddPrimitiveWord("EXECUTE", ExecuteAction);
             _interpreter.AddImmediateWord("EXIT", ExitAction);
+            _interpreter.AddPrimitiveWord("FILL", FillAction);
             _interpreter.AddPrimitiveWord("FM/MOD", FMSlashModAction);
             _interpreter.AddPrimitiveWord("HERE", HereAction);
             _interpreter.AddImmediateWord("I", GetInnerIndexAction);
@@ -897,6 +898,30 @@ namespace EFrt.Libs.Core
             // EXIT word doesn't have a runtime behavior.
 
             _interpreter.WordBeingDefined.AddWord(new ExitControlWord(_interpreter, _interpreter.WordBeingDefined));
+
+            return 1;
+        }
+
+        // (addr n1 n2 --)
+        private int FillAction()
+        {
+            _interpreter.StackExpect(3);
+
+            var v = _interpreter.Pop();
+            var count = _interpreter.Pop();
+            if (count > 0)
+            {
+                var addr = _interpreter.Pop();     // TODO: Check addr >= 0 && addr < heap.Count.
+                var items = _interpreter.State.Heap.Items;
+                for (var i = addr; i < (addr + count - 1); i++)
+                {
+                    items[i] = v;
+                }
+            }
+            else
+            {
+                _interpreter.Drop();
+            }
 
             return 1;
         }
