@@ -194,6 +194,7 @@ namespace EFrt.Core
             }
 
             InterpreterState = InterpreterStateCode.Compiling;
+            State.SetStateValue(true);
         }
 
 
@@ -206,6 +207,7 @@ namespace EFrt.Core
             }
 
             InterpreterState = InterpreterStateCode.SuspendingCompilation;
+            State.SetStateValue(false);
         }
 
 
@@ -218,6 +220,7 @@ namespace EFrt.Core
             }
 
             InterpreterState = InterpreterStateCode.Compiling;
+            State.SetStateValue(true);
         }
 
 
@@ -238,6 +241,7 @@ namespace EFrt.Core
 
             // Finish this word compilation.
             InterpreterState = InterpreterStateCode.Interpreting;
+            State.SetStateValue(false);
         }
 
         #endregion
@@ -275,7 +279,7 @@ namespace EFrt.Core
         {
             State.ReturnStack.Clear();
 
-            BreakExecution();
+            InterpreterState = InterpreterStateCode.Breaking;
         }
 
 
@@ -451,6 +455,7 @@ namespace EFrt.Core
             if (InterpreterState == InterpreterStateCode.Breaking)
             {
                 InterpreterState = InterpreterStateCode.Interpreting;
+                State.SetStateValue(false);
             }
         }
 
@@ -469,12 +474,6 @@ namespace EFrt.Core
             {
                 WordExecuted?.Invoke(this, new InterpreterEventArgs() { Word = word });
             }
-        }
-
-
-        public void BreakExecution()
-        {
-            InterpreterState = InterpreterStateCode.Breaking;
         }
 
 

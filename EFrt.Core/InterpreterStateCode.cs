@@ -28,7 +28,7 @@ namespace EFrt.Core
         Breaking,
 
         /// <summary>
-        /// The interpreter just executed the BYE word. The current interpretation is terminated and should not be restart.
+        /// The interpreter just executed the BYE word. The current interpretation is terminated and should not be restarted.
         /// </summary>
         Terminating
     }

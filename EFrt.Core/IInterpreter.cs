@@ -227,11 +227,6 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         int Execute(IWord word);
 
         /// <summary>
-        /// Asks the interpreter to break the current script execution.
-        /// </summary>
-        void BreakExecution();
-
-        /// <summary>
         /// Asks the interpreter to terminate the current script execution.
         /// </summary>
         void TerminateExecution();

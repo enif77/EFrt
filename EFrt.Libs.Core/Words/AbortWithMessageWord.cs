@@ -28,13 +28,7 @@ namespace EFrt.Libs.Core.Words
                 {
                     Interpreter.Output.WriteLine(_message);
 
-                    // Abort
-                    Interpreter.State.Stack.Clear();
-                    Interpreter.State.ObjectStack.Clear();
-
-                    // Quit
-                    Interpreter.State.ReturnStack.Clear();
-                    Interpreter.BreakExecution();
+                    Interpreter.Abort();
                 }
 
                 return 1;

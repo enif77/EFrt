@@ -133,7 +133,7 @@ Note: The `."` word works like `S" str" S.` words together.
 
 ## TODO
 
-Words: `DECIMAL ENVIRONMENT? EVALUATE FIND MOVE WORD`
+Words: `ENVIRONMENT? EVALUATE FIND MOVE WORD`
 
 
 ## Skipped words

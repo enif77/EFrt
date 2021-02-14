@@ -23,6 +23,10 @@ namespace EFrt.Core
 
         public ObjectHeap ObjectHeap { get; }
 
+        public int StateVariableAddress { get; }
+
+        public int BaseVariableAddress { get; }
+
         public IWordsList WordsList { get; }
 
 
@@ -36,6 +40,17 @@ namespace EFrt.Core
             Heap = heap ?? throw new ArgumentNullException(nameof(heap));
             ObjectHeap = objectHeap ?? throw new ArgumentNullException(nameof(objectHeap));
             WordsList = wordsList ?? throw new ArgumentNullException(nameof(wordsList));
+
+            // Allocate room for the STATE and the BASE variables.
+            var systemVarsIndex = Heap.Alloc(2);
+
+            // Setup the variables...
+            StateVariableAddress = systemVarsIndex;
+            BaseVariableAddress = systemVarsIndex + 1;
+
+            // ... with default values.
+            SetStateValue(false);  // False = interpreting.
+            SetBaseValue(10);      // Decimal.
         }
 
 
@@ -49,6 +64,20 @@ namespace EFrt.Core
             Heap.Clear();
             ObjectHeap.Clear();
             WordsList.Clear();
+        }
+
+
+        public void SetStateValue(bool value)
+        {
+            Heap.Items[StateVariableAddress] = value ? -1 : 0;
+        }
+
+
+        public void SetBaseValue(int value)
+        {
+            if (value < 2 || value > 36) throw new ArgumentOutOfRangeException(nameof(value), "The alloved BASE values are <2 .. 36>.");
+
+            Heap.Items[BaseVariableAddress] = value;
         }
     }
 }

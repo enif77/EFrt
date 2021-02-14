@@ -17,17 +17,6 @@ namespace EFrt.Libs.Core
     public class Library : IWordsLIbrary
     {
         /// <summary>
-        /// The "address" of the STATE variable.
-        /// </summary>
-        public int StateVariableAddress { get; }
-
-        /// <summary>
-        /// The "address" of the BASE variable.
-        /// </summary>
-        public int BaseVariableAddress { get; }
-
-
-        /// <summary>
         /// The name of this library.
         /// </summary>
         public string Name => "CORE";
@@ -42,17 +31,6 @@ namespace EFrt.Libs.Core
         public Library(IInterpreter interpreter)
         {
             _interpreter = interpreter;
-
-            // Allocate room for the STATE and the BASE variables.
-            var systemVarsIndex = _interpreter.State.Heap.Alloc(2);
-
-            // Setup the variables...
-            StateVariableAddress = systemVarsIndex;
-            BaseVariableAddress = systemVarsIndex + 1;
-
-            // ... with default values.
-            SetState(false);  // False = interpreting.
-            SetBase(10);      // Decimal.
         }
 
 
@@ -175,19 +153,6 @@ namespace EFrt.Libs.Core
             _interpreter.AddImmediateWord("[CHAR]", BracketCharAction);
             _interpreter.AddImmediateWord("]", RightBracketAction);
         }
-
-
-        private void SetState(bool value)
-        {
-            _interpreter.State.Heap.Items[StateVariableAddress] = value ? -1 : 0;
-        }
-
-
-        private void SetBase(int value)
-        {
-            _interpreter.State.Heap.Items[BaseVariableAddress] = value;
-        }
-
 
         // (n addr -- )
         private int StoreAction()
@@ -733,7 +698,7 @@ namespace EFrt.Libs.Core
         {
             _interpreter.StackFree(1);
 
-            _interpreter.Push(BaseVariableAddress);
+            _interpreter.Push(_interpreter.State.BaseVariableAddress);
 
             return 1;
         }
@@ -824,7 +789,7 @@ namespace EFrt.Libs.Core
         // ( -- )
         private int DecimalAction()
         {
-            SetBase(10);
+            _interpreter.State.SetBaseValue(10);
 
             return 1;
         }
@@ -1401,7 +1366,7 @@ namespace EFrt.Libs.Core
         {
             _interpreter.StackFree(1);
 
-            _interpreter.Push(StateVariableAddress);
+            _interpreter.Push(_interpreter.State.StateVariableAddress);
 
             return 1;
         }

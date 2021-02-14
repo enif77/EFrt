@@ -46,6 +46,16 @@ namespace EFrt.Core
         ObjectHeap ObjectHeap { get; }
 
         /// <summary>
+        /// The "address" of the STATE variable.
+        /// </summary>
+        int StateVariableAddress { get; }
+
+        /// <summary>
+        /// The "address" of the BASE variable.
+        /// </summary>
+        int BaseVariableAddress { get; }
+
+        /// <summary>
         /// The list of known words.
         /// </summary>
         IWordsList WordsList { get; }
@@ -55,5 +65,17 @@ namespace EFrt.Core
         /// Cleans up this state.
         /// </summary>
         void Reset();
+
+        /// <summary>
+        /// Sets the STATE variable value.
+        /// </summary>
+        /// <param name="value">A new STATE variable value.</param>
+        void SetStateValue(bool value);
+
+        /// <summary>
+        /// Sets the BASE variable value.
+        /// </summary>
+        /// <param name="value">A new BASE variable value.</param>
+        void SetBaseValue(int value);
     }
 }
