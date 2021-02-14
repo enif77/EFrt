@@ -58,6 +58,7 @@ Words definition table columns:
 | ALIGNED  | no   | IC   | **Get aligned address**<br>(addr1 -- addr2)<br> The addr2 address is the first single cell integer-aligned address greater than or equal to addr1. |
 | ALLOT    | no   | IC   | **Allocate heap**<br>(n -- )<br>Allocates n cells of heap space. |
 | AND      | no   | IC   | **Bitwise and**<br>(n1 n2 -- n3)<br>Stores the bitwise AND of n1 and n2 on the stack. |
+| BASE     | no   | IC   | **Number conversion radix address**<br>( -- addr)<br>The addr is the address of a cell containing the current number-conversion radix {2...36}. |
 | BEGIN    | yes  | C    | **Begin loop**<br><br>Begins a loop. The end of the loop is marked by the matching AGAIN, REPEAT, or UNTIL. |
 | BL       | no   | IC   | **Blank**<br>( -- n)<br>Constant that leaves 32 (the ASCII code of the SPACE char) on the top of the stack. |
 | CELL+    | no   | IC   | **Add single cell integer size**<br>(addr1 -- addr2)<br>Add the size in address units of a single cell integer number to addr1, giving addr2. |
@@ -108,6 +109,7 @@ Words definition table columns:
 | SM/REM   | no   | IC   | **n2 = d % n1, n3 = d / n1**<br>(d n1 -- n2 n3)<br>Divide d by n1, giving the symmetric quotient n3 and the remainder n2. |
 | SPACE    | no   | IC   | **Print SPACE**<br>Prints out the SPACE character. |
 | SPACES   | no   | IC   | **Print spaces**<br>(n -- )<br>Prints out N characters of SPACE, where N is a number on the top of the stack. |
+| STATE    | no   | IC   | **Interpreter state address**<br>( -- addr)<br>The addr is the address of a cell containing the compilation-state flag. STATE is tru ewhen in compilation state, false otherwise. |
 | SWAP     | no   | IC   | **Swap top two items**<br>(n1 n2 -- n2 n1)<br>The top two stack items are interchanged. |
 | THEN     | yes  | C    | **End if**<br>( -- flag)<br>Used in an IF—ELSE—THEN sequence, marks the end of the conditional statement. |
 | TYPE     | no   | IC   | **Print string**<br>{s -- }<br>Prints out a string on the top of the object stack. |
@@ -131,8 +133,6 @@ Note: The `."` word works like `S" str" S.` words together.
 ## TODO
 
 Words: `DECIMAL ENVIRONMENT? EVALUATE FIND MOVE WORD`
-
-Variables: `BASE STATE`
 
 
 ## Skipped words

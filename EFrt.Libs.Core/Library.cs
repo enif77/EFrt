@@ -17,6 +17,17 @@ namespace EFrt.Libs.Core
     public class Library : IWordsLIbrary
     {
         /// <summary>
+        /// The "address" of the STATE variable.
+        /// </summary>
+        public int StateVariableAddress { get; }
+
+        /// <summary>
+        /// The "address" of the BASE variable.
+        /// </summary>
+        public int BaseVariableAddress { get; }
+
+
+        /// <summary>
         /// The name of this library.
         /// </summary>
         public string Name => "CORE";
@@ -31,6 +42,17 @@ namespace EFrt.Libs.Core
         public Library(IInterpreter interpreter)
         {
             _interpreter = interpreter;
+
+            // Allocate room for the STATE and the BASE variables.
+            var systemVarsIndex = _interpreter.State.Heap.Alloc(2);
+
+            // Setup the variables...
+            StateVariableAddress = systemVarsIndex;
+            BaseVariableAddress = systemVarsIndex + 1;
+
+            // ... with default values.
+            SetState(false);  // False = interpreting.
+            SetBase(10);      // Decimal.
         }
 
 
@@ -83,6 +105,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddPrimitiveWord("ALIGNED", AlignedAction);
             _interpreter.AddPrimitiveWord("ALLOT", AllotAction);
             _interpreter.AddPrimitiveWord("AND", AndAction);
+            _interpreter.AddPrimitiveWord("BASE", BaseAction);
             _interpreter.AddImmediateWord("BEGIN", BeginAction);
             _interpreter.AddConstantWord("BL", ' ');
             _interpreter.AddPrimitiveWord("CELL+", CellPlusAction); 
@@ -133,6 +156,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddPrimitiveWord("SM/REM", SMSlashRemAction);
             _interpreter.AddPrimitiveWord("SPACE", SpaceAction);
             _interpreter.AddPrimitiveWord("SPACES", SpacesAction);
+            _interpreter.AddPrimitiveWord("STATE", StateAction);
             _interpreter.AddPrimitiveWord("SWAP", SwapAction);
             _interpreter.AddImmediateWord("THEN", ThenAction);
             _interpreter.AddImmediateWord("TYPE", TypeAction);
@@ -149,6 +173,18 @@ namespace EFrt.Libs.Core
             _interpreter.AddImmediateWord("[']", BracketTickAction);
             _interpreter.AddImmediateWord("[CHAR]", BracketCharAction);
             _interpreter.AddImmediateWord("]", RightBracketAction);
+        }
+
+
+        private void SetState(bool value)
+        {
+            _interpreter.State.Heap.Items[StateVariableAddress] = value ? -1 : 0;
+        }
+
+
+        private void SetBase(int value)
+        {
+            _interpreter.State.Heap.Items[BaseVariableAddress] = value;
         }
 
 
@@ -687,6 +723,16 @@ namespace EFrt.Libs.Core
             _interpreter.StackExpect(2);
 
             _interpreter.Function((n1, n2) => n1 & n2);
+
+            return 1;
+        }
+
+        // ( -- addr)
+        private int BaseAction()
+        {
+            _interpreter.StackFree(1);
+
+            _interpreter.Push(BaseVariableAddress);
 
             return 1;
         }
@@ -1337,6 +1383,16 @@ namespace EFrt.Libs.Core
 
                 _interpreter.Output.Write(sb.ToString());
             }
+
+            return 1;
+        }
+
+        // ( -- addr)
+        private int StateAction()
+        {
+            _interpreter.StackFree(1);
+
+            _interpreter.Push(StateVariableAddress);
 
             return 1;
         }
