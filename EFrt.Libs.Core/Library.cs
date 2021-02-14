@@ -115,6 +115,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddPrimitiveWord("COUNT", CountAction);
             _interpreter.AddPrimitiveWord("CR", CrAction);
             _interpreter.AddPrimitiveWord("CREATE", CreateAction);
+            _interpreter.AddPrimitiveWord("DECIMAL", DecimalAction);
             _interpreter.AddPrimitiveWord("DEPTH", DepthAction);
             _interpreter.AddImmediateWord("DO", DoAction);
             _interpreter.AddImmediateWord("DOES>", DoesAction);
@@ -816,6 +817,14 @@ namespace EFrt.Libs.Core
             _interpreter.WordBeingDefined = new CreatedWord(_interpreter, _interpreter.GetWordName(), _interpreter.State.Heap.Top + 1);
             _interpreter.AddWord(_interpreter.WordBeingDefined);
             _interpreter.EndNewWordCompilation();
+
+            return 1;
+        }
+
+        // ( -- )
+        private int DecimalAction()
+        {
+            SetBase(10);
 
             return 1;
         }
