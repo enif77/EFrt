@@ -25,6 +25,7 @@ Words definition table columns:
 | ?DO      | yes  | C    | **Conditional loop**<br>(limit index -- ) [ - limit index ]<br>If n equals limit, skip immediately to the matching LOOP or +LOOP. Otherwise, enter the loop, which is thenceforth treated as a normal DO loop. |
 | AGAIN    | yes  | C    | **Indefinite loop**<br>Marks the end of an idefinite loop opened by the matching BEGIN. |
 | FALSE    | no   | IC   | **False**<br>( -- flag)<br>Constant that leaves the 0 (false) on the top of the stack. |
+| HEX      | no   | IC   | **Set number conversion radix to sixteen**<br>( -- )<br>Set the numeric conversion radix to sixteen. |
 | NIP      | no   | IC   | **Drop item below stack top**<br>(n1 n2 -- n2)<br>Drop the first item below the top of the stack. |
 | PICK     | no   | IC   | **Pick item from stack**<br>(index -- n)<br>The index is removed from the stack and then the indexth stack item is copied to the top of the stack. The top of stack has index 0, the second item index 1, and so on. |
 | ROLL     | no   | IC   | **Rotate indexth item to top**<br>(index -- n)<br>The index is removed from the stack and then the stack item selected by index, with 0 designating the top of stack, 1 the second item, and so on, is moved to the top of the stack. The intervening stack items are moved down one item. |
@@ -52,7 +53,7 @@ Words definition table columns:
 
 ## TODO
 
-Words: `.R ACTION-OF BUFFER: C" CASE COMPILE, DEFER DEFER! DEFER@ ENDCASE ENDOF ERASE HEX
+Words: `.R ACTION-OF BUFFER: C" CASE COMPILE, DEFER DEFER! DEFER@ ENDCASE ENDOF ERASE
   IS OF MARKER OF PARSE PARSE-NAME U.R U> UNUSED WITHIN`
 
 

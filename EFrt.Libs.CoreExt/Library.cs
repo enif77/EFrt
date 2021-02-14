@@ -49,6 +49,7 @@ namespace EFrt.Libs.CoreExt
             _interpreter.AddPrimitiveWord("<>", NotEqualsAction);
             _interpreter.AddImmediateWord("?DO", QuestionDoAction);
             _interpreter.AddImmediateWord("AGAIN", AgainAction);
+            _interpreter.AddPrimitiveWord("HEX", HexAction);
             _interpreter.AddPrimitiveWord("NIP", NipAction);
             _interpreter.AddPrimitiveWord("PICK", PickAction);
             _interpreter.AddPrimitiveWord("ROLL", RollAction);
@@ -211,6 +212,14 @@ namespace EFrt.Libs.CoreExt
                 new AgainControlWord(
                     _interpreter,
                     _interpreter.RPop() - _interpreter.WordBeingDefined.NextWordIndex));
+
+            return 1;
+        }
+
+        // ( -- )
+        private int HexAction()
+        {
+            _interpreter.State.SetBaseValue(16);
 
             return 1;
         }
