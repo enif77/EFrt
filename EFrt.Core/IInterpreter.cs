@@ -90,8 +90,9 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// </summary>
         /// <param name="terminator">A character terminating the string.</param>
         /// <param name="allowSpecialChars">If true, '\' escaped special chars are supported.</param>
+        /// <param name="skipLeadingTerminators">If true, leading terminator chars are skipped.</param>
         /// <returns>A string.</returns>
-        string GetTerminatedString(char terminator, bool allowSpecialChars = false);
+        string GetTerminatedString(char terminator, bool allowSpecialChars = false, bool skipLeadingTerminators = false);
 
         /// <summary>
         /// Parses an integer number from a string.

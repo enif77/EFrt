@@ -123,6 +123,7 @@ Words definition table columns:
 | UNTIL    | yes  | C    | **End BEGIN—UNTIL loop**<br>(flag -- )<br>If flag is zero, the loop continues execution at the word following the matching BEGIN. If flag is nonzero, the loop is exited and the word following the UNTIL is executed. |
 | VARIABLE x | no   | I    | **Declare variable**<br>A variable named x is declared and its value is set to zero. When x is executed, its address will be placed on the stack. Four bytes are reserved on the heap for the variable's value. |
 | WHILE    | yes  | C    | **Decide BEGIN—WHILE—REPEAT loop**<br>(flag -- )<br>If flag is nonzero, execution continues after the WHILE. If flag is zero, the loop is exited and execution resumed after the REPEAT that marks the end of the loop. |
+| WORD     | no   | C    | **Parse word**<br>(c -- ) { -- s}<br>Skip leading delimiters (c). Parse characters ccc delimited by the char c. |
 | XOR      | no   | IC   | **Bitwise exclusive or**<br>(n1 n2 -- n3)<br>Stores the bitwise exclusive or of n1 and n2 on the stack. |
 | [        | yes  | C    | **Suspend compilation**<br>Within a compilation, returns to the interpretive state. |
 | [']      | yes  | C    | **Obtain execution token**<br>Places the execution token of the following word to the currently compiled word as a literal. |
@@ -134,7 +135,7 @@ Note: The `."` word works like `S" str" S.` words together.
 
 ## TODO
 
-Words: `ENVIRONMENT? EVALUATE FIND MOVE WORD`
+Words: `ENVIRONMENT? EVALUATE MOVE WORD`
 
 
 ## Skipped words

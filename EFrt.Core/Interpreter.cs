@@ -84,7 +84,7 @@ namespace EFrt.Core
                     throw new Exception("A name of a word expected.");
 
                 case TokenType.Word:
-                    return tok.SValue.ToUpperInvariant();
+                    return toUpperCase ? tok.SValue.ToUpperInvariant() : tok.SValue;
 
                 default:
                     throw new Exception($"Unexpected token type ({tok}) instead of a word name.");
@@ -92,9 +92,9 @@ namespace EFrt.Core
         }
 
 
-        public string GetTerminatedString(char terminator, bool allowSpecialChars = false)
+        public string GetTerminatedString(char terminator, bool allowSpecialChars = false, bool skipLeadingTerminators = false)
         {
-            return _tokenizer.ParseTerminatedString(terminator, allowSpecialChars);
+            return _tokenizer.ParseTerminatedString(terminator, allowSpecialChars, skipLeadingTerminators);
         }
 
 

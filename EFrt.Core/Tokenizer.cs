@@ -293,19 +293,40 @@ namespace EFrt.Core
         /// </summary>
         /// <param name="terminator">A character, that terminates the parsed string literal.</param>
         /// <param name="allowSpecialChars">If special (escape) characters are supported in the persed string literal.</param>
-        /// <returns></returns>
-        public string ParseTerminatedString(char terminator, bool allowSpecialChars = false)
+        /// <param name="skipLeadingTerminators">If true, leading terminator chars are skipped.</param>
+        /// <returns>A string.</returns>
+        public string ParseTerminatedString(char terminator, bool allowSpecialChars = false, bool skipLeadingTerminators = false)
         {
             var sb = new StringBuilder();
 
             var c = NextChar();
+            var leadingChars = true;
             while (CurrentChar != 0)
             {
                 if (CurrentChar == terminator)
                 {
-                    NextChar();
+                    if (skipLeadingTerminators && leadingChars)
+                    {
+                        while (CurrentChar == terminator)
+                        {
+                            NextChar();
 
-                    break;
+                            if (CurrentChar == 0)
+                            {
+                                // Terminators only = an empty string.
+                                return string.Empty;
+                            }
+                        }
+
+                        // We are at char behind the last terminator.
+                    }
+                    else
+                    {
+                        // Eat the terminator.
+                        NextChar();
+
+                        break;
+                    }
                 }
 
                 if (allowSpecialChars && CurrentChar == '\\')
@@ -321,6 +342,9 @@ namespace EFrt.Core
                 }
 
                 c = NextChar();
+
+                // No more at the beginning of a string.
+                leadingChars = false;
             }
 
             if (c != terminator)
@@ -328,7 +352,7 @@ namespace EFrt.Core
                 throw new Exception($"'{terminator}' expected.");
             }
 
-            if (CurrentChar != 0 && Tokenizer.IsWhite(CurrentChar) == false)
+            if (CurrentChar != 0 && IsWhite(CurrentChar) == false)
             {
                 throw new Exception("The EOF or an white character after a string terminator expected.");
             }

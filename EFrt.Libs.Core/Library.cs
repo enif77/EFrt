@@ -148,6 +148,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddImmediateWord("UNTIL", UntilAction);
             _interpreter.AddPrimitiveWord("VARIABLE", VariableAction);
             _interpreter.AddImmediateWord("WHILE", WhileAction);
+            _interpreter.AddPrimitiveWord("WORD", WordAction);
             _interpreter.AddPrimitiveWord("XOR", XorAction);
             _interpreter.AddImmediateWord("[", LeftBracketAction);
             _interpreter.AddImmediateWord("[']", BracketTickAction);
@@ -1568,6 +1569,23 @@ namespace EFrt.Libs.Core
             _interpreter.RPush(
                 _interpreter.WordBeingDefined.AddWord(
                     new WhileControlWord(_interpreter, _interpreter.WordBeingDefined.NextWordIndex)));
+
+            return 1;
+        }
+
+        // (c -- ) { -- s}
+        private int WordAction()
+        {
+            //if (_interpreter.IsCompiling == false)
+            //{
+            //    throw new Exception("WORD outside a new word definition.");
+            //}
+
+            _interpreter.StackExpect(1);
+            _interpreter.ObjectStackFree(1);
+
+            //_interpreter.WordBeingDefined.AddWord(new StringLiteralWord(_interpreter, _interpreter.GetTerminatedString((char)_interpreter.Pop(), false, true)));
+            _interpreter.OPush(_interpreter.GetTerminatedString((char)_interpreter.Pop(), false, true));
 
             return 1;
         }
