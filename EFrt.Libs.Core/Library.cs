@@ -104,6 +104,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddPrimitiveWord("EXECUTE", ExecuteAction);
             _interpreter.AddImmediateWord("EXIT", ExitAction);
             _interpreter.AddPrimitiveWord("FILL", FillAction);
+            _interpreter.AddPrimitiveWord("FIND", FindAction);
             _interpreter.AddPrimitiveWord("FM/MOD", FMSlashModAction);
             _interpreter.AddPrimitiveWord("HERE", HereAction);
             _interpreter.AddImmediateWord("I", GetInnerIndexAction);
@@ -941,6 +942,32 @@ namespace EFrt.Libs.Core
             else
             {
                 _interpreter.Drop();
+            }
+
+            return 1;
+        }
+
+        // ( -- 0 | xt 1 | xt -1) {s -- s | }
+        private int FindAction()
+        {
+            _interpreter.ObjectStackExpect(1);
+            _interpreter.StackFree(1);
+
+            var wordName = _interpreter.OPop().ToString();
+            if (_interpreter.State.WordsList.IsWordDefined(wordName.ToUpperInvariant()))
+            {
+                var word = _interpreter.State.WordsList.GetWord(wordName.ToUpperInvariant());
+
+                _interpreter.Push(word.ExecutionToken);
+
+                _interpreter.StackFree(1);
+
+                _interpreter.Push(word.IsImmediate ? 1 : -1);
+            }
+            else
+            {
+                _interpreter.Push(0);
+                _interpreter.OPush(wordName);
             }
 
             return 1;
