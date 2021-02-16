@@ -135,7 +135,7 @@ Note: The `."` word works like `S" str" S.` words together.
 
 ## TODO
 
-Words: `ENVIRONMENT? EVALUATE MOVE WORD`
+Words: `ENVIRONMENT? EVALUATE MOVE`
 
 
 ## Skipped words
