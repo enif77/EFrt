@@ -120,6 +120,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddPrimitiveWord("MAX", MaxAction);
             _interpreter.AddPrimitiveWord("MIN", MinAction);
             _interpreter.AddPrimitiveWord("MOD", ModAction);
+            _interpreter.AddPrimitiveWord("MOVE", MoveAction);
             _interpreter.AddPrimitiveWord("NEGATE", NegateAction);
             _interpreter.AddPrimitiveWord("OR", OrAction);
             _interpreter.AddPrimitiveWord("OVER", OverAction);
@@ -1173,6 +1174,25 @@ namespace EFrt.Libs.Core
 
             _interpreter.Function((n1, n2) => n1 % n2);
 
+            return 1;
+        }
+
+        // (addr1 addr2 u -- )
+        private int MoveAction()
+        {
+            _interpreter.StackExpect(3);
+
+            var count = _interpreter.Pop();
+            if (count > 0)
+            {
+                var addr2 = _interpreter.Pop();
+                _interpreter.State.Heap.Move(_interpreter.Pop(), addr2, count);
+            }
+            else
+            {
+                _interpreter.Drop(2);
+            }
+            
             return 1;
         }
 

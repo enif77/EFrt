@@ -95,6 +95,7 @@ Words definition table columns:
 | MAX      | no   | IC   | **Maximum**<br>(n1 n2 -- n3)<br>The greater of n1 and n2 is left on the top of the stack. |
 | MIN      | no   | IC   | **Minimum**<br>(n1 n2 -- n3)<br>The lesser of n1 and n2 is left on the top of the stack. |
 | MOD      | no   | IC   | **Modulus (remainder)**<br>(n1 n2 -- n3)<br>The remainder when n1 is divided by n2 is left on the top of the stack. |
+| MOVE     | no   | IC   | **Copy cells**<br>(addr1 addr2 u -- )<br>If u is greater than zero, copy the contents of u consecutive cells at addr1 to the u consecutive cells at addr2. After MOVE completes, the u consecutive cells at addr2 contain exactly what the u consecutive cells at addr1 contained before the move. |
 | NEGATE   | no   | IC   | **n2 = -n1**<br>(n1 -- n2)<br>Negates the value the top of the stack. |
 | OR       | no   | IC   | **Bitwise or**<br>(n1 n2 -- n3)<br>Stores the bitwise or of n1 and n2 on the stack. |
 | OVER     | no   | IC   | **Duplicate second item**<br>(n1 n2 -- n1 n2 n1)<br>The second item on the stack is copied to the top. |
@@ -135,7 +136,7 @@ Note: The `."` word works like `S" str" S.` words together.
 
 ## TODO
 
-Words: `ENVIRONMENT? EVALUATE MOVE`
+Words: `ENVIRONMENT? EVALUATE`
 
 
 ## Skipped words
