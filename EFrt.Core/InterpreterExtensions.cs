@@ -63,6 +63,7 @@ namespace EFrt.Core
         /// <summary>
         /// Executes a string as a FORTH program.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="src">A FORTH program source.</param>
         public static void Execute(this IInterpreter interpreter, string src)
         {
