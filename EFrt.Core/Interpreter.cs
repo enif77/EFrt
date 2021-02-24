@@ -29,15 +29,8 @@ namespace EFrt.Core
         private IOutputWriter _outputWriter;
         public IOutputWriter Output
         {
-            get
-            {
-                return _outputWriter;
-            }
-
-            set
-            {
-                _outputWriter = value ?? new NullWriter();
-            }
+            get => _outputWriter;
+            set => _outputWriter = value ?? new NullWriter();
         }
         public bool IsCompiling => InterpreterState == InterpreterStateCode.Compiling;
         public bool IsExecutionTerminated => InterpreterState == InterpreterStateCode.Breaking || InterpreterState == InterpreterStateCode.Terminating;
@@ -316,7 +309,7 @@ namespace EFrt.Core
 
             this.Push(exceptionCode);
 
-            // Will be catched by the CATCH word.
+            // Will be caught by the CATCH word.
             throw new InterpreterException(exceptionCode, message);
         }
 
@@ -362,7 +355,7 @@ namespace EFrt.Core
                                 WordBeingDefined.AddWord(word);
                             }
                         }
-                        else if (string.Compare(WordBeingDefined.Name, wordName, true) == 0)
+                        else if (string.Compare(WordBeingDefined.Name, wordName, StringComparison.OrdinalIgnoreCase) == 0)
                         {
                             // Recursive call of the currently compiled word.
                             WordBeingDefined.AddWord(WordBeingDefined);
@@ -451,7 +444,7 @@ namespace EFrt.Core
                 tok = _tokenizer.NextTok();
             }
 
-            // Execution breaked. Return to interpreting mode.
+            // Execution broken. Return to interpreting mode.
             if (InterpreterState == InterpreterStateCode.Breaking)
             {
                 InterpreterState = InterpreterStateCode.Interpreting;
