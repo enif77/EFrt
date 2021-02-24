@@ -21,10 +21,10 @@ Words definition table columns:
 | */       | no   | IC   | **n4 = (n1 * n2) / n3**<br>(n1 n2 n3 -- n4)<br>Multiplies n1 and n2 producing the double-cell result d. Divides d by n3 giving the single cell quotient n4. |
 | */MOD    | no   | IC   | **n5 = (n1 * n2) / n3, n4 = (n1 * n2) % n3**<br>(n1 n2 n3 -- n4 n5)<br>Multiplies n1 and n2 producing the double-cell result d. Divides d by n3 giving the single cell remainder n4 and singlecell quotient n5. |
 | +        | no   | IC   | **n3 = n1 + n2**<br>(n1 n2 -- n3)<br>Adds n1 and n2 and leaves the sum on the stack. |
-| +!       | no   | IC   | **addr += n**<br>(n addr -- )<br>Adds n to the contens at the address addr. |
+| +!       | no   | IC   | **addr += n**<br>(n addr -- )<br>Adds n to the contents at the address addr. |
 | +LOOP    | yes  | C    | **Add to loop index**<br>(n -- )<br>Adds n to the index of the active loop. If the limit is reached, the loop is exited. Otherwise, another iteration is begun. |
 | ,        | no   | IC   | **Store in heap**<br>Reserves a single cell of data heap, initialising it to n. |
-| -        | no   | IC   | **n3 = n1 - n2**<br>(n1 n2 -- n3)<br>Substracts n2 from n1 and leaves the difference on the stack. |
+| -        | no   | IC   | **n3 = n1 - n2**<br>(n1 n2 -- n3)<br>Subtracts n2 from n1 and leaves the difference on the stack. |
 | .        | no   | IC   | **Print top of stack**<br>(n -- )<br>Prints the integer number on the top of the stack. |
 | ." str   | yes  | C    | **Print immediate string**<br>Prints the string that follows in the input stream. |
 | /        | no   | IC   | **n3 = n1 / n2**<br>(n1 n2 -- n3)<br>Divides n1 by n2 and leaves the quotient on the stack. |
@@ -32,9 +32,9 @@ Words definition table columns:
 | 0<       | no   | IC   | **Less than zero**<br>(n -- flag)<br>Returns -1 if n1 is less than 0, 0 otherwise. |
 | 0=       | no   | IC   | **Equal to zero**<br>(n -- flag)<br>Returns -1 if n1 is equal to 0, 0 otherwise. |
 | 1+       | no   | IC   | **Add one**<br>(n1 -- n2)<br>Adds one to the top of the stack. |
-| 1-       | no   | IC   | **Subtract one**<br>(n1 -- n2)<br>Substracts one from the top of the stack. |
+| 1-       | no   | IC   | **Subtract one**<br>(n1 -- n2)<br>Subtracts one from the top of the stack. |
 | 2!       | no   | IC   | **Store two words**<br>(n1 n2 addr -- )<br>Stores the two words n1 and n2 at addresses addr and addr + 1. |
-| 2*       | no   | IC   | **Times two**<br>(n1 -- n2)<br>Substracts two from the top of the stack. |
+| 2*       | no   | IC   | **Times two**<br>(n1 -- n2)<br>Multiplies the top of the stack by two. |
 | 2/       | no   | IC   | **Divide by two**<br>(n1 -- n2)<br>Divides the top of the stack by two. |
 | 2@       | no   | IC   | **Load two words**<br>(addr -- n1 n2)<br>Places the two words starting at addr on the top of the stack. |
 | 2DROP    | no   | IC   | **Double drop**<br>(n1 n2 -- )<br>Discards two topmost items on the stack. |

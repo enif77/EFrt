@@ -21,7 +21,7 @@ namespace EFrt.Libs.Core
         /// </summary>
         public string Name => "CORE";
 
-        private IInterpreter _interpreter;
+        private readonly IInterpreter _interpreter;
 
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace EFrt.Libs.Core
 
 
         /// <summary>
-        /// Definas words from this library.
+        /// Defines words from this library.
         /// </summary>
         public void DefineWords()
         {
@@ -267,7 +267,7 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // Compilation: [index of the word folowing DO/?DO -- ], runtime: (n -- )
+        // Compilation: [index of the word following DO/?DO -- ], runtime: (n -- )
         private int PlusLoopAction()
         {
             if (_interpreter.IsCompiling == false)
@@ -635,7 +635,7 @@ namespace EFrt.Libs.Core
         }
 
         // ( -- )
-        public int AbortAction()
+        private int AbortAction()
         {
             _interpreter.Abort();
 
@@ -706,7 +706,7 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // [ -- index-of-a-word-folowing-BEGIN ]
+        // [ -- index-of-a-word-following-BEGIN ]
         private int BeginAction()
         {
             if (_interpreter.IsCompiling == false)
@@ -873,16 +873,16 @@ namespace EFrt.Libs.Core
                 _interpreter.ReturnStackFree(1);
 
                 // Get the index past where ELSE will be.
-                var indexFolowingElse = _interpreter.WordBeingDefined.NextWordIndex + 1;
+                var indexFollowingElse = _interpreter.WordBeingDefined.NextWordIndex + 1;
 
                 // Instantiate the ELSE runtime code passing the index following ELSE.
                 // Push execute address of ELSE word onto control flow stack.
                 _interpreter.RPush(
                     _interpreter.WordBeingDefined.AddWord(
-                        new ElseControlWord(_interpreter, indexFolowingElse)));
+                        new ElseControlWord(_interpreter, indexFollowingElse)));
 
                 // Inform the if control word of this index as well
-                ((IfControlWord)ifControlWord).SetElseIndex(indexFolowingElse);
+                ((IfControlWord)ifControlWord).SetElseIndex(indexFollowingElse);
             }
             else
             {
@@ -1286,7 +1286,7 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // [ index-of-a-word-folowing-BEGIN -- ]
+        // [ index-of-a-word-following-BEGIN -- ]
         private int RepeatAction()
         {
             if (_interpreter.IsCompiling == false)
@@ -1539,7 +1539,7 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // [ index-of-a-word-folowing-BEGIN -- ]
+        // [ index-of-a-word-following-BEGIN -- ]
         private int UntilAction()
         {
             if (_interpreter.IsCompiling == false)
@@ -1650,7 +1650,7 @@ namespace EFrt.Libs.Core
                 throw new Exception("[CHAR] outside a new word definition.");
             }
 
-             _interpreter.WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(_interpreter, _interpreter.GetWordName()[0]));
+            _interpreter.WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(_interpreter, _interpreter.GetWordName()[0]));
 
             return 1;
         }
