@@ -236,7 +236,7 @@ namespace EFrt.Libs.Floating
             _interpreter.FStackExpect(1);
 
             _interpreter.BeginNewWordCompilation();
-            _interpreter.AddWord(new FloatingPointConstantWord(_interpreter, _interpreter.GetWordName(), _interpreter.FPop()));
+            _interpreter.AddWord(new FloatingPointConstantWord(_interpreter, _interpreter.ParseWord(), _interpreter.FPop()));
             _interpreter.EndNewWordCompilation();
 
             return 1;
@@ -394,7 +394,7 @@ namespace EFrt.Libs.Floating
         private int FVariableAction()
         {
             _interpreter.BeginNewWordCompilation();
-            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.GetWordName(), _interpreter.State.Heap.Alloc(2)));
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.ParseWord(), _interpreter.State.Heap.Alloc(2)));
             _interpreter.EndNewWordCompilation();
 
             return 1;

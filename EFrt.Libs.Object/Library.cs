@@ -69,7 +69,7 @@ namespace EFrt.Libs.Object
         private int VariableCompilationAction()
         {
             _interpreter.BeginNewWordCompilation();
-            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.GetWordName(), _interpreter.State.ObjectHeap.Alloc(1)));
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.ParseWord(), _interpreter.State.ObjectHeap.Alloc(1)));
             _interpreter.EndNewWordCompilation();
 
             return 1;

@@ -87,7 +87,7 @@ namespace EFrt.Libs.DoubleExt
         {
             _interpreter.ObjectStackExpect(1);
 
-            var n = _interpreter.ParseNumber(_interpreter.OPop().ToString(), out var success);
+            var n = _interpreter.ParseIntegerNumber(_interpreter.OPop().ToString(), out var success);
             if (success)
             {
                 _interpreter.StackFree(3);

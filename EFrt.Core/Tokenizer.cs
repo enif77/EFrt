@@ -27,7 +27,7 @@ namespace EFrt.Core
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="source">A program source.</param>
+        /// <param name="sourceReader">A program source.</param>
         public Tokenizer(ISourceReader sourceReader)
         {
             _sourceReader = sourceReader;
@@ -63,7 +63,7 @@ namespace EFrt.Core
         }
 
 
-        private ISourceReader _sourceReader;
+        private readonly ISourceReader _sourceReader;
 
 
         private Token ParseWord()
@@ -138,7 +138,7 @@ namespace EFrt.Core
                 sourceReader.NextChar();
             }
 
-            // Check, that we have atleast one digit here.
+            // Check, that we have at least one digit here.
             if (haveDigit == false)
             {
                 // No digit yet = badly formatted number.
@@ -292,7 +292,7 @@ namespace EFrt.Core
         /// Parses a terminated string literal.
         /// </summary>
         /// <param name="terminator">A character, that terminates the parsed string literal.</param>
-        /// <param name="allowSpecialChars">If special (escape) characters are supported in the persed string literal.</param>
+        /// <param name="allowSpecialChars">If special (escape) characters are supported in the parsed string literal.</param>
         /// <param name="skipLeadingTerminators">If true, leading terminator chars are skipped.</param>
         /// <returns>A string.</returns>
         public string ParseTerminatedString(char terminator, bool allowSpecialChars = false, bool skipLeadingTerminators = false)
@@ -332,7 +332,7 @@ namespace EFrt.Core
                 if (allowSpecialChars && CurrentChar == '\\')
                 {
                     sb.Append(ParseStringSpecialChar());
-                    c = CurrentChar;  // The CurrentChar contains the character folowing the escaped special char.
+                    c = CurrentChar;  // The CurrentChar contains the character following the escaped special char.
 
                     continue;
                 }

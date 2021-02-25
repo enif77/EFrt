@@ -20,7 +20,7 @@ namespace EFrt.Libs.CoreExt
         /// </summary>
         public string Name => "CORE-EXT";
 
-        private IInterpreter _interpreter;
+        private readonly IInterpreter _interpreter;
 
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace EFrt.Libs.CoreExt
         // ( -- )
         private int DotParenAction()
         {
-            _interpreter.Output.Write(_interpreter.GetTerminatedString(')'));
+            _interpreter.Output.Write(_interpreter.ParseTerminatedString(')'));
 
             return 1;
         }
@@ -196,7 +196,7 @@ namespace EFrt.Libs.CoreExt
             return 1;
         }
 
-        // [ index-of-a-word-folowing-BEGIN -- ]
+        // [ index-of-a-word-following-BEGIN -- ]
         private int AgainAction()
         {
             if (_interpreter.IsCompiling == false)
@@ -272,7 +272,7 @@ namespace EFrt.Libs.CoreExt
                 throw new Exception("S\\\" outside a new word definition.");
             }
 
-            _interpreter.WordBeingDefined.AddWord(new StringLiteralWord(_interpreter, _interpreter.GetTerminatedString('"', true)));
+            _interpreter.WordBeingDefined.AddWord(new StringLiteralWord(_interpreter, _interpreter.ParseTerminatedString('"', true)));
 
             return 1;
         }
@@ -282,7 +282,7 @@ namespace EFrt.Libs.CoreExt
         {
             _interpreter.StackExpect(1);
 
-            var valueWord = _interpreter.GetWord(_interpreter.GetWordName());
+            var valueWord = _interpreter.GetWord(_interpreter.ParseWord());
             if (valueWord is SingleCellValueWord)
             {
                 ((SingleCellValueWord)valueWord).Value = _interpreter.Pop();
@@ -319,7 +319,7 @@ namespace EFrt.Libs.CoreExt
             _interpreter.StackExpect(1);
 
             _interpreter.BeginNewWordCompilation();
-            _interpreter.AddWord(new SingleCellValueWord(_interpreter, _interpreter.GetWordName(), _interpreter.Pop()));
+            _interpreter.AddWord(new SingleCellValueWord(_interpreter, _interpreter.ParseWord(), _interpreter.Pop()));
             _interpreter.EndNewWordCompilation();
 
             return 1;
@@ -329,9 +329,9 @@ namespace EFrt.Libs.CoreExt
         private int BackslashAction()
         {
             _interpreter.NextChar();
-            while (_interpreter.CurrentChar != 0)
+            while (_interpreter.CurrentChar() != 0)
             {
-                if (_interpreter.CurrentChar == '\n')
+                if (_interpreter.CurrentChar() == '\n')
                 {
                     _interpreter.NextChar();
 

@@ -422,7 +422,7 @@ namespace EFrt.Libs.FloatingExt
             _interpreter.FStackExpect(1);
 
             _interpreter.BeginNewWordCompilation();
-            _interpreter.AddWord(new FloatingPointValueWord(_interpreter, _interpreter.GetWordName(), _interpreter.FPop()));
+            _interpreter.AddWord(new FloatingPointValueWord(_interpreter, _interpreter.ParseWord(), _interpreter.FPop()));
             _interpreter.EndNewWordCompilation();
 
             return 1;

@@ -174,7 +174,7 @@ namespace EFrt.Libs.Core
         {
             _interpreter.StackFree(1);
 
-            var wordName = _interpreter.GetWordName();
+            var wordName = _interpreter.ParseWord();
             if (_interpreter.State.WordsList.IsWordDefined(wordName))
             {
                 _interpreter.Push(_interpreter.State.WordsList.GetWord(wordName).ExecutionToken);
@@ -191,9 +191,9 @@ namespace EFrt.Libs.Core
         private int ParenAction()
         {
             var c = _interpreter.NextChar();
-            while (_interpreter.CurrentChar != 0)
+            while (_interpreter.CurrentChar() != 0)
             {
-                if (_interpreter.CurrentChar == ')')
+                if (_interpreter.CurrentChar() == ')')
                 {
                     _interpreter.NextChar();
 
@@ -331,7 +331,7 @@ namespace EFrt.Libs.Core
                 throw new Exception(".\" outside a new word definition.");
             }
 
-            _interpreter.WordBeingDefined.AddWord(new PrintStringWord(_interpreter, _interpreter.GetTerminatedString('"')));
+            _interpreter.WordBeingDefined.AddWord(new PrintStringWord(_interpreter, _interpreter.ParseTerminatedString('"')));
 
             return 1;
         }
@@ -513,7 +513,7 @@ namespace EFrt.Libs.Core
         private int ColonAction()
         {
             _interpreter.BeginNewWordCompilation();
-            _interpreter.WordBeingDefined = new NonPrimitiveWord(_interpreter, _interpreter.GetWordName());
+            _interpreter.WordBeingDefined = new NonPrimitiveWord(_interpreter, _interpreter.ParseWord());
 
             return 1;
         }
@@ -582,7 +582,7 @@ namespace EFrt.Libs.Core
         {
             _interpreter.StackFree(1);
 
-            var n = _interpreter.ParseNumber(_interpreter.OPop().ToString(), out var success);
+            var n = _interpreter.ParseIntegerNumber(_interpreter.OPop().ToString(), out var success);
             if (success)
             {
                 _interpreter.StackFree(2);
@@ -650,7 +650,7 @@ namespace EFrt.Libs.Core
                 throw new Exception("ABORT\" outside a new word definition.");
             }
 
-            _interpreter.WordBeingDefined.AddWord(new AbortWithMessageWord(_interpreter, _interpreter.GetTerminatedString('"')));
+            _interpreter.WordBeingDefined.AddWord(new AbortWithMessageWord(_interpreter, _interpreter.ParseTerminatedString('"')));
 
             return 1;
         }
@@ -738,7 +738,7 @@ namespace EFrt.Libs.Core
         {
             _interpreter.StackFree(1);
 
-            _interpreter.Push(_interpreter.GetWordName(false)[0]);
+            _interpreter.Push(_interpreter.ParseWord(false)[0]);
 
             return 1;
         }
@@ -750,7 +750,7 @@ namespace EFrt.Libs.Core
             _interpreter.StackExpect(1);
 
             _interpreter.BeginNewWordCompilation();
-            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.GetWordName(), _interpreter.Pop()));
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.ParseWord(), _interpreter.Pop()));
             _interpreter.EndNewWordCompilation();
 
             return 1;
@@ -782,7 +782,7 @@ namespace EFrt.Libs.Core
         private int CreateAction()
         {
             _interpreter.BeginNewWordCompilation();
-            _interpreter.WordBeingDefined = new CreatedWord(_interpreter, _interpreter.GetWordName(), _interpreter.State.Heap.Top + 1);
+            _interpreter.WordBeingDefined = new CreatedWord(_interpreter, _interpreter.ParseWord(), _interpreter.State.Heap.Top + 1);
             _interpreter.AddWord(_interpreter.WordBeingDefined);
             _interpreter.EndNewWordCompilation();
 
@@ -1236,7 +1236,7 @@ namespace EFrt.Libs.Core
                 throw new Exception("POSTPONE outside a new word definition.");
             }
 
-            _interpreter.WordBeingDefined.AddWord(_interpreter.GetWord(_interpreter.GetWordName()));
+            _interpreter.WordBeingDefined.AddWord(_interpreter.GetWord(_interpreter.ParseWord()));
 
             return 1;
         }
@@ -1350,7 +1350,7 @@ namespace EFrt.Libs.Core
                 throw new Exception("S\" outside a new word definition.");
             }
 
-            _interpreter.WordBeingDefined.AddWord(new StringLiteralWord(_interpreter, _interpreter.GetTerminatedString('"')));
+            _interpreter.WordBeingDefined.AddWord(new StringLiteralWord(_interpreter, _interpreter.ParseTerminatedString('"')));
 
             return 1;
         }
@@ -1569,7 +1569,7 @@ namespace EFrt.Libs.Core
             }
 
             _interpreter.BeginNewWordCompilation();
-            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.GetWordName(), _interpreter.State.Heap.Alloc(1)));
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.ParseWord(), _interpreter.State.Heap.Alloc(1)));
             _interpreter.EndNewWordCompilation();
 
             return 1;
@@ -1605,7 +1605,7 @@ namespace EFrt.Libs.Core
             _interpreter.ObjectStackFree(1);
 
             //_interpreter.WordBeingDefined.AddWord(new StringLiteralWord(_interpreter, _interpreter.GetTerminatedString((char)_interpreter.Pop(), false, true)));
-            _interpreter.OPush(_interpreter.GetTerminatedString((char)_interpreter.Pop(), false, true));
+            _interpreter.OPush(_interpreter.ParseTerminatedString((char)_interpreter.Pop(), false, true));
 
             return 1;
         }
@@ -1637,7 +1637,7 @@ namespace EFrt.Libs.Core
                 throw new Exception("['] outside a new word definition.");
             }
 
-            _interpreter.WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(_interpreter, _interpreter.GetWord(_interpreter.GetWordName()).ExecutionToken));
+            _interpreter.WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(_interpreter, _interpreter.GetWord(_interpreter.ParseWord()).ExecutionToken));
 
             return 1;
         }
@@ -1650,7 +1650,7 @@ namespace EFrt.Libs.Core
                 throw new Exception("[CHAR] outside a new word definition.");
             }
 
-            _interpreter.WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(_interpreter, _interpreter.GetWordName()[0]));
+            _interpreter.WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(_interpreter, _interpreter.ParseWord()[0]));
 
             return 1;
         }

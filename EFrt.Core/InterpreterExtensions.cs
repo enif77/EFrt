@@ -129,6 +129,67 @@ namespace EFrt.Core
         #endregion
 
 
+        #region parsing
+
+        /// <summary>
+        /// Reads the next character from the input.
+        /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
+        /// <returns>The next character from the input or 0 at the end of the source.</returns>
+        public static char CurrentChar(this IInterpreter interpreter)
+            => interpreter.InputSource.CurrentChar;
+        
+        /// <summary>
+        /// Reads the next character from the input.
+        /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
+        /// <returns>The next character from the input or 0 at the end of the source.</returns>
+        public static char NextChar(this IInterpreter interpreter)
+            => interpreter.InputSource.NextChar();
+
+        /// <summary>
+        /// Returns a word name following in the input stream.
+        /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
+        /// <param name="toUpperCase">If true (the default), returned word is converted to UPPERCASE.</param>
+        /// <returns>A word name.</returns>
+        public static string ParseWord(this IInterpreter interpreter, bool toUpperCase = true)
+            => interpreter.InputSource.ParseWord(toUpperCase);
+
+        /// <summary>
+        /// Gets a string terminated by a terminator char.
+        /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
+        /// <param name="terminator">A character terminating the string.</param>
+        /// <param name="allowSpecialChars">If true, '\' escaped special chars are supported.</param>
+        /// <param name="skipLeadingTerminators">If true, leading terminator chars are skipped.</param>
+        /// <returns>A string.</returns>
+        public static string ParseTerminatedString(this IInterpreter interpreter, char terminator, bool allowSpecialChars = false, bool skipLeadingTerminators = false)
+            => interpreter.InputSource.ParseTerminatedString(terminator, allowSpecialChars, skipLeadingTerminators);
+
+        /// <summary>
+        /// Parses an integer number from a string.
+        /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
+        /// <param name="s">A string containing a number.</param>
+        /// <param name="success">True, if parsing succeeded.</param>
+        /// <returns>A parsed number.</returns>
+        public static long ParseIntegerNumber(this IInterpreter interpreter, string s, out bool success)
+            => interpreter.InputSource.ParseIntegerNumber(s, out success);
+
+        /// <summary>
+        /// Parses a floating point number from a string.
+        /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
+        /// <param name="s">A string containing a number.</param>
+        /// <param name="success">True, if parsing succeeded.</param>
+        /// <returns>A parsed number.</returns>
+        public static double ParseFloatingPointNumber(this IInterpreter interpreter, string s, out bool success)
+            => interpreter.InputSource.ParseFloatingPointNumber(s, out success);
+        
+        #endregion
+        
+        
         #region execution
 
         /// <summary>

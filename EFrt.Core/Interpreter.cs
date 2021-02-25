@@ -26,6 +26,7 @@ namespace EFrt.Core
     {
         public InterpreterStateCode InterpreterState { get; private set; }
         public IInterpreterState State { get; }
+        public IInputSource InputSource => _inputSource;
         private IOutputWriter _outputWriter;
         public IOutputWriter Output
         {
@@ -52,85 +53,6 @@ namespace EFrt.Core
 
             Reset();
         }
-
-
-        #region parsing
-
-        private Tokenizer _tokenizer;
-        public char CurrentChar => _tokenizer.CurrentChar;
-        public int SourcePos => _tokenizer.SourcePos;
-
-
-        public char NextChar()
-        {
-            return _tokenizer.NextChar();
-        }
-
-
-        public string GetWordName(bool toUpperCase = true)
-        {
-            // Get the name of the new word.
-            var tok = _tokenizer.NextTok();
-            switch (tok.Code)
-            {
-                case TokenType.Eof:
-                    throw new Exception("A name of a word expected.");
-
-                case TokenType.Word:
-                    return toUpperCase ? tok.SValue.ToUpperInvariant() : tok.SValue;
-
-                default:
-                    throw new Exception($"Unexpected token type ({tok}) instead of a word name.");
-            }
-        }
-
-
-        public string GetTerminatedString(char terminator, bool allowSpecialChars = false, bool skipLeadingTerminators = false)
-        {
-            return _tokenizer.ParseTerminatedString(terminator, allowSpecialChars, skipLeadingTerminators);
-        }
-
-
-        public long ParseNumber(string s, out bool success)
-        {
-            success = true;
-
-            // An unknown word can be a number.
-            var t = _tokenizer.ParseNumber(s, true, true, true);
-            switch (t.Code)
-            {
-                case TokenType.SingleCellInteger: return t.IValue;
-                case TokenType.DoubleCellInteger: return t.LValue;
-                case TokenType.Float: return (long)t.FValue;
-
-                // No, it is something else.
-                default:
-                    success = false;
-                    return 0;
-            }
-        }
-
-
-        public double ParseFloatingPointNumber(string s, out bool success)
-        {
-            success = true;
-
-            // An unknown word can be a number.
-            var t = _tokenizer.ParseNumber(s, true, true, true);
-            switch (t.Code)
-            {
-                case TokenType.SingleCellInteger: return t.IValue;
-                case TokenType.DoubleCellInteger: return t.LValue;
-                case TokenType.Float: return t.FValue;
-
-                // No, it is something else.
-                default:
-                    success = false;
-                    return 0.0;
-            }
-        }
-
-        #endregion
 
         
         #region word compilation
@@ -274,14 +196,17 @@ namespace EFrt.Core
         }
 
 
+        private InputSource _inputSource = null;
+        
+        
         public void Execute(ISourceReader sourceReader)
         {
             if (sourceReader == null) throw new ArgumentNullException(nameof(sourceReader));
 
-            _tokenizer = new Tokenizer(sourceReader);
-            _tokenizer.NextChar();
+            _inputSource = new InputSource(sourceReader);
+            _inputSource.NextChar();
 
-            var tok = _tokenizer.NextTok();
+            var tok = _inputSource.NextTok();
             while (tok.Code >= 0)
             {
                 if (tok.Code == TokenType.Word)
@@ -323,7 +248,7 @@ namespace EFrt.Core
                         else
                         {
                             // An unknown word can be a number.
-                            var t = _tokenizer.ParseNumber(tok.SValue);
+                            var t = _inputSource.ParseNumber(tok.SValue);
                             switch (t.Code)
                             {
                                 case TokenType.SingleCellInteger:
@@ -368,7 +293,7 @@ namespace EFrt.Core
                         else
                         {
                             // An unknown word can be a number.
-                            var t = _tokenizer.ParseNumber(tok.SValue);
+                            var t = _inputSource.ParseNumber(tok.SValue);
                             switch (t.Code)
                             {
                                 case TokenType.SingleCellInteger:
@@ -401,7 +326,7 @@ namespace EFrt.Core
                 if (IsExecutionTerminated) break;
 
                 // Extract the next token.
-                tok = _tokenizer.NextTok();
+                tok = _inputSource.NextTok();
             }
 
             // Execution broken. Return to interpreting mode.

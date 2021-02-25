@@ -27,7 +27,12 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// Runtime data of this interpreter instance.
         /// </summary>
         IInterpreterState State { get; }
-              
+
+        /// <summary>
+        /// The current input source.
+        /// </summary>
+        IInputSource InputSource { get; }
+
         /// <summary>
         /// An output writer for IO operations.
         /// </summary>
@@ -57,60 +62,6 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         /// An event fired, when a word was executed.
         /// </summary>
         event EventHandler<InterpreterEventArgs> WordExecuted;
-
-
-        #region parsing
-
-        /// <summary>
-        /// The last character red from the source.
-        /// </summary>
-        char CurrentChar { get; }
-
-        /// <summary>
-        /// A position in the source in consumed characters.
-        /// </summary>
-        int SourcePos { get; }
-
-
-        /// <summary>
-        /// Reads and returns the next character from the source.
-        /// </summary>
-        /// <returns>A character.</returns>
-        char NextChar();
-
-        /// <summary>
-        /// Returns a word name following in the input stream.
-        /// </summary>
-        /// <param name="toUpperCase">If true (the default), returned word is converted to UPPERCASE.</param>
-        /// <returns>A word name.</returns>
-        string GetWordName(bool toUpperCase = true);
-
-        /// <summary>
-        /// Gets a string terminated by a terminator char.
-        /// </summary>
-        /// <param name="terminator">A character terminating the string.</param>
-        /// <param name="allowSpecialChars">If true, '\' escaped special chars are supported.</param>
-        /// <param name="skipLeadingTerminators">If true, leading terminator chars are skipped.</param>
-        /// <returns>A string.</returns>
-        string GetTerminatedString(char terminator, bool allowSpecialChars = false, bool skipLeadingTerminators = false);
-
-        /// <summary>
-        /// Parses an integer number from a string.
-        /// </summary>
-        /// <param name="s">A string containing a number.</param>
-        /// <param name="success">True, if parsing succeeded.</param>
-        /// <returns>A parsed number.</returns>
-        long ParseNumber(string s, out bool success);
-
-        /// <summary>
-        /// Parses a floating point number from a string.
-        /// </summary>
-        /// <param name="s">A string containing a number.</param>
-        /// <param name="success">True, if parsing succeeded.</param>
-        /// <returns>A parsed number.</returns>
-        double ParseFloatingPointNumber(string s, out bool success);
-
-        #endregion
 
 
         #region word compilation

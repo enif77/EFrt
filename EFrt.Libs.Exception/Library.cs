@@ -87,7 +87,7 @@ namespace EFrt.Libs.Exception
                 throw new Exception("ABORT\" outside a new word definition.");
             }
 
-            _interpreter.WordBeingDefined.AddWord(new AbortWithMessageWord(_interpreter, _interpreter.GetTerminatedString('"')));
+            _interpreter.WordBeingDefined.AddWord(new AbortWithMessageWord(_interpreter, _interpreter.ParseTerminatedString('"')));
 
             return 1;
         }

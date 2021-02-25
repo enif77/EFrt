@@ -57,7 +57,7 @@ namespace EFrt.Libs.ToolsExt
                 throw new Exception("A word compilation is running.");
             }
 
-            _interpreter.ForgetWord(_interpreter.GetWordName());
+            _interpreter.ForgetWord(_interpreter.ParseWord());
 
             return 1;
         }
