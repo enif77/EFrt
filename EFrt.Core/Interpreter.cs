@@ -132,47 +132,7 @@ namespace EFrt.Core
 
         #endregion
 
-
-        #region words list
-
-        public bool IsWordDefined(string wordName)
-        {
-            return State.WordsList.IsWordDefined(wordName.ToUpperInvariant());
-        }
-
-
-        public IWord GetWord(string wordName)
-        {
-            return State.WordsList.GetWord(wordName.ToUpperInvariant());
-        }
-
-
-        public void AddWord(IWord word)
-        {
-            State.WordsList.AddWord(word);
-        }
-
-
-        public void ForgetWord(string wordName)
-        {
-            State.WordsList.Forget(wordName.ToUpperInvariant());
-        }
-
-
-        public void RemoveWord(string wordName)
-        {
-            State.WordsList.RemoveWord(wordName.ToUpperInvariant());
-        }
-
-
-        public void RemoveAllWords()
-        {
-            State.WordsList.Clear();
-        }
-
-        #endregion
-
-
+        
         #region word compilation
 
         public NonPrimitiveWord WordBeingDefined { get; set; }
@@ -229,7 +189,7 @@ namespace EFrt.Core
             if (WordBeingDefined != null)
             {
                 // Now add the new word to the dictionary
-                AddWord(WordBeingDefined);
+                this.AddWord(WordBeingDefined);
             }
 
             // Finish this word compilation.
