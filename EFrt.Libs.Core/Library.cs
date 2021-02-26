@@ -101,6 +101,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddPrimitiveWord("DUP", DupAction);
             _interpreter.AddImmediateWord("ELSE", ElseAction);
             _interpreter.AddPrimitiveWord("EMIT", EmitAction);
+            _interpreter.AddPrimitiveWord("EVALUATE", EvaluateAction);
             _interpreter.AddPrimitiveWord("EXECUTE", ExecuteAction);
             _interpreter.AddImmediateWord("EXIT", ExitAction);
             _interpreter.AddPrimitiveWord("FILL", FillAction);
@@ -838,7 +839,7 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // (n --)
+        // (n -- )
         private int DropAction()
         {
             _interpreter.StackExpect(1);
@@ -892,7 +893,7 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // (n --)
+        // (n -- )
         private int EmitAction()
         {
             _interpreter.StackExpect(1);
@@ -901,8 +902,18 @@ namespace EFrt.Libs.Core
 
             return 1;
         }
+        
+        // {s -- }
+        private int EvaluateAction()
+        {
+            _interpreter.ObjectStackExpect(1);
 
-        // (xt --)
+            _interpreter.Execute(new StringSourceReader(_interpreter.OPop().ToString()));
+
+            return 1;
+        }
+
+        // (xt -- )
         private int ExecuteAction()
         {
             _interpreter.StackExpect(1);

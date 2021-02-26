@@ -76,6 +76,7 @@ Words definition table columns:
 | DUP      | no   | IC   | **Duplicate**<br>(n -- n n)<br>Duplicates the value at the top of the stack. |
 | ELSE     | yes  | C    | **Else**<br><br>Used in an IF—ELSE—THEN sequence, delimits the code to be executed if the if-condition was false. |
 | EMIT     | no   | IC   | **Print char**<br>(n -- )<br>Prints out a character represented by a number on the top of the stack. |
+| EVALUATE | no   | IC   | **Evaluate string**<br>{s -- }<br>Evaluates a string the top of the object stack. |
 | EXECUTE  | no   | IC   | **Execute word**<br>(xt -- )<br>Executes the word with execution token xt. |
 | EXIT     | yes  | C    | **Exit definition**<br>Exit from the current definition immediately. Note that EXIT cannot be used within a DO—LOOP without UNLOOP. Use LEAVE instead. |
 | FILL     | no   | IC   | **Fill memory**<br>(addr n1 n2 -- )<br>If n1 is greater than zero, fills n1 cells begining at addr with n2. |
@@ -136,7 +137,7 @@ Note: The `."` word works like `S" str" S.` words together.
 
 ## TODO
 
-Words: `ENVIRONMENT? EVALUATE`
+Words: `ENVIRONMENT?`
 
 
 ## Skipped words
