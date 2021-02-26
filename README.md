@@ -2,6 +2,20 @@
 
 EFrt is a embeddable FORTH language implementation.
 
+## Links
+
+### Forth related links
+
+- https://www.root.cz/serialy/programovaci-jazyk-forth/
+- https://www.forth.com/starting-forth/
+- https://en.wikipedia.org/wiki/Forth_(programming_language)
+- https://www.fourmilab.ch/atlast/atlast.html
+- http://users.ece.cmu.edu/~koopman/stack_computers/
+  
+### General links
+
+- https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-union-type-similar-to-c-unions-
+
 ## Data types
 
   - cell: A 32 bit data unit (int).
