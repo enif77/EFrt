@@ -26,7 +26,7 @@ namespace EFrt.Core
     {
         public InterpreterStateCode InterpreterState { get; private set; }
         public IInterpreterState State { get; }
-        public IInputSource InputSource => _inputSource;
+        public IInputSource InputSource { get; private set; }
         private IOutputWriter _outputWriter;
         public IOutputWriter Output
         {
@@ -198,25 +198,22 @@ namespace EFrt.Core
             throw new InterpreterException(exceptionCode, message);
         }
 
-
-        private IInputSource _inputSource = null;
-        
         
         public void Execute(ISourceReader sourceReader)
         {
             if (sourceReader == null) throw new ArgumentNullException(nameof(sourceReader));
 
             // If we are already processing some input, remember it for later restore..
-            if (_inputSource != null)
+            if (InputSource != null)
             {
-                State.InputSourceStack.Push(_inputSource);
+                State.InputSourceStack.Push(InputSource);
             }
 
             // Create the new input source.
-            _inputSource = new InputSource(sourceReader);
-            _inputSource.NextChar();
+            InputSource = new InputSource(sourceReader);
+            InputSource.NextChar();
 
-            var tok = _inputSource.NextTok();
+            var tok = InputSource.NextTok();
             while (tok.Code >= 0)
             {
                 if (tok.Code == TokenType.Word)
@@ -258,7 +255,7 @@ namespace EFrt.Core
                         else
                         {
                             // An unknown word can be a number.
-                            var t = _inputSource.ParseNumber(tok.SValue);
+                            var t = InputSource.ParseNumber(tok.SValue);
                             switch (t.Code)
                             {
                                 case TokenType.SingleCellInteger:
@@ -303,7 +300,7 @@ namespace EFrt.Core
                         else
                         {
                             // An unknown word can be a number.
-                            var t = _inputSource.ParseNumber(tok.SValue);
+                            var t = InputSource.ParseNumber(tok.SValue);
                             switch (t.Code)
                             {
                                 case TokenType.SingleCellInteger:
@@ -336,7 +333,7 @@ namespace EFrt.Core
                 if (IsExecutionTerminated) break;
 
                 // Extract the next token.
-                tok = _inputSource.NextTok();
+                tok = InputSource.NextTok();
             }
 
             // Execution broken. Return to interpreting mode.
@@ -347,7 +344,7 @@ namespace EFrt.Core
             }
             
             // Restore the previous input source, if any.
-            _inputSource = (State.InputSourceStack.Count > 0) 
+            InputSource = (State.InputSourceStack.Count > 0) 
                 ? State.InputSourceStack.Pop() 
                 : null;
         }
