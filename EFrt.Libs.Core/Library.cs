@@ -908,7 +908,7 @@ namespace EFrt.Libs.Core
         {
             _interpreter.ObjectStackExpect(1);
 
-            _interpreter.Execute(new StringSourceReader(_interpreter.OPop().ToString()));
+            _interpreter.Evaluate(new StringSourceReader(_interpreter.OPop().ToString()));
 
             return 1;
         }

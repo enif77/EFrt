@@ -121,10 +121,10 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         void Throw(int exceptionCode, string message = null);
 
         /// <summary>
-        /// Executes a FORTH program using a source reader.
+        /// Interprets a FORTH program using a source reader.
         /// </summary>
         /// <param name="sourceReader">A FORTH program source reader.</param>
-        void Execute(ISourceReader sourceReader);
+        void Evaluate(ISourceReader sourceReader);
 
         /// <summary>
         /// Executes a word. 

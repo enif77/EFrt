@@ -46,8 +46,8 @@ namespace EFrtApp
                     // Show a prompt.
                     Console.Write(interpreter.IsCompiling ? ":> " : "-> ");
 
-                    // Execute.
-                    interpreter.Execute(Console.ReadLine());
+                    // Interpret.
+                    interpreter.Evaluate(Console.ReadLine());
                 }
                 catch (Exception ex)
                 {
@@ -113,42 +113,42 @@ namespace EFrtApp
         //                .AddToolsLibrary()
         //                .AddToolsExtLibrary();
 
-        //            //efrt.Execute(_src);
-        //            //efrt.Execute("CR .( ---)");
-        //            //efrt.Execute("123 456 * CR .");
-        //            //efrt.Execute("CR .( ---)");
-        //            //efrt.Execute("10 1 DO I CR . LOOP");
-        //            //efrt.Execute("CR .( ---)");
-        //            //efrt.Execute("10 1 DO I CR . 5 1 DO .( -) I . LOOP .( *) LOOP");
+        //            //efrt.Evaluate(_src);
+        //            //efrt.Evaluate("CR .( ---)");
+        //            //efrt.Evaluate("123 456 * CR .");
+        //            //efrt.Evaluate("CR .( ---)");
+        //            //efrt.Evaluate("10 1 DO I CR . LOOP");
+        //            //efrt.Evaluate("CR .( ---)");
+        //            //efrt.Evaluate("10 1 DO I CR . 5 1 DO .( -) I . LOOP .( *) LOOP");
 
-        //            interpreter.Execute(": what IF 123 CR . ELSE 456 CR . THEN ; 0 what 1 what");
-        //            interpreter.Execute("1 FLOAT CR F.");
-        //            interpreter.Execute("2 FLOAT 3 FLOAT F/ CR F.");
+        //            interpreter.Evaluate(": what IF 123 CR . ELSE 456 CR . THEN ; 0 what 1 what");
+        //            interpreter.Evaluate("1 FLOAT CR F.");
+        //            interpreter.Evaluate("2 FLOAT 3 FLOAT F/ CR F.");
 
-        //            //efrt.Execute(": rep BEGIN 3 CR . 1 BEGIN 1+ DUP CR . REPEAT  REPEAT ; rep");
+        //            //efrt.Evaluate(": rep BEGIN 3 CR . 1 BEGIN 1+ DUP CR . REPEAT  REPEAT ; rep");
 
-        //            interpreter.Execute(": rep2 DO 3 CR . LOOP ; 10 1 rep2");
-        //            interpreter.Execute(": rep3 DO DUP CR . 1+ LOOP ; CR 1 11 1 rep3");
-        //            interpreter.Execute("CR 10 11 1 rep3");
+        //            interpreter.Evaluate(": rep2 DO 3 CR . LOOP ; 10 1 rep2");
+        //            interpreter.Evaluate(": rep3 DO DUP CR . 1+ LOOP ; CR 1 11 1 rep3");
+        //            interpreter.Evaluate("CR 10 11 1 rep3");
 
-        //            interpreter.Execute("CR .( ---) CR");
+        //            interpreter.Evaluate("CR .( ---) CR");
 
-        //            interpreter.Execute("WORDS CR CR FORGET rep2 WORDS CR");
+        //            interpreter.Evaluate("WORDS CR CR FORGET rep2 WORDS CR");
 
-        //            interpreter.Execute("CR .( ---) CR");
+        //            interpreter.Evaluate("CR .( ---) CR");
 
-        //            interpreter.Execute(": rep4 ?DO DUP CR . 1+ LOOP ; CR 1 11 11 rep4");
+        //            interpreter.Evaluate(": rep4 ?DO DUP CR . 1+ LOOP ; CR 1 11 11 rep4");
 
-        //            interpreter.Execute("CR .( ---) CR");
+        //            interpreter.Evaluate("CR .( ---) CR");
 
-        //            interpreter.Execute("\"Hello, world!\" S. ");
-        //            interpreter.Execute(": hello \"Hello, world!\" ; 1 SPACES hello S.");
+        //            interpreter.Evaluate("\"Hello, world!\" S. ");
+        //            interpreter.Evaluate(": hello \"Hello, world!\" ; 1 SPACES hello S.");
 
-        //            interpreter.Execute("CR .( ---) CR");
+        //            interpreter.Evaluate("CR .( ---) CR");
 
-        //            interpreter.Execute("\"abcd\" \"efgh\" S+ S.");
+        //            interpreter.Evaluate("\"abcd\" \"efgh\" S+ S.");
 
-        //            interpreter.Execute("CR .( ---) CR");
+        //            interpreter.Evaluate("CR .( ---) CR");
         //        }
 
 

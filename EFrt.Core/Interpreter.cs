@@ -186,7 +186,7 @@ namespace EFrt.Core
         }
 
         
-        public void Execute(ISourceReader sourceReader)
+        public void Evaluate(ISourceReader sourceReader)
         {
             if (sourceReader == null) throw new ArgumentNullException(nameof(sourceReader));
 
@@ -209,110 +209,15 @@ namespace EFrt.Core
 
                     if (IsCompiling)
                     {
-                        if (State.WordsList.IsWordDefined(wordName))
-                        {
-                            var word = State.WordsList.GetWord(wordName);
-                            if (word.IsImmediate)
-                            {
-                                try
-                                {
-                                    // We are executing the current latest version of the found word.
-                                    Execute(word);
-                                }
-                                catch (InterpreterException ex)
-                                {
-                                    Throw(ex.ExceptionCode, ex.Message);
-                                }
-                                catch (Exception ex)
-                                {
-                                    Throw(-100, ex.Message);
-                                }
-                            }
-                            else
-                            {
-                                // We are adding the RuntimeWord here, because we want to use the latest word definition at runtime.
-                                WordBeingDefined.AddWord(word);
-                            }
-                        }
-                        else if (string.Compare(WordBeingDefined.Name, wordName, StringComparison.OrdinalIgnoreCase) == 0)
-                        {
-                            // Recursive call of the currently compiled word.
-                            WordBeingDefined.AddWord(WordBeingDefined);
-                        }
-                        else
-                        {
-                            // An unknown word can be a number.
-                            var t = InputSource.ParseNumber(tok.SValue);
-                            switch (t.Code)
-                            {
-                                case TokenType.SingleCellInteger:
-                                    WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(this, t.IValue));
-                                    break;
-
-                                case TokenType.DoubleCellInteger:
-                                    WordBeingDefined.AddWord(new DoubleCellIntegerLiteralWord(this, t.LValue));
-                                    break;
-
-                                case TokenType.Float:
-                                    WordBeingDefined.AddWord(new FloatingPointLiteralWord(this, t.FValue));
-                                    break;
-
-                                // No, it is some unknown word.
-                                default:
-                                    Throw(-13, $"The '{tok.SValue}' word is undefined.");
-                                    break;
-                            }
-                        }
+                        CompileWord(wordName, tok);
                     }
                     else
                     {
-                        if (State.WordsList.IsWordDefined(wordName))
-                        {
-                            CurrentWord = State.WordsList.GetWord(wordName);
-
-                            try
-                            {
-                                // We are executing the current latest version of the found word.
-                                Execute(CurrentWord);
-                            }
-                            catch (InterpreterException ex)
-                            {
-                                Throw(ex.ExceptionCode, ex.Message);
-                            }
-                            catch (Exception ex)
-                            {
-                                Throw(-100, ex.Message);
-                            }
-                        }
-                        else
-                        {
-                            // An unknown word can be a number.
-                            var t = InputSource.ParseNumber(tok.SValue);
-                            switch (t.Code)
-                            {
-                                case TokenType.SingleCellInteger:
-                                    this.Push(t.IValue);
-                                    break;
-
-                                case TokenType.DoubleCellInteger:
-                                    this.DPush(t.LValue);
-                                    break;
-
-                                case TokenType.Float:
-                                    this.FPush(t.FValue);
-                                    break;
-
-                                // No, it is some unknown word.
-                                default:
-                                    Throw(-13, $"The '{tok.SValue}' word is undefined.");
-                                    break;
-                            }
-                        }
+                        ExecuteWord(wordName, tok);
                     }
                 }
                 else
                 {
-                    //throw new Exception("Unknown token in a word execution.");
                     Throw(-200, $"Unknown token {tok.Code}.");
                 }
 
@@ -359,6 +264,112 @@ namespace EFrt.Core
             InterpreterState = InterpreterStateCode.Terminating;
         }
 
+        
+        private void CompileWord(string wordName, Token tok)
+        {
+            if (State.WordsList.IsWordDefined(wordName))
+            {
+                var word = State.WordsList.GetWord(wordName);
+                if (word.IsImmediate)
+                {
+                    try
+                    {
+                        // We are executing the current latest version of the found word.
+                        Execute(word);
+                    }
+                    catch (InterpreterException ex)
+                    {
+                        Throw(ex.ExceptionCode, ex.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        Throw(-100, ex.Message);
+                    }
+                }
+                else
+                {
+                    // We are adding the RuntimeWord here, because we want to use the latest word definition at runtime.
+                    WordBeingDefined.AddWord(word);
+                }
+            }
+            else if (string.Compare(WordBeingDefined.Name, wordName, StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                // Recursive call of the currently compiled word.
+                WordBeingDefined.AddWord(WordBeingDefined);
+            }
+            else
+            {
+                // An unknown word can be a number.
+                var t = InputSource.ParseNumber(tok.SValue);
+                switch (t.Code)
+                {
+                    case TokenType.SingleCellInteger:
+                        WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(this, t.IValue));
+                        break;
+
+                    case TokenType.DoubleCellInteger:
+                        WordBeingDefined.AddWord(new DoubleCellIntegerLiteralWord(this, t.LValue));
+                        break;
+
+                    case TokenType.Float:
+                        WordBeingDefined.AddWord(new FloatingPointLiteralWord(this, t.FValue));
+                        break;
+
+                    // No, it is some unknown word.
+                    default:
+                        Throw(-13, $"The '{tok.SValue}' word is undefined.");
+                        break;
+                }
+            }
+        }
+        
+        
+        private void ExecuteWord(string wordName, Token tok)
+        {
+            if (State.WordsList.IsWordDefined(wordName))
+            {
+                CurrentWord = State.WordsList.GetWord(wordName);
+
+                try
+                {
+                    // We are executing the current latest version of the found word.
+                    Execute(CurrentWord);
+                }
+                catch (InterpreterException ex)
+                {
+                    Throw(ex.ExceptionCode, ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    Throw(-100, ex.Message);
+                }
+            }
+            else
+            {
+                // An unknown word can be a number.
+                var t = InputSource.ParseNumber(tok.SValue);
+                switch (t.Code)
+                {
+                    case TokenType.SingleCellInteger:
+                        this.Push(t.IValue);
+                        break;
+
+                    case TokenType.DoubleCellInteger:
+                        this.DPush(t.LValue);
+                        break;
+
+                    case TokenType.Float:
+                        this.FPush(t.FValue);
+                        break;
+
+                    // No, it is some unknown word.
+                    default:
+                        Throw(-13, $"The '{tok.SValue}' word is undefined.");
+                        break;
+                }
+            }
+        }
+        
         #endregion
     }
 }

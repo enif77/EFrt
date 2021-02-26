@@ -193,13 +193,13 @@ namespace EFrt.Core
         #region execution
 
         /// <summary>
-        /// Executes a string as a FORTH program.
+        /// Interprets a string as a FORTH program.
         /// </summary>
         /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="src">A FORTH program source.</param>
-        public static void Execute(this IInterpreter interpreter, string src)
+        public static void Evaluate(this IInterpreter interpreter, string src)
         {
-            interpreter.Execute(new StringSourceReader(src));
+            interpreter.Evaluate(new StringSourceReader(src));
         }
 
         #endregion
