@@ -143,8 +143,10 @@ namespace EFrt.Core
             State.Stack.Clear();
             State.FloatingPointStack.Clear();
             State.ObjectStack.Clear();
+            State.InputSourceStack.Clear();
 
             // TODO: Clear the heap?
+            // TODO: Clear the exception stack?
 
             Quit();
         }
@@ -187,6 +189,7 @@ namespace EFrt.Core
             State.Stack.Top = exceptionFrame.StackTop;
             State.ObjectStack.Top = exceptionFrame.ObjectStackTop;
             State.ReturnStack.Top = exceptionFrame.ReturnStackTop;
+            State.InputSourceStack.Top = exceptionFrame.InputSourceStackTop;
             CurrentWord = exceptionFrame.ExecutingWord;
 
             this.Push(exceptionCode);
@@ -196,13 +199,20 @@ namespace EFrt.Core
         }
 
 
-        private InputSource _inputSource = null;
+        private IInputSource _inputSource = null;
         
         
         public void Execute(ISourceReader sourceReader)
         {
             if (sourceReader == null) throw new ArgumentNullException(nameof(sourceReader));
 
+            // If we are already processing some input, remember it for later restore..
+            if (_inputSource != null)
+            {
+                State.InputSourceStack.Push(_inputSource);
+            }
+
+            // Create the new input source.
             _inputSource = new InputSource(sourceReader);
             _inputSource.NextChar();
 
@@ -335,6 +345,11 @@ namespace EFrt.Core
                 InterpreterState = InterpreterStateCode.Interpreting;
                 State.SetStateValue(false);
             }
+            
+            // Restore the previous input source, if any.
+            _inputSource = (State.InputSourceStack.Count > 0) 
+                ? State.InputSourceStack.Pop() 
+                : null;
         }
 
 

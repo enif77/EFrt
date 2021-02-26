@@ -34,6 +34,11 @@ namespace EFrt
         /// The default exception stack size in cells.
         /// </summary>
         public const int DefaultExceptionStackSize = 32;
+        
+        /// <summary>
+        /// The default input source stack size in cells.
+        /// </summary>
+        public const int DefaultInputSourceStackSize = 32;
 
         /// <summary>
         /// The default initial heap size in cells.
@@ -72,6 +77,11 @@ namespace EFrt
         public int ExceptionStackSize { get; set; } = DefaultExceptionStackSize;
 
         /// <summary>
+        /// The requested input source stack size in cells.
+        /// </summary>
+        public int InputSourceStackSize { get; set; } = DefaultInputSourceStackSize;
+        
+        /// <summary>
         /// The requested initial heap size in cells.
         /// </summary>
         public int InitialHeapSize { get; set; } = DefaultInitialHeapSize;
@@ -92,6 +102,7 @@ namespace EFrt
             if (ObjectStackSize < 0) throw new Exception(nameof(ObjectStackSize) + " out of the <0 .. Int32.Max> range: " + ObjectStackSize);
             if (ReturnStackSize < 0) throw new Exception(nameof(ReturnStackSize) + " out of the <0 .. Int32.Max> range: " + ReturnStackSize);
             if (ExceptionStackSize < 0) throw new Exception(nameof(ExceptionStackSize) + " out of the <0 .. Int32.Max> range: " + ExceptionStackSize);
+            if (InputSourceStackSize < 0) throw new Exception(nameof(InputSourceStackSize) + " out of the <0 .. Int32.Max> range: " + InputSourceStackSize);
             if (InitialHeapSize < 0) throw new Exception(nameof(InitialHeapSize) + " out of <0 .. Int32.Max> range: " + InitialHeapSize);
             if (InitialObjectHeapSize < 0) throw new Exception(nameof(InitialHeapSize) + " out of <0 .. Int32.Max> range: " + InitialObjectHeapSize);
         }

@@ -19,6 +19,8 @@ namespace EFrt.Core
 
         public ExceptionStack ExceptionStack { get; }
 
+        public InputSourceStack InputSourceStack { get; }
+        
         public Heap Heap { get; }
 
         public ObjectHeap ObjectHeap { get; }
@@ -30,13 +32,14 @@ namespace EFrt.Core
         public IWordsList WordsList { get; }
 
 
-        public InterpreterState(Stack stack, FloatingPointStack floatingPointStack, ObjectStack objectStack, ReturnStack returnStack, ExceptionStack exceptionStack, Heap heap, ObjectHeap objectHeap, IWordsList wordsList)
+        public InterpreterState(Stack stack, FloatingPointStack floatingPointStack, ObjectStack objectStack, ReturnStack returnStack, ExceptionStack exceptionStack, InputSourceStack inputSourceStack, Heap heap, ObjectHeap objectHeap, IWordsList wordsList)
         {
             Stack = stack ?? throw new ArgumentNullException(nameof(stack));
             FloatingPointStack = floatingPointStack ?? throw new ArgumentNullException(nameof(floatingPointStack));
             ObjectStack = objectStack ?? throw new ArgumentNullException(nameof(objectStack));
             ReturnStack = returnStack ?? throw new ArgumentNullException(nameof(returnStack));
             ExceptionStack = exceptionStack ?? throw new ArgumentNullException(nameof(exceptionStack));
+            InputSourceStack = inputSourceStack ?? throw new ArgumentNullException(nameof(inputSourceStack));
             Heap = heap ?? throw new ArgumentNullException(nameof(heap));
             ObjectHeap = objectHeap ?? throw new ArgumentNullException(nameof(objectHeap));
             WordsList = wordsList ?? throw new ArgumentNullException(nameof(wordsList));
@@ -61,6 +64,7 @@ namespace EFrt.Core
             ObjectStack.Clear();
             ReturnStack.Clear();
             ExceptionStack.Clear();
+            InputSourceStack.Clear();
             Heap.Clear();
             ObjectHeap.Clear();
             WordsList.Clear();

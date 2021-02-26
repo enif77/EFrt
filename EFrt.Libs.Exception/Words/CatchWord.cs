@@ -36,6 +36,7 @@ namespace EFrt.Libs.Exception.Words
                     StackTop = Interpreter.State.Stack.Top,
                     ObjectStackTop = Interpreter.State.ObjectStack.Top,
                     ReturnStackTop = Interpreter.State.ReturnStack.Top,
+                    InputSourceStackTop = Interpreter.State.InputSourceStack.Top,
                     ExecutingWord = _parentWord,
                     NextWordIndex = _nextWordIndex
                 };

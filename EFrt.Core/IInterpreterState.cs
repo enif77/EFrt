@@ -36,6 +36,11 @@ namespace EFrt.Core
         ExceptionStack ExceptionStack { get; }
 
         /// <summary>
+        /// Stack for input sources.
+        /// </summary>
+        InputSourceStack InputSourceStack { get; }
+
+        /// <summary>
         /// Heap - variables etc.
         /// </summary>
         Heap Heap { get; }
