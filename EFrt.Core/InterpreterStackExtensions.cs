@@ -12,11 +12,12 @@ namespace EFrt.Core
     /// </summary>
     public static class InterpreterStackExtensions
     {
-        #region stacks
+        #region stack
 
         /// <summary>
         /// Returns a value from the stack at certain index.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="index">A value index.</param>
         /// <returns>A value from the stack.</returns>
         public static int Pick(this IInterpreter interpreter, int index)
@@ -27,6 +28,7 @@ namespace EFrt.Core
         /// <summary>
         /// Returns a value from the top of the stack.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <returns>A value from the top of the stack.</returns>
         public static int Peek(this IInterpreter interpreter)
         {
@@ -36,6 +38,7 @@ namespace EFrt.Core
         /// <summary>
         /// Removes a value from the top of the stack and returns it.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <returns>A value from the top of the stack.</returns>
         public static int Pop(this IInterpreter interpreter)
         {
@@ -45,6 +48,7 @@ namespace EFrt.Core
         /// <summary>
         /// Inserts a value to the stack.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="value">A value.</param>
         public static void Push(this IInterpreter interpreter, int value)
         {
@@ -54,6 +58,7 @@ namespace EFrt.Core
         /// <summary>
         /// Drops N values from the stack.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="count">The number of values to be dropped from the stack.</param>
         public static void Drop(this IInterpreter interpreter, int count = 1)
         {
@@ -64,6 +69,7 @@ namespace EFrt.Core
         /// Duplicates the top value on the stack.
         /// ( a -- a a ) 
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         public static void Dup(this IInterpreter interpreter)
         {
             interpreter.State.Stack.Dup();
@@ -73,6 +79,7 @@ namespace EFrt.Core
         /// Swaps two values on the top of the stack.
         /// ( a b -- b a )
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         public static void Swap(this IInterpreter interpreter)
         {
             interpreter.State.Stack.Swap();
@@ -82,6 +89,7 @@ namespace EFrt.Core
         /// Gets a value below the top of the stack and pushes it to the stack.
         /// (a b -- a b a)
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         public static void Over(this IInterpreter interpreter)
         {
             interpreter.State.Stack.Over();
@@ -91,6 +99,7 @@ namespace EFrt.Core
         /// Rotates the top three stack values.
         /// (a b c -- b c a)
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         public static void Rot(this IInterpreter interpreter)
         {
             interpreter.State.Stack.Rot();
@@ -99,6 +108,7 @@ namespace EFrt.Core
         /// <summary>
         /// Rotates indexth item to the top.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="index">A stack item index, where 0 = stack top, 1 = first below top, etc.</param>
         public static void Roll(this IInterpreter interpreter, int index)
         {
@@ -110,6 +120,7 @@ namespace EFrt.Core
         /// Returns a double cell value from the stack at certain index.
         /// </summary>
         /// <param name="index">A value index.</param>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <returns>A double cell value from the stack.</returns>
         public static long DPick(this IInterpreter interpreter, int index)
         {
@@ -123,6 +134,7 @@ namespace EFrt.Core
         /// <summary>
         /// Returns a double cell value from the top of the stack.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <returns>A double cell value from the top of the stack.</returns>
         public static long DPeek(this IInterpreter interpreter)
         {
@@ -136,7 +148,8 @@ namespace EFrt.Core
         /// <summary>
         /// Removes a double cell value from the top of the stack and returns it.
         /// </summary>
-        /// <returns>A doble cell value from the top of the stack.</returns>
+        /// <param name="interpreter">An IInterpreter instance.</param>
+        /// <returns>A double cell value from the top of the stack.</returns>
         public static long DPop(this IInterpreter interpreter)
         {
             return new DoubleCellIntegerValue()
@@ -149,6 +162,7 @@ namespace EFrt.Core
         /// <summary>
         /// Inserts a double cell value to the stack.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="value">A double cell value.</param>
         public static void DPush(this IInterpreter interpreter, long value)
         {
@@ -165,6 +179,7 @@ namespace EFrt.Core
         /// <summary>
         /// Inserts a double cell value to the stack.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="value">A double cell value.</param>
         public static void UDPush(this IInterpreter interpreter, ulong value)
         {
@@ -185,6 +200,7 @@ namespace EFrt.Core
         /// <summary>
         /// stack[top] = func(stack[top])
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="func">A function.</param>
         public static void Function(this IInterpreter interpreter, Func<int, int> func)
         {
@@ -196,6 +212,7 @@ namespace EFrt.Core
         /// <summary>
         /// stack[top] = func(stack[top - 1], stack[top])
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="func">A function.</param>
         public static void Function(this IInterpreter interpreter, Func<int, int, int> func)
         {
@@ -208,6 +225,7 @@ namespace EFrt.Core
         /// <summary>
         /// stack[top] = func(stack[top - 1], stack[top])
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="func">A function.</param>
         public static void UFunction(this IInterpreter interpreter, Func<uint, uint, int> func)
         {
@@ -220,6 +238,7 @@ namespace EFrt.Core
         /// <summary>
         /// stack[top] = func(stack[top])
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="func">A function.</param>
         public static void DFunction(this IInterpreter interpreter, Func<long, int> func)
         {
@@ -233,6 +252,7 @@ namespace EFrt.Core
         /// <summary>
         /// stack[top] = func(stack[top])
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="func">A function.</param>
         public static void DFunction(this IInterpreter interpreter, Func<long, long> func)
         {
@@ -246,6 +266,7 @@ namespace EFrt.Core
         /// <summary>
         /// stack[top] = func(stack[top - 1], stack[top])
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="func">A function.</param>
         public static void DFunction(this IInterpreter interpreter, Func<long, long, int> func)
         {
@@ -260,6 +281,7 @@ namespace EFrt.Core
         /// <summary>
         /// stack[top] = func(stack[top - 1], stack[top])
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="func">A function.</param>
         public static void DFunction(this IInterpreter interpreter, Func<long, long, long> func)
         {
@@ -280,6 +302,7 @@ namespace EFrt.Core
         /// Expects N items on the stack.
         /// Wont return (throws an InterpreterException), if not enough items are on the stack.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="expectedItemsCount">The number of stack items expected on the stack.</param>
         public static void StackExpect(this IInterpreter interpreter, int expectedItemsCount)
         {
@@ -295,6 +318,7 @@ namespace EFrt.Core
         /// Expects N free items on the stack, so N items can be pushed to the stack.
         /// Wont return (throws an InterpreterException), if there is not enough free items on the stack.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="expectedFreeItemsCount">The number of free stack items expected.</param>
         public static void StackFree(this IInterpreter interpreter, int expectedFreeItemsCount)
         {

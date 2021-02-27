@@ -59,7 +59,7 @@ namespace EFrt.Core
             var t = _tokenizer.ParseNumber(s, true, true, true);
             switch (t.Code)
             {
-                case Token.TokenType.SingleCellInteger: return t.IValue;
+                case Token.TokenType.SingleCellInteger: return (int)t.LValue;
                 case Token.TokenType.DoubleCellInteger: return t.LValue;
                 case Token.TokenType.Float: return (long)t.FValue;
 
@@ -79,7 +79,7 @@ namespace EFrt.Core
             var t = _tokenizer.ParseNumber(s, true, true, true);
             switch (t.Code)
             {
-                case Token.TokenType.SingleCellInteger: return t.IValue;
+                case Token.TokenType.SingleCellInteger: return (int)t.LValue;
                 case Token.TokenType.DoubleCellInteger: return t.LValue;
                 case Token.TokenType.Float: return t.FValue;
 

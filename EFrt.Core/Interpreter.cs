@@ -304,7 +304,7 @@ namespace EFrt.Core
                 switch (t.Code)
                 {
                     case TokenType.SingleCellInteger:
-                        WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(this, t.IValue));
+                        WordBeingDefined.AddWord(new SingleCellIntegerLiteralWord(this, (int)t.LValue));
                         break;
 
                     case TokenType.DoubleCellInteger:
@@ -351,7 +351,7 @@ namespace EFrt.Core
                 switch (t.Code)
                 {
                     case TokenType.SingleCellInteger:
-                        this.Push(t.IValue);
+                        this.Push((int)t.LValue);
                         break;
 
                     case TokenType.DoubleCellInteger:
