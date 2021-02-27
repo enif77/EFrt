@@ -20,15 +20,20 @@ namespace EFrt.Core
             Float = 4
         }
 
+        
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        private Token()
+        {
+            // Use factory methods Create*() to create a token.
+        }
+        
+        
         /// <summary>
         /// A token code.
         /// </summary>
         public TokenType Code { get; private set; }
-
-        /// <summary>
-        /// A single cell integer value of the Integer token.
-        /// </summary>
-        public int IValue { get; private set; }
 
         /// <summary>
         /// A double cell integer value of the Long token.
@@ -72,7 +77,7 @@ namespace EFrt.Core
         /// <returns>A token representing an integer constant.</returns>
         public static Token CreateSingleCellIntegerToken(int i)
         {
-            return new Token() { Code = TokenType.SingleCellInteger, IValue = i };
+            return new Token() { Code = TokenType.SingleCellInteger, LValue = i };
         }
 
         /// <summary>
