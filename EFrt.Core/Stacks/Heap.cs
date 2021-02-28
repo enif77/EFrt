@@ -27,7 +27,8 @@ namespace EFrt.Core.Stacks
 
                 return addr;
             }
-            else if (cells < 0)
+            
+            if (cells < 0)
             {
                 Top += cells;
             }
