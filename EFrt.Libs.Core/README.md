@@ -14,7 +14,7 @@ Words definition table columns:
 
 | Name     | Imm. | Mode | Description |
 | ---      | ---  | ---  | --- |
-| !        | no   | IC   | **Store into address**<br>(n addr -- )<br>Stores the value n into the address addr (a heap array index). |
+| !        | no   | IC   | **Store into address**<br>(n a-addr -- )<br>Stores the value n into the address addr (a heap array index). |
 | ' x      | no   | IC   | **Obtain execution token**<br>( -- xt)<br>Places the execution token of the following word on the stack. |
 | (        | yes  | IC   | **Comment**<br>Skips all source characters till the closing ) character. |
 | *        | no   | IC   | **n3 = n1 * n2**<br>(n1 n2 -- n3)<br>Multiplies n1 and n2 and leaves the product on the stack. |

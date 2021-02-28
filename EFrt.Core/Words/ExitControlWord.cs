@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Core.Words
 {
@@ -13,8 +13,8 @@ namespace EFrt.Core.Words
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance, that is executing this word..</param>
         /// <param name="definitionWord">A word, in which this DOES is used.</param>
-        /// <param name="interpreter">An IInterpreter instance.</param>
         public ExitControlWord(IInterpreter interpreter, NonPrimitiveWord definitionWord)
             : base(interpreter)
         {
@@ -31,6 +31,6 @@ namespace EFrt.Core.Words
             _definitionWord = definitionWord;
         }
 
-        NonPrimitiveWord _definitionWord;
+        private readonly NonPrimitiveWord _definitionWord;
     }
 }

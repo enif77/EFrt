@@ -13,6 +13,7 @@ namespace EFrt.Core.Words
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance, that is executing this word.</param>
         /// <param name="name">A  words name.</param>
         public NonPrimitiveWord(IInterpreter interpreter, string name)
             : base(interpreter)
@@ -108,7 +109,7 @@ namespace EFrt.Core.Words
         /// <summary>
         /// A list of words defining this word.
         /// </summary>
-        private IList<IWord> _words;
+        private readonly IList<IWord> _words;
 
         /// <summary>
         /// If true, no more words are executed.

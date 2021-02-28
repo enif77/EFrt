@@ -10,6 +10,7 @@ namespace EFrt.Core.Words
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance, that is executing this word.</param>
         /// <param name="value">A value.</param>
         public SingleCellIntegerLiteralWord(IInterpreter interpreter, int value)
             : base(interpreter)
@@ -29,6 +30,6 @@ namespace EFrt.Core.Words
         }
 
 
-        private int _value;
+        private readonly int _value;
     }
 }

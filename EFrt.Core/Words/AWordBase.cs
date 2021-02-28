@@ -13,7 +13,7 @@ namespace EFrt.Core.Words
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="interpreter">An instance of IInterpreter, that is executing this word.</param>
+        /// <param name="interpreter">An IInterpreter instance, that is executing this word.</param>
         protected AWordBase(IInterpreter interpreter)
         {
             if (interpreter == null) throw new ArgumentNullException(nameof(interpreter));

@@ -21,7 +21,7 @@ namespace EFrt.Core
 
         public InputSourceStack InputSourceStack { get; }
         
-        public Heap Heap { get; }
+        public ByteHeap Heap { get; }
 
         public ObjectHeap ObjectHeap { get; }
 
@@ -32,7 +32,7 @@ namespace EFrt.Core
         public IWordsList WordsList { get; }
 
 
-        public InterpreterState(Stack stack, FloatingPointStack floatingPointStack, ObjectStack objectStack, ReturnStack returnStack, ExceptionStack exceptionStack, InputSourceStack inputSourceStack, Heap heap, ObjectHeap objectHeap, IWordsList wordsList)
+        public InterpreterState(Stack stack, FloatingPointStack floatingPointStack, ObjectStack objectStack, ReturnStack returnStack, ExceptionStack exceptionStack, InputSourceStack inputSourceStack, ByteHeap heap, ObjectHeap objectHeap, IWordsList wordsList)
         {
             Stack = stack ?? throw new ArgumentNullException(nameof(stack));
             FloatingPointStack = floatingPointStack ?? throw new ArgumentNullException(nameof(floatingPointStack));
@@ -45,11 +45,11 @@ namespace EFrt.Core
             WordsList = wordsList ?? throw new ArgumentNullException(nameof(wordsList));
 
             // Allocate room for the STATE and the BASE variables.
-            var systemVarsIndex = Heap.Alloc(2);
+            var systemVarsIndex = Heap.AllocCells(2);
 
             // Setup the variables...
             StateVariableAddress = systemVarsIndex;
-            BaseVariableAddress = systemVarsIndex + 1;
+            BaseVariableAddress = systemVarsIndex + ByteHeap.CellSize;
 
             // ... with default values.
             SetStateValue(false);  // False = interpreting.
@@ -73,7 +73,7 @@ namespace EFrt.Core
 
         public void SetStateValue(bool value)
         {
-            Heap.Items[StateVariableAddress] = value ? -1 : 0;
+            Heap.Write(StateVariableAddress, value ? -1 : 0);
         }
 
 
@@ -81,7 +81,7 @@ namespace EFrt.Core
         {
             if (value < 2 || value > 36) throw new ArgumentOutOfRangeException(nameof(value), "The alloved BASE values are <2 .. 36>.");
 
-            Heap.Items[BaseVariableAddress] = value;
+            Heap.Write(BaseVariableAddress, value);
         }
     }
 }

@@ -10,6 +10,7 @@ namespace EFrt.Core.Words
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance, that is executing this word.</param>
         /// <param name="name">A name of this constant.</param>
         /// <param name="n1">The first value.</param>
         /// <param name="n2">The second value.</param>
@@ -33,7 +34,7 @@ namespace EFrt.Core.Words
         }
 
 
-        private int _n1;
-        private int _n2;
+        private readonly int _n1;
+        private readonly int _n2;
     }
 }

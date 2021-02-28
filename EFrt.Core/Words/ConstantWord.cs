@@ -10,6 +10,7 @@ namespace EFrt.Core.Words
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance, that is executing this word.</param>
         /// <param name="name">A name of this constant.</param>
         /// <param name="n">A value or an address.</param>
         public ConstantWord(IInterpreter interpreter, string name, int n)
@@ -30,6 +31,6 @@ namespace EFrt.Core.Words
         }
 
 
-        private int _n;
+        private readonly int _n;
     }
 }

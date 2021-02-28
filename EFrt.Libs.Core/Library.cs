@@ -6,6 +6,7 @@ namespace EFrt.Libs.Core
     using System.Text;
 
     using EFrt.Core;
+    using EFrt.Core.Stacks;
     using EFrt.Core.Words;
 
     using EFrt.Libs.Core.Words;
@@ -79,7 +80,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddPrimitiveWord("ABORT", AbortAction);
             _interpreter.AddImmediateWord("ABORT\"", AbortWithMessageAction);
             _interpreter.AddPrimitiveWord("ABS", AbsAction);
-            _interpreter.AddPrimitiveWord("ALIGN", () => 1);            // Does nothing.
+            _interpreter.AddPrimitiveWord("ALIGN", AlignAction);
             _interpreter.AddPrimitiveWord("ALIGNED", AlignedAction);
             _interpreter.AddPrimitiveWord("ALLOT", AllotAction);
             _interpreter.AddPrimitiveWord("AND", AndAction);
@@ -87,7 +88,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddImmediateWord("BEGIN", BeginAction);
             _interpreter.AddConstantWord("BL", ' ');
             _interpreter.AddPrimitiveWord("CELL+", CellPlusAction); 
-            _interpreter.AddPrimitiveWord("CELLS", () => 1);         // Does nothing, because the cell size is 1.
+            _interpreter.AddPrimitiveWord("CELLS", CellsAction);
             _interpreter.AddPrimitiveWord("CHAR", CharAction);
             _interpreter.AddPrimitiveWord("CONSTANT", ConstantAction);
             _interpreter.AddPrimitiveWord("COUNT", CountAction);
@@ -158,13 +159,16 @@ namespace EFrt.Libs.Core
             _interpreter.AddImmediateWord("]", RightBracketAction);
         }
 
-        // (n addr -- )
+        // (n a-addr -- )
         private int StoreAction()
         {
             _interpreter.StackExpect(2);
-
+            
             var addr = _interpreter.Pop();
-            _interpreter.State.Heap.Items[addr] = _interpreter.Pop();
+            
+            _interpreter.CheckCellAlignedAddress(addr);
+           
+            _interpreter.State.Heap.Write(addr, _interpreter.Pop());
 
             return 1;
         }
@@ -257,13 +261,16 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // (n addr -- )
+        // (n a-addr -- )
         private int PlusStoreAction()
         {
             _interpreter.StackExpect(2);
 
             var addr = _interpreter.Pop();
-            _interpreter.State.Heap.Items[addr] += _interpreter.Pop();
+            
+            _interpreter.CheckCellAlignedAddress(addr);
+            
+            _interpreter.State.Heap.Write(addr, _interpreter.State.Heap.ReadInt32(addr) + _interpreter.Pop());
 
             return 1;
         }
@@ -298,9 +305,10 @@ namespace EFrt.Libs.Core
         private int CommaAction()
         {
             _interpreter.StackExpect(1);
-
-            _interpreter.State.Heap.Items[_interpreter.State.Heap.Alloc(1)] = _interpreter.Pop();
-
+            _interpreter.CheckCellAlignedHereAddress();            
+            
+            _interpreter.State.Heap.Write(_interpreter.State.Heap.AllocCells(1), _interpreter.Pop());
+            
             return 1;
         }
 
@@ -401,14 +409,18 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // (n1 n2 addr -- )
+        // (n1 n2 a-addr -- )
         private int TwoStoreAction()
         {
             _interpreter.StackExpect(3);
 
             var addr = _interpreter.Pop();
-            _interpreter.State.Heap.Items[addr + 1] = _interpreter.Pop();  // n2
-            _interpreter.State.Heap.Items[addr] = _interpreter.Pop();      // n1
+            
+            _interpreter.CheckCellAlignedAddress(addr);
+            _interpreter.CheckAddressesRange(addr, ByteHeap.DoubleCellSize);
+           
+            _interpreter.State.Heap.Write(addr + ByteHeap.CellSize, _interpreter.Pop());  // n2
+            _interpreter.State.Heap.Write(addr, _interpreter.Pop());                          // n1
 
             return 1;
         }
@@ -433,15 +445,19 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // (addr -- n1 n2)
+        // (a-addr -- n1 n2)
         private int TwoFetchAction()
         {
             _interpreter.StackExpect(1);
             _interpreter.StackFree(1);  // We will remove one and add two, so we need just one extra to be free.
 
             var addr = _interpreter.Pop();
-            _interpreter.Push(_interpreter.State.Heap.Items[addr]);      // n1
-            _interpreter.Push(_interpreter.State.Heap.Items[addr + 1]);  // n2
+            
+            _interpreter.CheckCellAlignedAddress(addr);
+            _interpreter.CheckAddressesRange(addr, ByteHeap.DoubleCellSize);
+            
+            _interpreter.Push(_interpreter.State.Heap.ReadInt32(addr));                          // n1
+            _interpreter.Push(_interpreter.State.Heap.ReadInt32(addr + ByteHeap.CellSize));  // n2
 
             return 1;
         }
@@ -625,12 +641,17 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // (addr -- n)
+        // (a-addr -- n)
         private int FetchAction()
         {
             _interpreter.StackExpect(1);
 
-            _interpreter.Push(_interpreter.State.Heap.Items[_interpreter.Pop()]);
+            var addr = _interpreter.Pop();
+            
+            _interpreter.CheckCellAlignedAddress(addr);
+            _interpreter.CheckAddressesRange(addr, ByteHeap.CellSize);
+            
+            _interpreter.Push(_interpreter.State.Heap.ReadInt32(addr));
 
             return 1;
         }
@@ -665,13 +686,28 @@ namespace EFrt.Libs.Core
 
             return 1;
         }
+        
+        // ( -- )
+        private int AlignAction()
+        {
+            var here = _interpreter.State.Heap.Top + 1;
+            var alignedHere = _interpreter.State.Heap.CellAligned(here);
+            var alignBytes = alignedHere - here;
+            
+            if (alignBytes > 0)
+            {
+                _ =_interpreter.State.Heap.Alloc(alignBytes);
+            }
 
-        // (addr -- addr)
+            return 1;
+        }
+
+        // (addr -- a-addr)
         private int AlignedAction()
         {
             _interpreter.StackExpect(1);
 
-            // Does nothing. Just checks its parameters.
+            _interpreter.Push(_interpreter.State.Heap.CellAligned(_interpreter.Pop()));
 
             return 1;
         }
@@ -724,12 +760,26 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // (addr -- addr)
+        // (a-addr1 -- a-addr2)
         private int CellPlusAction()
         {
             _interpreter.StackExpect(1);
 
-            _interpreter.Push(_interpreter.Pop() + 1);  // Single cell integer point value uses one heap cell.
+            var addr = _interpreter.Pop();
+            
+            _interpreter.CheckCellAlignedAddress(addr);
+            
+            _interpreter.Push(addr + ByteHeap.CellSize);
+
+            return 1;
+        }
+        
+        // (n1 -- n2)
+        private int CellsAction()
+        {
+            _interpreter.StackExpect(1);
+
+            _interpreter.Push(_interpreter.Pop() * ByteHeap.CellSize);
 
             return 1;
         }
@@ -783,8 +833,13 @@ namespace EFrt.Libs.Core
         private int CreateAction()
         {
             _interpreter.BeginNewWordCompilation();
+
+            // Align the data pointer.
+            AlignAction();
+            
             _interpreter.WordBeingDefined = new CreatedWord(_interpreter, _interpreter.ParseWord(), _interpreter.State.Heap.Top + 1);
             _interpreter.AddWord(_interpreter.WordBeingDefined);
+            
             _interpreter.EndNewWordCompilation();
 
             return 1;
@@ -936,21 +991,21 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // (addr n1 n2 --)
+        // (c-addr count char --)
         private int FillAction()
         {
             _interpreter.StackExpect(3);
 
-            var v = _interpreter.Pop();
+            var v = (byte)_interpreter.Pop();
             var count = _interpreter.Pop();
             if (count > 0)
             {
-                var addr = _interpreter.Pop();     // TODO: Check addr >= 0 && addr < heap.Count.
-                var items = _interpreter.State.Heap.Items;
-                for (var i = addr; i < (addr + count - 1); i++)
-                {
-                    items[i] = v;
-                }
+                var addr = _interpreter.Pop();     
+                
+                _interpreter.CheckCellAlignedAddress(addr);
+                _interpreter.CheckAddressesRange(addr, count);
+                
+                _interpreter.State.Heap.Fill(addr, count, v);
             }
             else
             {
@@ -1580,7 +1635,12 @@ namespace EFrt.Libs.Core
             }
 
             _interpreter.BeginNewWordCompilation();
-            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.ParseWord(), _interpreter.State.Heap.Alloc(1)));
+
+            // Align the data pointer.
+            AlignAction();
+            
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.ParseWord(), _interpreter.State.Heap.Alloc(ByteHeap.CellSize)));
+            
             _interpreter.EndNewWordCompilation();
 
             return 1;

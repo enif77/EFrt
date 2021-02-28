@@ -1,5 +1,7 @@
 ﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
+using EFrt.Core.Stacks;
+
 namespace EFrt.Libs.FloatingExt
 {
     using System;
@@ -33,7 +35,7 @@ namespace EFrt.Libs.FloatingExt
         {
             _interpreter.AddPrimitiveWord("DF!", DFStoreAction);          // Does the same as the word F!.
             _interpreter.AddPrimitiveWord("DF@", DFFetchAction);          // Does the same as the word F@.
-            _interpreter.AddPrimitiveWord("DFALIGN", () => 1);            // Does nothing.
+            _interpreter.AddPrimitiveWord("DFALIGN", DFAlignAction);      // Does the same as the word FALIGN.
             _interpreter.AddPrimitiveWord("DFALIGNED", DFAlignedAction);  // Does the same as the word FALIGNED.
             _interpreter.AddPrimitiveWord("DFLOAT+", DFloatPlusAction);   // Does the same as the word FLOAT+.
             _interpreter.AddPrimitiveWord("DFLOATS", DFloatsAction);      // Does the same as the word FLOATS.
@@ -96,10 +98,11 @@ namespace EFrt.Libs.FloatingExt
             _interpreter.FStackExpect(1);
 
             var addr = _interpreter.Pop();
-            var f = new FloatingPointValue() { F = _interpreter.FPop() };
-
-            _interpreter.State.Heap.Items[addr] = f.A;
-            _interpreter.State.Heap.Items[addr + 1] = f.B;
+            
+            _interpreter.CheckCellAlignedAddress(addr);
+            _interpreter.CheckAddressesRange(addr, ByteHeap.DoubleCellSize);
+            
+            _interpreter.State.Heap.Write(addr, _interpreter.FPop());
 
             return 1;
         }
@@ -112,21 +115,35 @@ namespace EFrt.Libs.FloatingExt
 
             var addr = _interpreter.Pop();
 
-            _interpreter.FPush(new FloatingPointValue()
-            {
-                A = _interpreter.State.Heap.Items[addr],
-                B = _interpreter.State.Heap.Items[addr + 1]
-            }.F);
+            _interpreter.CheckCellAlignedAddress(addr);
+            _interpreter.CheckAddressesRange(addr, ByteHeap.DoubleCellSize);
+            
+            _interpreter.FPush(_interpreter.State.Heap.ReadDouble(addr));
 
             return 1;
         }
 
+        // ( -- )
+        private int DFAlignAction()
+        {
+            var here = _interpreter.State.Heap.Top + 1;
+            var alignedHere = _interpreter.State.Heap.DoubleCellAligned(here);
+            var alignBytes = alignedHere - here;
+            
+            if (alignBytes > 0)
+            {
+                _ =_interpreter.State.Heap.Alloc(alignBytes);
+            }
+
+            return 1;
+        }
+        
         // (addr -- addr)
         private int DFAlignedAction()
         {
             _interpreter.StackExpect(1);
 
-            // Does nothing. Just checks its parameters.
+            _interpreter.Push(_interpreter.State.Heap.DoubleCellFloatingPointAligned(_interpreter.Pop()));
 
             return 1;
         }
@@ -439,16 +456,18 @@ namespace EFrt.Libs.FloatingExt
             return 1;
         }
 
-        // (addr -- ) (F: f -- )
+        // (f-addr -- ) (F: f -- )
         private int SFStoreAction()
         {
             _interpreter.StackExpect(1);
             _interpreter.FStackExpect(1);
 
             var addr = _interpreter.Pop();
-            var f = new SingleCellFloatingPointValue() { F = (float)_interpreter.FPop() };
-
-            _interpreter.State.Heap.Items[addr] = f.A;
+            
+            _interpreter.CheckCellAlignedAddress(addr);
+            _interpreter.CheckAddressesRange(addr, ByteHeap.CellSize);
+            
+            _interpreter.State.Heap.Write(addr, (float)_interpreter.FPop());
 
             return 1;
         }
@@ -461,20 +480,20 @@ namespace EFrt.Libs.FloatingExt
 
             var addr = _interpreter.Pop();
 
-            _interpreter.FPush(new SingleCellFloatingPointValue()
-            {
-                A = _interpreter.State.Heap.Items[addr]
-            }.F);
+            _interpreter.CheckCellAlignedAddress(addr);
+            _interpreter.CheckAddressesRange(addr, ByteHeap.CellSize);
+            
+            _interpreter.FPush(_interpreter.State.Heap.ReadFloat(addr));
 
             return 1;
         }
 
-        // (addr -- addr)
+        // (addr -- sf-addr)
         private int SFAlignedAction()
         {
             _interpreter.StackExpect(1);
 
-            // Does nothing. Just checks its parameters.
+            _interpreter.Push(_interpreter.State.Heap.SingleCellFloatingPointAligned(_interpreter.Pop()));
 
             return 1;
         }
@@ -494,7 +513,7 @@ namespace EFrt.Libs.FloatingExt
         {
             _interpreter.StackExpect(1);
 
-            // Single cell floating point value uses one heap cell.
+            _interpreter.Push(_interpreter.Pop() * ByteHeap.CellSize);
 
             return 1;
         }

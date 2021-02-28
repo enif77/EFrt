@@ -10,6 +10,7 @@ namespace EFrt.Core.Words
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance, that is executing this word.</param>
         /// <param name="value">A value.</param>
         public FloatingPointLiteralWord(IInterpreter interpreter, double value)
             : base(interpreter)
@@ -29,6 +30,6 @@ namespace EFrt.Core.Words
         }
 
 
-        private double _value;
+        private readonly double _value;
     }
 }

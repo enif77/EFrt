@@ -39,7 +39,7 @@ namespace EFrt
                 new ReturnStack(configuration.ObjectStackSize),
                 new ExceptionStack(configuration.ExceptionStackSize),
                 new InputSourceStack(configuration.InputSourceStackSize),
-                new Heap(configuration.InitialHeapSize),
+                new ByteHeap(configuration.InitialHeapSize),
                 new ObjectHeap(configuration.InitialObjectHeapSize),
                 new WordsList()));
         }

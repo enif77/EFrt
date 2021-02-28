@@ -70,6 +70,16 @@ namespace EFrt.Core.Stacks
         }
 
         /// <summary>
+        /// Checks, if an address is byte-aligned.
+        /// </summary>
+        /// <param name="addr">An address.</param>
+        /// <returns>True, if an address is byte-aligned.</returns>
+        public bool IsByteAligned(int addr)
+        {
+            return true;
+        }
+
+        /// <summary>
         /// Returns a byte-aligned address that is greater or equal to addr.
         /// </summary>
         /// <param name="addr">A value index, aka address.</param>
@@ -80,11 +90,21 @@ namespace EFrt.Core.Stacks
         }
         
         /// <summary>
-        /// Returns a int-aligned address that is greater or equal to addr.
+        /// Checks, if an address is single-cell-aligned.
+        /// </summary>
+        /// <param name="addr">An address.</param>
+        /// <returns>True, if an address is single-cell-aligned.</returns>
+        public bool IsCellAligned(int addr)
+        {
+            return (addr & Int32AddressMask) == addr;
+        }
+        
+        /// <summary>
+        /// Returns a single-cell-aligned address that is greater or equal to addr.
         /// </summary>
         /// <param name="addr">A value index, aka address.</param>
         /// <returns>An address.</returns>
-        public int Int32Aligned(int addr)
+        public int CellAligned(int addr)
         {
             var aligned = addr & Int32AddressMask;
 
@@ -94,21 +114,41 @@ namespace EFrt.Core.Stacks
         }
         
         /// <summary>
-        /// Returns a cell address that is greater or equal to addr.
+        /// Checks, if an address is single-cell-floating-point-aligned.
         /// </summary>
-        /// <param name="addr">A value index, aka address.</param>
-        /// <returns>An address.</returns>
-        public int CellAligned(int addr)
+        /// <param name="addr">An address.</param>
+        /// <returns>True, if an address is single-cell-floating-point-aligned.</returns>
+        public bool IsSingleCellFloatingPointAligned(int addr)
         {
-            return Int32Aligned(addr);
+            return IsCellAligned(addr);
         }
         
         /// <summary>
-        /// Returns a int-aligned address that is greater or equal to addr.
+        /// Returns a single-cell-floating-point-aligned address that is greater or equal to addr.
         /// </summary>
         /// <param name="addr">A value index, aka address.</param>
         /// <returns>An address.</returns>
-        public int Int64Aligned(int addr)
+        public int SingleCellFloatingPointAligned(int addr)
+        {
+            return CellAligned(addr);
+        }
+        
+        /// <summary>
+        /// Checks, if an address is double-cell-aligned.
+        /// </summary>
+        /// <param name="addr">An address.</param>
+        /// <returns>True, if an address is double-cell-aligned.</returns>
+        public bool IsDoubleCellAligned(int addr)
+        {
+            return (addr & Int64AddressMask) == addr;
+        }
+        
+        /// <summary>
+        /// Returns a double-cell-aligned address that is greater or equal to addr.
+        /// </summary>
+        /// <param name="addr">A value index, aka address.</param>
+        /// <returns>An address.</returns>
+        public int DoubleCellAligned(int addr)
         {
             var aligned = addr & Int64AddressMask;
 
@@ -125,15 +165,25 @@ namespace EFrt.Core.Stacks
         }
 
         /// <summary>
-        /// Returns a cell address that is greater or equal to addr.
+        /// Checks, if an address is double-cell-aligned.
+        /// </summary>
+        /// <param name="addr">An address.</param>
+        /// <returns>True, if an address is double-cell-aligned.</returns>
+        public bool IsDoubleCellFloatingPointAligned(int addr)
+        {
+            return IsDoubleCellAligned(addr);
+        }
+        
+        /// <summary>
+        /// Returns a double-cell-floating-point-aligned address that is greater or equal to addr.
         /// </summary>
         /// <param name="addr">A value index, aka address.</param>
         /// <returns>An address.</returns>
-        public int DoubleCellAligned(int addr)
+        public int DoubleCellFloatingPointAligned(int addr)
         {
-            return Int64Aligned(addr);
+            return DoubleCellAligned(addr);
         }
-
+        
         /// <summary>
         /// Fills a range of bytes with a value.
         /// </summary>
@@ -143,6 +193,8 @@ namespace EFrt.Core.Stacks
         /// <exception cref="ArgumentOutOfRangeException">Thrown, when addr or addr + count are out of the 0 .. Heap.Length range.</exception>
         public void Fill(int addr, int count, byte value)
         {
+            // TODO: Remove checks or use FORTH exceptions.
+            
             if (addr < 0 || addr >= Items.Length) throw new ArgumentOutOfRangeException(nameof(addr), $"The address {addr} is out of the <0 .. Heap.Length) range.");
             
             // Do not fill nothing.
@@ -169,6 +221,8 @@ namespace EFrt.Core.Stacks
         /// <exception cref="ArgumentOutOfRangeException">Thrown, when srcAddr or descAddr or srcAddr + count or descAddr + count are out of the 0 .. Heap.Length range.</exception>
         public void Move(int srcAddr, int destAddr, int count)
         {
+            // TODO: Remove checks or use FORTH exceptions.
+            
             if (srcAddr < 0 || srcAddr >= Items.Length) throw new ArgumentOutOfRangeException(nameof(srcAddr), $"The source address {srcAddr} is out of the <0 .. Heap.Length) range.");
             if (destAddr < 0 || destAddr >= Items.Length) throw new ArgumentOutOfRangeException(nameof(destAddr), $"The destination address {destAddr} is out of the <0 .. Heap.Length) range.");
 

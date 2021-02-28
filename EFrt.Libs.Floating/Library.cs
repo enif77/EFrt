@@ -1,5 +1,7 @@
 ﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
+using EFrt.Core.Stacks;
+
 namespace EFrt.Libs.Floating
 {
     using System;
@@ -42,7 +44,7 @@ namespace EFrt.Libs.Floating
             _interpreter.AddPrimitiveWord("F<", FLessThanAction);
             _interpreter.AddPrimitiveWord("F>D", FToDAction);
             _interpreter.AddPrimitiveWord("F@", FFetchAction);
-            _interpreter.AddPrimitiveWord("FALIGN", () => 1);  // Does nothing.
+            _interpreter.AddPrimitiveWord("FALIGN", FAlignAction);
             _interpreter.AddPrimitiveWord("FALIGNED", FAlignedAction); 
             _interpreter.AddPrimitiveWord("FCONSTANT", FConstantAction);
             _interpreter.AddPrimitiveWord("FDEPTH", FDepthAction);
@@ -102,17 +104,18 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (addr -- ) (F: f -- )
+        // (f-addr -- ) (F: f -- )
         private int FStoreAction()
         {
             _interpreter.StackExpect(1);
             _interpreter.FStackExpect(1);
 
             var addr = _interpreter.Pop();
-            var f = new FloatingPointValue() { F = _interpreter.FPop() };
-           
-            _interpreter.State.Heap.Items[addr] = f.A;
-            _interpreter.State.Heap.Items[addr + 1] = f.B;
+            
+            _interpreter.CheckCellAlignedAddress(addr);
+            _interpreter.CheckAddressesRange(addr, ByteHeap.DoubleCellSize);
+            
+            _interpreter.State.Heap.Write(addr, _interpreter.FPop());
 
             return 1;
         }
@@ -202,7 +205,7 @@ namespace EFrt.Libs.Floating
             return 1;
         }
 
-        // (addr -- ) (F: -- f)
+        // (f-addr -- ) (F: -- f)
         private int FFetchAction()
         {
             _interpreter.StackExpect(1);
@@ -210,21 +213,35 @@ namespace EFrt.Libs.Floating
 
             var addr = _interpreter.Pop();
 
-            _interpreter.FPush(new FloatingPointValue()
-            {
-                A = _interpreter.State.Heap.Items[addr],
-                B = _interpreter.State.Heap.Items[addr + 1]
-            }.F);
+            _interpreter.CheckCellAlignedAddress(addr);
+            _interpreter.CheckAddressesRange(addr, ByteHeap.DoubleCellSize);
+            
+            _interpreter.FPush(_interpreter.State.Heap.ReadDouble(addr));
 
             return 1;
         }
 
-        // (addr -- addr)
+        // ( -- )
+        private int FAlignAction()
+        {
+            var here = _interpreter.State.Heap.Top + 1;
+            var alignedHere = _interpreter.State.Heap.DoubleCellFloatingPointAligned(here);
+            var alignBytes = alignedHere - here;
+            
+            if (alignBytes > 0)
+            {
+                _ =_interpreter.State.Heap.Alloc(alignBytes);
+            }
+
+            return 1;
+        }
+        
+        // (addr -- f-addr)
         private int FAlignedAction()
         {
             _interpreter.StackExpect(1);
 
-            // Does nothing. Just checks its parameters.
+            _interpreter.Push(_interpreter.State.Heap.DoubleCellFloatingPointAligned(_interpreter.Pop()));
 
             return 1;
         }
@@ -303,7 +320,7 @@ namespace EFrt.Libs.Floating
         {
             _interpreter.StackExpect(1);
 
-            _interpreter.Push(_interpreter.Pop() * 2);  // Floating point value uses two heap cells.
+            _interpreter.Push(_interpreter.Pop() * ByteHeap.DoubleCellSize);
 
             return 1;
         }
@@ -394,7 +411,12 @@ namespace EFrt.Libs.Floating
         private int FVariableAction()
         {
             _interpreter.BeginNewWordCompilation();
-            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.ParseWord(), _interpreter.State.Heap.Alloc(2)));
+            
+            // Align the data pointer.
+            FAlignAction();
+            
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.ParseWord(), _interpreter.State.Heap.Alloc(ByteHeap.DoubleCellSize)));
+            
             _interpreter.EndNewWordCompilation();
 
             return 1;

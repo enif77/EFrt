@@ -13,6 +13,7 @@ namespace EFrt.Core.Words
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance, that is executing this word.</param>
         /// <param name="value">A value.</param>
         public DoubleCellIntegerLiteralWord(IInterpreter interpreter, long value)
             : base(interpreter)
@@ -33,6 +34,6 @@ namespace EFrt.Core.Words
         }
 
 
-        private DoubleCellIntegerValue _value;
+        private readonly DoubleCellIntegerValue _value;
     }
 }

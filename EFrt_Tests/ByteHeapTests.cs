@@ -78,24 +78,11 @@ namespace EFrt_Tests
         }
         
         [Fact]
-        public void Int32AlignedTest()
-        {
-            var bh = new ByteHeap();
-
-            // 124 = ((123 >> 2) << 2) + cell-size
-            Assert.Equal(120, bh.Int32Aligned(120));
-            Assert.Equal(124, bh.Int32Aligned(121));
-            Assert.Equal(124, bh.Int32Aligned(122));
-            Assert.Equal(124, bh.Int32Aligned(123));
-            Assert.Equal(124, bh.Int32Aligned(124));
-            Assert.Equal(128, bh.Int32Aligned(125));
-        }
-        
-        [Fact]
         public void CellAlignedTest()
         {
             var bh = new ByteHeap();
 
+            // 124 = ((123 >> 2) << 2) + cell-size
             Assert.Equal(120, bh.CellAligned(120));
             Assert.Equal(124, bh.CellAligned(121));
             Assert.Equal(124, bh.CellAligned(122));
@@ -105,29 +92,12 @@ namespace EFrt_Tests
         }
         
         [Fact]
-        public void Int64AlignedTest()
+        public void DoubleCellAlignedTest()
         {
             var bh = new ByteHeap();
 
             // 128 = ((123 >> 4) << 4) + cell-size * 2 + cell-size * 2
             // 128 = ((125 >> 4) << 4) + cell-size * 2
-            Assert.Equal(120, bh.Int64Aligned(120));
-            Assert.Equal(128, bh.Int64Aligned(121));
-            Assert.Equal(128, bh.Int64Aligned(122));
-            Assert.Equal(128, bh.Int64Aligned(123));
-            Assert.Equal(128, bh.Int64Aligned(124));
-            Assert.Equal(128, bh.Int64Aligned(125));
-            Assert.Equal(128, bh.Int64Aligned(126));
-            Assert.Equal(128, bh.Int64Aligned(127));
-            Assert.Equal(128, bh.Int64Aligned(128));
-            Assert.Equal(136, bh.Int64Aligned(129));
-        }
-        
-        [Fact]
-        public void DoubleCellAlignedTest()
-        {
-            var bh = new ByteHeap();
-
             Assert.Equal(120, bh.DoubleCellAligned(120));
             Assert.Equal(128, bh.DoubleCellAligned(121));
             Assert.Equal(128, bh.DoubleCellAligned(122));

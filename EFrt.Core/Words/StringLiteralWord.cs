@@ -13,6 +13,7 @@ namespace EFrt.Core.Words
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance, that is executing this word.</param>
         /// <param name="value">A value.</param>
         public StringLiteralWord(IInterpreter interpreter, string value)
             : base(interpreter)
@@ -32,6 +33,6 @@ namespace EFrt.Core.Words
         }
 
 
-        private string _value;
+        private readonly string _value;
     }
 }

@@ -19,6 +19,7 @@ namespace EFrt.Core.Words
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance, that is executing this word.</param>
         /// <param name="name">A name of this value.</param>
         /// <param name="n">A value or an address.</param>
         public SingleCellValueWord(IInterpreter interpreter, string name, int n)
