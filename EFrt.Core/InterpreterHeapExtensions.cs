@@ -2,9 +2,6 @@
 
 namespace EFrt.Core
 {
-    using System;
-
-
     /// <summary>
     /// Extensions method for the heap manipulations.
     /// </summary>
