@@ -22,8 +22,8 @@ namespace EFrt.Core.Stacks
         /// </summary>
         public const int DoubleCellSize = CellSize * 2;
 
-        private const int Int32AddressMask = -1 << (CellSize / 2);  // Single cell alignment.
-        private const int Int64AddressMask = -1 << CellSize;        // Double cell alignment.
+        private const int Int32AddressMask = -1 << 2;  // Single cell alignment.
+        private const int Int64AddressMask = -1 << 3;  // Double cell alignment.
         
         
         /// <summary>

@@ -70,11 +70,33 @@ namespace EFrt_Tests
         // --- ADDRESS ALIGNMENT TESTS ---
         
         [Fact]
+        public void IsByteAlignedTest()
+        {
+            var bh = new ByteHeap();
+
+            Assert.True(bh.IsByteAligned(123));
+        }
+
+        [Fact]
         public void ByteAlignedTest()
         {
             var bh = new ByteHeap();
 
             Assert.Equal(123, bh.ByteAligned(123));
+        }
+        
+        [Fact]
+        public void IsCellAlignedTest()
+        {
+            var bh = new ByteHeap();
+
+            Assert.True(bh.IsCellAligned(0));
+            Assert.True(bh.IsCellAligned(120));
+            Assert.True(bh.IsCellAligned(-8));
+            
+            Assert.False(bh.IsCellAligned(-1));
+            Assert.False(bh.IsCellAligned(1));
+            Assert.False(bh.IsCellAligned(123));
         }
         
         [Fact]
@@ -89,6 +111,20 @@ namespace EFrt_Tests
             Assert.Equal(124, bh.CellAligned(123));
             Assert.Equal(124, bh.CellAligned(124));
             Assert.Equal(128, bh.CellAligned(125));
+        }
+        
+        [Fact]
+        public void IsDoubleCellAlignedTest()
+        {
+            var bh = new ByteHeap();
+
+            Assert.True(bh.IsDoubleCellAligned(-8));
+            Assert.True(bh.IsDoubleCellAligned(0));
+            Assert.True(bh.IsDoubleCellAligned(120));
+            
+            Assert.False(bh.IsDoubleCellAligned(-1));
+            Assert.False(bh.IsDoubleCellAligned(1));
+            Assert.False(bh.IsDoubleCellAligned(123));
         }
         
         [Fact]
