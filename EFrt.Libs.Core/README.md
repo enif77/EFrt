@@ -137,13 +137,13 @@ Note: The `."` word works like `S" str" S.` words together.
 
 ## TODO
 
-Words: `ENVIRONMENT?`
+Words: `ENVIRONMENT? C! C, C@ CHAR+ CHARS`
 
 
 ## Skipped words
 
 ```
-# #> #S <# >IN ACCEPT C! C, C@ CHAR+ CHARS HOLD KEY SIGN SOURCE
+# #> #S <# >IN ACCEPT HOLD KEY SIGN SOURCE
 ```
 
 
