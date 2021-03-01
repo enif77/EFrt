@@ -28,7 +28,7 @@ namespace EFrt.Libs.Core
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="interpreter"></param>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         public Library(IInterpreter interpreter)
         {
             _interpreter = interpreter;
