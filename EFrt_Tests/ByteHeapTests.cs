@@ -194,6 +194,21 @@ namespace EFrt_Tests
             
             Assert.Equal(123L, bh.ReadInt64(0));
             Assert.Equal(1234567890123L, bh.ReadInt64(8));
+            
+            // Big number test.
+            bh.Write(16, 1_234_567_890_123_456_789L);
+            
+            Assert.Equal(1_234_567_890_123_456_789L, bh.ReadInt64(16));
+            
+            // 11 22 10 F4 7D E9 81 15
+            Assert.Equal(0x15, bh.ReadByte(16));
+            Assert.Equal(0x81, bh.ReadByte(17));
+            Assert.Equal(0xE9, bh.ReadByte(18));
+            Assert.Equal(0x7D, bh.ReadByte(19));
+            Assert.Equal(0xF4, bh.ReadByte(20));
+            Assert.Equal(0x10, bh.ReadByte(21));
+            Assert.Equal(0x22, bh.ReadByte(22));
+            Assert.Equal(0x11, bh.ReadByte(23));
         }
         
         [Fact]
