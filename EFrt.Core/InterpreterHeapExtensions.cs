@@ -50,10 +50,10 @@ namespace EFrt.Core
             if (startAddress < 0 || startAddress >= interpreter.State.Heap.Items.Length) throw new InterpreterException(-9, $"The address {startAddress} is out of the <0 .. Heap.Length) range.");
             
             // -21 unsupported operation
-            if (count < 0) throw new InterpreterException(-21, $"The count {count} is out of the <0 .. n) range."); 
+            if (count <= 0) throw new InterpreterException(-21, $"The count {count} is out of the (0 .. n) range."); 
             
             // -9 invalid memory address
-            if (startAddress + count >= interpreter.State.Heap.Items.Length) throw new InterpreterException(-9, $"The address {startAddress} plus the count {count} is out of the <0 .. Heap.Length) range.");
+            if (startAddress + count - 1 >= interpreter.State.Heap.Items.Length) throw new InterpreterException(-9, $"The address {startAddress} plus the count {count} is out of the <0 .. Heap.Length) range.");
         }
         
         #endregion
