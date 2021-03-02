@@ -170,6 +170,17 @@ namespace EFrt_Tests
             
             Assert.Equal(123, bh.ReadInt32(0));
             Assert.Equal(123456, bh.ReadInt32(4));
+            
+            // Big number test.
+            bh.Write(8, 1_234_567_890);
+            
+            Assert.Equal(1_234_567_890, bh.ReadInt32(8));
+            
+            // 49 96 02 D2
+            Assert.Equal(0xD2, bh.ReadByte(8));
+            Assert.Equal(0x02, bh.ReadByte(9));
+            Assert.Equal(0x96, bh.ReadByte(10));
+            Assert.Equal(0x49, bh.ReadByte(11));
         }
         
         [Fact]
