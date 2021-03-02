@@ -18,19 +18,12 @@ namespace EFrt_Tests.Libs.Core
             _interpreter = InterpreterFactory.CreateWithDefaults();
             _interpreter.AddCoreLibrary();
             _storeWord = _interpreter.GetWord("!");
-            _fetchWord = _interpreter.GetWord("@");
         }
 
         [Fact]
         public void IsStoreWordTest()
         {
             Assert.Equal("!", _storeWord.Name);
-        }
-        
-        [Fact]
-        public void IsFetchWordTest()
-        {
-            Assert.Equal("@", _fetchWord.Name);
         }
 
         [Fact]
@@ -83,6 +76,5 @@ namespace EFrt_Tests.Libs.Core
 
         private readonly IInterpreter _interpreter;
         private readonly IWord _storeWord;
-        private readonly IWord _fetchWord;
     }
 }
