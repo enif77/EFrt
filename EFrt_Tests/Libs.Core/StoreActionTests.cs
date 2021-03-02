@@ -45,11 +45,12 @@ namespace EFrt_Tests.Libs.Core
             
             Assert.Equal(123, _interpreter.State.Heap.ReadInt32(4));
             
-            // -> 4 @
+            // -> 1_234_567_890 4 !
+            _interpreter.Push(1_234_567_890);
             _interpreter.Push(4);
-            _fetchWord.Action();
+            _storeWord.Action();
             
-            Assert.Equal(123, _interpreter.Pop());
+            Assert.Equal(1_234_567_890, _interpreter.State.Heap.ReadInt32(4));
         }
         
         [Fact]
@@ -65,6 +66,19 @@ namespace EFrt_Tests.Libs.Core
             
             // -23 address alignment exception
             Assert.Equal(-23, exception.ExceptionCode);
+        }
+
+        [Fact]
+        public void ExpectedParametersNotFound()
+        {
+            // The value parameter is missing.
+            _interpreter.Push(3);
+            
+            var exception = Assert.Throws<InterpreterException>(()
+                => _storeWord.Action());
+            
+            // -4 stack underflow
+            Assert.Equal(-4, exception.ExceptionCode);
         }
 
         private readonly IInterpreter _interpreter;
