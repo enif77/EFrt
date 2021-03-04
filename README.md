@@ -284,3 +284,5 @@ TO (step2)                  \ Sets the body of the word step2 (using the value o
 w? bla  \ Undefined
 w? IF   \ Defined
 ```
+
+Switching to bytes based heap.
