@@ -33,11 +33,12 @@ EFrt is a embeddable FORTH language implementation.
   - Return stack: Stack for interpreter internal use. Holds 32 bit signed integers.
   - Object stack: Can hold any object and strings.
   - Exception stack: Not accessible for users. Its used internally by THROW and CATCH words.
+  - Input source stack: Stack for keeping the inputs. Used by the EVALUATE word.
 
 
 ## Heaps
 
-  - Data heap: Main heap for user data. Holds all 32bit and 64bit integers and 64 bit floats (as two 32 bit cells).
+  - Data heap: Main heap for user data. It is an array of bytes. Words working with it are ensuring the cell alignment, when needed.
   - Object heap: Hold any objects and strings.
 
 
