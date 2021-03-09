@@ -20,7 +20,7 @@ namespace EFrt.Core
         void WriteLine();
 
         /// <summary>
-        /// Writes the text representation of the specified array of objects, followed by a line terminator, to an output using the specified format information.
+        /// Writes the text representation of the specified array of objects, followed by a line terminator, to an output using the format string.
         /// </summary>
         /// <param name="format">A composite format string.</param>
         /// <param name="arg">An array of objects to write using format.</param>
