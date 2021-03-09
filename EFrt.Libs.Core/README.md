@@ -142,11 +142,11 @@ Note: The `."` word works like `S" str" S.` words together.
 
 ## TODO
 
-Words: `ENVIRONMENT? CHARS`
+Words: `ENVIRONMENT?`
 
 Words-ext: `B! B, C@ BYTE+ BYTES`
 
-Char should be 16 bit/2 bytes, representing C# Char. All C-words should work with 2-bytes.
+Char should be 16 bit/2 bytes, representing the C# char type. All C-words should work with 2-bytes/chars.
 
 
 ## Skipped words
@@ -154,9 +154,3 @@ Char should be 16 bit/2 bytes, representing C# Char. All C-words should work wit
 ```
 # #> #S <# >IN ACCEPT HOLD KEY SIGN SOURCE
 ```
-
-
-## CREATE or BUILDS?
-
-http://amforth.sourceforge.net/TG/recipes/Builds.html
-http://www.forth.org/svfig/Len/definwds.htm
