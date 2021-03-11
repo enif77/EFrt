@@ -2,6 +2,9 @@
 
 namespace EFrt.Core
 {
+    using EFrt.Core.Stacks;
+    
+    
     /// <summary>
     /// Extensions method for the heap manipulations.
     /// </summary>
@@ -18,9 +21,9 @@ namespace EFrt.Core
         public static void CheckCharAlignedAddress(this IInterpreter interpreter, int addr)
         {
             // -9 invalid memory address
-            if (addr < 0 || addr >= interpreter.State.Heap.Items.Length) throw new InterpreterException(-9, $"The address {addr} is out of the <0 .. Heap.Length) range.");
+            if (addr < 0 || addr > interpreter.State.Heap.Items.Length - ByteHeap.CharSize) throw new InterpreterException(-9, $"The address {addr} is out of the <0 .. Heap.Length) range.");
             
-            if (interpreter.State.Heap.IsByteAligned(addr) == false)
+            if (interpreter.State.Heap.IsCharAligned(addr) == false)
             {
                 // -23 address alignment exception
                 throw new InterpreterException(-23, $"The {addr} is not a char aligned address.");
@@ -39,14 +42,14 @@ namespace EFrt.Core
         
         /// <summary>
         /// Checks, if an address is cell aligned and if it is from the 0 .. Heap.Length - 1 range.
-        /// Wont return (throws an InterpreterException), if the address is not cell aligned.
+        /// Won't return (throws an InterpreterException), if the address is not cell aligned.
         /// </summary>
         /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="addr">An address.</param>
         public static void CheckCellAlignedAddress(this IInterpreter interpreter, int addr)
         {
             // -9 invalid memory address
-            if (addr < 0 || addr >= interpreter.State.Heap.Items.Length) throw new InterpreterException(-9, $"The address {addr} is out of the <0 .. Heap.Length) range.");
+            if (addr < 0 || addr > interpreter.State.Heap.Items.Length - ByteHeap.CellSize) throw new InterpreterException(-9, $"The address {addr} is out of the <0 .. Heap.Length) range.");
             
             if (interpreter.State.Heap.IsCellAligned(addr) == false)
             {
@@ -57,7 +60,7 @@ namespace EFrt.Core
         
         /// <summary>
         /// Checks, if the next allocated space address is cell aligned and if it is from the 0 .. Heap.Length - 1 range.
-        /// Wont return (throws an InterpreterException), if the next allocated space address is not cell aligned.
+        /// Won't return (throws an InterpreterException), if the next allocated space address is not cell aligned.
         /// </summary>
         /// <param name="interpreter">An IInterpreter instance.</param>
         public static void CheckCellAlignedHereAddress(this IInterpreter interpreter)
@@ -66,8 +69,8 @@ namespace EFrt.Core
         }
 
         /// <summary>
-        /// Checks, if addresses defined bx the start address and the count are from the 0 .. Heap.Length - 1 range.
-        /// Wont return (throws an InterpreterException), if defined addresses are not from the heap address range.
+        /// Checks, if addresses defined by the start address and the count are from the 0 .. Heap.Length - 1 range.
+        /// Won't return (throws an InterpreterException), if defined addresses are not from the heap address range.
         /// </summary>
         /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="startAddress">A start address.</param>
