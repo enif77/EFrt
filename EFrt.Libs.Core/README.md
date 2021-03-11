@@ -84,7 +84,7 @@ Words definition table columns:
 | EVALUATE | no   | IC   | **Evaluate string**<br>{s -- }<br>Evaluates a string the top of the object stack. |
 | EXECUTE  | no   | IC   | **Execute word**<br>(xt -- )<br>Executes the word with execution token xt. |
 | EXIT     | yes  | C    | **Exit definition**<br>Exit from the current definition immediately. Note that EXIT cannot be used within a DO—LOOP without UNLOOP. Use LEAVE instead. |
-| FILL     | no   | IC   | **Fill memory**<br>(addr n1 n2 -- )<br>If n1 is greater than zero, fills n1 cells begining at addr with n2. |
+| FILL     | no   | IC   | **Fill memory**<br>(addr n1 n2 -- )<br>If n1 is greater than zero, fills n1 cells beginning at addr with n2. |
 | FIND     | no   | IC   | **Find word**<br>( -- 0 \| xt 1 \| xt -1) {s -- \| s}<br>Find the definition named in the string s. If the definition is not found, return s and zero. If the definition is found, return its execution token xt. If the definition is immediate, also return one (1), otherwise also return minus-one (-1). |
 | FM/MOD   | no   | IC   | **n2 = d % n1, n3 = d / n1**<br>(d n1 -- n2 n3)<br>Divide d by n1, giving the floored quotient n3 and the remainder n2. |
 | HERE     | no   | IC   | **Heap address**<br>( -- addr)<br>The current heap allocation address is placed on the top of the stack. addr + 1 is the first free heap cell. |
@@ -146,7 +146,7 @@ Words: `ENVIRONMENT?`
 
 Words-ext: `B! B, C@ BYTE+ BYTES`
 
-Char should be 16 bit/2 bytes, representing the C# char type. All C-words should work with 2-bytes/chars.
+The FILL word should work with chars and not bytes.
 
 
 ## Skipped words

@@ -765,7 +765,7 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // (char a-addr -- )
+        // (char c-addr -- )
         private int CStoreAction()
         {
             _interpreter.StackExpect(2);
@@ -774,7 +774,7 @@ namespace EFrt.Libs.Core
             
             _interpreter.CheckCharAlignedAddress(addr);
            
-            _interpreter.State.Heap.Write(addr, (byte)_interpreter.Pop());
+            _interpreter.State.Heap.Write(addr, (char)_interpreter.Pop());
 
             return 1;
         }
@@ -785,7 +785,7 @@ namespace EFrt.Libs.Core
             _interpreter.StackExpect(1);
             _interpreter.CheckCharAlignedHereAddress();            
             
-            _interpreter.State.Heap.Write(_interpreter.State.Heap.Alloc(1), (byte)_interpreter.Pop());  // TODO: CharSize
+            _interpreter.State.Heap.Write(_interpreter.State.Heap.Alloc(ByteHeap.CharSize), (char)_interpreter.Pop());
             
             return 1;
         }
@@ -798,9 +798,9 @@ namespace EFrt.Libs.Core
             var addr = _interpreter.Pop();
             
             _interpreter.CheckCharAlignedAddress(addr);
-            _interpreter.CheckAddressesRange(addr, 1);
+            _interpreter.CheckAddressesRange(addr, ByteHeap.CharSize);
             
-            _interpreter.Push(_interpreter.State.Heap.ReadByte(addr));
+            _interpreter.Push(_interpreter.State.Heap.ReadInt16(addr));
 
             return 1;
         }
@@ -848,7 +848,7 @@ namespace EFrt.Libs.Core
             
             _interpreter.CheckCharAlignedAddress(addr);
             
-            _interpreter.Push(addr + 1);  // TODO: CharSize
+            _interpreter.Push(addr + ByteHeap.CharSize);
 
             return 1;
         }
@@ -858,7 +858,7 @@ namespace EFrt.Libs.Core
         {
             _interpreter.StackExpect(1);
 
-            _interpreter.Push(_interpreter.Pop() * 1); // TODO: CharSize
+            _interpreter.Push(_interpreter.Pop() * ByteHeap.CharSize);
 
             return 1;
         }
@@ -1071,7 +1071,7 @@ namespace EFrt.Libs.Core
             {
                 var addr = _interpreter.Pop();     
                 
-                _interpreter.CheckCellAlignedAddress(addr);
+                _interpreter.CheckCharAlignedAddress(addr);
                 _interpreter.CheckAddressesRange(addr, count);
                 
                 _interpreter.State.Heap.Fill(addr, count, v);
