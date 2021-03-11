@@ -86,6 +86,34 @@ namespace EFrt_Tests
         }
         
         [Fact]
+        public void IsCharAlignedTest()
+        {
+            var bh = new ByteHeap();
+
+            Assert.True(bh.IsCharAligned(0));
+            Assert.True(bh.IsCharAligned(122));
+            Assert.True(bh.IsCharAligned(-6));
+            
+            Assert.False(bh.IsCellAligned(-1));
+            Assert.False(bh.IsCellAligned(1));
+            Assert.False(bh.IsCellAligned(123));
+        }
+        
+        [Fact]
+        public void CharAlignedTest()
+        {
+            var bh = new ByteHeap();
+
+            // 124 = ((123 >> 1) << 1) + char-size
+            Assert.Equal(120, bh.CharAligned(120));
+            Assert.Equal(122, bh.CharAligned(121));
+            Assert.Equal(122, bh.CharAligned(122));
+            Assert.Equal(124, bh.CharAligned(123));
+            Assert.Equal(124, bh.CharAligned(124));
+            Assert.Equal(126, bh.CharAligned(125));
+        }
+        
+        [Fact]
         public void IsCellAlignedTest()
         {
             var bh = new ByteHeap();
@@ -157,6 +185,27 @@ namespace EFrt_Tests
             bh.Write(5, (byte)123);
             
             Assert.Equal(123, bh.ReadByte(5));
+        }
+        
+        [Fact]
+        public void ReadWriteInt16Test()
+        {
+            var bh = new ByteHeap();
+
+            bh.Alloc(10);
+            bh.Write(0, (char)123);
+            bh.Write(2, (char)23456);
+            
+            Assert.Equal(123, bh.ReadInt16(0));
+            Assert.Equal(23456, bh.ReadInt16(2));
+            
+            // Big number test.
+            bh.Write(4, (char)65535);
+            
+            Assert.Equal(0xffff, bh.ReadInt16(4));
+            
+            Assert.Equal(0x7b, bh.ReadByte(0));
+            Assert.Equal(0xa0, bh.ReadByte(2));
         }
         
         [Fact]

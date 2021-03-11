@@ -13,6 +13,11 @@ namespace EFrt.Core.Stacks
     public class ByteHeap : AStackBase<byte>
     {
         /// <summary>
+        /// A size of a char in bytes.
+        /// </summary>
+        public const int CharSize = sizeof(char);
+    
+        /// <summary>
         /// A size of a cell in bytes.
         /// </summary>
         public const int CellSize = sizeof(int);
@@ -22,8 +27,20 @@ namespace EFrt.Core.Stacks
         /// </summary>
         public const int DoubleCellSize = CellSize * 2;
 
-        private const int Int32AddressMask = -1 << 2;  // Single cell alignment.
-        private const int Int64AddressMask = -1 << 3;  // Double cell alignment.
+        /// <summary>
+        /// Char alignment mask. 2 bytes.
+        /// </summary>
+        private const int Int16AddressMask = -1 << 1;
+        
+        /// <summary>
+        /// Single cell alignment mask. 4 bytes.
+        /// </summary>
+        private const int Int32AddressMask = -1 << 2;
+        
+        /// <summary>
+        /// Double cell alignment mask. 8 bytes.
+        /// </summary>
+        private const int Int64AddressMask = -1 << 3;
         
         
         /// <summary>
@@ -74,19 +91,37 @@ namespace EFrt.Core.Stacks
         /// </summary>
         /// <param name="addr">An address.</param>
         /// <returns>True, if an address is byte-aligned.</returns>
-        public bool IsByteAligned(int addr)
-        {
-            return true;
-        }
+        public bool IsByteAligned(int addr) => true;
 
         /// <summary>
         /// Returns a byte-aligned address that is greater or equal to addr.
         /// </summary>
         /// <param name="addr">A value index, aka address.</param>
         /// <returns>An address.</returns>
-        public int ByteAligned(int addr)
+        public int ByteAligned(int addr) => addr;
+        
+        /// <summary>
+        /// Checks, if an address is char-aligned.
+        /// </summary>
+        /// <param name="addr">An address.</param>
+        /// <returns>True, if an address is char-aligned.</returns>
+        public bool IsCharAligned(int addr)
         {
-            return addr;
+            return (addr & Int16AddressMask) == addr;;
+        }
+
+        /// <summary>
+        /// Returns a char-aligned address that is greater or equal to addr.
+        /// </summary>
+        /// <param name="addr">A value index, aka address.</param>
+        /// <returns>An address.</returns>
+        public int CharAligned(int addr)
+        {
+            var aligned = addr & Int16AddressMask;
+
+            return (aligned < addr)
+                ? aligned + CharSize
+                : aligned;
         }
         
         /// <summary>
@@ -271,6 +306,34 @@ namespace EFrt.Core.Stacks
         public byte ReadByte(int addr)
         {
             return Items[addr];
+        }
+        
+        /// <summary>
+        /// Writes a char value to an address.
+        /// </summary>
+        /// <param name="addr">A value index, aka address.</param>
+        /// <param name="value">A value.</param>
+        public void Write(int addr, char value)
+        {
+            var mem = Items;
+
+            mem[addr++] = (byte) value;
+            mem[addr] = (byte) (value >> 8);
+        }
+        
+        /// <summary>
+        /// Reads a int from an array of bytes.
+        /// </summary>
+        /// <param name="addr">A value index, aka address.</param>
+        /// <returns>An int value.</returns>
+        public char ReadInt16(int addr)
+        {
+            var mem = Items;
+            
+            var v = (int)mem[addr++];
+            v |= (int)mem[addr] << 8;
+            
+            return (char)v;
         }
         
         /// <summary>
