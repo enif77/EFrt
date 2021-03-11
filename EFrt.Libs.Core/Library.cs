@@ -87,9 +87,14 @@ namespace EFrt.Libs.Core
             _interpreter.AddPrimitiveWord("BASE", BaseAction);
             _interpreter.AddImmediateWord("BEGIN", BeginAction);
             _interpreter.AddConstantWord("BL", ' ');
+            _interpreter.AddPrimitiveWord("C!", CStoreAction);
+            _interpreter.AddPrimitiveWord("C,", CCommaAction);
+            _interpreter.AddPrimitiveWord("C@", CFetchAction);
             _interpreter.AddPrimitiveWord("CELL+", CellPlusAction); 
             _interpreter.AddPrimitiveWord("CELLS", CellsAction);
             _interpreter.AddPrimitiveWord("CHAR", CharAction);
+            _interpreter.AddPrimitiveWord("CHAR+", CharPlusAction);
+            _interpreter.AddPrimitiveWord("CHARS", CharsAction);
             _interpreter.AddPrimitiveWord("CONSTANT", ConstantAction);
             _interpreter.AddPrimitiveWord("COUNT", CountAction);
             _interpreter.AddPrimitiveWord("CR", CrAction);
@@ -760,6 +765,46 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
+        // (char a-addr -- )
+        private int CStoreAction()
+        {
+            _interpreter.StackExpect(2);
+            
+            var addr = _interpreter.Pop();
+            
+            _interpreter.CheckCharAlignedAddress(addr);
+           
+            _interpreter.State.Heap.Write(addr, (byte)_interpreter.Pop());
+
+            return 1;
+        }
+        
+        // (char -- )
+        private int CCommaAction()
+        {
+            _interpreter.StackExpect(1);
+            _interpreter.CheckCharAlignedHereAddress();            
+            
+            _interpreter.State.Heap.Write(_interpreter.State.Heap.Alloc(1), (byte)_interpreter.Pop());  // TODO: CharSize
+            
+            return 1;
+        }
+        
+        // (c-addr -- char)
+        private int CFetchAction()
+        {
+            _interpreter.StackExpect(1);
+
+            var addr = _interpreter.Pop();
+            
+            _interpreter.CheckCharAlignedAddress(addr);
+            _interpreter.CheckAddressesRange(addr, 1);
+            
+            _interpreter.Push(_interpreter.State.Heap.ReadByte(addr));
+
+            return 1;
+        }
+        
         // (a-addr1 -- a-addr2)
         private int CellPlusAction()
         {
@@ -794,6 +839,30 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
+        // (c-addr1 -- c-addr2)
+        private int CharPlusAction()
+        {
+            _interpreter.StackExpect(1);
+
+            var addr = _interpreter.Pop();
+            
+            _interpreter.CheckCharAlignedAddress(addr);
+            
+            _interpreter.Push(addr + 1);  // TODO: CharSize
+
+            return 1;
+        }
+        
+        // (n1 -- n2)
+        private int CharsAction()
+        {
+            _interpreter.StackExpect(1);
+
+            _interpreter.Push(_interpreter.Pop() * 1); // TODO: CharSize
+
+            return 1;
+        }
+        
         // CONSTANT word-name
         // (n -- )
         private int ConstantAction()

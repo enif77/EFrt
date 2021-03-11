@@ -61,9 +61,14 @@ Words definition table columns:
 | BASE     | no   | IC   | **Number conversion radix address**<br>( -- addr)<br>The addr is the address of a cell containing the current number-conversion radix {2...36}. |
 | BEGIN    | yes  | C    | **Begin loop**<br><br>Begins a loop. The end of the loop is marked by the matching AGAIN, REPEAT, or UNTIL. |
 | BL       | no   | IC   | **Blank**<br>( -- n)<br>Constant that leaves 32 (the ASCII code of the SPACE char) on the top of the stack. |
+| C!       | no   | IC   | **Store char into address**<br>(char a-addr -- )<br>Stores the value char into the address addr (a heap array index). |
+| C,       | no   | IC   | **Store char in heap**<br>Reserves a single char of data heap, initialising it to char. |
+| C@       | no   | IC   | **Fetch char**<br>(c-addr -- char)<br>Loads the character at the c-addr and leaves it at the top of the stack. |
 | CELL+    | no   | IC   | **Add single cell integer size**<br>(addr1 -- addr2)<br>Add the size in address units of a single cell integer number to addr1, giving addr2. |
-| CELLS    | no   | IC   | **Cells to bytes**<br>(n1 -- n2)<br>Converts n1 cells to n2 memory address units (bytes). Does actually nothing, since the heap is addressed in cells and not in bytes. |
+| CELLS    | no   | IC   | **Cells to bytes**<br>(n1 -- n2)<br>Converts n1 cells to n2 memory address units (bytes). |
 | CHAR ccc | no   | IC   | **Char**<br>( -- c)<br>Skip leading spaces. Parse the string ccc and return c, the display code representing the first character of ccc. |
+| CHAR+    | no   | IC   | **Add char size**<br>(c-addr1 -- c-addr2)<br>Add the size in address units of a character to c-addr1, giving c-addr2. |
+| CHARS    | no   | IC   | **Chars to bytes**<br>(n1 -- n2)<br>Converts n1 characters to n2 memory address units (bytes). |
 | CONSTANT x | no   | I    | **Declare constant**<br>(n -- )<br>Declares a constant named x. When x is executed, the value n will be left on the stack. |
 | COUNT    | no   | IC   | **String length**<br>( -- n) {o -- s} <br>Converts an object on the top of the object stack to a string and returns the number of characters (string.Length) in it. Leaves the string on the top of the object stack. |
 | CR       | no   | IC   | **Carriage return**<br>( -- )<br>The folowing output will start at the new line. |
@@ -137,7 +142,11 @@ Note: The `."` word works like `S" str" S.` words together.
 
 ## TODO
 
-Words: `ENVIRONMENT? C! C, C@ CHAR+ CHARS`
+Words: `ENVIRONMENT?`
+
+Words-ext: `B! B, C@ BYTE+ BYTES`
+
+Char should be 16 bit/2 bytes, representing the C# char type. All C-words should work with 2-bytes/chars.
 
 
 ## Skipped words
@@ -145,9 +154,3 @@ Words: `ENVIRONMENT? C! C, C@ CHAR+ CHARS`
 ```
 # #> #S <# >IN ACCEPT HOLD KEY SIGN SOURCE
 ```
-
-
-## CREATE or BUILDS?
-
-http://amforth.sourceforge.net/TG/recipes/Builds.html
-http://www.forth.org/svfig/Len/definwds.htm
