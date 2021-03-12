@@ -292,3 +292,11 @@ TO (step2)                  \ Sets the body of the word step2 (using the value o
 w? bla  \ Undefined
 w? IF   \ Defined
 ```
+
+### Acknowledgements
+
+[JetBrains](https://www.jetbrains.com/?from=Efrt) kindly provides EFrt with a free open-source licence for their Resharper and Rider.
+- **Resharper** makes Visual Studio a much better IDE
+- **Rider** is fast & powerful cross platform .NET IDE
+
+![image](https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/JetBrains_Logo_2016.svg/121px-JetBrains_Logo_2016.svg.png)
