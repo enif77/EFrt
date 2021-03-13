@@ -62,6 +62,12 @@ namespace EFrt.Libs.CoreExt
             _interpreter.AddConstantWord("FALSE", 0);
             _interpreter.AddConstantWord("TRUE", -1);
 
+            _interpreter.AddPrimitiveWord("B!", BStoreAction);
+            _interpreter.AddPrimitiveWord("B,", BCommaAction);
+            _interpreter.AddPrimitiveWord("B@", BFetchAction);
+            _interpreter.AddPrimitiveWord("BYTE+", BytePlusAction); 
+            _interpreter.AddPrimitiveWord("BYTES", BytesAction);
+            
             _interpreter.AddPrimitiveWord("-ROLL", MinusRollAction);
             _interpreter.AddPrimitiveWord("-ROT", MinusRotAction);
             _interpreter.AddPrimitiveWord("2+", TwoPlusAction);
@@ -347,6 +353,71 @@ namespace EFrt.Libs.CoreExt
 
         // Extra
 
+        // (byte addr -- )
+        private int BStoreAction()
+        {
+            _interpreter.StackExpect(2);
+            
+            var addr = _interpreter.Pop();
+            
+            _interpreter.CheckByteAlignedAddress(addr);
+           
+            _interpreter.State.Heap.Write(addr, (byte)_interpreter.Pop());
+
+            return 1;
+        }
+        
+        // (byte -- )
+        private int BCommaAction()
+        {
+            _interpreter.StackExpect(1);
+            _interpreter.CheckByteAlignedHereAddress();            
+            
+            _interpreter.State.Heap.Write(_interpreter.State.Heap.Alloc(1), (byte)_interpreter.Pop());
+            
+            return 1;
+        }
+        
+        // (addr -- byte)
+        private int BFetchAction()
+        {
+            _interpreter.StackExpect(1);
+
+            var addr = _interpreter.Pop();
+            
+            _interpreter.CheckByteAlignedAddress(addr);
+            _interpreter.CheckAddressesRange(addr, 1);
+            
+            _interpreter.Push(_interpreter.State.Heap.ReadByte(addr));
+
+            return 1;
+        }
+        
+        // (addr1 -- addr2)
+        private int BytePlusAction()
+        {
+            _interpreter.StackExpect(1);
+
+            var addr = _interpreter.Pop();
+            
+            _interpreter.CheckByteAlignedAddress(addr);
+            
+            _interpreter.Push(addr + 1);
+
+            return 1;
+        }
+        
+        // (n1 -- n2)
+        private int BytesAction()
+        {
+            _interpreter.StackExpect(1);
+
+            // Nothing to do here, since the size of a byte is 0;
+
+            return 1;
+        }
+        
+        
         // (index -- n)
         private int MinusRollAction()
         {
