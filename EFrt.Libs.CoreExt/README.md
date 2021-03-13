@@ -9,12 +9,12 @@ Words definition table columns:
 - Name: A name of a word with optional parameters.
 - Imm.: Immediate - if a word is executed even if we are in the compilation mode.
 - Mode: I = interpretation mode only (not available during compilation), C = compilation mode only
-  (not available during implementation), IC = vailable in both modes.
+  (not available during implementation), IC = available in both modes.
 - Description: A word name, followed by the stack diagram - () = data stack, [] = return stack, {} = object stack - and description of the word itself.
 
 | Name     | Imm. | Mode | Description |
 | ---      | ---  | ---  | --- |
-| .(       | yes  | IC   | **Print constant string**<br>Immediatelly prints the string that follows in the input stream. |
+| .(       | yes  | IC   | **Print constant string**<br>Immediately prints the string that follows in the input stream. |
 | 0<>      | no   | IC   | **Nonzero**<br>(n -- flag)<br>Returns -1 if n1 is not equal to 0, 0 otherwise. |
 | 0>       | no   | IC   | **Greater than zero**<br>(n -- flag)<br>Returns -1 if n1 is greater than 0, 0 otherwise. |
 | 2>R      | no   | IC   | **To return stack**<br>(n1 n2 -- ) [ -- n1 n2]<br>Removes top two item from the stack and pushes them onto the return stack. |
@@ -23,7 +23,7 @@ Words definition table columns:
 | :NONAME  | no   | IC   | **Begin definition without a name**<br>( -- xt)<br>Begins compilation of a word without a name. The ; word then leaves this new word execution token on the stack. |
 | <>       | no   | IC   | **Not equal**<br>(n1 n2 -- flag)<br>Returns -1 if n1 is not equal to n2, 0 otherwise. |
 | ?DO      | yes  | C    | **Conditional loop**<br>(limit index -- ) [ - limit index ]<br>If n equals limit, skip immediately to the matching LOOP or +LOOP. Otherwise, enter the loop, which is thenceforth treated as a normal DO loop. |
-| AGAIN    | yes  | C    | **Indefinite loop**<br>Marks the end of an idefinite loop opened by the matching BEGIN. |
+| AGAIN    | yes  | C    | **Indefinite loop**<br>Marks the end of an indefinite loop opened by the matching BEGIN. |
 | FALSE    | no   | IC   | **False**<br>( -- flag)<br>Constant that leaves the 0 (false) on the top of the stack. |
 | HEX      | no   | IC   | **Set number conversion radix to sixteen**<br>( -- )<br>Set the numeric conversion radix to sixteen. |
 | NIP      | no   | IC   | **Drop item below stack top**<br>(n1 n2 -- n2)<br>Drop the first item below the top of the stack. |
@@ -45,7 +45,7 @@ Words definition table columns:
 | <=       | no   | IC   | **Less than or equal**<br>(n1 n2 -- flag)<br>Returns -1 if n1 <= n2, 0 otherwise. |
 | >=       | no   | IC   | **Greater than or equal**<br>(n1 n2 -- flag)<br>Returns -1 if n1 >= n2, 0 otherwise. |
 | 2+       | no   | IC   | **Add two**<br>(n1 -- n2)<br>Adds two to the top of the stack. |
-| 2-       | no   | IC   | **Subtract two**<br>(n1 -- n2)<br>Substracts two from the top of the stack. |
+| 2-       | no   | IC   | **Subtract two**<br>(n1 -- n2)<br>Subtracts two from the top of the stack. |
 | 2NIP     | no   | IC   | **Drop two items below stack top**<br>(n1 n2 n3 n4 -- n3 n4)<br>Drop the fourth and the third item below the top of the stack. |
 | 2TUCK    | no   | IC   | **Dup stack top**<br>(n1 n2 n3 n4 -- n3 n4 n1 n2 n3 n4)<br>Copy the first two stack items below the fourth stack item. |
 | CLEAR    | no   | IC   | **Clear stack**<b<br><br>r>All items on the data stack are discarded. |
@@ -56,6 +56,7 @@ Words definition table columns:
 Words: `.R ACTION-OF BUFFER: C" CASE COMPILE, DEFER DEFER! DEFER@ ENDCASE ENDOF ERASE
   IS OF MARKER OF PARSE PARSE-NAME U.R U> UNUSED WITHIN`
 
+Words-ext: `B! B, C@ BYTE+ BYTES`
 
 ## Skipped words
 

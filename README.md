@@ -66,7 +66,7 @@ EFrt is a embeddable FORTH language implementation.
 
 ## Numbers
 
-Unknown words are parsed as numbers, followning C/C# conventions. Double cell integer must have the `L` or the `l` suffix to be recognized
+Unknown words are parsed as numbers, following C/C# conventions. Double cell integer must have the `L` or the `l` suffix to be recognized
 as a double cell integer. Any problem with parsing a number makes the parser to return a word, which is unknown, and it leads to an error.
 
 ```

@@ -144,8 +144,6 @@ Note: The `."` word works like `S" str" S.` words together.
 
 Words: `ENVIRONMENT?`
 
-Words-ext: `B! B, C@ BYTE+ BYTES`
-
 The FILL word should work with chars and not bytes.
 
 
