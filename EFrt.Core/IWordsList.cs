@@ -41,40 +41,40 @@ namespace EFrt.Core
         /// </summary>
         /// <param name="wordName">A name of a word.</param>
         /// <returns>A word definition.</returns>
-        IWord GetWord(string wordName);
+        IWord Get(string wordName);
 
         /// <summary>
         /// Gets a definition of a word by its execution token.
         /// </summary>
         /// <param name="executionToken">An execution token of a word.</param>
         /// <returns>A word definition.</returns>
-        IWord GetWord(int executionToken);
+        IWord Get(int executionToken);
 
         /// <summary>
         /// Checks, if a word is defined.
         /// </summary>
         /// <param name="wordName">A name of a word.</param>
         /// <returns>True, if a word with a name wordName is defined.</returns>
-        bool IsWordDefined(string wordName);
+        bool IsDefined(string wordName);
 
         /// <summary>
         /// Checks, if a word is defined.
         /// </summary>
         /// <param name="executionToken">An execution token of a word.</param>
         /// <returns>True, if a word with an execution token is defined.</returns>
-        bool IsWordDefined(int executionToken);
+        bool IsDefined(int executionToken);
 
         /// <summary>
         /// Adds a new word definition.
         /// </summary>
         /// <param name="word">A Word.</param>
-        void AddWord(IWord word);
+        void Add(IWord word);
 
         /// <summary>
         /// Remove the latest definition of a word from this list of words.
         /// </summary>
         /// <param name="wordName">A name of a word.</param>
-        void RemoveWord(string wordName);
+        void Remove(string wordName);
 
         /// <summary>
         /// Returns the list of defined word names separated by SPACE.

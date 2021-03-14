@@ -267,9 +267,9 @@ namespace EFrt.Core
         
         private void CompileWord(string wordName, Token tok)
         {
-            if (State.WordsList.IsWordDefined(wordName))
+            if (State.WordsList.IsDefined(wordName))
             {
-                var word = State.WordsList.GetWord(wordName);
+                var word = State.WordsList.Get(wordName);
                 if (word.IsImmediate)
                 {
                     try
@@ -326,9 +326,9 @@ namespace EFrt.Core
         
         private void ExecuteWord(string wordName, Token tok)
         {
-            if (State.WordsList.IsWordDefined(wordName))
+            if (State.WordsList.IsDefined(wordName))
             {
-                CurrentWord = State.WordsList.GetWord(wordName);
+                CurrentWord = State.WordsList.Get(wordName);
 
                 try
                 {

@@ -185,9 +185,9 @@ namespace EFrt.Libs.Core
             _interpreter.StackFree(1);
 
             var wordName = _interpreter.ParseWord();
-            if (_interpreter.State.WordsList.IsWordDefined(wordName))
+            if (_interpreter.State.WordsList.IsDefined(wordName))
             {
-                _interpreter.Push(_interpreter.State.WordsList.GetWord(wordName).ExecutionToken);
+                _interpreter.Push(_interpreter.State.WordsList.Get(wordName).ExecutionToken);
             }
             else
             {
@@ -586,7 +586,7 @@ namespace EFrt.Libs.Core
         {
             _interpreter.StackExpect(1);
 
-            var word = _interpreter.State.WordsList.GetWord(_interpreter.Pop());
+            var word = _interpreter.State.WordsList.Get(_interpreter.Pop());
             if (word is CreatedWord == false)
             {
                 _interpreter.Throw(-31, ">BODY used on non-CREATEd definition.");
@@ -1042,7 +1042,7 @@ namespace EFrt.Libs.Core
         {
             _interpreter.StackExpect(1);
 
-            return _interpreter.Execute(_interpreter.State.WordsList.GetWord(_interpreter.Pop()));
+            return _interpreter.Execute(_interpreter.State.WordsList.Get(_interpreter.Pop()));
         }
 
         // ( - )
@@ -1091,9 +1091,9 @@ namespace EFrt.Libs.Core
             _interpreter.StackFree(1);
 
             var wordName = _interpreter.OPop().ToString();
-            if (_interpreter.State.WordsList.IsWordDefined(wordName.ToUpperInvariant()))
+            if (_interpreter.State.WordsList.IsDefined(wordName.ToUpperInvariant()))
             {
-                var word = _interpreter.State.WordsList.GetWord(wordName.ToUpperInvariant());
+                var word = _interpreter.State.WordsList.Get(wordName.ToUpperInvariant());
 
                 _interpreter.Push(word.ExecutionToken);
 

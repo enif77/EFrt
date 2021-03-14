@@ -24,7 +24,7 @@ namespace EFrt.Core
         {
             if (string.IsNullOrEmpty(wordName)) throw new ArgumentException("A word name expected.");
             
-            return interpreter.State.WordsList.IsWordDefined(wordName.ToUpperInvariant());
+            return interpreter.State.WordsList.IsDefined(wordName.ToUpperInvariant());
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace EFrt.Core
         /// <returns>A word.</returns>
         public static IWord GetWord(this IInterpreter interpreter, string wordName)
         {
-            return interpreter.State.WordsList.GetWord(wordName.ToUpperInvariant());
+            return interpreter.State.WordsList.Get(wordName.ToUpperInvariant());
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace EFrt.Core
         {
             if (word == null) throw new ArgumentNullException(nameof(word));
 
-            interpreter.State.WordsList.AddWord(word);
+            interpreter.State.WordsList.Add(word);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace EFrt.Core
         {
             if (string.IsNullOrEmpty(wordName)) throw new ArgumentException("A word name expected.");
             
-            interpreter.State.WordsList.RemoveWord(wordName.ToUpperInvariant());
+            interpreter.State.WordsList.Remove(wordName.ToUpperInvariant());
         }
 
         /// <summary>

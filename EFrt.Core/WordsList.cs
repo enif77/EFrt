@@ -25,7 +25,7 @@ namespace EFrt.Core
 
                 foreach (var w in _wordsDic.Keys)
                 {
-                    wordsList.Add(GetWord(w));
+                    wordsList.Add(Get(w));
                 }
 
                 return wordsList;
@@ -65,7 +65,7 @@ namespace EFrt.Core
         public void Forget(string wordName)
         {
             // NOTE: A wordIndex is actually its execution token.
-            var wordIndex = _wordsHistory.LastIndexOf(GetWord(wordName));
+            var wordIndex = _wordsHistory.LastIndexOf(Get(wordName));
             var wordsToBeRemovedList = new List<IWord>();
             for (var i = wordIndex; i < _wordsHistory.Count; i++)
             {
@@ -74,7 +74,7 @@ namespace EFrt.Core
 
             foreach (var w in wordsToBeRemovedList)
             {
-                RemoveWord(w.Name);
+                Remove(w.Name);
             }
         }
 
@@ -83,7 +83,7 @@ namespace EFrt.Core
         /// </summary>
         /// <param name="wordName">A name of a word.</param>
         /// <returns>A word definition.</returns>
-        public IWord GetWord(string wordName)
+        public IWord Get(string wordName)
         {
             return _wordsDic[wordName].Last();
         }
@@ -93,7 +93,7 @@ namespace EFrt.Core
         /// </summary>
         /// <param name="executionToken">An execution token of a word.</param>
         /// <returns>A word definition.</returns>
-        public IWord GetWord(int executionToken)
+        public IWord Get(int executionToken)
         {
             return _wordsHistory[executionToken];
         }
@@ -103,7 +103,7 @@ namespace EFrt.Core
         /// </summary>
         /// <param name="wordName">A name of a word.</param>
         /// <returns>True, if a word with a name wordName is defined.</returns>
-        public bool IsWordDefined(string wordName)
+        public bool IsDefined(string wordName)
         {
             return _wordsDic.ContainsKey(wordName);
         }
@@ -113,7 +113,7 @@ namespace EFrt.Core
         /// </summary>
         /// <param name="executionToken">An execution token of a word.</param>
         /// <returns>True, if a word with an execution token is defined.</returns>
-        public bool IsWordDefined(int executionToken)
+        public bool IsDefined(int executionToken)
         {
             return executionToken >= 0 && executionToken < _wordsHistory.Count;
         }
@@ -123,9 +123,9 @@ namespace EFrt.Core
         /// Registers a new word definition.
         /// </summary>
         /// <param name="word">A Word.</param>
-        public void AddWord(IWord word)
+        public void Add(IWord word)
         {
-            if (IsWordDefined(word.Name) == false)
+            if (IsDefined(word.Name) == false)
             {
                 _wordsDic.Add(word.Name, new List<IWord>());
             }
@@ -142,7 +142,7 @@ namespace EFrt.Core
         /// Remove the latest definition of a word from this list of words.
         /// </summary>
         /// <param name="wordName">A name of a word.</param>
-        public void RemoveWord(string wordName)
+        public void Remove(string wordName)
         {
             var wordDefinitionsList = _wordsDic[wordName];
             var wordTobeRemoved = wordDefinitionsList.Last();

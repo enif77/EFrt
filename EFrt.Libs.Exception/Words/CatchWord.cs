@@ -46,7 +46,7 @@ namespace EFrt.Libs.Exception.Words
                 try
                 {
                     // Execute the word.
-                    var index = Interpreter.Execute(Interpreter.State.WordsList.GetWord(Interpreter.Pop()));
+                    var index = Interpreter.Execute(Interpreter.State.WordsList.Get(Interpreter.Pop()));
 
                     // Remove the unused exception frame (nothing failed here).
                     Interpreter.State.ExceptionStack.Pop();
