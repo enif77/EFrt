@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Core
 {
@@ -33,6 +33,6 @@ namespace EFrt.Core
         }
 
 
-        private string _src;
+        private readonly string _src;
     }
 }
