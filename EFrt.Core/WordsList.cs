@@ -35,13 +35,7 @@ namespace EFrt.Core
         /// <summary>
         /// Returns the history of all defined words.
         /// </summary>
-        public IEnumerable<IWord> WordsHistory
-        {
-            get
-            {
-                return new List<IWord>(_wordsHistory);
-            }
-        }
+        public IEnumerable<IWord> WordsHistory => new List<IWord>(_wordsHistory);
 
         /// <summary>
         /// Constructor.
@@ -170,11 +164,11 @@ namespace EFrt.Core
         {
             var nextWord = false;
             var sb = new StringBuilder();
-            var wdic = new Dictionary<string, int>(_wordsDic.Count);
+            var knownWords = new Dictionary<string, int>(_wordsDic.Count);
             for (var i = _wordsHistory.Count - 1; i >= 0; i--)
             {
-                var w = _wordsHistory[i];
-                if (wdic.ContainsKey(w.Name))
+                var word = _wordsHistory[i];
+                if (knownWords.ContainsKey(word.Name))
                 {
                     continue;
                 }
@@ -188,15 +182,15 @@ namespace EFrt.Core
                     nextWord = true;
                 }
 
-                sb.Append(w.Name);
-                wdic.Add(w.Name, i);
+                sb.Append(word.Name);
+                knownWords.Add(word.Name, i);
             }
 
             return sb.ToString();
         }
 
 
-        private Dictionary<string, IList<IWord>> _wordsDic;
-        private List<IWord> _wordsHistory;
+        private readonly Dictionary<string, IList<IWord>> _wordsDic;
+        private readonly List<IWord> _wordsHistory;
     }
 }
