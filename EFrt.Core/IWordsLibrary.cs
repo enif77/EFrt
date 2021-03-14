@@ -1,11 +1,11 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Core
 {
     /// <summary>
     /// Defines a library of words.
     /// </summary>
-    public interface IWordsLIbrary
+    public interface IWordsLibrary
     {
         /// <summary>
         /// A name of a words library.

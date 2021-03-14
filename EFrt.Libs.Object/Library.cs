@@ -11,7 +11,7 @@ namespace EFrt.Libs.Object
     /// <summary>
     /// Object stack related words.
     /// </summary>
-    public class Library : IWordsLIbrary
+    public class Library : IWordsLibrary
     {
         /// <summary>
         /// The name of this library.

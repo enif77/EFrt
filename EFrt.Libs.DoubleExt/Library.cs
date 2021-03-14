@@ -8,7 +8,7 @@ namespace EFrt.Libs.DoubleExt
     /// <summary>
     /// The CORE words library.
     /// </summary>
-    public class Library : IWordsLIbrary
+    public class Library : IWordsLibrary
     {
         /// <summary>
         /// The name of this library.

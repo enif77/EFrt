@@ -11,7 +11,7 @@ namespace EFrt.Libs.ToolsExt
     /// <summary>
     /// The CORE words library.
     /// </summary>
-    public class Library : IWordsLIbrary
+    public class Library : IWordsLibrary
     {
         /// <summary>
         /// The name of this library.

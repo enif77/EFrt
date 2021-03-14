@@ -9,7 +9,7 @@ namespace EFrt.Libs.String
     using EFrt.Core.Words;
 
 
-    public class Library : IWordsLIbrary
+    public class Library : IWordsLibrary
     {
         /// <summary>
         /// The name of this library.

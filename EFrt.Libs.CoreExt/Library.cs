@@ -13,7 +13,7 @@ namespace EFrt.Libs.CoreExt
     /// <summary>
     /// The CORE-EXT words library.
     /// </summary>
-    public class Library : IWordsLIbrary
+    public class Library : IWordsLibrary
     {
         /// <summary>
         /// The name of this library.

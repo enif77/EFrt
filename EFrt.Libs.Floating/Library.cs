@@ -14,7 +14,7 @@ namespace EFrt.Libs.Floating
     /// <summary>
     /// The FLOATING words library.
     /// </summary>
-    public class Library : IWordsLIbrary
+    public class Library : IWordsLibrary
     {
         /// <summary>
         /// The name of this library.

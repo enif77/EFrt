@@ -12,7 +12,7 @@ namespace EFrt.Libs.Exception
     /// <summary>
     /// The EXCEPTION words library.
     /// </summary>
-    public class Library : IWordsLIbrary
+    public class Library : IWordsLibrary
     {
         /// <summary>
         /// The name of this library.

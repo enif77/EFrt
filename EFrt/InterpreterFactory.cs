@@ -50,7 +50,7 @@ namespace EFrt
         /// <param name="interpreter">An interpreter instance.</param>
         /// <param name="wordsLibrary">A words library.</param>
         /// <returns>The interpreter.</returns>
-        public static IInterpreter AddLibrary(this IInterpreter interpreter, IWordsLIbrary wordsLibrary)
+        public static IInterpreter AddLibrary(this IInterpreter interpreter, IWordsLibrary wordsLibrary)
         {
             if (wordsLibrary == null) throw new ArgumentNullException(nameof(wordsLibrary));
 
