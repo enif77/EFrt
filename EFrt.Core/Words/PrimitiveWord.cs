@@ -6,7 +6,7 @@ namespace EFrt.Core.Words
 
 
     /// <summary>
-    /// A word that is definig itself.
+    /// A word that is defining itself.
     /// </summary>
     public class PrimitiveWord : AWordBase
     {
