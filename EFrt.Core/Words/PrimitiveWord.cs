@@ -20,7 +20,6 @@ namespace EFrt.Core.Words
             : base(interpreter)
         {
             Name = name;
-            IsImmediate = false;
             Action = action;
         }
     }
