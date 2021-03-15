@@ -40,7 +40,9 @@ namespace EFrt.Libs.Core
         /// </summary>
         public void DefineWords()
         {
-            _interpreter.AddPrimitiveWord("!", StoreAction);
+            _interpreter.AddWord(new StoreWord(_interpreter));
+            
+            //_interpreter.AddPrimitiveWord("!", StoreAction);
             _interpreter.AddPrimitiveWord("'", TickAction);
             _interpreter.AddImmediateWord("(", ParenAction);
             _interpreter.AddPrimitiveWord("*", StarAction);
@@ -164,19 +166,19 @@ namespace EFrt.Libs.Core
             _interpreter.AddImmediateWord("]", RightBracketAction);
         }
 
-        // (n a-addr -- )
-        private int StoreAction()
-        {
-            _interpreter.StackExpect(2);
-            
-            var addr = _interpreter.Pop();
-            
-            _interpreter.CheckCellAlignedAddress(addr);
-           
-            _interpreter.State.Heap.Write(addr, _interpreter.Pop());
-
-            return 1;
-        }
+        // // (n a-addr -- )
+        // private int StoreAction()
+        // {
+        //     _interpreter.StackExpect(2);
+        //     
+        //     var addr = _interpreter.Pop();
+        //     
+        //     _interpreter.CheckCellAlignedAddress(addr);
+        //    
+        //     _interpreter.State.Heap.Write(addr, _interpreter.Pop());
+        //
+        //     return 1;
+        // }
 
         // ' word-name
         // ( -- xt)
