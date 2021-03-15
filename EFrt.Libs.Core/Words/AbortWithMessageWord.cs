@@ -39,6 +39,6 @@ namespace EFrt.Libs.Core.Words
         }
 
 
-        private string _message;
+        private readonly string _message;
     }
 }

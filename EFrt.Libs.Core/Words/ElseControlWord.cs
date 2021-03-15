@@ -7,7 +7,7 @@ namespace EFrt.Libs.Core.Words
 
 
     /// <summary>
-    /// A word that is definig IF-THEN-ELSE condition.
+    /// A word that is defining IF-THEN-ELSE condition.
     /// </summary>
     public class ElseControlWord : AWordBase
     {
@@ -15,7 +15,7 @@ namespace EFrt.Libs.Core.Words
         /// Constructor.
         /// </summary>
         /// <param name="interpreter">An IInterpreter instance.</param>
-        /// <param name="indexFollowingElse">The index of a word folowing this ELSE word.</param>
+        /// <param name="indexFollowingElse">The index of a word following this ELSE word.</param>
         public ElseControlWord(IInterpreter interpreter, int indexFollowingElse)
             : base(interpreter)
         {

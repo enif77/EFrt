@@ -7,7 +7,7 @@ namespace EFrt.Libs.Core.Words
 
 
     /// <summary>
-    /// A word that is definig IF-THEN-ELSE condition.
+    /// A word that is defining IF-THEN-ELSE condition.
     /// </summary>
     public class IfControlWord : AWordBase
     {

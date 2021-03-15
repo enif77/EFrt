@@ -57,7 +57,7 @@ namespace EFrt.Libs.Core.Words
         }
 
 
-        NonPrimitiveWord _definitionWord;
-        private int _doesIndex;
+        readonly NonPrimitiveWord _definitionWord;
+        private readonly int _doesIndex;
     }
 }

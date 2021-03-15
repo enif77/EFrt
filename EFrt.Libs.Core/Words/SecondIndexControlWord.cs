@@ -7,7 +7,7 @@ namespace EFrt.Libs.Core.Words
 
 
     /// <summary>
-    /// A word that is returnning the outer loop index.
+    /// A word that is returning the outer loop index.
     /// </summary>
     public class SecondIndexControlWord : AWordBase
     {

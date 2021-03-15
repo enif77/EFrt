@@ -7,7 +7,7 @@ namespace EFrt.Libs.Core.Words
 
 
     /// <summary>
-    /// A word that is definig loop end.
+    /// A word that is defining loop end.
     /// </summary>
     public class LoopControlWord : AWordBase
     {
@@ -30,7 +30,7 @@ namespace EFrt.Libs.Core.Words
         /// <summary>
         /// The index of a word folowing this DO word.
         /// </summary>
-        private int _incrementToWordFollowingDo;
+        private readonly int _incrementToWordFollowingDo;
 
 
         private int Execute()

@@ -7,7 +7,7 @@ namespace EFrt.Libs.Core.Words
 
 
     /// <summary>
-    /// A word that is definig condition in the BEGIN-WHILE-REPEAT loop.
+    /// A word that is defining condition in the BEGIN-WHILE-REPEAT loop.
     /// </summary>
     public class WhileControlWord : AWordBase
     {

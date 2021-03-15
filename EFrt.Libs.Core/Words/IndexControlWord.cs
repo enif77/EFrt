@@ -7,7 +7,7 @@ namespace EFrt.Libs.Core.Words
 
 
     /// <summary>
-    /// A word that is returnning the innermost loop index.
+    /// A word that is returning the innermost loop index.
     /// </summary>
     public class IndexControlWord : AWordBase
     {

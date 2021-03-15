@@ -7,7 +7,7 @@ namespace EFrt.Libs.Core.Words
 
 
     /// <summary>
-    /// A word that is definig the loop goto-begining jump.
+    /// A word that is defining the loop goto-beginning jump.
     /// </summary>
     public class RepeatControlWord : AWordBase
     {

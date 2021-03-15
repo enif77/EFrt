@@ -7,7 +7,7 @@ namespace EFrt.Libs.Core.Words
 
 
     /// <summary>
-    /// A word, that is definig the do loop begining.
+    /// A word, that is defining the do loop beginning.
     /// </summary>
     public class DoControlWord : AWordBase
     {
