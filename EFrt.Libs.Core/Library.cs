@@ -41,9 +41,10 @@ namespace EFrt.Libs.Core
         public void DefineWords()
         {
             _interpreter.AddWord(new StoreWord(_interpreter));
+            _interpreter.AddWord(new TickWord(_interpreter));
             
             //_interpreter.AddPrimitiveWord("!", StoreAction);
-            _interpreter.AddPrimitiveWord("'", TickAction);
+            //_interpreter.AddPrimitiveWord("'", TickAction);
             _interpreter.AddImmediateWord("(", ParenAction);
             _interpreter.AddPrimitiveWord("*", StarAction);
             _interpreter.AddPrimitiveWord("*/", StarSlashAction);
@@ -180,24 +181,24 @@ namespace EFrt.Libs.Core
         //     return 1;
         // }
 
-        // ' word-name
-        // ( -- xt)
-        private int TickAction()
-        {
-            _interpreter.StackFree(1);
-
-            var wordName = _interpreter.ParseWord();
-            if (_interpreter.State.WordsList.IsDefined(wordName))
-            {
-                _interpreter.Push(_interpreter.State.WordsList.Get(wordName).ExecutionToken);
-            }
-            else
-            {
-                _interpreter.Throw(-2, $"The '{wordName}' word is not defined.");
-            }
-
-            return 1;
-        }
+        // // ' word-name
+        // // ( -- xt)
+        // private int TickAction()
+        // {
+        //     _interpreter.StackFree(1);
+        //
+        //     var wordName = _interpreter.ParseWord();
+        //     if (_interpreter.State.WordsList.IsDefined(wordName))
+        //     {
+        //         _interpreter.Push(_interpreter.State.WordsList.Get(wordName).ExecutionToken);
+        //     }
+        //     else
+        //     {
+        //         _interpreter.Throw(-2, $"The '{wordName}' word is not defined.");
+        //     }
+        //
+        //     return 1;
+        // }
 
         // ( -- )
         private int ParenAction()
