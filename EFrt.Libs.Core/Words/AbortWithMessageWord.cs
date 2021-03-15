@@ -14,6 +14,7 @@ namespace EFrt.Libs.Core.Words
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="message">A message.</param>
         public AbortWithMessageWord(IInterpreter interpreter, string message)
             : base(interpreter)

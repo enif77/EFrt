@@ -20,8 +20,9 @@ namespace EFrt.Libs.Core.Words
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="name">A name of this word.</param>
-        /// <param name="addr">An addres of the first cell of this word data field in heap.</param>
+        /// <param name="addr">An address of the first cell of this word data field in heap.</param>
         public CreatedWord(IInterpreter interpreter, string name, int addr)
             : base(interpreter, name)
         {

@@ -14,6 +14,7 @@ namespace EFrt.Libs.Core.Words
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="value">A value.</param>
         public PrintStringWord(IInterpreter interpreter, string value)
             : base(interpreter)

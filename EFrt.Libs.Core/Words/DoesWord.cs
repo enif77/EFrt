@@ -1,4 +1,4 @@
-﻿/* EFrt - (C) 2020 Premysl Fara  */
+﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
 namespace EFrt.Libs.Core.Words
 {
@@ -16,6 +16,7 @@ namespace EFrt.Libs.Core.Words
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="definitionWord">A word, in which this DOES is used.</param>
         /// <param name="doesIndex">An index of the DOES word inside of the definitionWord. Used to find the first word, that belongs to the newly CREATEd word.</param>
         public DoesWord(IInterpreter interpreter, NonPrimitiveWord definitionWord, int doesIndex)
