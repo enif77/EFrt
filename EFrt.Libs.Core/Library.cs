@@ -47,6 +47,9 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new StarSlashModWord(_interpreter));   // */MOD
             _interpreter.AddWord(new PlusWord(_interpreter));   // +
             _interpreter.AddWord(new PlusStoreWord(_interpreter));   // +!
+            _interpreter.AddWord(new CommaWord(_interpreter));   // ,
+            _interpreter.AddWord(new MinusWord(_interpreter));   // -
+            _interpreter.AddWord(new DotWord(_interpreter));   // .
             
             //_interpreter.AddPrimitiveWord("!", StoreAction);
             //_interpreter.AddPrimitiveWord("'", TickAction);
@@ -57,9 +60,9 @@ namespace EFrt.Libs.Core
             //_interpreter.AddPrimitiveWord("+", PlusAction);
             //_interpreter.AddPrimitiveWord("+!", PlusStoreAction);
             _interpreter.AddImmediateWord("+LOOP", PlusLoopAction);
-            _interpreter.AddPrimitiveWord(",", CommaAction);
-            _interpreter.AddPrimitiveWord("-", MinusAction);
-            _interpreter.AddPrimitiveWord(".", DotAction);
+            //_interpreter.AddPrimitiveWord(",", CommaAction);
+            //_interpreter.AddPrimitiveWord("-", MinusAction);
+            //_interpreter.AddPrimitiveWord(".", DotAction);
             _interpreter.AddImmediateWord(".\"", DotQuoteAction);
             _interpreter.AddPrimitiveWord("/", SlashAction);
             _interpreter.AddPrimitiveWord("/MOD", SlashModAction);
@@ -314,36 +317,36 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // (n -- )
-        private int CommaAction()
-        {
-            _interpreter.StackExpect(1);
-            _interpreter.CheckCellAlignedHereAddress();            
-            
-            _interpreter.State.Heap.Write(_interpreter.State.Heap.AllocCells(1), _interpreter.Pop());
-            
-            return 1;
-        }
+        // // (n -- )
+        // private int CommaAction()
+        // {
+        //     _interpreter.StackExpect(1);
+        //     _interpreter.CheckCellAlignedHereAddress();            
+        //     
+        //     _interpreter.State.Heap.Write(_interpreter.State.Heap.AllocCells(1), _interpreter.Pop());
+        //     
+        //     return 1;
+        // }
 
-        // (n1 n2 -- n3)
-        private int MinusAction()
-        {
-            _interpreter.StackExpect(2);
+        // // (n1 n2 -- n3)
+        // private int MinusAction()
+        // {
+        //     _interpreter.StackExpect(2);
+        //
+        //     _interpreter.Function((n1, n2) => n1 - n2);
+        //
+        //     return 1;
+        // }
 
-            _interpreter.Function((n1, n2) => n1 - n2);
-
-            return 1;
-        }
-
-        // (n --)
-        private int DotAction()
-        {
-            _interpreter.StackExpect(1);
-
-            _interpreter.Output.Write("{0} ", _interpreter.Pop());
-
-            return 1;
-        }
+        // // (n --)
+        // private int DotAction()
+        // {
+        //     _interpreter.StackExpect(1);
+        //
+        //     _interpreter.Output.Write("{0} ", _interpreter.Pop());
+        //
+        //     return 1;
+        // }
 
         // ( -- )
         private int DotQuoteAction()
