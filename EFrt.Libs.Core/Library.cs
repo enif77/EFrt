@@ -40,17 +40,22 @@ namespace EFrt.Libs.Core
         /// </summary>
         public void DefineWords()
         {
-            _interpreter.AddWord(new StoreWord(_interpreter));
-            _interpreter.AddWord(new TickWord(_interpreter));
+            _interpreter.AddWord(new StoreWord(_interpreter));  // !
+            _interpreter.AddWord(new TickWord(_interpreter));   // '
+            _interpreter.AddWord(new StarWord(_interpreter));   // *
+            _interpreter.AddWord(new StarSlashWord(_interpreter));   // */
+            _interpreter.AddWord(new StarSlashModWord(_interpreter));   // */MOD
+            _interpreter.AddWord(new PlusWord(_interpreter));   // +
+            _interpreter.AddWord(new PlusStoreWord(_interpreter));   // +!
             
             //_interpreter.AddPrimitiveWord("!", StoreAction);
             //_interpreter.AddPrimitiveWord("'", TickAction);
             _interpreter.AddImmediateWord("(", ParenAction);
-            _interpreter.AddPrimitiveWord("*", StarAction);
-            _interpreter.AddPrimitiveWord("*/", StarSlashAction);
-            _interpreter.AddPrimitiveWord("*/MOD", StarSlashModAction);
-            _interpreter.AddPrimitiveWord("+", PlusAction);
-            _interpreter.AddPrimitiveWord("+!", PlusStoreAction);
+            //_interpreter.AddPrimitiveWord("*", StarAction);
+            //_interpreter.AddPrimitiveWord("*/", StarSlashAction);
+            //_interpreter.AddPrimitiveWord("*/MOD", StarSlashModAction);
+            //_interpreter.AddPrimitiveWord("+", PlusAction);
+            //_interpreter.AddPrimitiveWord("+!", PlusStoreAction);
             _interpreter.AddImmediateWord("+LOOP", PlusLoopAction);
             _interpreter.AddPrimitiveWord(",", CommaAction);
             _interpreter.AddPrimitiveWord("-", MinusAction);
@@ -224,64 +229,64 @@ namespace EFrt.Libs.Core
             return 1;
         }
 
-        // (n1 n2 -- n3)
-        private int StarAction()
-        {
-            _interpreter.StackExpect(2);
-            // StackFree() is not necessary here - we will pop 2 items, before we push one.
+        // // (n1 n2 -- n3)
+        // private int StarAction()
+        // {
+        //     _interpreter.StackExpect(2);
+        //     // StackFree() is not necessary here - we will pop 2 items, before we push one.
+        //
+        //     _interpreter.Function((n1, n2) => n1 * n2);
+        //
+        //     return 1;
+        // }
 
-            _interpreter.Function((n1, n2) => n1 * n2);
+        // // (n1 n2 n3 -- n4)
+        // private int StarSlashAction()
+        // {
+        //     _interpreter.StackExpect(3);
+        //
+        //     var n3 = (long)_interpreter.Pop();
+        //     _interpreter.Push((int)((long)_interpreter.Pop() * (long)_interpreter.Pop() / n3));  // n2 * n1 / n3 
+        //
+        //     return 1;
+        // }
 
-            return 1;
-        }
+        // // (n1 n2 n3 -- n4 n5)
+        // private int StarSlashModAction()
+        // {
+        //     _interpreter.StackExpect(3);
+        //
+        //     var n3 = (long)_interpreter.Pop();
+        //     var d = (long)_interpreter.Pop() * (long)_interpreter.Pop();
+        //     _interpreter.Push((int)(d % n3));  // n4 = d % n3
+        //     _interpreter.Push((int)(d / n3));  // n5 = d / n3
+        //
+        //     return 1;
+        // }
 
-        // (n1 n2 n3 -- n4)
-        private int StarSlashAction()
-        {
-            _interpreter.StackExpect(3);
+        // // (n1 n2 -- n3)
+        // private int PlusAction()
+        // {
+        //     _interpreter.StackExpect(2);
+        //
+        //     _interpreter.Function((n1, n2) => n1 + n2);
+        //
+        //     return 1;
+        // }
 
-            var n3 = (long)_interpreter.Pop();
-            _interpreter.Push((int)((long)_interpreter.Pop() * (long)_interpreter.Pop() / n3));  // n2 * n1 / n3 
-
-            return 1;
-        }
-
-        // (n1 n2 n3 -- n4 n5)
-        private int StarSlashModAction()
-        {
-            _interpreter.StackExpect(3);
-
-            var n3 = (long)_interpreter.Pop();
-            var d = (long)_interpreter.Pop() * (long)_interpreter.Pop();
-            _interpreter.Push((int)(d % n3));  // n4 = d % n3
-            _interpreter.Push((int)(d / n3));  // n5 = d / n3
-
-            return 1;
-        }
-
-        // (n1 n2 -- n3)
-        private int PlusAction()
-        {
-            _interpreter.StackExpect(2);
-
-            _interpreter.Function((n1, n2) => n1 + n2);
-
-            return 1;
-        }
-
-        // (n a-addr -- )
-        private int PlusStoreAction()
-        {
-            _interpreter.StackExpect(2);
-
-            var addr = _interpreter.Pop();
-            
-            _interpreter.CheckCellAlignedAddress(addr);
-            
-            _interpreter.State.Heap.Write(addr, _interpreter.State.Heap.ReadInt32(addr) + _interpreter.Pop());
-
-            return 1;
-        }
+        // // (n a-addr -- )
+        // private int PlusStoreAction()
+        // {
+        //     _interpreter.StackExpect(2);
+        //
+        //     var addr = _interpreter.Pop();
+        //     
+        //     _interpreter.CheckCellAlignedAddress(addr);
+        //     
+        //     _interpreter.State.Heap.Write(addr, _interpreter.State.Heap.ReadInt32(addr) + _interpreter.Pop());
+        //
+        //     return 1;
+        // }
 
         // Compilation: [index of the word following DO/?DO -- ], runtime: (n -- )
         private int PlusLoopAction()
