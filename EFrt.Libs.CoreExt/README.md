@@ -34,6 +34,7 @@ Words definition table columns:
 | TRUE     | no   | IC   | **True**<br>( -- flag)<br>Constant that leaves the -1 (true) on the top of the stack. |
 | TUCK     | no   | IC   | **Dup stack top**<br>(n1 n2 -- n2 n1 n2)<br>Copy the first (top) stack item below the second stack item. |
 | VALUE x  | no   | IC   | **Named value**<br>(n -- )<br>Like a CONSTANT, but the value can be changed using the word TO. |
+| WITHIN   | no   | IC   | **Is in interval**<br>(n1 n2 n3 -- flag)<br>Checks, if n1 is within the n2 .. n3 interval. |
 | \        | yes  | IC   | **Line comment**<br>Skips all source characters till the closing EOLN character. |
 
 ## Words (Extra)
@@ -59,7 +60,7 @@ Words definition table columns:
 ## TODO
 
 Words: `.R ACTION-OF BUFFER: C" CASE COMPILE, DEFER DEFER! DEFER@ ENDCASE ENDOF ERASE
-  IS OF MARKER OF PARSE PARSE-NAME U.R U> UNUSED WITHIN`
+  IS OF MARKER OF PARSE PARSE-NAME U.R U> UNUSED`
 
 ## Skipped words
 

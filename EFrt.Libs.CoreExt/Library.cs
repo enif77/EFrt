@@ -1,5 +1,7 @@
 ﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
+using EFrt.Libs.CoreExt.Words;
+
 namespace EFrt.Libs.CoreExt
 {
     using System;
@@ -57,7 +59,8 @@ namespace EFrt.Libs.CoreExt
             _interpreter.AddPrimitiveWord("TO", ToAction);
             _interpreter.AddPrimitiveWord("TUCK", TuckAction);
             _interpreter.AddPrimitiveWord("VALUE", ValueAction);
-            _interpreter.AddImmediateWord("\\", BackslashAction);
+            _interpreter.AddPrimitiveWord("VALUE", ValueAction);
+            _interpreter.AddWord(new WithinWord(_interpreter));
 
             _interpreter.AddConstantWord("FALSE", 0);
             _interpreter.AddConstantWord("TRUE", -1);
