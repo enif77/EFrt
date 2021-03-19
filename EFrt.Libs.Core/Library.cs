@@ -42,27 +42,16 @@ namespace EFrt.Libs.Core
         {
             _interpreter.AddWord(new StoreWord(_interpreter));  // !
             _interpreter.AddWord(new TickWord(_interpreter));   // '
+            _interpreter.AddImmediateWord("(", ParenAction);
             _interpreter.AddWord(new StarWord(_interpreter));   // *
             _interpreter.AddWord(new StarSlashWord(_interpreter));   // */
             _interpreter.AddWord(new StarSlashModWord(_interpreter));   // */MOD
             _interpreter.AddWord(new PlusWord(_interpreter));   // +
             _interpreter.AddWord(new PlusStoreWord(_interpreter));   // +!
+            _interpreter.AddImmediateWord("+LOOP", PlusLoopAction);
             _interpreter.AddWord(new CommaWord(_interpreter));   // ,
             _interpreter.AddWord(new MinusWord(_interpreter));   // -
             _interpreter.AddWord(new DotWord(_interpreter));   // .
-            
-            //_interpreter.AddPrimitiveWord("!", StoreAction);
-            //_interpreter.AddPrimitiveWord("'", TickAction);
-            _interpreter.AddImmediateWord("(", ParenAction);
-            //_interpreter.AddPrimitiveWord("*", StarAction);
-            //_interpreter.AddPrimitiveWord("*/", StarSlashAction);
-            //_interpreter.AddPrimitiveWord("*/MOD", StarSlashModAction);
-            //_interpreter.AddPrimitiveWord("+", PlusAction);
-            //_interpreter.AddPrimitiveWord("+!", PlusStoreAction);
-            _interpreter.AddImmediateWord("+LOOP", PlusLoopAction);
-            //_interpreter.AddPrimitiveWord(",", CommaAction);
-            //_interpreter.AddPrimitiveWord("-", MinusAction);
-            //_interpreter.AddPrimitiveWord(".", DotAction);
             _interpreter.AddImmediateWord(".\"", DotQuoteAction);
             _interpreter.AddPrimitiveWord("/", SlashAction);
             _interpreter.AddPrimitiveWord("/MOD", SlashModAction);
@@ -175,39 +164,6 @@ namespace EFrt.Libs.Core
             _interpreter.AddImmediateWord("]", RightBracketAction);
         }
 
-        // // (n a-addr -- )
-        // private int StoreAction()
-        // {
-        //     _interpreter.StackExpect(2);
-        //     
-        //     var addr = _interpreter.Pop();
-        //     
-        //     _interpreter.CheckCellAlignedAddress(addr);
-        //    
-        //     _interpreter.State.Heap.Write(addr, _interpreter.Pop());
-        //
-        //     return 1;
-        // }
-
-        // // ' word-name
-        // // ( -- xt)
-        // private int TickAction()
-        // {
-        //     _interpreter.StackFree(1);
-        //
-        //     var wordName = _interpreter.ParseWord();
-        //     if (_interpreter.State.WordsList.IsDefined(wordName))
-        //     {
-        //         _interpreter.Push(_interpreter.State.WordsList.Get(wordName).ExecutionToken);
-        //     }
-        //     else
-        //     {
-        //         _interpreter.Throw(-2, $"The '{wordName}' word is not defined.");
-        //     }
-        //
-        //     return 1;
-        // }
-
         // ( -- )
         private int ParenAction()
         {
@@ -231,65 +187,6 @@ namespace EFrt.Libs.Core
 
             return 1;
         }
-
-        // // (n1 n2 -- n3)
-        // private int StarAction()
-        // {
-        //     _interpreter.StackExpect(2);
-        //     // StackFree() is not necessary here - we will pop 2 items, before we push one.
-        //
-        //     _interpreter.Function((n1, n2) => n1 * n2);
-        //
-        //     return 1;
-        // }
-
-        // // (n1 n2 n3 -- n4)
-        // private int StarSlashAction()
-        // {
-        //     _interpreter.StackExpect(3);
-        //
-        //     var n3 = (long)_interpreter.Pop();
-        //     _interpreter.Push((int)((long)_interpreter.Pop() * (long)_interpreter.Pop() / n3));  // n2 * n1 / n3 
-        //
-        //     return 1;
-        // }
-
-        // // (n1 n2 n3 -- n4 n5)
-        // private int StarSlashModAction()
-        // {
-        //     _interpreter.StackExpect(3);
-        //
-        //     var n3 = (long)_interpreter.Pop();
-        //     var d = (long)_interpreter.Pop() * (long)_interpreter.Pop();
-        //     _interpreter.Push((int)(d % n3));  // n4 = d % n3
-        //     _interpreter.Push((int)(d / n3));  // n5 = d / n3
-        //
-        //     return 1;
-        // }
-
-        // // (n1 n2 -- n3)
-        // private int PlusAction()
-        // {
-        //     _interpreter.StackExpect(2);
-        //
-        //     _interpreter.Function((n1, n2) => n1 + n2);
-        //
-        //     return 1;
-        // }
-
-        // // (n a-addr -- )
-        // private int PlusStoreAction()
-        // {
-        //     _interpreter.StackExpect(2);
-        //
-        //     var addr = _interpreter.Pop();
-        //     
-        //     _interpreter.CheckCellAlignedAddress(addr);
-        //     
-        //     _interpreter.State.Heap.Write(addr, _interpreter.State.Heap.ReadInt32(addr) + _interpreter.Pop());
-        //
-        //     return 1;
-        // }
 
         // Compilation: [index of the word following DO/?DO -- ], runtime: (n -- )
         private int PlusLoopAction()
@@ -316,37 +213,6 @@ namespace EFrt.Libs.Core
 
             return 1;
         }
-
-        // // (n -- )
-        // private int CommaAction()
-        // {
-        //     _interpreter.StackExpect(1);
-        //     _interpreter.CheckCellAlignedHereAddress();            
-        //     
-        //     _interpreter.State.Heap.Write(_interpreter.State.Heap.AllocCells(1), _interpreter.Pop());
-        //     
-        //     return 1;
-        // }
-
-        // // (n1 n2 -- n3)
-        // private int MinusAction()
-        // {
-        //     _interpreter.StackExpect(2);
-        //
-        //     _interpreter.Function((n1, n2) => n1 - n2);
-        //
-        //     return 1;
-        // }
-
-        // // (n --)
-        // private int DotAction()
-        // {
-        //     _interpreter.StackExpect(1);
-        //
-        //     _interpreter.Output.Write("{0} ", _interpreter.Pop());
-        //
-        //     return 1;
-        // }
 
         // ( -- )
         private int DotQuoteAction()
