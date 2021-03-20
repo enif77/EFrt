@@ -41,6 +41,9 @@ namespace EFrt.Libs.Core
         public void DefineWords()
         {
             _interpreter.AddWord(new StoreWord(_interpreter));  // !
+            _interpreter.AddWord(new NumberSignWord(_interpreter));  // #
+            _interpreter.AddWord(new NumberSignGreaterWord(_interpreter));  // #>
+            _interpreter.AddWord(new NumberSignSWord(_interpreter));  // #S
             _interpreter.AddWord(new TickWord(_interpreter));   // '
             _interpreter.AddImmediateWord("(", ParenAction);
             _interpreter.AddWord(new StarWord(_interpreter));   // *
@@ -70,6 +73,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddPrimitiveWord(":", ColonAction);
             _interpreter.AddImmediateWord(";", SemicolonAction);
             _interpreter.AddPrimitiveWord("<", LessThanAction);
+            _interpreter.AddWord(new LessNumberSignWord(_interpreter));   // <#
             _interpreter.AddPrimitiveWord("=", EqualsAction);
             _interpreter.AddPrimitiveWord(">", GreaterThanAction);
             _interpreter.AddPrimitiveWord(">BODY", ToBodyAction);
@@ -114,6 +118,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddPrimitiveWord("FIND", FindAction);
             _interpreter.AddPrimitiveWord("FM/MOD", FMSlashModAction);
             _interpreter.AddPrimitiveWord("HERE", HereAction);
+            _interpreter.AddWord(new HoldWord(_interpreter));   // HOLD
             _interpreter.AddImmediateWord("I", GetInnerIndexAction);
             _interpreter.AddImmediateWord("IF", IfAction);
             _interpreter.AddPrimitiveWord("IMMEDIATE", ImmediateAction);
@@ -141,6 +146,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddPrimitiveWord("RSHIFT", RShiftAction);
             _interpreter.AddImmediateWord("S\"", SQuoteAction);
             _interpreter.AddPrimitiveWord("S>D", SToDAction);
+            _interpreter.AddWord(new SignWord(_interpreter));   // SIGN
             _interpreter.AddPrimitiveWord("SM/REM", SMSlashRemAction);
             _interpreter.AddPrimitiveWord("SPACE", SpaceAction);
             _interpreter.AddPrimitiveWord("SPACES", SpacesAction);

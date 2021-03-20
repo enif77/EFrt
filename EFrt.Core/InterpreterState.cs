@@ -25,6 +25,8 @@ namespace EFrt.Core
 
         public ObjectHeap ObjectHeap { get; }
 
+        public string Picture { get; set; }
+        
         public int StateVariableAddress { get; }
 
         public int BaseVariableAddress { get; }
@@ -42,6 +44,7 @@ namespace EFrt.Core
             InputSourceStack = inputSourceStack ?? throw new ArgumentNullException(nameof(inputSourceStack));
             Heap = heap ?? throw new ArgumentNullException(nameof(heap));
             ObjectHeap = objectHeap ?? throw new ArgumentNullException(nameof(objectHeap));
+            Picture = string.Empty;
             WordsList = wordsList ?? throw new ArgumentNullException(nameof(wordsList));
 
             // Allocate room for the STATE and the BASE variables.
@@ -67,6 +70,7 @@ namespace EFrt.Core
             InputSourceStack.Clear();
             Heap.Clear();
             ObjectHeap.Clear();
+            Picture = string.Empty;
             WordsList.Clear();
         }
 
@@ -79,7 +83,7 @@ namespace EFrt.Core
 
         public void SetBaseValue(int value)
         {
-            if (value < 2 || value > 36) throw new ArgumentOutOfRangeException(nameof(value), "The alloved BASE values are <2 .. 36>.");
+            if (value < 2 || value > 36) throw new ArgumentOutOfRangeException(nameof(value), "The allowed BASE values are <2 .. 36>.");
 
             Heap.Write(BaseVariableAddress, value);
         }

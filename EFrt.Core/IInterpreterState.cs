@@ -51,6 +51,11 @@ namespace EFrt.Core
         ObjectHeap ObjectHeap { get; }
 
         /// <summary>
+        /// The working area for PICTURED numbers.
+        /// </summary>
+        string Picture { get; set; }
+
+        /// <summary>
         /// The "address" of the STATE variable.
         /// </summary>
         int StateVariableAddress { get; }

@@ -15,6 +15,9 @@ Words definition table columns:
 | Name     | Imm. | Mode | Description |
 | ---      | ---  | ---  | --- |
 | !        | no   | IC   | **Store into address**<br>(n a-addr -- )<br>Stores the value n into the address addr (a heap array index). |
+| #        | no   | IC   | **To pictured char**<br>(ud1 -- ud2)<br>Converts ud1 to char using the BASE value and adds it to the State.Picture buffer. |
+| #>       | no   | IC   | **Pictured to string**<br>(xd -- )<br>Drops xd and saves the PICTURED number to the object stack as a string. |
+| #S       | no   | IC   | **Number to pictured**<br>(ud1 -- ud2)<br>Convert one digit of ud1 according to the rule for #. Continue conversion until the quotient is zero. ud2 is zero. |
 | ' x      | no   | IC   | **Obtain execution token**<br>( -- xt)<br>Places the execution token of the following word on the stack. |
 | (        | yes  | IC   | **Comment**<br>Skips all source characters till the closing ) character. |
 | *        | no   | IC   | **n3 = n1 * n2**<br>(n1 n2 -- n3)<br>Multiplies n1 and n2 and leaves the product on the stack. |
@@ -44,6 +47,7 @@ Words definition table columns:
 | : w      | no   | I    | **Begin definition**<br>Begins compilation of a word named "w". |
 | ;        | yes  | C    | **End definition**<br>Ends compilation of a word. |
 | <        | no   | IC   | **Less than**<br>(n1 n2 -- flag)<br>Returns -1 if n1 < n2, 0 otherwise. |
+| <#       | no   | IC   | **Begin number conversion**<br>( -- )<br>Initialize the pictured numeric output conversion process. |
 | =        | no   | IC   | **Equal**<br>(n1 n2 -- flag)<br>Returns -1 if n1 is equal to n2, 0 otherwise. |
 | >        | no   | IC   | **Greater than**<br>(n1 n2 -- flag)<br>Returns -1 if n1 > n2, 0 otherwise. |
 | >BODY    | no   | IC   | **To body**<br>(xt -- addr)<br>Gets the data-field address of a CREATEd word. |
@@ -88,6 +92,7 @@ Words definition table columns:
 | FIND     | no   | IC   | **Find word**<br>( -- 0 \| xt 1 \| xt -1) {s -- \| s}<br>Find the definition named in the string s. If the definition is not found, return s and zero. If the definition is found, return its execution token xt. If the definition is immediate, also return one (1), otherwise also return minus-one (-1). |
 | FM/MOD   | no   | IC   | **n2 = d % n1, n3 = d / n1**<br>(d n1 -- n2 n3)<br>Divide d by n1, giving the floored quotient n3 and the remainder n2. |
 | HERE     | no   | IC   | **Heap address**<br>( -- addr)<br>The current heap allocation address is placed on the top of the stack. addr + 1 is the first free heap cell. |
+| HOLD     | no   | IC   | **Add char**<br>(char -- )<br>Add char to the beginning of the pictured numeric output string. |
 | I        | yes  | C    | **Inner loop index**<br>( -- n) [n -- n]<br>The index of the innermost DO—LOOP is placed on the stack. |
 | IF       | yes  | C    | **Conditional statement**<br>(flag --)<br>If flag is nonzero, the following statements are executed. Otherwise, execution resumes after the matching ELSE clause, if any, or after the matching THEN. |
 | IMMEDIATE | no   | IC   | **Mark immediate**<br><br>The most recently defined word is marked for immediate execution; it will be executed even if entered in compile state. |
@@ -115,6 +120,7 @@ Words definition table columns:
 | RSHIFT   | no   | IC   | **n2 = n1 >> u**<br>(n1 u -- n2)<br>Perform a logical right shift of u bit-places on x1, giving x2. |
 | S" str   | yes  | IC   | **String literal**<br>{ -- s}<br>Consume all source characters till the closing " character, creating a string from them and storing the result on the top of the object stack. |
 | S>D      | no   | IC   | **Single cell number to double cell number**<br>(n -- d)<br>Converts a single cell number (32bit, int) to a double cell number (64bit, long). |
+| SIGN     | no   | IC   | **Add sign**<br>(n -- )<br>If n is negative, add a minus sign to the beginning of the pictured numeric output string. |
 | SM/REM   | no   | IC   | **n2 = d % n1, n3 = d / n1**<br>(d n1 -- n2 n3)<br>Divide d by n1, giving the symmetric quotient n3 and the remainder n2. |
 | SPACE    | no   | IC   | **Print SPACE**<br>Prints out the SPACE character. |
 | SPACES   | no   | IC   | **Print spaces**<br>(n -- )<br>Prints out N characters of SPACE, where N is a number on the top of the stack. |
@@ -150,5 +156,5 @@ The FILL word should work with chars and not bytes.
 ## Skipped words
 
 ```
-# #> #S <# >IN ACCEPT HOLD KEY SIGN SOURCE
+>IN ACCEPT KEY SOURCE
 ```
