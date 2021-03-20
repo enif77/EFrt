@@ -15,7 +15,7 @@ namespace EFrt.Libs.DoubleExt
         /// </summary>
         public string Name => "DOUBLE-EXT";
 
-        private IInterpreter _interpreter;
+        private readonly IInterpreter _interpreter;
 
 
         /// <summary>
