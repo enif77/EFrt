@@ -153,7 +153,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddPrimitiveWord("STATE", StateAction);
             _interpreter.AddPrimitiveWord("SWAP", SwapAction);
             _interpreter.AddImmediateWord("THEN", ThenAction);
-            _interpreter.AddImmediateWord("TYPE", TypeAction);
+            _interpreter.AddPrimitiveWord("TYPE", TypeAction);
             _interpreter.AddPrimitiveWord("U.", UDotAction);
             _interpreter.AddPrimitiveWord("U<", ULessThanAction);
             _interpreter.AddPrimitiveWord("UM*", UMStarAction);
