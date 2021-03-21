@@ -27,9 +27,9 @@ namespace EFrt.Core
 
         public string Picture { get; set; }
         
-        public int StateVariableAddress { get; }
+        public int StateVariableAddress { get; private set; }
 
-        public int BaseVariableAddress { get; }
+        public int BaseVariableAddress { get; private set; }
 
         public IWordsList WordsList { get; }
 
@@ -47,16 +47,7 @@ namespace EFrt.Core
             Picture = string.Empty;
             WordsList = wordsList ?? throw new ArgumentNullException(nameof(wordsList));
 
-            // Allocate room for the STATE and the BASE variables.
-            var systemVarsIndex = Heap.AllocCells(2);
-
-            // Setup the variables...
-            StateVariableAddress = systemVarsIndex;
-            BaseVariableAddress = systemVarsIndex + ByteHeap.CellSize;
-
-            // ... with default values.
-            SetStateValue(false);  // False = interpreting.
-            SetBaseValue(10);      // Decimal.
+            SetupDefaults();
         }
 
 
@@ -72,6 +63,8 @@ namespace EFrt.Core
             ObjectHeap.Clear();
             Picture = string.Empty;
             WordsList.Clear();
+
+            SetupDefaults();
         }
 
 
@@ -86,6 +79,21 @@ namespace EFrt.Core
             if (value < 2 || value > 36) throw new ArgumentOutOfRangeException(nameof(value), "The allowed BASE values are <2 .. 36>.");
 
             Heap.Write(BaseVariableAddress, value);
+        }
+
+
+        private void SetupDefaults()
+        {
+            // Allocate room for the STATE and the BASE variables.
+            var systemVarsIndex = Heap.AllocCells(2);
+
+            // Setup the variables...
+            StateVariableAddress = systemVarsIndex;
+            BaseVariableAddress = systemVarsIndex + ByteHeap.CellSize;
+
+            // ... with default values.
+            SetStateValue(false);  // False = interpreting.
+            SetBaseValue(10);      // Decimal.
         }
     }
 }
