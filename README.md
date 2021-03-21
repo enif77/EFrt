@@ -291,6 +291,12 @@ TO (step2)                  \ Sets the body of the word step2 (using the value o
 : w? is-word-defined? CR ;  \ Just a shortcut for the is-word-defined? word.
 w? bla  \ Undefined
 w? IF   \ Defined
+
+( Hown the word . "dot" can be implemented... )
+( n -- )                  \ Display n.
+: . DUP ABS 0             \ Prepare.
+   <# #S  ROT SIGN #>     \ Convert to string.
+   TYPE SPACE ;           \ Output the created string.
 ```
 
 ### Acknowledgements
