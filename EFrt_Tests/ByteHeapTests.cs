@@ -14,7 +14,7 @@ namespace EFrt_Tests
         [Fact]
         public void NewByteHeapIsEmptyTest()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             Assert.Equal(0, bh.Count);
             Assert.Equal(-1, bh.Top);
@@ -25,7 +25,7 @@ namespace EFrt_Tests
         [Fact]
         public void AllocReturnsAddressTest()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             // Returns the beginning of the newly allocated memory.
             Assert.Equal(0, bh.Alloc(10));
@@ -41,7 +41,7 @@ namespace EFrt_Tests
         [Fact]
         public void AllocSetsTopTest()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             // Top is the address of the last byte in the allocated space.
             
@@ -61,7 +61,7 @@ namespace EFrt_Tests
         [Fact]
         public void AllocCellsReturnsAddressTest()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             Assert.Equal(0, bh.AllocCells(10));
             Assert.Equal(40, bh.AllocCells(10));  // 40 = 10 * cell size.
@@ -72,7 +72,7 @@ namespace EFrt_Tests
         [Fact]
         public void IsByteAlignedTest()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             Assert.True(bh.IsByteAligned(123));
         }
@@ -80,7 +80,7 @@ namespace EFrt_Tests
         [Fact]
         public void ByteAlignedTest()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             Assert.Equal(123, bh.ByteAligned(123));
         }
@@ -88,7 +88,7 @@ namespace EFrt_Tests
         [Fact]
         public void IsCharAlignedTest()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             Assert.True(bh.IsCharAligned(0));
             Assert.True(bh.IsCharAligned(122));
@@ -102,7 +102,7 @@ namespace EFrt_Tests
         [Fact]
         public void CharAlignedTest()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             // 124 = ((123 >> 1) << 1) + char-size
             Assert.Equal(120, bh.CharAligned(120));
@@ -116,7 +116,7 @@ namespace EFrt_Tests
         [Fact]
         public void IsCellAlignedTest()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             Assert.True(bh.IsCellAligned(0));
             Assert.True(bh.IsCellAligned(120));
@@ -130,7 +130,7 @@ namespace EFrt_Tests
         [Fact]
         public void CellAlignedTest()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             // 124 = ((123 >> 2) << 2) + cell-size
             Assert.Equal(120, bh.CellAligned(120));
@@ -144,7 +144,7 @@ namespace EFrt_Tests
         [Fact]
         public void IsDoubleCellAlignedTest()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             Assert.True(bh.IsDoubleCellAligned(-8));
             Assert.True(bh.IsDoubleCellAligned(0));
@@ -158,7 +158,7 @@ namespace EFrt_Tests
         [Fact]
         public void DoubleCellAlignedTest()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             // 128 = ((123 >> 4) << 4) + cell-size * 2 + cell-size * 2
             // 128 = ((125 >> 4) << 4) + cell-size * 2
@@ -179,7 +179,7 @@ namespace EFrt_Tests
         [Fact]
         public void ReadWriteByteTest()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             bh.Alloc(10);
             bh.Write(5, (byte)123);
@@ -190,7 +190,7 @@ namespace EFrt_Tests
         [Fact]
         public void ReadWriteInt16Test()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             bh.Alloc(10);
             bh.Write(0, (char)123);
@@ -211,7 +211,7 @@ namespace EFrt_Tests
         [Fact]
         public void ReadWriteInt32Test()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             bh.Alloc(10);
             bh.Write(0, 123);
@@ -235,7 +235,7 @@ namespace EFrt_Tests
         [Fact]
         public void ReadWriteInt64Test()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             bh.Alloc(32);
             bh.Write(0, 123L);
@@ -263,7 +263,7 @@ namespace EFrt_Tests
         [Fact]
         public void ReadWriteFloatTest()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             bh.Alloc(10);
             bh.Write(0, 123.0f);
@@ -276,7 +276,7 @@ namespace EFrt_Tests
         [Fact]
         public void ReadWriteDoubleTest()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             bh.Alloc(32);
             bh.Write(0, 123.0);
@@ -291,7 +291,7 @@ namespace EFrt_Tests
         [Fact]
         public void MoveUpTest()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             bh.Alloc(32);
 
@@ -312,7 +312,7 @@ namespace EFrt_Tests
         [Fact]
         public void MoveUpOverlappingTest()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             bh.Alloc(32);
 
@@ -336,7 +336,7 @@ namespace EFrt_Tests
         [Fact]
         public void MoveDownTest()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             bh.Alloc(32);
 
@@ -356,7 +356,7 @@ namespace EFrt_Tests
         [Fact]
         public void MoveDownOverlappingTest()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             bh.Alloc(32);
 
@@ -380,7 +380,7 @@ namespace EFrt_Tests
         [Fact]
         public void FillTest()
         {
-            var bh = new ByteHeap();
+            var bh = new Heap();
 
             bh.Alloc(32);
 

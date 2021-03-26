@@ -50,7 +50,7 @@ namespace EFrt.Core
         public static void CheckCharAlignedAddress(this IInterpreter interpreter, int addr)
         {
             // -9 invalid memory address
-            if (addr < 0 || addr > interpreter.State.Heap.Items.Length - ByteHeap.CharSize) throw new InterpreterException(-9, $"The address {addr} is out of the <0 .. Heap.Length) range.");
+            if (addr < 0 || addr > interpreter.State.Heap.Items.Length - Heap.CharSize) throw new InterpreterException(-9, $"The address {addr} is out of the <0 .. Heap.Length) range.");
             
             if (interpreter.State.Heap.IsCharAligned(addr) == false)
             {
@@ -78,7 +78,7 @@ namespace EFrt.Core
         public static void CheckCellAlignedAddress(this IInterpreter interpreter, int addr)
         {
             // -9 invalid memory address
-            if (addr < 0 || addr > interpreter.State.Heap.Items.Length - ByteHeap.CellSize) throw new InterpreterException(-9, $"The address {addr} is out of the <0 .. Heap.Length) range.");
+            if (addr < 0 || addr > interpreter.State.Heap.Items.Length - Heap.CellSize) throw new InterpreterException(-9, $"The address {addr} is out of the <0 .. Heap.Length) range.");
             
             if (interpreter.State.Heap.IsCellAligned(addr) == false)
             {

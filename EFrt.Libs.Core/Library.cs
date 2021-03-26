@@ -305,9 +305,9 @@ namespace EFrt.Libs.Core
             var addr = _interpreter.Pop();
             
             _interpreter.CheckCellAlignedAddress(addr);
-            _interpreter.CheckAddressesRange(addr, ByteHeap.DoubleCellSize);
+            _interpreter.CheckAddressesRange(addr, Heap.DoubleCellSize);
            
-            _interpreter.State.Heap.Write(addr + ByteHeap.CellSize, _interpreter.Pop());  // n2
+            _interpreter.State.Heap.Write(addr + Heap.CellSize, _interpreter.Pop());  // n2
             _interpreter.State.Heap.Write(addr, _interpreter.Pop());                          // n1
 
             return 1;
@@ -342,10 +342,10 @@ namespace EFrt.Libs.Core
             var addr = _interpreter.Pop();
             
             _interpreter.CheckCellAlignedAddress(addr);
-            _interpreter.CheckAddressesRange(addr, ByteHeap.DoubleCellSize);
+            _interpreter.CheckAddressesRange(addr, Heap.DoubleCellSize);
             
             _interpreter.Push(_interpreter.State.Heap.ReadInt32(addr));                          // n1
-            _interpreter.Push(_interpreter.State.Heap.ReadInt32(addr + ByteHeap.CellSize));  // n2
+            _interpreter.Push(_interpreter.State.Heap.ReadInt32(addr + Heap.CellSize));  // n2
 
             return 1;
         }
@@ -537,7 +537,7 @@ namespace EFrt.Libs.Core
             var addr = _interpreter.Pop();
             
             _interpreter.CheckCellAlignedAddress(addr);
-            _interpreter.CheckAddressesRange(addr, ByteHeap.CellSize);
+            _interpreter.CheckAddressesRange(addr, Heap.CellSize);
             
             _interpreter.Push(_interpreter.State.Heap.ReadInt32(addr));
 
@@ -668,7 +668,7 @@ namespace EFrt.Libs.Core
             _interpreter.StackExpect(1);
             _interpreter.CheckCharAlignedHereAddress();            
             
-            _interpreter.State.Heap.Write(_interpreter.State.Heap.Alloc(ByteHeap.CharSize), (char)_interpreter.Pop());
+            _interpreter.State.Heap.Write(_interpreter.State.Heap.Alloc(Heap.CharSize), (char)_interpreter.Pop());
             
             return 1;
         }
@@ -681,7 +681,7 @@ namespace EFrt.Libs.Core
             var addr = _interpreter.Pop();
             
             _interpreter.CheckCharAlignedAddress(addr);
-            _interpreter.CheckAddressesRange(addr, ByteHeap.CharSize);
+            _interpreter.CheckAddressesRange(addr, Heap.CharSize);
             
             _interpreter.Push(_interpreter.State.Heap.ReadInt16(addr));
 
@@ -697,7 +697,7 @@ namespace EFrt.Libs.Core
             
             _interpreter.CheckCellAlignedAddress(addr);
             
-            _interpreter.Push(addr + ByteHeap.CellSize);
+            _interpreter.Push(addr + Heap.CellSize);
 
             return 1;
         }
@@ -707,7 +707,7 @@ namespace EFrt.Libs.Core
         {
             _interpreter.StackExpect(1);
 
-            _interpreter.Push(_interpreter.Pop() * ByteHeap.CellSize);
+            _interpreter.Push(_interpreter.Pop() * Heap.CellSize);
 
             return 1;
         }
@@ -731,7 +731,7 @@ namespace EFrt.Libs.Core
             
             _interpreter.CheckCharAlignedAddress(addr);
             
-            _interpreter.Push(addr + ByteHeap.CharSize);
+            _interpreter.Push(addr + Heap.CharSize);
 
             return 1;
         }
@@ -741,7 +741,7 @@ namespace EFrt.Libs.Core
         {
             _interpreter.StackExpect(1);
 
-            _interpreter.Push(_interpreter.Pop() * ByteHeap.CharSize);
+            _interpreter.Push(_interpreter.Pop() * Heap.CharSize);
 
             return 1;
         }
@@ -1591,7 +1591,7 @@ namespace EFrt.Libs.Core
             // Align the data pointer.
             AlignAction();
             
-            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.ParseWord(), _interpreter.State.Heap.Alloc(ByteHeap.CellSize)));
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.ParseWord(), _interpreter.State.Heap.Alloc(Heap.CellSize)));
             
             _interpreter.EndNewWordCompilation();
 

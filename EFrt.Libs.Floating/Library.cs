@@ -113,7 +113,7 @@ namespace EFrt.Libs.Floating
             var addr = _interpreter.Pop();
             
             _interpreter.CheckCellAlignedAddress(addr);
-            _interpreter.CheckAddressesRange(addr, ByteHeap.DoubleCellSize);
+            _interpreter.CheckAddressesRange(addr, Heap.DoubleCellSize);
             
             _interpreter.State.Heap.Write(addr, _interpreter.FPop());
 
@@ -214,7 +214,7 @@ namespace EFrt.Libs.Floating
             var addr = _interpreter.Pop();
 
             _interpreter.CheckCellAlignedAddress(addr);
-            _interpreter.CheckAddressesRange(addr, ByteHeap.DoubleCellSize);
+            _interpreter.CheckAddressesRange(addr, Heap.DoubleCellSize);
             
             _interpreter.FPush(_interpreter.State.Heap.ReadDouble(addr));
 
@@ -320,7 +320,7 @@ namespace EFrt.Libs.Floating
         {
             _interpreter.StackExpect(1);
 
-            _interpreter.Push(_interpreter.Pop() * ByteHeap.DoubleCellSize);
+            _interpreter.Push(_interpreter.Pop() * Heap.DoubleCellSize);
 
             return 1;
         }
@@ -415,7 +415,7 @@ namespace EFrt.Libs.Floating
             // Align the data pointer.
             FAlignAction();
             
-            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.ParseWord(), _interpreter.State.Heap.Alloc(ByteHeap.DoubleCellSize)));
+            _interpreter.AddWord(new ConstantWord(_interpreter, _interpreter.ParseWord(), _interpreter.State.Heap.Alloc(Heap.DoubleCellSize)));
             
             _interpreter.EndNewWordCompilation();
 

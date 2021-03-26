@@ -43,7 +43,7 @@ namespace EFrt.Core
         /// <summary>
         /// Heap - variables etc.
         /// </summary>
-        ByteHeap Heap { get; }
+        Heap Heap { get; }
 
         /// <summary>
         /// Heap - variables etc.

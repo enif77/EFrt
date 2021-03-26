@@ -21,7 +21,7 @@ namespace EFrt.Core
 
         public InputSourceStack InputSourceStack { get; }
         
-        public ByteHeap Heap { get; }
+        public Heap Heap { get; }
 
         public ObjectHeap ObjectHeap { get; }
 
@@ -34,7 +34,7 @@ namespace EFrt.Core
         public IWordsList WordsList { get; }
 
 
-        public InterpreterState(Stack stack, FloatingPointStack floatingPointStack, ObjectStack objectStack, ReturnStack returnStack, ExceptionStack exceptionStack, InputSourceStack inputSourceStack, ByteHeap heap, ObjectHeap objectHeap, IWordsList wordsList)
+        public InterpreterState(Stack stack, FloatingPointStack floatingPointStack, ObjectStack objectStack, ReturnStack returnStack, ExceptionStack exceptionStack, InputSourceStack inputSourceStack, Heap heap, ObjectHeap objectHeap, IWordsList wordsList)
         {
             Stack = stack ?? throw new ArgumentNullException(nameof(stack));
             FloatingPointStack = floatingPointStack ?? throw new ArgumentNullException(nameof(floatingPointStack));
@@ -89,7 +89,7 @@ namespace EFrt.Core
 
             // Setup the variables...
             StateVariableAddress = systemVarsIndex;
-            BaseVariableAddress = systemVarsIndex + ByteHeap.CellSize;
+            BaseVariableAddress = systemVarsIndex + Heap.CellSize;
 
             // ... with default values.
             SetStateValue(false);  // False = interpreting.
