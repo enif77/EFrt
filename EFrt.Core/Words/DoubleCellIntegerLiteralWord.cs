@@ -24,16 +24,15 @@ namespace EFrt.Core.Words
             {
                 Interpreter.StackFree(2);
 
-                Interpreter.Push(_value.A);
-                Interpreter.Push(_value.B);
+                Interpreter.DPush(_value);
 
                 return 1;
             };
 
-            _value = new DoubleCellIntegerValue() { D = value };
+            _value = value;
         }
 
 
-        private readonly DoubleCellIntegerValue _value;
+        private readonly long _value;
     }
 }

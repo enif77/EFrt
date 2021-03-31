@@ -12,8 +12,8 @@ namespace EFrt.Core.Words
         /// </summary>
         /// <param name="interpreter">An IInterpreter instance, that is executing this word.</param>
         /// <param name="name">A name of this constant.</param>
-        /// <param name="n">A value or an address.</param>
-        public ConstantWord(IInterpreter interpreter, string name, int n)
+        /// <param name="value">A value or an address.</param>
+        public ConstantWord(IInterpreter interpreter, string name, int value)
             : base(interpreter)
         {
             Name = name;
@@ -22,15 +22,15 @@ namespace EFrt.Core.Words
             {
                 Interpreter.StackFree(1);
 
-                Interpreter.Push(_n);
+                Interpreter.Push(_value);
 
                 return 1;
             };
 
-            _n = n;
+            _value = value;
         }
 
 
-        private readonly int _n;
+        private readonly int _value;
     }
 }

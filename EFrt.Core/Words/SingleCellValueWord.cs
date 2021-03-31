@@ -21,8 +21,8 @@ namespace EFrt.Core.Words
         /// </summary>
         /// <param name="interpreter">An IInterpreter instance, that is executing this word.</param>
         /// <param name="name">A name of this value.</param>
-        /// <param name="n">A value or an address.</param>
-        public SingleCellValueWord(IInterpreter interpreter, string name, int n)
+        /// <param name="value">A value or an address.</param>
+        public SingleCellValueWord(IInterpreter interpreter, string name, int value)
             : base(interpreter)
         {
             Name = name;
@@ -36,7 +36,7 @@ namespace EFrt.Core.Words
                 return 1;
             };
 
-            Value = n;
+            Value = value;
         }
     }
 }

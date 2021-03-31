@@ -21,8 +21,8 @@ namespace EFrt.Core.Words
         /// </summary>
         /// <param name="interpreter">An IInterpreter instance, that is executing this word.</param>
         /// <param name="name">A name of this value.</param>
-        /// <param name="f">A floating point value.</param>
-        public FloatingPointValueWord(IInterpreter interpreter, string name, double f)
+        /// <param name="value">A floating point value.</param>
+        public FloatingPointValueWord(IInterpreter interpreter, string name, double value)
             : base(interpreter)
         {
             Name = name;
@@ -36,7 +36,7 @@ namespace EFrt.Core.Words
                 return 1;
             };
 
-            Value = f;
+            Value = value;
         }
     }
 }
