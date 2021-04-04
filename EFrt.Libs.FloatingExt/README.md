@@ -9,7 +9,7 @@ Words definition table columns:
 - Name: A name of a word with optional parameters.
 - Imm.: Immediate - if a word is executed even if we are in the compilation mode.
 - Mode: I = interpretation mode only (not available during compilation), C = compilation mode only
-  (not available during implementation), IC = vailable in both modes.
+  (not available during interpretation), IC = available in both modes.
 - Description: A word name, followed by the stack diagram - () = data stack, [] = return stack, {} = object stack - and description of the word itself.
 
 | Name      | Imm. | Mode | Description |
@@ -35,7 +35,7 @@ Words definition table columns:
 | FCOS      | no   | IC   | **f2 = Cos(f1)**<br>(F: f1 -- f2)<br>f2 is the cosine of the radian angle f1. | 
 | FCOSH     | no   | IC   | **f2 = Cosh(f1)**<br>(F: f1 -- f2)<br>f2 is the hyperbolic cosine of f1. | 
 | FEXP      | no   | IC   | **f2 = Exp(f1)**<br>(F: f1 -- f2)<br>Raise e to the power f1, giving f2. | 
-| FEXPM1    | no   | IC   | **f2 = Exp(f1) - 1**<br>(F: f1 -- f2)<br>Raise e to the power f1 and substract 1, giving f2. | 
+| FEXPM1    | no   | IC   | **f2 = Exp(f1) - 1**<br>(F: f1 -- f2)<br>Raise e to the power f1 and subtract 1, giving f2. | 
 | FLN       | no   | IC   | **f2 = Log(f1)**<br>(F: f1 -- f2)<br>f2 is the natural logarithm of f1. | 
 | FLNP1     | no   | IC   | **f2 = Log(f1)**<br>(F: f1 -- f2)<br>f2 is the natural logarithm of quantity f1 plus one. | 
 | FLOG      | no   | IC   | **f2 = Log10(f1)**<br>(F: f1 -- f2)<br>f2 is the base-ten logarithm of f1. | 
@@ -47,7 +47,7 @@ Words definition table columns:
 | FTANH     | no   | IC   | **f2 = Tanh(f1)**<br>(F: f1 -- f2)<br>f2 is the hyperbolic tangent of f1. | 
 | FTRUNC    | no   | IC   | **f2 = Truncate(f1)**<br>(F: f1 -- f2)<br>Round r1 to an integral value using the “round towards zero” rule, giving r2. | 
 | FVALUE x  | no   | IC   | **Named value**<br>(n -- )<br>Like a CONSTANT, but the value can be changed using the word TO. |
-| S>F       | no   | IC   | **Single cell integer to floating**<br>(n -- ) (F: -- f)<br>Converts a single cell integer on the top of the stack to a floationg point number and stores it on the top of the floating point stack. |
+| S>F       | no   | IC   | **Single cell integer to floating**<br>(n -- ) (F: -- f)<br>Converts a single cell integer on the top of the stack to a floating point number and stores it on the top of the floating point stack. |
 | SF!       | no   | IC   | **Store into address**<br>(addr -- ) (F: f -- )<br>Stores the floating point number f as a 32 bit (single cell) into the address addr (a heap array index). |
 | SF@       | no   | IC   | **Fetch**<br>(addr -- ) (F: -- f)<br>Loads the single cell (32 bit) floating point number at addr a heap array index) and leaves it at the top of the floating point stack. |
 | SFALIGN   | no   | IC   | **Align data pointer**<br>( -- )<br> If the data-space pointer is not single cell float aligned, reserve enough data space to make it so. |
@@ -68,10 +68,10 @@ Words definition table columns:
 | F0<>  | no   | IC   | **Nonzero**<br>( -- flag) (F: f -- )<br>Returns -1 if f is not equal to 0, 0 otherwise. |
 | F0>   | no   | IC   | **Greater than zero**<br>( -- flag) (F: f -- )<br>Returns -1 if f is greater than 0, 0 otherwise. |
 | F1+   | no   | IC   | **Add one**<br>(F: f1 -- f2)<br>Adds one to the top of the stack. |
-| F1-   | no   | IC   | **Subtract one**<br>(F: f1 -- f2)<br>Substracts one from the top of the stack. |
+| F1-   | no   | IC   | **Subtract one**<br>(F: f1 -- f2)<br>Subtracts one from the top of the stack. |
 | F2+   | no   | IC   | **Add two**<br>(F: f1 -- f2)<br>Adds two to the top of the stack. |
-| F2-   | no   | IC   | **Subtract two**<br>(F: f1 -- f2)<br>Substracts two from the top of the stack. |
-| F2*   | no   | IC   | **Times two**<br>(F: f1 -- f2)<br>Substracts two from the top of the stack. |
+| F2-   | no   | IC   | **Subtract two**<br>(F: f1 -- f2)<br>Subtracts two from the top of the stack. |
+| F2*   | no   | IC   | **Times two**<br>(F: f1 -- f2)<br>Subtracts two from the top of the stack. |
 | F2/   | no   | IC   | **Divide by two**<br>(F: f1 -- f2)<br>Divides the top of the stack by two. |
 
 ## TODO

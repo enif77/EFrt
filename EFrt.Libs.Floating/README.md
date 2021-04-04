@@ -9,7 +9,7 @@ Words definition table columns:
 - Name: A name of a word with optional parameters.
 - Imm.: Immediate - if a word is executed even if we are in the compilation mode.
 - Mode: I = interpretation mode only (not available during compilation), C = compilation mode only
-  (not available during implementation), IC = vailable in both modes.
+  (not available during interpretation), IC = available in both modes.
 - Description: A word name, followed by the stack diagram - () = data stack, [] = return stack, {} = object stack - and description of the word itself.
 
 | Name     | Imm. | Mode | Description |
@@ -19,7 +19,7 @@ Words definition table columns:
 | F!       | no   | IC   | **Store into address**<br>(addr -- ) (F: f -- )<br>Stores the floating point number f into the address addr (a heap array index). |
 | F*       | no   | IC   | **f3 = f1 * f2**<br>(F: f1 f2 -- f3)<br>Multiplies two floating point numbers on the top of the stack and leaves the product on the stack. |
 | F+       | no   | IC   | **f3 = f1 + f2**<br>(F: f1 f2 -- f3)<br>Adds two floating point numbers on the top of the stack and leaves the sum on the top of the stack. |
-| F-       | no   | IC   | **f3 = f1 - f2**<br>(F: f1 f2 -- f3)<br>Substracts the floating value f2 from the floating value f1 and leaves the difference on the top of the stack. |
+| F-       | no   | IC   | **f3 = f1 - f2**<br>(F: f1 f2 -- f3)<br>Subtracts the floating value f2 from the floating value f1 and leaves the difference on the top of the stack. |
 | F/       | no   | IC   | **f3 = f1 / f2**<br>(F: f1 f2 -- f3)<br>Divides the floating number f1 by the floating number f2 and leaves the quotient on the top of the stack stack. |
 | F0<      | no   | IC   | **Less than zero**<br>( -- flag) (F: f -- )<br>Returns -1 if f is less than 0, 0 otherwise. |
 | F0=      | no   | IC   | **Equal to zero**<br>( -- flag) (F: f -- )<br>Returns -1 if f is equal to 0, 0 otherwise. |
