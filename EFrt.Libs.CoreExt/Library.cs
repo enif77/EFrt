@@ -36,7 +36,7 @@ namespace EFrt.Libs.CoreExt
 
 
         /// <summary>
-        /// Definas words from this library.
+        /// Defines words from this library.
         /// </summary>
         public void DefineWords()
         {
@@ -59,8 +59,9 @@ namespace EFrt.Libs.CoreExt
             _interpreter.AddPrimitiveWord("TO", ToAction);
             _interpreter.AddPrimitiveWord("TUCK", TuckAction);
             _interpreter.AddPrimitiveWord("VALUE", ValueAction);
-            _interpreter.AddPrimitiveWord("VALUE", ValueAction);
             _interpreter.AddWord(new WithinWord(_interpreter));
+            _interpreter.AddPrimitiveWord("\\", BackslashAction);
+            
 
             _interpreter.AddConstantWord("FALSE", 0);
             _interpreter.AddConstantWord("TRUE", -1);

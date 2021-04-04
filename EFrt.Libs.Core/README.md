@@ -75,7 +75,7 @@ Words definition table columns:
 | CHARS    | no   | IC   | **Chars to bytes**<br>(n1 -- n2)<br>Converts n1 characters to n2 memory address units (bytes). |
 | CONSTANT x | no   | I    | **Declare constant**<br>(n -- )<br>Declares a constant named x. When x is executed, the value n will be left on the stack. |
 | COUNT    | no   | IC   | **String length**<br>( -- n) {o -- s} <br>Converts an object on the top of the object stack to a string and returns the number of characters (string.Length) in it. Leaves the string on the top of the object stack. |
-| CR       | no   | IC   | **Carriage return**<br>( -- )<br>The folowing output will start at the new line. |
+| CR       | no   | IC   | **Carriage return**<br>( -- )<br>The following output will start at the new line. |
 | CREATE   | no   | IC   | **Create object**<br>Create an object, given the name which appears next in the input stream, with a default action of pushing the parameter field address of the object when executed. No storage is allocated; normally the parameter field will be allocated and initialised by the defining word code that follows the CREATE. |
 | DECIMAL  | no   | IC   | **Set number conversion radix to ten**<br>( -- )<br>Set the numeric conversion radix to ten (decimal). |
 | DEPTH    | no   | IC   | **Stack depth**<br>( -- n)<br>Returns the number of items on the stack before DEPTH was executed. |
