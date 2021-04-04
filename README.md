@@ -45,8 +45,8 @@ EFrt is a embeddable FORTH language implementation.
 
 ## Heaps
 
-  - Data heap: Main heap for user data. It is an array of bytes. Words working with it are ensuring the cell alignment, when needed.
-  - Object heap: Hold any objects and strings.
+  - Data heap: Main heap for user data. It is an array of bytes. Words working with it are ensuring the cell/char etc. alignment, when needed.
+  - Object heap: Holds all objects and strings.
 
 
 ## Libraries
@@ -292,14 +292,59 @@ TO (step2)                  \ Sets the body of the word step2 (using the value o
 w? bla  \ Undefined
 w? IF   \ Defined
 
-( Hown the word . "dot" can be implemented... )
+( How the word . "dot" can be implemented... )
 ( n -- )                  \ Display n.
 : . DUP ABS 0             \ Prepare.
    <# #S  ROT SIGN #>     \ Convert to string.
    TYPE SPACE ;           \ Output the created string.
 ```
 
-### Acknowledgements
+### Roman numerals for two bytes chars
+
+Source: Thinking Forth, Leo Brodie
+
+```
+Create romans      ( ones) char I c, char V c,
+                   ( tens) char X c, char L c,
+               ( hundreds) char C c, char D c,
+              ( thousands) char M c,
+
+Variable column# ( current_offset)
+
+: ones 0 column# ! ;
+: tens 4 column# ! ;
+: hundreds 8 column# ! ;
+: thousands 12 column# ! ;
+
+: column ( -- address-of-column ) romans column# @ + ;
+
+: .symbol ( offset -- ) column + c@ emit ;
+
+: oner 0 .symbol ;
+: fiver 2 .symbol ;
+: tener 4 .symbol ;
+
+: oners ( #-of-oners -- )
+    ?dup IF 0 DO oner LOOP THEN ;
+
+: almost ( quotient-of-5/ -- )
+    oner IF tener ELSE fiver THEN ;
+
+: digit ( digit -- )
+    5 /mod over 4 = IF almost drop ELSE IF fiver THEN
+    oners THEN ;
+
+: roman ( number -- ) 
+    1000 /mod thousands digit
+     100 /mod  hundreds digit
+      10 /mod      tens digit
+                   ones digit
+  SPACE ;
+```
+
+
+
+## Acknowledgements
 
 [JetBrains](https://www.jetbrains.com/?from=Efrt) kindly provides EFrt with a free open-source licence for their Resharper and Rider.
 - **Resharper** makes Visual Studio a much better IDE

@@ -31,7 +31,7 @@ Words definition table columns:
 | .        | no   | IC   | **Print top of stack**<br>(n -- )<br>Prints the integer number on the top of the stack. |
 | ." str   | yes  | C    | **Print immediate string**<br>Prints the string that follows in the input stream. |
 | /        | no   | IC   | **n3 = n1 / n2**<br>(n1 n2 -- n3)<br>Divides n1 by n2 and leaves the quotient on the stack. |
-| /MOD     | no   | IC   | **n3 = n1 mod n2, n4 = n1 / n2**<br>(n1 n2 -- n3 n4)<br>Divides n1 by n2 and leaves quotient on top of stack, remainder as next on stack. |
+| /MOD     | no   | IC   | **n3 = n1 mod n2, n4 = n1 / n2**<br>(n1 n2 -- n3 n4)<br>Divide n1 by n2, giving the single-cell remainder n3 and the single-cell quotient n4. |
 | 0<       | no   | IC   | **Less than zero**<br>(n -- flag)<br>Returns -1 if n1 is less than 0, 0 otherwise. |
 | 0=       | no   | IC   | **Equal to zero**<br>(n -- flag)<br>Returns -1 if n1 is equal to 0, 0 otherwise. |
 | 1+       | no   | IC   | **Add one**<br>(n1 -- n2)<br>Adds one to the top of the stack. |

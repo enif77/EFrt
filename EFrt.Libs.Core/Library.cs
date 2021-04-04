@@ -40,24 +40,24 @@ namespace EFrt.Libs.Core
         /// </summary>
         public void DefineWords()
         {
-            _interpreter.AddWord(new StoreWord(_interpreter));  // !
-            _interpreter.AddWord(new NumberSignWord(_interpreter));  // #
+            _interpreter.AddWord(new StoreWord(_interpreter));          // !
+            _interpreter.AddWord(new NumberSignWord(_interpreter));     // #
             _interpreter.AddWord(new NumberSignGreaterWord(_interpreter));  // #>
-            _interpreter.AddWord(new NumberSignSWord(_interpreter));  // #S
-            _interpreter.AddWord(new TickWord(_interpreter));   // '
+            _interpreter.AddWord(new NumberSignSWord(_interpreter));    // #S
+            _interpreter.AddWord(new TickWord(_interpreter));           // '
             _interpreter.AddImmediateWord("(", ParenAction);
-            _interpreter.AddWord(new StarWord(_interpreter));   // *
-            _interpreter.AddWord(new StarSlashWord(_interpreter));   // */
+            _interpreter.AddWord(new StarWord(_interpreter));           // *
+            _interpreter.AddWord(new StarSlashWord(_interpreter));      // */
             _interpreter.AddWord(new StarSlashModWord(_interpreter));   // */MOD
-            _interpreter.AddWord(new PlusWord(_interpreter));   // +
-            _interpreter.AddWord(new PlusStoreWord(_interpreter));   // +!
+            _interpreter.AddWord(new PlusWord(_interpreter));           // +
+            _interpreter.AddWord(new PlusStoreWord(_interpreter));      // +!
             _interpreter.AddImmediateWord("+LOOP", PlusLoopAction);
-            _interpreter.AddWord(new CommaWord(_interpreter));   // ,
-            _interpreter.AddWord(new MinusWord(_interpreter));   // -
-            _interpreter.AddWord(new DotWord(_interpreter));   // .
+            _interpreter.AddWord(new CommaWord(_interpreter));          // ,
+            _interpreter.AddWord(new MinusWord(_interpreter));          // -
+            _interpreter.AddWord(new DotWord(_interpreter));            // .
             _interpreter.AddImmediateWord(".\"", DotQuoteAction);
             _interpreter.AddPrimitiveWord("/", SlashAction);
-            _interpreter.AddPrimitiveWord("/MOD", SlashModAction);
+            _interpreter.AddWord(new SlashModWord(_interpreter));       // /MOD
             _interpreter.AddPrimitiveWord("0<", ZeroLessAction);
             _interpreter.AddPrimitiveWord("0=", ZeroEqualsAction);
             _interpreter.AddPrimitiveWord("1+", OnePlusAction);
@@ -239,20 +239,6 @@ namespace EFrt.Libs.Core
             _interpreter.StackExpect(2);
 
             _interpreter.Function((n1, n2) => n1 / n2);
-
-            return 1;
-        }
-
-        // (n1 n2 -- n3 n4)
-        private int SlashModAction()
-        {
-            _interpreter.StackExpect(2);
-
-            var n2 = _interpreter.Pop();
-            var n1 = _interpreter.Pop();
-
-            _interpreter.Push(n1 / n2);
-            _interpreter.Push(n1 % n2);
 
             return 1;
         }
