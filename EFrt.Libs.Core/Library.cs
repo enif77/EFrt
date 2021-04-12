@@ -999,7 +999,7 @@ namespace EFrt.Libs.Core
         {
             _interpreter.StackFree(1);
 
-            _interpreter.Push(_interpreter.State.Heap.Top);
+            _interpreter.Push(_interpreter.State.Heap.Top + 1);
 
             return 1;
         }

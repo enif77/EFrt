@@ -91,7 +91,7 @@ Words definition table columns:
 | FILL     | no   | IC   | **Fill memory**<br>(addr n1 n2 -- )<br>If n1 is greater than zero, fills n1 cells beginning at addr with n2. |
 | FIND     | no   | IC   | **Find word**<br>( -- 0 \| xt 1 \| xt -1) {s -- \| s}<br>Find the definition named in the string s. If the definition is not found, return s and zero. If the definition is found, return its execution token xt. If the definition is immediate, also return one (1), otherwise also return minus-one (-1). |
 | FM/MOD   | no   | IC   | **n2 = d % n1, n3 = d / n1**<br>(d n1 -- n2 n3)<br>Divide d by n1, giving the floored quotient n3 and the remainder n2. |
-| HERE     | no   | IC   | **Heap address**<br>( -- addr)<br>The current heap allocation address is placed on the top of the stack. addr + 1 is the first free heap cell. |
+| HERE     | no   | IC   | **Heap address**<br>( -- addr)<br>Returns the address of the next available location of data space (the heap). |
 | HOLD     | no   | IC   | **Add char**<br>(char -- )<br>Add char to the beginning of the pictured numeric output string. |
 | I        | yes  | C    | **Inner loop index**<br>( -- n) [n -- n]<br>The index of the innermost DO—LOOP is placed on the stack. |
 | IF       | yes  | C    | **Conditional statement**<br>(flag --)<br>If flag is nonzero, the following statements are executed. Otherwise, execution resumes after the matching ELSE clause, if any, or after the matching THEN. |
