@@ -14,11 +14,11 @@ Words definition table columns:
 
 | Name     | Imm. | Mode | Description |
 | ---      | ---  | ---  | --- |
-| !        | no   | IC   | **Store into address**<br>(n a-addr -- )<br>Stores the value n into the address addr (a heap array index). |
-| #        | no   | IC   | **To pictured char**<br>(ud1 -- ud2)<br>Converts ud1 to char using the BASE value and adds it to the State.Picture buffer. |
-| #>       | no   | IC   | **Pictured to string**<br>(xd -- )<br>Drops xd and saves the PICTURED number to the object stack as a string. |
-| #S       | no   | IC   | **Number to pictured**<br>(ud1 -- ud2)<br>Convert one digit of ud1 according to the rule for #. Continue conversion until the quotient is zero. ud2 is zero. |
-| ' x      | no   | IC   | **Obtain execution token**<br>( -- xt)<br>Places the execution token of the following word on the stack. |
+| !        | no   | IC   | **Store**<br>(x a-addr -- )<br>Store `x` at `a-addr` (a cell aligned heap array index). |
+| #        | no   | IC   | **To pictured char**<br>(ud1 -- ud2)<br>Divide `ud1` by the number in `BASE` giving the quotient `ud2` and the remainder `n`. (`n` is the least significant digit of `ud1`.) Convert `n` to external form and add the resulting character to the beginning of the pictured numeric output string. An ambiguous condition exists if `#` executes outside of a `<#` `#>` delimited number conversion. |
+| #>       | no   | IC   | **Pictured to string**<br>(xd -- )<br>Drops `xd` and saves the PICTURED number to the object stack as a string. |
+| #S       | no   | IC   | **Number to pictured**<br>(ud1 -- ud2)<br>Convert one digit of `ud1` according to  the rule for `#`. Continue conversion until the quotient is zero. `ud2` is zero. An ambiguous condition exists if `#S` executes outside of a `<#` `#>` delimited number conversion. |
+| '        | no   | IC   | **Get execution token**<br>( -- xt)<br>Skip leading space delimiters. Parse name delimited by a space. Find name and return `xt`, the execution token for name. An ambiguous condition exists if name is not found. When interpreting, `’ xyz EXECUTE` is equivalent to `xyz`. |
 | (        | yes  | IC   | **Comment**<br>Skips all source characters till the closing ) character. |
 | *        | no   | IC   | **n3 = n1 * n2**<br>(n1 n2 -- n3)<br>Multiplies n1 and n2 and leaves the product on the stack. |
 | */       | no   | IC   | **n4 = (n1 * n2) / n3**<br>(n1 n2 n3 -- n4)<br>Multiplies n1 and n2 producing the double-cell result d. Divides d by n3 giving the single cell quotient n4. |
