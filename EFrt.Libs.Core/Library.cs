@@ -45,7 +45,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new NumberSignGreaterWord(_interpreter));  // #>
             _interpreter.AddWord(new NumberSignSWord(_interpreter));    // #S
             _interpreter.AddWord(new TickWord(_interpreter));           // '
-            _interpreter.AddImmediateWord("(", ParenAction);
+            _interpreter.AddWord(new ParenWord(_interpreter));          // (
             _interpreter.AddWord(new StarWord(_interpreter));           // *
             _interpreter.AddWord(new StarSlashWord(_interpreter));      // */
             _interpreter.AddWord(new StarSlashModWord(_interpreter));   // */MOD
@@ -168,30 +168,6 @@ namespace EFrt.Libs.Core
             _interpreter.AddImmediateWord("[']", BracketTickAction);
             _interpreter.AddImmediateWord("[CHAR]", BracketCharAction);
             _interpreter.AddImmediateWord("]", RightBracketAction);
-        }
-
-        // ( -- )
-        private int ParenAction()
-        {
-            var c = _interpreter.NextChar();
-            while (_interpreter.CurrentChar() != 0)
-            {
-                if (_interpreter.CurrentChar() == ')')
-                {
-                    _interpreter.NextChar();
-
-                    break;
-                }
-
-                c = _interpreter.NextChar();
-            }
-
-            if (c != ')')
-            {
-                throw new Exception("')' expected.");
-            }
-
-            return 1;
         }
 
         // Compilation: [index of the word following DO/?DO -- ], runtime: (n -- )
