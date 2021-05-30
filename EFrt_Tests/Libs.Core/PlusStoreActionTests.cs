@@ -27,17 +27,19 @@ namespace EFrt_Tests.Libs.Core
         [Fact]
         public void StoreToAddressTest()
         {
-            Assert.Equal(0, _interpreter.State.Heap.ReadInt32(4));
+            var addr = 32;
+
+            Assert.Equal(0, _interpreter.State.Heap.ReadInt32(addr));
             
             // 123
-            _interpreter.State.Heap.Write(4, 123);
+            _interpreter.State.Heap.Write(addr, 123);
             
-            // -> 5 4 +!
+            // -> 5 32 +!
             _interpreter.Push(5);
-            _interpreter.Push(4);
+            _interpreter.Push(addr);
             _plusStoreWord.Action();
             
-            Assert.Equal(123 + 5, _interpreter.State.Heap.ReadInt32(4));
+            Assert.Equal(123 + 5, _interpreter.State.Heap.ReadInt32(addr));
         }
         
         [Fact]

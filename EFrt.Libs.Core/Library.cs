@@ -45,13 +45,13 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new NumberSignGreaterWord(_interpreter));  // #>
             _interpreter.AddWord(new NumberSignSWord(_interpreter));    // #S
             _interpreter.AddWord(new TickWord(_interpreter));           // '
-            _interpreter.AddImmediateWord("(", ParenAction);
+            _interpreter.AddWord(new ParenWord(_interpreter));          // (
             _interpreter.AddWord(new StarWord(_interpreter));           // *
             _interpreter.AddWord(new StarSlashWord(_interpreter));      // */
             _interpreter.AddWord(new StarSlashModWord(_interpreter));   // */MOD
             _interpreter.AddWord(new PlusWord(_interpreter));           // +
             _interpreter.AddWord(new PlusStoreWord(_interpreter));      // +!
-            _interpreter.AddImmediateWord("+LOOP", PlusLoopAction);
+            _interpreter.AddWord(new PlusLoopWord(_interpreter));       // +LOOP
             _interpreter.AddWord(new CommaWord(_interpreter));          // ,
             _interpreter.AddWord(new MinusWord(_interpreter));          // -
             _interpreter.AddWord(new DotWord(_interpreter));            // .
@@ -168,56 +168,6 @@ namespace EFrt.Libs.Core
             _interpreter.AddImmediateWord("[']", BracketTickAction);
             _interpreter.AddImmediateWord("[CHAR]", BracketCharAction);
             _interpreter.AddImmediateWord("]", RightBracketAction);
-        }
-
-        // ( -- )
-        private int ParenAction()
-        {
-            var c = _interpreter.NextChar();
-            while (_interpreter.CurrentChar() != 0)
-            {
-                if (_interpreter.CurrentChar() == ')')
-                {
-                    _interpreter.NextChar();
-
-                    break;
-                }
-
-                c = _interpreter.NextChar();
-            }
-
-            if (c != ')')
-            {
-                throw new Exception("')' expected.");
-            }
-
-            return 1;
-        }
-
-        // Compilation: [index of the word following DO/?DO -- ], runtime: (n -- )
-        private int PlusLoopAction()
-        {
-            if (_interpreter.IsCompiling == false)
-            {
-                throw new Exception("+LOOP outside a new word definition.");
-            }
-
-            _interpreter.ReturnStackExpect(1);
-
-            var cWordIndex = _interpreter.RPop();
-
-            var loopIndex = _interpreter.WordBeingDefined.AddWord(
-                new PlusLoopControlWord(
-                    _interpreter,
-                    (cWordIndex + 1) - _interpreter.WordBeingDefined.NextWordIndex));  // c + 1 -> index of the word folowing DO/?DO.
-
-            var cWord = _interpreter.WordBeingDefined.GetWord(cWordIndex);
-            if (cWord is IBranchingWord)
-            {
-                ((IBranchingWord)cWord).SetBranchTargetIndex(loopIndex);
-            }
-
-            return 1;
         }
 
         // ( -- )
