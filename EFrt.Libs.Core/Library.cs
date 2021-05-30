@@ -55,7 +55,7 @@ namespace EFrt.Libs.Core
             _interpreter.AddWord(new CommaWord(_interpreter));          // ,
             _interpreter.AddWord(new MinusWord(_interpreter));          // -
             _interpreter.AddWord(new DotWord(_interpreter));            // .
-            _interpreter.AddImmediateWord(".\"", DotQuoteAction);
+            _interpreter.AddWord(new DotQuoteWord(_interpreter));       // ."
             _interpreter.AddPrimitiveWord("/", SlashAction);
             _interpreter.AddWord(new SlashModWord(_interpreter));       // /MOD
             _interpreter.AddPrimitiveWord("0<", ZeroLessAction);
@@ -170,18 +170,18 @@ namespace EFrt.Libs.Core
             _interpreter.AddImmediateWord("]", RightBracketAction);
         }
 
-        // ( -- )
-        private int DotQuoteAction()
-        {
-            if (_interpreter.IsCompiling == false)
-            {
-                throw new Exception(".\" outside a new word definition.");
-            }
-
-            _interpreter.WordBeingDefined.AddWord(new PrintStringWord(_interpreter, _interpreter.ParseTerminatedString('"')));
-
-            return 1;
-        }
+        // // ( -- )
+        // private int DotQuoteAction()
+        // {
+        //     if (_interpreter.IsCompiling == false)
+        //     {
+        //         throw new Exception(".\" outside a new word definition.");
+        //     }
+        //
+        //     _interpreter.WordBeingDefined.AddWord(new PrintStringWord(_interpreter, _interpreter.ParseTerminatedString('"')));
+        //
+        //     return 1;
+        // }
 
         // (n1 n2 -- n3)
         private int SlashAction()
