@@ -147,7 +147,7 @@ that a word was executed.
 : hello S" Hello, world!" S. CR ;
 
 ( A simplified hello-world! )
-: GREET   ." Hello, I speak Forth " ;
+: greet ." Hello, I speak Forth!" CR ;
 
 ( Large letter F )
 : STAR 42 EMIT ;
