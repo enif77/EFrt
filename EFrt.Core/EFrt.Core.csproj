@@ -34,8 +34,6 @@
 		<!--<None Include="..\README.md" Pack="true" PackagePath="" />-->
 		<None Include="..\LICENSE.txt" Pack="true" PackagePath="" />
 		<None Include="..\EFrt-icon.png" Pack="true" PackagePath="icon.png"/>
-		
-		<!--<None Include="..\..\efrt-logo.png" Pack="true" PackagePath="" />-->
 	</ItemGroup>
 
 </Project>
