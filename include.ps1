@@ -26,10 +26,10 @@ function Clean() {
 
 
 function Build() {
-	dotnet clean "$baseDir\EFrt.sln" --configuration $Configuration
+	dotnet clean "$baseDir/EFrt.sln" --configuration $Configuration
 	Check-ExitCode
 
-	dotnet build "$baseDir\EFrt.sln" --configuration $Configuration --configfile "$baseDir\NuGet.Config" --force --no-cache --verbosity minimal
+	dotnet build "$baseDir/EFrt.sln" --configuration $Configuration --configfile "$baseDir/NuGet.Config" --force --no-cache --verbosity minimal
 	Check-ExitCode
 }
 
@@ -44,7 +44,7 @@ function BuildProject($projectName, $cleanUp=$False) {
 	    Check-ExitCode
 	}
 
-	dotnet build --configuration $Configuration --configfile "$baseDir\NuGet.Config" --force --no-cache --verbosity normal
+	dotnet build --configuration $Configuration --configfile "$baseDir/NuGet.Config" --force --no-cache --verbosity normal
 	Check-ExitCode
 
 	cd $baseDir
@@ -57,7 +57,7 @@ function PackProject($projectName, $cleanUp=$True) {
 
     cd $projectName
 
-    $packageVersion = GetStringBetweenTwoStrings -firstString "<Version>" -secondString "</Version>" -importPath "$baseDir\$projectName\$projectName.csproj"
+    $packageVersion = GetStringBetweenTwoStrings -firstString "<Version>" -secondString "</Version>" -importPath "$baseDir/$projectName/$projectName.csproj"
 	Check-ExitCode
 	
 	Write-Host "Package version: " + $packageVersion
@@ -69,14 +69,14 @@ function PackProject($projectName, $cleanUp=$True) {
 	    Write-Host "Removing the previous build of this package version..."
 
 	    # This can fail.
-	    & $toolsPath\nuget\nuget.exe delete $projectName $packageVersion -noninteractive -source $nugetDir
+	    & mono $nugetPath delete $projectName $packageVersion -noninteractive -source $nugetDir
 
 		Write-Host "Previous package build removed."
 	}
 
 	Write-Host "Adding the package to the local NuGet repository..."
 
-	& $toolsPath\nuget\nuget.exe add "$outDir\$projectName.$packageVersion.nupkg" -source $nugetDir
+	& mono $nugetPath add "$outDir/$projectName.$packageVersion.nupkg" -source $nugetDir
 	Check-ExitCode
 
 	Write-Host "Package added."
