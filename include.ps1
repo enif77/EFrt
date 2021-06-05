@@ -62,7 +62,8 @@ function PackProject($projectName, $cleanUp=$True) {
 	
 	Write-Host "Package version: " + $packageVersion
 
-	dotnet pack --configuration $Configuration --no-restore --force --include-source --output $outDir --verbosity minimal
+	dotnet pack --configuration $Configuration --no-restore --force -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg --output $outDir --verbosity minimal
+	
 	Check-ExitCode
 
 	if ($cleanUp) {
