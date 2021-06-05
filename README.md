@@ -6,7 +6,7 @@ EFrt is a embeddable FORTH language implementation.
 
 | NuGet | Version | Downloads |
 |-------|---------|-----------|
-| [FirebirdSql.Data.FirebirdClient](https://www.nuget.org/packages/EFrt.Core) | ![EFrt.Core](https://img.shields.io/nuget/v/EFrt.Core.svg) | ![EFrt.Core](https://img.shields.io/nuget/dt/EFrt.Core.svg) |
+| [EFrt.Core](https://www.nuget.org/packages/EFrt.Core) | ![EFrt.Core](https://img.shields.io/nuget/v/EFrt.Core.svg) | ![EFrt.Core](https://img.shields.io/nuget/dt/EFrt.Core.svg) |
 
 ## Links
 
