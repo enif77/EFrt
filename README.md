@@ -7,6 +7,8 @@ EFrt is a embeddable FORTH language implementation.
 | NuGet | Version | Downloads |
 |-------|---------|-----------|
 | [EFrt.Core](https://www.nuget.org/packages/EFrt.Core) | ![EFrt.Core](https://img.shields.io/nuget/v/EFrt.Core.svg) | ![EFrt.Core](https://img.shields.io/nuget/dt/EFrt.Core.svg) |
+| [EFrt.Libs.Core](https://www.nuget.org/packages/EFrt.Libs.Core) | ![EFrt.Libs.Core](https://img.shields.io/nuget/v/EFrt.Libs.Core.svg) | ![EFrt.Libs.Core](https://img.shields.io/nuget/dt/EFrt.Libs.Core.svg) |
+| [EFrt.Libs.CoreExt](https://www.nuget.org/packages/EFrt.Libs.CoreExt) | ![EFrt.Libs.CoreExt](https://img.shields.io/nuget/v/EFrt.Libs.CoreExt.svg) | ![EFrt.Libs.CoreExt](https://img.shields.io/nuget/dt/EFrt.Libs.CoreExt.svg) |
 
 ## Links
 
