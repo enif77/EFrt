@@ -170,19 +170,6 @@ namespace EFrt.Libs.Core
             _interpreter.AddImmediateWord("]", RightBracketAction);
         }
 
-        // // ( -- )
-        // private int DotQuoteAction()
-        // {
-        //     if (_interpreter.IsCompiling == false)
-        //     {
-        //         throw new Exception(".\" outside a new word definition.");
-        //     }
-        //
-        //     _interpreter.WordBeingDefined.AddWord(new PrintStringWord(_interpreter, _interpreter.ParseTerminatedString('"')));
-        //
-        //     return 1;
-        // }
-
         // (n1 n2 -- n3)
         private int SlashAction()
         {
