@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		NuGet.Config = NuGet.Config
 		README.md = README.md
 		build-linux.ps1 = build-linux.ps1
+		EFrt-icon.png = EFrt-icon.png
+		EFrt-icon.xcf = EFrt-icon.xcf
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFrt_Tests", "EFrt_Tests\EFrt_Tests.csproj", "{5DAFCCB9-4F93-4638-8AE3-A1BF35C7EB02}"
