@@ -33,9 +33,7 @@ namespace EFrt.Core
         /// <param name="state">A IInterpreterState instance.</param>
         public Interpreter(IInterpreterState state)
         {
-            if (state == null) throw new ArgumentNullException(nameof(state));
-
-            State = state;
+            State = state ?? throw new ArgumentNullException(nameof(state));
             Output = new NullWriter();
 
             Reset();
