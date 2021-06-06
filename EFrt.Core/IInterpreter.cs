@@ -44,7 +44,7 @@ https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-u
         bool IsCompiling { get; }
 
         /// <summary>
-        /// True, if this program execution is currently termineted.
+        /// True, if this program execution is currently terminated.
         /// </summary>
         bool IsExecutionTerminated { get; }
 
