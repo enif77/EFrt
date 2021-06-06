@@ -14,6 +14,7 @@
 
 	<PropertyGroup>
 		<PackageId>EFrt.Libs.Floating</PackageId>
+		<PackageIcon>icon.png</PackageIcon>
 		<Version>0.1.0</Version>
 		<Authors>Premysl Fara</Authors>
 		<Title>EFrt.Libs.Floating - Embeddable FORTH FLOATING library</Title>
@@ -23,13 +24,16 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageDescription>EFrt - Embeddable FORTH programing language interpreter - the FLOATING library.</PackageDescription>
 		<PackageTags>efrt;forth;embeddable;interpreter;language</PackageTags>
+		<PackageReleaseNotes>Initial version.</PackageReleaseNotes>
+		<PackageProjectUrl>https://github.com/enif77/EFrt</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/enif77/EFrt.git</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<!--<None Include="..\README.md" Pack="true" PackagePath="" />-->
 		<None Include="..\LICENSE.txt" Pack="true" PackagePath="" />
-
-		<!--<None Include="..\..\efrt-logo.png" Pack="true" PackagePath="" />-->
+		<None Include="..\EFrt-icon.png" Pack="true" PackagePath="icon.png"/>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' == 'Release'">

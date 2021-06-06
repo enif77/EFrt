@@ -9,6 +9,15 @@ EFrt is a embeddable FORTH language implementation.
 | [EFrt.Core](https://www.nuget.org/packages/EFrt.Core) | ![EFrt.Core](https://img.shields.io/nuget/v/EFrt.Core.svg) | ![EFrt.Core](https://img.shields.io/nuget/dt/EFrt.Core.svg) |
 | [EFrt.Libs.Core](https://www.nuget.org/packages/EFrt.Libs.Core) | ![EFrt.Libs.Core](https://img.shields.io/nuget/v/EFrt.Libs.Core.svg) | ![EFrt.Libs.Core](https://img.shields.io/nuget/dt/EFrt.Libs.Core.svg) |
 | [EFrt.Libs.CoreExt](https://www.nuget.org/packages/EFrt.Libs.CoreExt) | ![EFrt.Libs.CoreExt](https://img.shields.io/nuget/v/EFrt.Libs.CoreExt.svg) | ![EFrt.Libs.CoreExt](https://img.shields.io/nuget/dt/EFrt.Libs.CoreExt.svg) |
+| [EFrt.Libs.Double](https://www.nuget.org/packages/EFrt.Libs.Double) | ![EFrt.Libs.Double](https://img.shields.io/nuget/v/EFrt.Libs.Double.svg) | ![EFrt.Libs.Double](https://img.shields.io/nuget/dt/EFrt.Libs.Double.svg) |
+| [EFrt.Libs.DoubleExt](https://www.nuget.org/packages/EFrt.Libs.DoubleExt) | ![EFrt.Libs.DoubleExt](https://img.shields.io/nuget/v/EFrt.Libs.DoubleExt.svg) | ![EFrt.Libs.DoubleExt](https://img.shields.io/nuget/dt/EFrt.Libs.DoubleExt.svg) |
+| [EFrt.Libs.Exception](https://www.nuget.org/packages/EFrt.Libs.Exception) | ![EFrt.Libs.Exception](https://img.shields.io/nuget/v/EFrt.Libs.Exception.svg) | ![EFrt.Libs.Exception](https://img.shields.io/nuget/dt/EFrt.Libs.Exception.svg) |
+| [EFrt.Libs.Floating](https://www.nuget.org/packages/EFrt.Libs.Floating) | ![EFrt.Libs.Floating](https://img.shields.io/nuget/v/EFrt.Libs.Floating.svg) | ![EFrt.Libs.Floating](https://img.shields.io/nuget/dt/EFrt.Libs.Floating.svg) |
+| [EFrt.Libs.FloatingExt](https://www.nuget.org/packages/EFrt.Libs.FloatingExt) | ![EFrt.Libs.FloatingExt](https://img.shields.io/nuget/v/EFrt.Libs.FloatingExt.svg) | ![EFrt.Libs.FloatingExt](https://img.shields.io/nuget/dt/EFrt.Libs.FloatingExt.svg) |
+| [EFrt.Libs.Object](https://www.nuget.org/packages/EFrt.Libs.Object) | ![EFrt.Libs.Object](https://img.shields.io/nuget/v/EFrt.Libs.Object.svg) | ![EFrt.Libs.Object](https://img.shields.io/nuget/dt/EFrt.Libs.Object.svg) |
+| [EFrt.Libs.String](https://www.nuget.org/packages/EFrt.Libs.String) | ![EFrt.Libs.String](https://img.shields.io/nuget/v/EFrt.Libs.String.svg) | ![EFrt.Libs.String](https://img.shields.io/nuget/dt/EFrt.Libs.String.svg) |
+| [EFrt.Libs.Tools](https://www.nuget.org/packages/EFrt.Libs.Tools) | ![EFrt.Libs.Tools](https://img.shields.io/nuget/v/EFrt.Libs.Tools.svg) | ![EFrt.Libs.Tools](https://img.shields.io/nuget/dt/EFrt.Libs.Tools.svg) |
+| [EFrt.Libs.ToolsExt](https://www.nuget.org/packages/EFrt.Libs.ToolsExt) | ![EFrt.Libs.ToolsExt](https://img.shields.io/nuget/v/EFrt.Libs.ToolsExt.svg) | ![EFrt.Libs.ToolsExt](https://img.shields.io/nuget/dt/EFrt.Libs.ToolsExt.svg) |
 
 ## Links
 
