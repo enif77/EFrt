@@ -36,19 +36,17 @@ namespace EFrt.Core
                     return toUpperCase ? tok.SValue.ToUpperInvariant() : tok.SValue;
 
                 default:
-                    throw new Exception($"Unexpected token type ({tok}) instead of a word name.");
+                    throw new Exception($"Unexpected token type ({tok}) found. A word name expected.");
             }
         }
 
 
         public string ParseTerminatedString(char terminator, bool allowSpecialChars = false, bool skipLeadingTerminators = false)
-        {
-            return _tokenizer.ParseTerminatedString(terminator, allowSpecialChars, skipLeadingTerminators);
-        }
+            => _tokenizer.ParseTerminatedString(terminator, allowSpecialChars, skipLeadingTerminators);
 
 
-        public Token ParseNumber(string word, bool allowLeadingWhite = false, bool allowTrailingWhite = false, bool allowTrailingChars = false) => 
-            _tokenizer.ParseNumber(word, allowLeadingWhite, allowTrailingWhite, allowTrailingChars);
+        public Token ParseNumber(string word, bool allowLeadingWhite = false, bool allowTrailingWhite = false, bool allowTrailingChars = false)
+            => _tokenizer.ParseNumber(word, allowLeadingWhite, allowTrailingWhite, allowTrailingChars);
         
 
         public long ParseIntegerNumber(string s, out bool success)
