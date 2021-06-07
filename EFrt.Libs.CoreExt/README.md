@@ -41,9 +41,9 @@ Words definition table columns:
 
 | Name     | Imm. | Mode | Description |
 | ---      | ---  | ---  | --- |
-| B!       | no   | IC   | **Store byte into address**<br>(char a-addr -- )<br>Stores the value char into the address addr (a heap array index). |
+| B!       | no   | IC   | **Store byte into address**<br>(byte addr -- )<br>Stores the value char into the address addr (a heap array index). |
 | B,       | no   | IC   | **Store byte in heap**<br>Reserves a single char of data heap, initialising it to char. |
-| B@       | no   | IC   | **Fetch byte**<br>(c-addr -- char)<br>Loads the character at the c-addr and leaves it at the top of the stack. |
+| B@       | no   | IC   | **Fetch byte**<br>(addr -- byte)<br>Loads the character at the c-addr and leaves it at the top of the stack. |
 | BYTE+    | no   | IC   | **Add byte size**<br>(addr1 -- addr2)<br>Add the size in address units of a byte to addr1, giving addr2. |
 | BYTES    | no   | IC   | **Bytes to bytes**<br>(n1 -- n2)<br>Converts n1 bytes to n2 memory address units (bytes). |
 | -ROLL    | no   | IC   | **Rotate top to indexth item**<br>(index -- n)<br>The index is removed from the stack and then the top stack item is moved to the indexth stack position. The intervening stack items are moved up one item. |
@@ -54,7 +54,7 @@ Words definition table columns:
 | 2-       | no   | IC   | **Subtract two**<br>(n1 -- n2)<br>Subtracts two from the top of the stack. |
 | 2NIP     | no   | IC   | **Drop two items below stack top**<br>(n1 n2 n3 n4 -- n3 n4)<br>Drop the fourth and the third item below the top of the stack. |
 | 2TUCK    | no   | IC   | **Dup stack top**<br>(n1 n2 n3 n4 -- n3 n4 n1 n2 n3 n4)<br>Copy the first two stack items below the fourth stack item. |
-| CLEAR    | no   | IC   | **Clear stack**<b<br><br>r>All items on the data stack are discarded. |
+| CLEAR    | no   | IC   | **Clear stack**<br>All items on the data stack are discarded. |
 
 
 ## TODO
