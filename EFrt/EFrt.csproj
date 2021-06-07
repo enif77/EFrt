@@ -14,6 +14,7 @@
 
 	<PropertyGroup>
 		<PackageId>EFrt</PackageId>
+		<PackageIcon>icon.png</PackageIcon>
 		<Version>0.6.0</Version>
 		<Authors>Premysl Fara</Authors>
 		<Title>EFrt - Embeddable FORTH</Title>
@@ -23,6 +24,10 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageDescription>EFrt - Embeddable FORTH programing language interpreter.</PackageDescription>
 		<PackageTags>efrt;forth;embeddable;interpreter;language</PackageTags>
+		<PackageReleaseNotes>Initial version.</PackageReleaseNotes>
+		<PackageProjectUrl>https://github.com/enif77/EFrt</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/enif77/EFrt.git</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -42,7 +47,7 @@
 		<None Include="..\EFrt.Libs.Tools\README.md" Pack="true" PackagePath="docs\TOOLS.md" />
 		<None Include="..\EFrt.Libs.ToolsExt\README.md" Pack="true" PackagePath="docs\TOOLS-EXT.md" />
 
-		<!--<None Include="..\..\efrt-logo.png" Pack="true" PackagePath="" />-->
+		<None Include="..\EFrt-icon.png" Pack="true" PackagePath="icon.png"/>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' == 'Release'">
