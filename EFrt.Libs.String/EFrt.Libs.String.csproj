@@ -15,7 +15,7 @@
 	<PropertyGroup>
 		<PackageId>EFrt.Libs.String</PackageId>
 		<PackageIcon>icon.png</PackageIcon>
-		<Version>0.1.0</Version>
+		<Version>0.1.1</Version>
 		<Authors>Premysl Fara</Authors>
 		<Title>EFrt.Libs.String - Embeddable FORTH STRING library</Title>
 		<Description>
@@ -24,7 +24,7 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageDescription>EFrt - Embeddable FORTH programing language interpreter - the STRING library.</PackageDescription>
 		<PackageTags>efrt;forth;embeddable;interpreter;language</PackageTags>
-		<PackageReleaseNotes>Initial version.</PackageReleaseNotes>
+		<PackageReleaseNotes>Stack operations checks.</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/enif77/EFrt</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/enif77/EFrt.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
