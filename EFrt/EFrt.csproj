@@ -15,7 +15,7 @@
 	<PropertyGroup>
 		<PackageId>EFrt</PackageId>
 		<PackageIcon>icon.png</PackageIcon>
-		<Version>0.6.0</Version>
+		<Version>0.6.1</Version>
 		<Authors>Premysl Fara</Authors>
 		<Title>EFrt - Embeddable FORTH</Title>
 		<Description>
@@ -24,7 +24,7 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageDescription>EFrt - Embeddable FORTH programing language interpreter.</PackageDescription>
 		<PackageTags>efrt;forth;embeddable;interpreter;language</PackageTags>
-		<PackageReleaseNotes>Initial version.</PackageReleaseNotes>
+		<PackageReleaseNotes>Updated dependencies.</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/enif77/EFrt</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/enif77/EFrt.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
@@ -47,7 +47,7 @@
 		<None Include="..\EFrt.Libs.Tools\README.md" Pack="true" PackagePath="docs\TOOLS.md" />
 		<None Include="..\EFrt.Libs.ToolsExt\README.md" Pack="true" PackagePath="docs\TOOLS-EXT.md" />
 
-		<None Include="..\EFrt-icon.png" Pack="true" PackagePath="icon.png"/>
+		<None Include="..\EFrt-icon.png" Pack="true" PackagePath="icon.png" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' == 'Release'">
@@ -60,7 +60,6 @@
 		<PackageReference Include="EFrt.Libs.Floating" Version="0.1.0" />
 		<PackageReference Include="EFrt.Libs.FloatingExt" Version="0.1.0" />
 		<PackageReference Include="EFrt.Libs.Object" Version="0.1.0" />
-		<PackageReference Include="EFrt.Libs.String" Version="0.1.0" />
 		<PackageReference Include="EFrt.Libs.Tools" Version="0.1.0" />
 		<PackageReference Include="EFrt.Libs.ToolsExt" Version="0.1.0" />
 	</ItemGroup>
@@ -78,6 +77,10 @@
 		<ProjectReference Include="..\EFrt.Libs.String\EFrt.Libs.String.csproj" />
 		<ProjectReference Include="..\EFrt.Libs.Tools\EFrt.Libs.Tools.csproj" />
 		<ProjectReference Include="..\EFrt.Libs.ToolsExt\EFrt.Libs.ToolsExt.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="EFrt.Libs.String" Version="0.1.1" />
 	</ItemGroup>
 
 </Project>
