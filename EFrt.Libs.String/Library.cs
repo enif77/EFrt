@@ -16,12 +16,12 @@ namespace EFrt.Libs.String
         /// </summary>
         public string Name => "STRING";
 
-        private IInterpreter _interpreter;
+        private readonly IInterpreter _interpreter;
 
 
-        public Library(IInterpreter efrt)
+        public Library(IInterpreter interpreter)
         {
-            _interpreter = efrt;
+            _interpreter = interpreter;
         }
 
 
@@ -35,6 +35,8 @@ namespace EFrt.Libs.String
         // {o --}
         private int PrintStringAction()
         {
+            _interpreter.ObjectStackExpect(1);
+            
             _interpreter.Output.Write(_interpreter.OPop().ToString());
 
             return 1;
@@ -43,6 +45,8 @@ namespace EFrt.Libs.String
         // {a b -- result}
         private int AddAction()
         {
+            _interpreter.ObjectStackExpect(2);
+            
             _interpreter.SFunction((a, b) => a.ToString() + b.ToString());
 
             return 1;
