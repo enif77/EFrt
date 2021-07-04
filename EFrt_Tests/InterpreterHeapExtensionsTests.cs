@@ -2,8 +2,6 @@
 
 namespace EFrt_Tests
 {
-    using System;
-
     using Xunit;
 
     using EFrt;
@@ -21,7 +19,7 @@ namespace EFrt_Tests
             _interpreter = InterpreterFactory.CreateWithDefaults();
         }
 
-        // --- CELL ALLIGNED ADDRESSES TESTS ---
+        // --- CELL ALIGNED ADDRESSES TESTS ---
         
         [Fact]
         public void ValidCellAlignedAddressTest()
