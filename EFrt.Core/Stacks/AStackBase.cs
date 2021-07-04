@@ -2,7 +2,7 @@
 
 namespace EFrt.Core.Stacks
 {
-    public abstract class AStackBase<T> : IStack<T>
+    public abstract class AStackBase<T> : IGenericStack<T>
     {
         public T[] Items { get; }
 

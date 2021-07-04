@@ -227,7 +227,7 @@ namespace EFrt_Tests
         /// ( - 1 2 3)
         /// </summary>
         /// <param name="stack">A stack.</param>
-        private void Push123(IStack<int> stack)
+        private void Push123(IGenericStack<int> stack)
         {
             stack.Push(1);
             stack.Push(2);
