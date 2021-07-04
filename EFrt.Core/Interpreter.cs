@@ -1,11 +1,11 @@
 ﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
-using EFrt.Core.Extensions;
-
 namespace EFrt.Core
 {
     using System;
 
+    //using EFrt.Core.Extensions;
+    using EFrt.Core.Values;
     using EFrt.Core.Words;
 
     using static EFrt.Core.Token;
@@ -98,7 +98,7 @@ namespace EFrt.Core
             if (WordBeingDefined != null)
             {
                 // Now add the new word to the dictionary
-                this.AddWord(WordBeingDefined);
+                State.WordsList.Add(WordBeingDefined);
             }
 
             // Finish this word compilation.
@@ -179,7 +179,7 @@ namespace EFrt.Core
             State.InputSourceStack.Top = exceptionFrame.InputSourceStackTop;
             CurrentWord = exceptionFrame.ExecutingWord;
 
-            this.Push(exceptionCode);
+            State.Stack.Push(exceptionCode);
 
             // Will be caught by the CATCH word.
             throw new InterpreterException(exceptionCode, message);
@@ -351,15 +351,15 @@ namespace EFrt.Core
                 switch (t.Code)
                 {
                     case TokenType.SingleCellInteger:
-                        this.Push((int)t.LValue);
+                        State.Stack.Push((int)t.LValue);
                         break;
 
                     case TokenType.DoubleCellInteger:
-                        this.DPush(t.LValue);
+                        DPush(t.LValue);
                         break;
 
                     case TokenType.Float:
-                        this.FPush(t.FValue);
+                        State.FloatingPointStack.Push(t.FValue);
                         break;
 
                     // No, it is some unknown word.
@@ -368,6 +368,18 @@ namespace EFrt.Core
                         break;
                 }
             }
+        }
+        
+        
+        private void DPush(long value)
+        {
+            var v = new DoubleCellIntegerValue()
+            {
+                D = value
+            };
+
+            State.Stack.Push(v.A);
+            State.Stack.Push(v.B);
         }
         
         #endregion
