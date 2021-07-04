@@ -4,7 +4,6 @@ namespace EFrt.Core
 {
     using System;
 
-    //using EFrt.Core.Extensions;
     using EFrt.Core.Values;
     using EFrt.Core.Words;
 

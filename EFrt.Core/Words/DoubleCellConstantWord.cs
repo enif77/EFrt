@@ -1,9 +1,9 @@
 ﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
-using EFrt.Core.Extensions;
-
 namespace EFrt.Core.Words
 {
+    using EFrt.Core.Extensions;
+    
     /// <summary>
     /// A word keeping two integer values.
     /// </summary>
