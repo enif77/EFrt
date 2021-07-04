@@ -54,7 +54,7 @@ namespace EFrt
         {
             if (wordsLibrary == null) throw new ArgumentNullException(nameof(wordsLibrary));
 
-            wordsLibrary.DefineWords();
+            wordsLibrary.Initialize();
 
             return interpreter;
         }

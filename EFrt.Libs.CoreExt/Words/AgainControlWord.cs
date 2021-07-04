@@ -1,13 +1,13 @@
 ﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
-namespace EFrt.Libs.CoreEx.Words
+namespace EFrt.Libs.CoreExt.Words
 {
     using EFrt.Core;
     using EFrt.Core.Words;
 
 
     /// <summary>
-    /// A word that is definig the loop goto-begining jump.
+    /// A word that is defining the loop goto-beginning jump.
     /// </summary>
     public class AgainControlWord : AWordBase
     {
@@ -27,6 +27,6 @@ namespace EFrt.Libs.CoreEx.Words
         }
 
 
-        private int _increment;
+        private readonly int _increment;
     }
 }

@@ -14,28 +14,22 @@ namespace EFrt.Libs.Exception
     /// </summary>
     public class Library : IWordsLibrary
     {
-        /// <summary>
-        /// The name of this library.
-        /// </summary>
         public string Name => "EXCEPTION";
 
-        private IInterpreter _interpreter;
+        private readonly IInterpreter _interpreter;
 
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="interpreter"></param>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         public Library(IInterpreter interpreter)
         {
             _interpreter = interpreter;
         }
 
 
-        /// <summary>
-        /// Definas words from this library.
-        /// </summary>
-        public void DefineWords()
+        public void Initialize()
         {
             _interpreter.AddImmediateWord("CATCH", CatchAction);
             _interpreter.AddPrimitiveWord("THROW", ThrowAction);

@@ -17,9 +17,6 @@ namespace EFrt.Libs.Core
     /// </summary>
     public class Library : IWordsLibrary
     {
-        /// <summary>
-        /// The name of this library.
-        /// </summary>
         public string Name => "CORE";
 
         private readonly IInterpreter _interpreter;
@@ -35,10 +32,7 @@ namespace EFrt.Libs.Core
         }
 
 
-        /// <summary>
-        /// Defines words from this library.
-        /// </summary>
-        public void DefineWords()
+        public void Initialize()
         {
             _interpreter.AddWord(new StoreWord(_interpreter));          // !
             _interpreter.AddWord(new NumberSignWord(_interpreter));     // #

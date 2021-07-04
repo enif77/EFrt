@@ -10,9 +10,6 @@ namespace EFrt.Libs.DoubleExt
     /// </summary>
     public class Library : IWordsLibrary
     {
-        /// <summary>
-        /// The name of this library.
-        /// </summary>
         public string Name => "DOUBLE-EXT";
 
         private readonly IInterpreter _interpreter;
@@ -21,17 +18,14 @@ namespace EFrt.Libs.DoubleExt
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="interpreter"></param>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         public Library(IInterpreter interpreter)
         {
             _interpreter = interpreter;
         }
 
 
-        /// <summary>
-        /// Definas words from this library.
-        /// </summary>
-        public void DefineWords()
+        public void Initialize()
         {
             _interpreter.AddPrimitiveWord("2ROT", TwoRotAction);
 

@@ -13,21 +13,22 @@ namespace EFrt.Libs.Object
     /// </summary>
     public class Library : IWordsLibrary
     {
-        /// <summary>
-        /// The name of this library.
-        /// </summary>
         public string Name => "OBJECT";
 
-        private IInterpreter _interpreter;
+        private readonly IInterpreter _interpreter;
 
 
-        public Library(IInterpreter efrt)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
+        public Library(IInterpreter interpreter)
         {
-            _interpreter = efrt;
+            _interpreter = interpreter;
         }
 
 
-        public void DefineWords()
+        public void Initialize()
         {
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "OALLOT", AllotAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "OHERE", HereAction));

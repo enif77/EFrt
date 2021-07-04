@@ -13,28 +13,22 @@ namespace EFrt.Libs.ToolsExt
     /// </summary>
     public class Library : IWordsLibrary
     {
-        /// <summary>
-        /// The name of this library.
-        /// </summary>
         public string Name => "TOOLS-EXT";
 
-        private IInterpreter _interpreter;
+        private readonly IInterpreter _interpreter;
 
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="interpreter"></param>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         public Library(IInterpreter interpreter)
         {
             _interpreter = interpreter;
         }
 
 
-        /// <summary>
-        /// Definas words from this library.
-        /// </summary>
-        public void DefineWords()
+        public void Initialize()
         {
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "BYE", ByeAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "FORGET", ForgetAction));

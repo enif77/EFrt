@@ -11,21 +11,22 @@ namespace EFrt.Libs.String
 
     public class Library : IWordsLibrary
     {
-        /// <summary>
-        /// The name of this library.
-        /// </summary>
         public string Name => "STRING";
 
         private readonly IInterpreter _interpreter;
 
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         public Library(IInterpreter interpreter)
         {
             _interpreter = interpreter;
         }
 
 
-        public void DefineWords()
+        public void Initialize()
         {
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "S.", PrintStringAction));
             _interpreter.AddWord(new PrimitiveWord(_interpreter, "S+", AddAction));

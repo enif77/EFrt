@@ -14,8 +14,8 @@ namespace EFrt.Core
 
 
         /// <summary>
-        /// Defines words from this library.
+        /// Initializes this library and defines words from this library.
         /// </summary>
-        void DefineWords();
+        void Initialize();
     }
 }

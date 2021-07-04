@@ -1,13 +1,13 @@
 ﻿/* EFrt - (C) 2020 Premysl Fara  */
 
-namespace EFrt.Libs.CoreEx.Words
+namespace EFrt.Libs.CoreExt.Words
 {
     using EFrt.Core;
     using EFrt.Core.Words;
 
 
     /// <summary>
-    /// A word that is definig ?DO loop begining.
+    /// A word that is defining ?DO loop beginning.
     /// </summary>
     public class IfDoControlWord : AWordBase, IBranchingWord
     {
@@ -53,7 +53,7 @@ namespace EFrt.Libs.CoreEx.Words
         }
 
 
-        private int _thisIndex;
+        private readonly int _thisIndex;
         private int _loopIndexIncrement;
     }
 }

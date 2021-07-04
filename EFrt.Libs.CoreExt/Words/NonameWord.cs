@@ -1,6 +1,6 @@
 ﻿/* EFrt - (C) 2020 Premysl Fara  */
 
-namespace EFrt.Libs.CoreEx.Words
+namespace EFrt.Libs.CoreExt.Words
 {
     using EFrt.Core;
     using EFrt.Core.Words;

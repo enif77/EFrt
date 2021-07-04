@@ -1,12 +1,11 @@
 ﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
-using EFrt.Core.Stacks;
-
 namespace EFrt.Libs.Floating
 {
     using System;
 
     using EFrt.Core;
+    using EFrt.Core.Stacks;
     using EFrt.Core.Values;
     using EFrt.Core.Words;
 
@@ -16,21 +15,22 @@ namespace EFrt.Libs.Floating
     /// </summary>
     public class Library : IWordsLibrary
     {
-        /// <summary>
-        /// The name of this library.
-        /// </summary>
         public string Name => "FLOATING";
 
-        private IInterpreter _interpreter;
+        private readonly IInterpreter _interpreter;
 
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         public Library(IInterpreter interpreter)
         {
             _interpreter = interpreter;
         }
 
 
-        public void DefineWords()
+        public void Initialize()
         {
             _interpreter.AddPrimitiveWord(">FLOAT", ToNumberAction);
             _interpreter.AddPrimitiveWord("D>F", DToFAction);

@@ -1,14 +1,12 @@
 ﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
-using EFrt.Core.Stacks;
-
 namespace EFrt.Libs.FloatingExt
 {
     using System;
     using System.Globalization;
 
     using EFrt.Core;
-    using EFrt.Core.Values;
+    using EFrt.Core.Stacks;
     using EFrt.Core.Words;
 
 
@@ -17,21 +15,22 @@ namespace EFrt.Libs.FloatingExt
     /// </summary>
     public class Library : IWordsLibrary
     {
-        /// <summary>
-        /// The name of this library.
-        /// </summary>
         public string Name => "FLOATING-EXT";
 
-        private IInterpreter _interpreter;
+        private readonly IInterpreter _interpreter;
 
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         public Library(IInterpreter interpreter)
         {
             _interpreter = interpreter;
         }
 
 
-        public void DefineWords()
+        public void Initialize()
         {
             _interpreter.AddPrimitiveWord("DF!", DFStoreAction);          // Does the same as the word F!.
             _interpreter.AddPrimitiveWord("DF@", DFFetchAction);          // Does the same as the word F@.

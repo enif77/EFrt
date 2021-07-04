@@ -1,7 +1,5 @@
 ﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
-using EFrt.Libs.CoreExt.Words;
-
 namespace EFrt.Libs.CoreExt
 {
     using System;
@@ -9,7 +7,7 @@ namespace EFrt.Libs.CoreExt
     using EFrt.Core;
     using EFrt.Core.Words;
 
-    using EFrt.Libs.CoreEx.Words;
+    using EFrt.Libs.CoreExt.Words;
 
 
     /// <summary>
@@ -17,9 +15,6 @@ namespace EFrt.Libs.CoreExt
     /// </summary>
     public class Library : IWordsLibrary
     {
-        /// <summary>
-        /// The name of this library.
-        /// </summary>
         public string Name => "CORE-EXT";
 
         private readonly IInterpreter _interpreter;
@@ -35,10 +30,7 @@ namespace EFrt.Libs.CoreExt
         }
 
 
-        /// <summary>
-        /// Defines words from this library.
-        /// </summary>
-        public void DefineWords()
+        public void Initialize()
         {
             _interpreter.AddImmediateWord(".(", DotParenAction);
             _interpreter.AddPrimitiveWord("0<>", ZeroNotEqualsAction);
