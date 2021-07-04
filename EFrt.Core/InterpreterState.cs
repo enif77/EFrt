@@ -1,5 +1,7 @@
 ﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
+using System.Collections.Generic;
+
 namespace EFrt.Core
 {
     using System;
@@ -42,26 +44,81 @@ namespace EFrt.Core
             ReturnStack = returnStack ?? throw new ArgumentNullException(nameof(returnStack));
             ExceptionStack = exceptionStack ?? throw new ArgumentNullException(nameof(exceptionStack));
             InputSourceStack = inputSourceStack ?? throw new ArgumentNullException(nameof(inputSourceStack));
+            
             Heap = heap ?? throw new ArgumentNullException(nameof(heap));
             ObjectHeap = objectHeap ?? throw new ArgumentNullException(nameof(objectHeap));
+            
             Picture = string.Empty;
             WordsList = wordsList ?? throw new ArgumentNullException(nameof(wordsList));
 
+            _stacksRegistry = new Dictionary<string, IStack>();
+            
+            RegisterStack(typeof(Stack).FullName, stack);
+            RegisterStack(typeof(FloatingPointStack).FullName, floatingPointStack);
+            RegisterStack(typeof(ObjectStack).FullName, objectStack);
+            RegisterStack(typeof(ReturnStack).FullName, returnStack);
+            RegisterStack(typeof(ExceptionStack).FullName, exceptionStack);
+            RegisterStack(typeof(InputSourceStack).FullName, inputSourceStack);
+            
             SetupDefaults();
+        }
+
+
+        public bool IsStackRegistered(string stackName)
+        {
+            if (string.IsNullOrEmpty(stackName)) throw new ArgumentException("A valid stack name expected.");
+            
+            return _stacksRegistry.ContainsKey(stackName);
+        }
+
+        
+        public  void RegisterStack(string stackName, IStack stack)
+        {
+            if (stack == null) throw new ArgumentNullException(nameof(stack));
+
+            if (IsStackRegistered(stackName))
+            {
+                throw new ApplicationException($"The '{stackName}' stack is already registered.");
+            }
+            
+            _stacksRegistry.Add(stackName, stack);
+        }
+
+        
+        public IStack GetRegisteredStack(string stackName)
+        {
+            if (IsStackRegistered(stackName) == false)
+            {
+                throw new ApplicationException($"The '{stackName}' stack is not registered.");
+            }
+
+            return _stacksRegistry[stackName];
+        }
+
+        
+        public void RemoveRegisteredStack(string stackName)
+        {
+            if (IsStackRegistered(stackName) == false)
+            {
+                throw new ApplicationException($"The '{stackName}' stack is not registered.");
+            }
+
+            _stacksRegistry.Remove(stackName);
         }
 
 
         public void Reset()
         {
-            Stack.Clear();
-            FloatingPointStack.Clear();
-            ObjectStack.Clear();
-            ReturnStack.Clear();
-            ExceptionStack.Clear();
-            InputSourceStack.Clear();
+            foreach (var stack in _stacksRegistry.Values)
+            {
+                stack.Clear();
+            }
+            
             Heap.Clear();
             ObjectHeap.Clear();
+            
             Picture = string.Empty;
+            
             WordsList.Clear();
 
             SetupDefaults();
@@ -82,6 +139,8 @@ namespace EFrt.Core
         }
 
 
+        private readonly IDictionary<string, IStack> _stacksRegistry;
+        
         private void SetupDefaults()
         {
             // Allocate room for the STATE and the BASE variables.

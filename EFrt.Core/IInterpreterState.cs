@@ -72,10 +72,39 @@ namespace EFrt.Core
 
 
         /// <summary>
+        /// Checks, if a stack with a certain name is registered.
+        /// </summary>
+        /// <param name="stackName">An unique stack name.</param>
+        bool IsStackRegistered(string stackName);
+
+        /// <summary>
+        /// Registers an new stack instance.
+        /// Throws an exception, if a stack with the same name already exists. 
+        /// </summary>
+        /// <param name="stackName">An unique stack name.</param>
+        /// <param name="stack">A IStack instance.</param>
+        void RegisterStack(string stackName, IStack stack);
+
+        /// <summary>
+        /// Returns a stack with a specific name.
+        /// Throws an exception, if no such stack exists.
+        /// </summary>
+        /// <param name="stackName">A stack name.</param>
+        /// <returns>An IStack instance.</returns>
+        IStack GetRegisteredStack(string stackName);
+
+        /// <summary>
+        /// Removes a stack from registered stacks.
+        /// Throws an exception, if no such stack exists.
+        /// </summary>
+        /// <param name="stackName">A stack name.</param>
+        void RemoveRegisteredStack(string stackName);
+        
+        /// <summary>
         /// Cleans up this state.
         /// </summary>
         void Reset();
-
+        
         /// <summary>
         /// Sets the STATE variable value.
         /// </summary>
