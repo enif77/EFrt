@@ -1,10 +1,9 @@
 ﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
-using System.Collections.Generic;
-
 namespace EFrt.Core
 {
     using System;
+    using System.Collections.Generic;
 
     using EFrt.Core.Stacks;
 
