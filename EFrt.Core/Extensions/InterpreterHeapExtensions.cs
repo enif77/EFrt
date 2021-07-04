@@ -1,6 +1,6 @@
 ﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
-namespace EFrt.Core
+namespace EFrt.Core.Extensions
 {
     using EFrt.Core.Stacks;
     

@@ -8,6 +8,7 @@ namespace EFrt_Tests
 
     using EFrt;
     using EFrt.Core;
+    using EFrt.Core.Extensions;
     
     
     /// <summary>

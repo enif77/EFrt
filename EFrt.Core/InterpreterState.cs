@@ -52,17 +52,11 @@ namespace EFrt.Core
 
             _stacksRegistry = new Dictionary<string, IStack>();
             
-            RegisterStack(typeof(Stack).FullName, stack);
-            RegisterStack(typeof(FloatingPointStack).FullName, floatingPointStack);
-            RegisterStack(typeof(ObjectStack).FullName, objectStack);
-            RegisterStack(typeof(ReturnStack).FullName, returnStack);
-            RegisterStack(typeof(ExceptionStack).FullName, exceptionStack);
-            RegisterStack(typeof(InputSourceStack).FullName, inputSourceStack);
-            
+            RegisterDefaultStacks();
             SetupDefaults();
         }
 
-
+        
         public bool IsStackRegistered(string stackName)
         {
             if (string.IsNullOrEmpty(stackName)) throw new ArgumentException("A valid stack name expected.");
@@ -115,10 +109,9 @@ namespace EFrt.Core
             
             Heap.Clear();
             ObjectHeap.Clear();
+            WordsList.Clear();
             
             Picture = string.Empty;
-            
-            WordsList.Clear();
 
             SetupDefaults();
         }
@@ -137,8 +130,22 @@ namespace EFrt.Core
             Heap.Write(BaseVariableAddress, value);
         }
 
+        
+        #region private
 
         private readonly IDictionary<string, IStack> _stacksRegistry;
+        
+        
+        private void RegisterDefaultStacks()
+        {
+            RegisterStack(typeof(Stack).FullName, Stack);
+            RegisterStack(typeof(FloatingPointStack).FullName, FloatingPointStack);
+            RegisterStack(typeof(ObjectStack).FullName, ObjectStack);
+            RegisterStack(typeof(ReturnStack).FullName, ReturnStack);
+            RegisterStack(typeof(ExceptionStack).FullName, ExceptionStack);
+            RegisterStack(typeof(InputSourceStack).FullName, InputSourceStack);
+        }
+        
         
         private void SetupDefaults()
         {
@@ -153,5 +160,7 @@ namespace EFrt.Core
             SetStateValue(false);  // False = interpreting.
             SetBaseValue(10);      // Decimal.
         }
+        
+        #endregion
     }
 }

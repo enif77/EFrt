@@ -1,5 +1,7 @@
 ﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
+using EFrt.Core.Extensions;
+
 namespace EFrt.Core
 {
     using System;

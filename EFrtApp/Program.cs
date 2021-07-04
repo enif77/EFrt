@@ -6,6 +6,7 @@ namespace EFrtApp
 
     using EFrt;
     using EFrt.Core;
+    using EFrt.Core.Extensions;
 
 
     static class Program

@@ -1,5 +1,7 @@
 ﻿/* EFrt - (C) 2021 Premysl Fara  */
 
+using EFrt.Core.Extensions;
+
 namespace EFrt.Libs.Exception.Words
 {
     using EFrt.Core;

@@ -1,12 +1,12 @@
 ﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
-namespace EFrt.Core
+namespace EFrt.Core.Extensions
 {
     using System;
 
     using EFrt.Core.Values;
 
-
+    
     /// <summary>
     /// Extensions method for the stack manipulations.
     /// </summary>

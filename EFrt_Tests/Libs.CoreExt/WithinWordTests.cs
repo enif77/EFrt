@@ -6,6 +6,7 @@ namespace EFrt_Tests.Libs.CoreExt
 
     using EFrt;
     using EFrt.Core;
+    using EFrt.Core.Extensions;
     using EFrt.Core.Words;
     
     
