@@ -34,8 +34,6 @@ EFrt is a embeddable FORTH language implementation.
 - https://en.wikipedia.org/wiki/Forth_(programming_language)
 - https://www.fourmilab.ch/atlast/atlast.html
 - http://users.ece.cmu.edu/~koopman/stack_computers/
-
-https://csharppedia.com/en/tutorial/5626/how-to-use-csharp-structs-to-create-a-union-type-similar-to-c-unions-
   
 ### General links
 
