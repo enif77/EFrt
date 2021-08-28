@@ -27,6 +27,6 @@ namespace EFrt.Libs.Core.Words
         }
 
 
-        private int _increment;
+        private readonly int _increment;
     }
 }

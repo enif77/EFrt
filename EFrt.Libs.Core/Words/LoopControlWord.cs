@@ -1,10 +1,9 @@
 ﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
-using EFrt.Core.Extensions;
-
 namespace EFrt.Libs.Core.Words
 {
     using EFrt.Core;
+    using EFrt.Core.Extensions;
     using EFrt.Core.Words;
 
 
@@ -30,7 +29,7 @@ namespace EFrt.Libs.Core.Words
 
 
         /// <summary>
-        /// The index of a word folowing this DO word.
+        /// The index of a word following this DO word.
         /// </summary>
         private readonly int _incrementToWordFollowingDo;
 

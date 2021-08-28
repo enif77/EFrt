@@ -32,6 +32,6 @@ namespace EFrt.Libs.Core.Words
         }
 
 
-        private string _value;
+        private readonly string _value;
     }
 }

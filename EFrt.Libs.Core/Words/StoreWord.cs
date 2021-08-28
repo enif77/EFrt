@@ -1,12 +1,10 @@
 /* EFrt - (C) 2021 Premysl Fara  */
 
-using EFrt.Core.Extensions;
-
 namespace EFrt.Libs.Core.Words
 {
     using EFrt.Core;
+    using EFrt.Core.Extensions;
     using EFrt.Core.Words;
-
     
     /// <summary>
     /// Stores the value n into the address addr (a heap array index).

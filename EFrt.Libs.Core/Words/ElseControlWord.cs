@@ -37,7 +37,7 @@ namespace EFrt.Libs.Core.Words
         }
 
 
-        private int _indexFollowingElse;
+        private readonly int _indexFollowingElse;
         private int _thenIndexIncrement;
     }
 }

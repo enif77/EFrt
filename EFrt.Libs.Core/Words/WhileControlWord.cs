@@ -1,10 +1,9 @@
 ﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
-using EFrt.Core.Extensions;
-
 namespace EFrt.Libs.Core.Words
 {
     using EFrt.Core;
+    using EFrt.Core.Extensions;
     using EFrt.Core.Words;
 
 
@@ -44,15 +43,17 @@ namespace EFrt.Libs.Core.Words
         }
 
 
-        /** Volá slovo then. Vloží sem svůj index v rámci definovaného slova,
-	 *  do kterého patří. */
+        /// <summary>
+        /// Called by the word THEN. It inserts its index inside a word its defined in.
+        /// </summary>
+        /// <param name="repeatIndex">The REPEAT word index.</param>
         public void SetRepeatIndex(int repeatIndex)
         {
             _repeatIndexIncrement = repeatIndex - _thisIndex;
         }
 
 
-        private int _thisIndex;
+        private readonly int _thisIndex;
         private int _repeatIndexIncrement;
     }
 }

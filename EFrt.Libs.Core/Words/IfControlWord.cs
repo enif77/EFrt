@@ -1,10 +1,9 @@
 ﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
-using EFrt.Core.Extensions;
-
 namespace EFrt.Libs.Core.Words
 {
     using EFrt.Core;
+    using EFrt.Core.Extensions;
     using EFrt.Core.Words;
 
 
@@ -31,22 +30,26 @@ namespace EFrt.Libs.Core.Words
         }
 
 
-        /** Volá slovo then. Vloží sem svůj index v rámci definovaného slova,
-	 *  do kterého patří. */
+        /// <summary>
+        /// Called by the word THEN. It inserts here its index in the word it belongs to.
+        /// </summary>
+        /// <param name="thenIndex">The THEN index.</param>
         public void SetThenIndex(int thenIndex)
         {
             _thenIndexIncrement = thenIndex - _thisIndex;
         }
 
-        /** Volá slovo else. Vloží sem svůj index v rámci definovaného slova,
-         *  do kterého patří. */
+        /// <summary>
+        /// Called by the word ELSE. It inserts here its index in the word it belongs to.
+        /// </summary>
+        /// <param name="elseIndex">The ELSE index.</param>
         public void SetElseIndex(int elseIndex)
         {
             _elseIndexIncrement = elseIndex - _thisIndex;
         }
 
 
-        private int _thisIndex;
+        private readonly int _thisIndex;
         private int _elseIndexIncrement;
         private int _thenIndexIncrement;
 
@@ -60,18 +63,11 @@ namespace EFrt.Libs.Core.Words
                 // The flag is true, advance instruction index by one to true portion of IF.
                 return 1;
             }
-            else
-            {
-                // The flag is false, advance to ELSE if present or to THEN if not.
-                if (_elseIndexIncrement != 0)
-                {
-                    return _elseIndexIncrement;
-                }
-                else
-                {
-                    return _thenIndexIncrement;
-                }
-            }
+
+            // The flag is false, advance to ELSE if present or to THEN if not.
+            return _elseIndexIncrement != 0 
+                ? _elseIndexIncrement
+                : _thenIndexIncrement;
         }
     }
 }
