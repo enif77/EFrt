@@ -62,6 +62,8 @@ Words definition table columns:
 Words: `.R ACTION-OF BUFFER: C" CASE COMPILE, DEFER DEFER! DEFER@ ENDCASE ENDOF ERASE
   IS OF MARKER OF PARSE PARSE-NAME U.R U> UNUSED`
 
+Words (Extra): BFILL
+
 ## Skipped words
 
 ```

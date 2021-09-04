@@ -33,7 +33,7 @@
 	<ItemGroup>
 		<!--<None Include="..\README.md" Pack="true" PackagePath="" />-->
 		<None Include="..\LICENSE.txt" Pack="true" PackagePath="" />
-		<None Include="..\EFrt-icon.png" Pack="true" PackagePath="icon.png"/>
+		<None Include="..\EFrt-icon.png" Pack="true" PackagePath="icon.png" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' == 'Release'">

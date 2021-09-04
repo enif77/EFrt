@@ -1,13 +1,12 @@
 ﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
-using EFrt.Core.Extensions;
-
 namespace EFrt.Libs.Core
 {
     using System;
     using System.Text;
 
     using EFrt.Core;
+    using EFrt.Core.Extensions;
     using EFrt.Core.Stacks;
     using EFrt.Core.Words;
 
@@ -110,11 +109,11 @@ namespace EFrt.Libs.Core
             _interpreter.AddPrimitiveWord("EVALUATE", EvaluateAction);
             _interpreter.AddPrimitiveWord("EXECUTE", ExecuteAction);
             _interpreter.AddImmediateWord("EXIT", ExitAction);
-            _interpreter.AddPrimitiveWord("FILL", FillAction);
+            _interpreter.AddWord(new FillWord(_interpreter));       // FILL
             _interpreter.AddPrimitiveWord("FIND", FindAction);
             _interpreter.AddPrimitiveWord("FM/MOD", FMSlashModAction);
             _interpreter.AddPrimitiveWord("HERE", HereAction);
-            _interpreter.AddWord(new HoldWord(_interpreter));   // HOLD
+            _interpreter.AddWord(new HoldWord(_interpreter));       // HOLD
             _interpreter.AddImmediateWord("I", GetInnerIndexAction);
             _interpreter.AddImmediateWord("IF", IfAction);
             _interpreter.AddPrimitiveWord("IMMEDIATE", ImmediateAction);
@@ -858,30 +857,6 @@ namespace EFrt.Libs.Core
             // EXIT word doesn't have a runtime behavior.
 
             _interpreter.WordBeingDefined.AddWord(new ExitControlWord(_interpreter, _interpreter.WordBeingDefined));
-
-            return 1;
-        }
-
-        // (c-addr count char --)
-        private int FillAction()
-        {
-            _interpreter.StackExpect(3);
-
-            var v = (byte)_interpreter.Pop();
-            var count = _interpreter.Pop();
-            if (count > 0)
-            {
-                var addr = _interpreter.Pop();     
-                
-                _interpreter.CheckCharAlignedAddress(addr);
-                _interpreter.CheckAddressesRange(addr, count);
-                
-                _interpreter.State.Heap.Fill(addr, count, v);
-            }
-            else
-            {
-                _interpreter.Drop();
-            }
 
             return 1;
         }

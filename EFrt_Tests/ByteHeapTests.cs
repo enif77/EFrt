@@ -401,5 +401,31 @@ namespace EFrt_Tests
             Assert.Equal(9, bh.Items[5]);
             Assert.Equal(6, bh.Items[6]);
         }
+        
+        [Fact]
+        public void FillCharsTest()
+        {
+            var bh = new Heap();
+
+            bh.Alloc(32);
+
+            for (var i = 0; i < 16; i++)
+            {
+                bh.Items[i] = (byte)i;
+            }
+
+            Assert.Equal(1, bh.Items[1]);
+            Assert.Equal(2, bh.Items[2]);
+            Assert.Equal(6, bh.Items[6]);
+            Assert.Equal(10, bh.Items[10]);
+            
+            bh.Fill(2, 4, 'a');
+            
+            Assert.Equal(1, bh.Items[1]);
+            Assert.Equal('a', bh.ReadInt16(2));  // Lower bound.
+            Assert.Equal('a', bh.ReadInt16(6));  // Inside.
+            Assert.Equal('a', bh.ReadInt16(8));  // Top bound.
+            Assert.Equal(10, bh.Items[10]);
+        }
     }
 }

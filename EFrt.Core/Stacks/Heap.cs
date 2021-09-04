@@ -240,12 +240,45 @@ namespace EFrt.Core.Stacks
             
             if (addr + count >= Items.Length) throw new ArgumentOutOfRangeException(nameof(count), $"The address {addr} plus the count {count} is out of the <0 .. Heap.Length) range.");
 
-            for (var i = addr + count - 1; i >= addr; i--)
+            //Array.Fill(Items, value, addr, count);
+            
+            for (var i = addr; i < addr + count; i++)
             {
                 Items[i] = value;
             }
         }
 
+        /// <summary>
+        /// Fills a range of chars with a value.
+        /// </summary>
+        /// <param name="addr">A start address.</param>
+        /// <param name="count">A number of chars to be filled with the value.</param>
+        /// <param name="value">A value.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown, when addr or addr + count * sizeof(char) are out of the 0 .. Heap.Length range.</exception>
+        public void Fill(int addr, int count, char value)
+        {
+            // TODO: Remove checks or use FORTH exceptions.
+            
+            if (addr < 0 || addr >= Items.Length) throw new ArgumentOutOfRangeException(nameof(addr), $"The address {addr} is out of the <0 .. Heap.Length) range.");
+            
+            // Do not fill nothing.
+            if (count <= 0)
+            {
+                return;
+            }
+            
+            if (addr + count * CharSize >= Items.Length) throw new ArgumentOutOfRangeException(nameof(count), $"The address {addr} plus the count * sizeof(char) {count} is out of the <0 .. Heap.Length) range.");
+
+            var hi = (byte)(value >> 8);
+            var lo = (byte)value;
+            
+            for (var i = addr; i < addr + count * CharSize; i++)
+            {
+                Items[i++] = lo;
+                Items[i] = hi;
+            }
+        }
+        
         /// <summary>
         /// If count is greater than zero, copy the contents of count consecutive cells at srcAddr
         /// to the count consecutive cells at destAddr.
