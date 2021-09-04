@@ -240,12 +240,7 @@ namespace EFrt.Core.Stacks
             
             if (addr + count >= Items.Length) throw new ArgumentOutOfRangeException(nameof(count), $"The address {addr} plus the count {count} is out of the <0 .. Heap.Length) range.");
 
-            //Array.Fill(Items, value, addr, count);
-            
-            for (var i = addr; i < addr + count; i++)
-            {
-                Items[i] = value;
-            }
+            Array.Fill(Items, value, addr, count);
         }
 
         /// <summary>
