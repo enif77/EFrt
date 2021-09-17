@@ -10,7 +10,7 @@ namespace EFrt.Core
 
 
     /// <summary>
-    /// Kepps the list of known words.
+    /// Keeps the list of known words.
     /// </summary>
     public class WordsList : IWordsList
     {
