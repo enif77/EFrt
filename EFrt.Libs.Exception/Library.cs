@@ -67,7 +67,7 @@ namespace EFrt.Libs.Exception
         // EXT
 
         // ( -- )
-        public int AbortAction()
+        private int AbortAction()
         {
             _interpreter.Throw(-1);
 
