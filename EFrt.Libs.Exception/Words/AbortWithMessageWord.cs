@@ -1,10 +1,9 @@
 ﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
-using EFrt.Core.Extensions;
-
 namespace EFrt.Libs.Exception.Words
 {
     using EFrt.Core;
+    using EFrt.Core.Extensions;
     using EFrt.Core.Words;
 
 
@@ -16,6 +15,7 @@ namespace EFrt.Libs.Exception.Words
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="interpreter">An IInterpreter instance.</param>
         /// <param name="message">A message.</param>
         public AbortWithMessageWord(IInterpreter interpreter, string message)
             : base(interpreter)
@@ -38,6 +38,6 @@ namespace EFrt.Libs.Exception.Words
         }
 
 
-        private string _message;
+        private readonly string _message;
     }
 }

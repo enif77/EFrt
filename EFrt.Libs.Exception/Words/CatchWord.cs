@@ -1,10 +1,9 @@
 ﻿/* EFrt - (C) 2021 Premysl Fara  */
 
-using EFrt.Core.Extensions;
-
 namespace EFrt.Libs.Exception.Words
 {
     using EFrt.Core;
+    using EFrt.Core.Extensions;
     using EFrt.Core.Words;
 
 
@@ -16,8 +15,9 @@ namespace EFrt.Libs.Exception.Words
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="name">A name of this value.</param>
-        /// <param name="n">A value or an address.</param>
+        /// <param name="interpreter">An IInterpreter instance.</param>
+        /// <param name="parentWord">A word, that is executing this CATCH word.</param>
+        /// <param name="nextWordIndex">An index of a word following this CATCH word..</param>
         public CatchWord(IInterpreter interpreter, IWord parentWord, int nextWordIndex)
             : base(interpreter)
         {
@@ -77,7 +77,7 @@ namespace EFrt.Libs.Exception.Words
             _nextWordIndex = nextWordIndex;
         }
 
-        private IWord _parentWord;
-        private int _nextWordIndex;
+        private readonly IWord _parentWord;
+        private readonly int _nextWordIndex;
     }
 }

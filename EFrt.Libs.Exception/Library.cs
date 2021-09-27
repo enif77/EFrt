@@ -1,12 +1,11 @@
 ﻿/* EFrt - (C) 2020 - 2021 Premysl Fara  */
 
-using EFrt.Core.Extensions;
-
 namespace EFrt.Libs.Exception
 {
     using System;
 
     using EFrt.Core;
+    using EFrt.Core.Extensions;
 
     using EFrt.Libs.Exception.Words;
 
