@@ -163,6 +163,44 @@ Interpreter has two public events - `ExecutingWord` and `WordExecuted` - to noti
 that a word was executed. 
 
 
+## Building (Ubuntu 20.04)
+
+### PowerShell
+
+Install the latest powershell snap.
+
+```
+sudo snap install powershell --classic
+```
+
+### Mono
+
+https://www.mono-project.com
+https://www.mono-project.com/download/stable/
+
+Get the latest stable version.
+
+### nuget.exe
+
+https://www.nuget.org/
+https://www.nuget.org/downloads
+
+Download the latest stable version and save it to the `/home/user/Devel/bin/nuget` directory.
+
+
+### Build
+
+```
+powershell -ExecutionPolicy Unrestricted build-linux.ps1 -Configuration Release
+```
+
+### Nugets
+
+Upload EFrt.Core.nupkg and .snupkg to nuget.org.
+
+Run again and upload remaining packages.
+
+
 ## Examples
 
 ```
