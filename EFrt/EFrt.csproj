@@ -15,7 +15,7 @@
 	<PropertyGroup>
 		<PackageId>EFrt</PackageId>
 		<PackageIcon>icon.png</PackageIcon>
-		<Version>0.6.1</Version>
+		<Version>0.6.2</Version>
 		<Authors>Premysl Fara</Authors>
 		<Title>EFrt - Embeddable FORTH</Title>
 		<Description>
@@ -51,17 +51,18 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' == 'Release'">
-		<PackageReference Include="EFrt.Core" Version="0.5.0" /> 
-		<PackageReference Include="EFrt.Libs.Core" Version="0.1.0" />
-		<PackageReference Include="EFrt.Libs.CoreExt" Version="0.1.0" />
-		<PackageReference Include="EFrt.Libs.Exception" Version="0.1.0" />
-		<PackageReference Include="EFrt.Libs.Double" Version="0.1.0" />
-		<PackageReference Include="EFrt.Libs.DoubleExt" Version="0.1.0" />
-		<PackageReference Include="EFrt.Libs.Floating" Version="0.1.0" />
-		<PackageReference Include="EFrt.Libs.FloatingExt" Version="0.1.0" />
-		<PackageReference Include="EFrt.Libs.Object" Version="0.1.0" />
-		<PackageReference Include="EFrt.Libs.Tools" Version="0.1.0" />
-		<PackageReference Include="EFrt.Libs.ToolsExt" Version="0.1.0" />
+		<PackageReference Include="EFrt.Core" Version="0.5.1" /> 
+		<PackageReference Include="EFrt.Libs.Core" Version="0.1.1" />
+		<PackageReference Include="EFrt.Libs.CoreExt" Version="0.1.1" />
+		<PackageReference Include="EFrt.Libs.Exception" Version="0.1.1" />
+		<PackageReference Include="EFrt.Libs.Double" Version="0.1.1" />
+		<PackageReference Include="EFrt.Libs.DoubleExt" Version="0.1.1" />
+		<PackageReference Include="EFrt.Libs.Floating" Version="0.1.1" />
+		<PackageReference Include="EFrt.Libs.FloatingExt" Version="0.1.1" />
+		<PackageReference Include="EFrt.Libs.Object" Version="0.1.1" />
+		<PackageReference Include="EFrt.Libs.String" Version="0.1.2" />
+		<PackageReference Include="EFrt.Libs.Tools" Version="0.1.1" />
+		<PackageReference Include="EFrt.Libs.ToolsExt" Version="0.1.1" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
@@ -77,10 +78,6 @@
 		<ProjectReference Include="..\EFrt.Libs.String\EFrt.Libs.String.csproj" />
 		<ProjectReference Include="..\EFrt.Libs.Tools\EFrt.Libs.Tools.csproj" />
 		<ProjectReference Include="..\EFrt.Libs.ToolsExt\EFrt.Libs.ToolsExt.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Include="EFrt.Libs.String" Version="0.1.1" />
 	</ItemGroup>
 
 </Project>

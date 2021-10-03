@@ -15,7 +15,7 @@
 	<PropertyGroup>
 		<PackageId>EFrt.Libs.Floating</PackageId>
 		<PackageIcon>icon.png</PackageIcon>
-		<Version>0.1.0</Version>
+		<Version>0.1.1</Version>
 		<Authors>Premysl Fara</Authors>
 		<Title>EFrt.Libs.Floating - Embeddable FORTH FLOATING library</Title>
 		<Description>
@@ -24,7 +24,7 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageDescription>EFrt - Embeddable FORTH programing language interpreter - the FLOATING library.</PackageDescription>
 		<PackageTags>efrt;forth;embeddable;interpreter;language</PackageTags>
-		<PackageReleaseNotes>Initial version.</PackageReleaseNotes>
+		<PackageReleaseNotes>Updated dependencies.</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/enif77/EFrt</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/enif77/EFrt.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
@@ -37,7 +37,7 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' == 'Release'">
-		<PackageReference Include="EFrt.Core" Version="0.5.0" />
+		<PackageReference Include="EFrt.Core" Version="0.5.1" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' == 'Debug'">

@@ -15,7 +15,7 @@
 	<PropertyGroup>
 		<PackageId>EFrt.Core</PackageId>
 		<PackageIcon>icon.png</PackageIcon>
-		<Version>0.5.0</Version>
+		<Version>0.5.1</Version>
 		<Authors>Premysl Fara</Authors>
 		<Title>EFrt.Core - Embeddable FORTH core functions</Title>
 		<Description>
@@ -24,7 +24,7 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageDescription>EFrt - Embeddable FORTH programing language interpreter - core functions.</PackageDescription>
 		<PackageTags>efrt;forth;embeddable;interpreter;language</PackageTags>
-		<PackageReleaseNotes>Initial version.</PackageReleaseNotes>
+		<PackageReleaseNotes>Add*Word() methods convert the name to uppercase.</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/enif77/EFrt</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/enif77/EFrt.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
