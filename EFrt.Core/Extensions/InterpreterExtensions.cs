@@ -96,7 +96,7 @@ namespace EFrt.Core.Extensions
             if (string.IsNullOrEmpty(name)) throw new ArgumentException("A word name expected.");
             if (action == null) throw new ArgumentNullException(nameof(action));
 
-            interpreter.AddWord(new PrimitiveWord(interpreter, name, action));
+            interpreter.AddWord(new PrimitiveWord(interpreter, name.ToUpperInvariant(), action));
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace EFrt.Core.Extensions
             if (string.IsNullOrEmpty(name)) throw new ArgumentException("A word name expected.");
             if (action == null) throw new ArgumentNullException(nameof(action));
 
-            interpreter.AddWord(new ImmediateWord(interpreter, name, action));
+            interpreter.AddWord(new ImmediateWord(interpreter, name.ToUpperInvariant(), action));
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace EFrt.Core.Extensions
         {
             if (string.IsNullOrEmpty(name)) throw new ArgumentException("A word name expected.");
 
-            interpreter.AddWord(new ConstantWord(interpreter, name, n));
+            interpreter.AddWord(new ConstantWord(interpreter, name.ToUpperInvariant(), n));
         }
 
         #endregion
