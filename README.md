@@ -177,7 +177,6 @@ export DOTNET_ROOT=$HOME/Devel/bin/dotnet
 export PATH=$PATH:$HOME/Devel/bin/dotnet
 ```
 
-
 ### PowerShell
 
 Install the latest powershell snap.
@@ -188,30 +187,25 @@ sudo snap install powershell --classic
 
 ### Mono
 
-https://www.mono-project.com
 https://www.mono-project.com/download/stable/
 
 Get the latest stable version.
 
 ### nuget.exe
 
-https://www.nuget.org/
 https://www.nuget.org/downloads
 
 Download the latest stable version and save it to the `/home/user/Devel/bin/nuget` directory.
 
-
 ### Build
 
 ```
-powershell -ExecutionPolicy Unrestricted build-linux.ps1 -Configuration Release
+powershell -ExecutionPolicy Unrestricted ./build.ps1 -Configuration Release
 ```
 
 ### Nugets
 
-Upload EFrt.Core.nupkg and .snupkg to nuget.org.
-
-Run again and upload remaining packages.
+Upload new `./nuget/*.nupkg` and `./nuget/*.snupkg` packages to nuget.org.
 
 
 ## Examples
