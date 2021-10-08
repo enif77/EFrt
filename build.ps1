@@ -1,9 +1,11 @@
 # Script: build.ps1
-# Builds the EFrt solution and creates local nuget packages from all packable EFrt projects.
+# Builds selected EFrt projects and creates local nuget packages from all packable projects.
 # License: MIT
 # Authors: Premysl Fara 
 # (C) 2020 - 2021
-# Run as "powershell.exe -ExecutionPolicy Unrestricted .\build.ps1 -Configuration Release" in the solution folder.
+# Requires: "PowerShell", "mono" (on Linux) and "nuget.exe".
+# Note: Make sure, that the $toolsPath, the $nugetPath and the $nugetCommand variables are correctly set.
+# Run as "powershell.exe -ExecutionPolicy Unrestricted ./build.ps1 -Configuration Release" in the folder with build.ps1.
 
 param(
 	[Parameter(Mandatory=$True)]$Configuration
@@ -12,11 +14,25 @@ param(
 $ErrorActionPreference = 'Stop'
 
 $baseDir = Get-Location
-$outDir = "$baseDir\out"
-$nugetDir = "$baseDir\nuget"
-$toolsPath = "D:\Devel\bin"
 
-. "$baseDir\include.ps1"
+# Temporary place for storing generated nugets.
+$outDir = "$baseDir/out"
+
+# The local nugets repository path.
+$nugetDir = "$baseDir/nuget"
+
+# Choose or set a path, whith build tools:
+#$toolsPath = "~/Devel/bin"   # Linux
+$toolsPath = "D:\Devel\bin"   # Windows
+
+# Choose or set a path to the nuget.exe:
+$nugetPath = "$toolsPath/nuget/nuget.exe"
+
+# Choose, how is the nuget.exe called:
+#$nugetCommand = "mono $nugetPath"   # On Linux you need mono to run it.
+$nugetCommand = "$nugetPath"         # On Windows it runs as it is.
+
+. "$baseDir/include.ps1"
 
 Clean
 #Build
