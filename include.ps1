@@ -1,7 +1,7 @@
 function Check-ExitCode() {
 	$exitCode = $LASTEXITCODE
 	if ($exitCode -ne 0) {
-		echo "Non-zero ($exitCode) exit code. Exiting..."
+		Write-Output "Non-zero ($exitCode) exit code. Exiting..."
 		exit $exitCode
 	}
 }
@@ -13,12 +13,11 @@ function GetStringBetweenTwoStrings($firstString, $secondString, $importPath) {
     $result = [regex]::Match($file, $pattern).Groups[1].Value
 
     return $result
-
 }
 
 function Clean() {
 	if (Test-Path $outDir) {
-		rm -Force -Recurse $outDir
+		Remove-Item -Force -Recurse $outDir
 	}
 
 	mkdir $outDir | Out-Null
@@ -33,12 +32,11 @@ function Build() {
 	Check-ExitCode
 }
 
-
 function BuildProject($projectName, $cleanUp=$False) {
-    cd $projectName
+    Set-Location $projectName
 
 	if ($cleanUp) {
-		Write-Host "Cleaning..."
+            Write-Host "Cleaning..."
 
 	    dotnet clean --configuration $Configuration --verbosity normal
 	    Check-ExitCode
@@ -47,15 +45,14 @@ function BuildProject($projectName, $cleanUp=$False) {
 	dotnet build --configuration $Configuration --configfile "$baseDir/NuGet.Config" --force --no-cache --verbosity normal
 	Check-ExitCode
 
-	cd $baseDir
+	Set-Location $baseDir
 }
-
 
 # Note: Call the Build function before this!
 function PackProject($projectName, $cleanUp=$True) {
     Write-Host "Packing project:" $projectName
 
-    cd $projectName
+    Set-Location $projectName
 
     $packageVersion = GetStringBetweenTwoStrings -firstString "<Version>" -secondString "</Version>" -importPath "$baseDir/$projectName/$projectName.csproj"
 	Check-ExitCode
@@ -70,17 +67,17 @@ function PackProject($projectName, $cleanUp=$True) {
 	    Write-Host "Removing the previous build of this package version..."
 
 	    # This can fail.
-	    & mono $nugetPath delete $projectName $packageVersion -noninteractive -source $nugetDir
+	    & $nugetCommand delete $projectName $packageVersion -noninteractive -source $nugetDir
 
-		Write-Host "Previous package build removed."
+	    Write-Host "Previous package build removed."
 	}
 
 	Write-Host "Adding the package to the local NuGet repository..."
 
-	& mono $nugetPath add "$outDir/$projectName.$packageVersion.nupkg" -source $nugetDir
+	& $nugetCommand add "$outDir/$projectName.$packageVersion.nupkg" -source $nugetDir
 	Check-ExitCode
 
 	Write-Host "Package added."
 
-	cd $baseDir
+	Set-Location $baseDir
 }
