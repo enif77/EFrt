@@ -13,7 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE.txt = LICENSE.txt
 		NuGet.Config = NuGet.Config
 		README.md = README.md
-		build-linux.ps1 = build-linux.ps1
 		EFrt-icon.png = EFrt-icon.png
 		EFrt-icon.xcf = EFrt-icon.xcf
 	EndProjectSection

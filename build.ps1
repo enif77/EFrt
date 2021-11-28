@@ -21,9 +21,9 @@ $outDir = "$baseDir/out"
 # The local nugets repository path.
 $nugetDir = "$baseDir/nuget"
 
-# Choose or set a path, whith build tools:
+# Choose or set a path, with build tools:
 #$toolsPath = "~/Devel/bin"   # Linux
-$toolsPath = "D:\Devel\bin"   # Windows
+$toolsPath = "C:\Devel\bin"   # Windows
 
 # Choose or set a path to the nuget.exe:
 $nugetPath = "$toolsPath/nuget/nuget.exe"
