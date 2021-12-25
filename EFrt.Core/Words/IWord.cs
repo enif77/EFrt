@@ -16,7 +16,7 @@ namespace EFrt.Core.Words
         string Name { get; }
 
         /// <summary>
-        /// If this word is executed immediatelly.
+        /// If this word is executed immediately.
         /// </summary>
         bool IsImmediate { get; }
 

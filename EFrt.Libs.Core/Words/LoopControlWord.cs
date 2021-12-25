@@ -16,7 +16,7 @@ namespace EFrt.Libs.Core.Words
         /// Constructor.
         /// </summary>
         /// <param name="interpreter">An IInterpreter instance.</param>
-        /// <param name="indexIncrement">Offset back to a word folowing the DO word.</param>
+        /// <param name="indexIncrement">Offset back to a word following the DO word.</param>
         public LoopControlWord(IInterpreter interpreter, int indexIncrement)
             : base(interpreter)
         {

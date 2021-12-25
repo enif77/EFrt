@@ -15,7 +15,7 @@ namespace EFrt.Libs.Core.Words
         /// <summary>
         /// An address/index of the first cell of this word's data field on the heap.
         /// </summary>
-        public int DataFieldIndex { get; private set; }
+        public int DataFieldIndex { get; }
 
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace EFrt.Libs.Core.Words
         /// </summary>
         public void ActivateDefinedWords()
         {
-            Action = base.Execute;
+            Action = Execute;
         }
     }
 }

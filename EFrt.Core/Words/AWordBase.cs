@@ -16,9 +16,7 @@ namespace EFrt.Core.Words
         /// <param name="interpreter">An IInterpreter instance, that is executing this word.</param>
         protected AWordBase(IInterpreter interpreter)
         {
-            if (interpreter == null) throw new ArgumentNullException(nameof(interpreter));
-
-            Interpreter = interpreter;
+            Interpreter = interpreter ?? throw new ArgumentNullException(nameof(interpreter));
             IsImmediate = false;
             IsControlWord = false;
         }
@@ -30,7 +28,7 @@ namespace EFrt.Core.Words
         public string Name { get; protected set; }
 
         /// <summary>
-        /// If this word should be executed immediatelly.
+        /// If this word should be executed immediately.
         /// </summary>
         public bool IsImmediate { get; protected set; }
 

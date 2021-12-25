@@ -52,12 +52,12 @@ namespace EFrt.Libs.Core.Words
                 return 1;
             };
 
-            _definitionWord = definitionWord;
+            _definitionWord = definitionWord ?? throw new ArgumentNullException(nameof(definitionWord));
             _doesIndex = doesIndex;
         }
 
 
-        readonly NonPrimitiveWord _definitionWord;
+        private readonly NonPrimitiveWord _definitionWord;
         private readonly int _doesIndex;
     }
 }
