@@ -165,14 +165,29 @@ that a word was executed.
 
 ## Building (Ubuntu 20.04)
 
-### .NET 5.0
+### .NET 6.0
 
-https://dotnet.microsoft.com/download/dotnet/5.0
+https://dotnet.microsoft.com/download/dotnet/6.0
 
-Download the latest .NET 5 version and install it to the `/home/user/Devel/bin/dotnet` directory.
+Download the latest .NET 6 version and install it to the `/home/user/Devel/bin/dotnet` directory.
 
 ```
-mkdir -p $HOME/Devel/bin/dotnet && tar zxf dotnet-sdk-5.0.401-linux-x64.tar.gz -C $HOME/Devel/bin/dotnet
+mkdir -p $HOME/Devel/bin/dotnet && tar zxf dotnet-sdk-6.0.101-linux-x64.tar.gz -C $HOME/Devel/bin/dotnet
+export DOTNET_ROOT=$HOME/Devel/bin/dotnet
+export PATH=$PATH:$HOME/Devel/bin/dotnet
+```
+
+The `PATH` and the `DOTNET_ROOT` variables can be set permanently in the `.bashrc` file.
+
+Run:
+
+```
+nano .bashrc
+```
+
+in your home directory and add to the end of the file:
+
+```
 export DOTNET_ROOT=$HOME/Devel/bin/dotnet
 export PATH=$PATH:$HOME/Devel/bin/dotnet
 ```
@@ -196,6 +211,10 @@ Get the latest stable version.
 https://www.nuget.org/downloads
 
 Download the latest stable version and save it to the `/home/user/Devel/bin/nuget` directory.
+
+### build.ps configuration
+
+Set the `$toolsPath` and the `$useMonoToRunNuget` variables to match your build environment (Linux or Windows).
 
 ### Build
 
