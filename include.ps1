@@ -49,7 +49,7 @@ function BuildProject($projectName, $cleanUp=$False) {
 }
 
 # Note: Call the Build function before this!
-function PackProject($projectName, $cleanUp=$True) {
+function PackProject($projectName, $cleanUp=$True, $useMonoToRunNuget=$False) {
     Write-Host "Packing project:" $projectName
 
     Set-Location $projectName
@@ -60,21 +60,40 @@ function PackProject($projectName, $cleanUp=$True) {
 	Write-Host "Package version: " + $packageVersion
 
 	dotnet pack --configuration $Configuration --no-restore --force -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg --output $outDir --verbosity minimal
-	
 	Check-ExitCode
 
 	if ($cleanUp) {
 	    Write-Host "Removing the previous build of this package version..."
 
 	    # This can fail.
-	    & $nugetCommand delete $projectName $packageVersion -noninteractive -source $nugetDir
-
-	    Write-Host "Previous package build removed."
+		if ($useMonoToRunNuget)
+		{
+			& mono $nugetPath delete $projectName $packageVersion -noninteractive -source $nugetDir	
+		}
+		else
+		{
+			& $nugetPath delete $projectName $packageVersion -noninteractive -source $nugetDir
+		}
+	    		
+		Write-Host "Previous package build removed."
 	}
 
+	# If the cleanup fails, it sets the exit code to 1.
+	# This will reset the exit code to 0, so the next Check-ExitCode
+	# command won't detect this fail, that is not related to
+	# the nuget add command below, as its failure.
+	$LASTEXITCODE = 0
+	
 	Write-Host "Adding the package to the local NuGet repository..."
 
-	& $nugetCommand add "$outDir/$projectName.$packageVersion.nupkg" -source $nugetDir
+	if ($useMonoToRunNuget)
+	{
+		& mono $nugetPath add "$outDir/$projectName.$packageVersion.nupkg" -source $nugetDir
+	}
+	else
+	{
+		& $nugetPath add "$outDir/$projectName.$packageVersion.nupkg" -source $nugetDir
+	}
 	Check-ExitCode
 
 	Write-Host "Package added."
