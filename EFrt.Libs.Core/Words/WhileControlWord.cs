@@ -31,11 +31,9 @@ namespace EFrt.Libs.Core.Words
                     // The flag is true, advance instruction index by one to loop body.
                     return 1;
                 }
-                else
-                {
-                    // The flag is false, advance to a word behind the REPEAT word.
-                    return _repeatIndexIncrement + 1;
-                }
+
+                // The flag is false, advance to a word behind the REPEAT word.
+                return _repeatIndexIncrement + 1;
             };
 
             _thisIndex = currentIndex;
@@ -52,7 +50,7 @@ namespace EFrt.Libs.Core.Words
             _repeatIndexIncrement = repeatIndex - _thisIndex;
         }
 
-
+        
         private readonly int _thisIndex;
         private int _repeatIndexIncrement;
     }
