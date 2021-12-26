@@ -13,6 +13,8 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
+# --- SETTINGS START HERE ---
+
 $baseDir = Get-Location
 
 # Temporary place for storing generated nugets.
@@ -35,6 +37,8 @@ $nugetPath = "$toolsPath/nuget/nuget.exe"
 #   On Linux you need mono to run it.
 #   On Windows it runs as it is.
 $useMonoToRunNuget = $True                   
+
+# --- SETTINGS END HERE ---
 
 . "$baseDir/include.ps1"
 
